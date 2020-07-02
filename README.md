@@ -12,7 +12,6 @@ The scripts are licensed "as-is" under the MIT License.
 Understand the impact of each sample script prior to running it; samples should be run in a non-production or "test" environment. 
 
 ## Contributing
-
 This project welcomes contributions and suggestions.  Most contributions require you to agree to a
 Contributor License Agreement (CLA) declaring that you have the right to, and actually do, grant us
 the rights to use your contribution. For details, visit https://cla.opensource.microsoft.com.
