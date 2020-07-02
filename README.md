@@ -1,5 +1,17 @@
+# Intune Shell Script Samples
 
-# Contributing
+This repository of Shell script samples demonstrate useful scripts that can be assigned to Macs managed by Microsoft Intune.
+
+Documentation for shell scripting in Micrsoft Endpoint Manager can be found [here](https://docs.microsoft.com/en-us/mem/intune/apps/macos-shell-scripts).
+
+These samples demonstrate common administrator actions for managing Macs in Intune.
+
+The scripts are licensed "as-is" under the MIT License.
+
+## Disclaimer
+Understand the impact of each sample script prior to running it; samples should be run in a non-production or "test" environment. 
+
+## Contributing
 
 This project welcomes contributions and suggestions.  Most contributions require you to agree to a
 Contributor License Agreement (CLA) declaring that you have the right to, and actually do, grant us
