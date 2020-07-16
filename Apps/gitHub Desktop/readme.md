@@ -1,4 +1,4 @@
-# gitHub  Installation Script
+# gitHub Desktop for Mac Installation Script
 
 This script is am example showing how to use [Intune Shell Scripting](https://docs.microsoft.com/en-us/mem/intune/apps/macos-shell-scripts) to install an application. In this instance the script downloads the gitHub Desktop files, uncompresses them and installs into the /Applications directory.
 
