@@ -9,7 +9,7 @@ This scripts intended usage scenario is for DEP/ADE enrolled Macs that need to c
 
 ## Script Settings
 
-Run script as signed-in user : No
-Hide script notifications on devices : Not configured
-Script frequency : Not configured
-Mac number of times to retry if script fails : 3
+- Run script as signed-in user : No
+- Hide script notifications on devices : Not configured
+- Script frequency : Not configured
+- Mac number of times to retry if script fails : 3
