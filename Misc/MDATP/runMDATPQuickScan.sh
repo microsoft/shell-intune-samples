@@ -24,7 +24,7 @@ exec 1>> $log 2>&1
 
 echo ""
 echo "##############################################################"
-echo "# $(date) | Starting quick scan of $appname"
+echo "# $(date) | Starting $appname"
 echo "############################################################"
 echo ""
 
