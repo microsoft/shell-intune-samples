@@ -22,4 +22,4 @@ This script uses the Intune Scripting Agent 'Script Frequency' feature to run th
 - Run script as signed-in user : No
 - Hide script notifications on devices : Yes
 - Script frequency : Every 6 hours
-- Mac number of times to retry if script fails : 3
+- Number of times to retry if script fails : 3
