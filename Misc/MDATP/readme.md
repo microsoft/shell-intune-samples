@@ -11,7 +11,7 @@ This scripts intended usage scenario is to install a LaunchDaemon that will run 
 
 - Run script as signed-in user : No
 - Hide script notifications on devices : Yes
-- Script frequency : Every 6 hours
+- Hide script notifications on devices : Not configured
 - Mac number of times to retry if script fails : 3
 
 ## runMDATPQuickScan.sh

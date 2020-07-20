@@ -12,4 +12,4 @@ This scripts intended usage scenario is to deploy the gitHub Desktop app to Mac 
 - Run script as signed-in user : No
 - Hide script notifications on devices : Not configured
 - Script frequency : Not configured
-- Mac number of times to retry if script fails : 3
+- Number of times to retry if script fails : 3
