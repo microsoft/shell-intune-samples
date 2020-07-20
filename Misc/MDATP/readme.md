@@ -1,4 +1,4 @@
-# Scripts for Microsoft Defender Advanced Thread Protection
+# Scripts for Microsoft Defender Advanced Threat Protection
 
 These scripts provide examples of how to use [Intune Shell Scripting](https://docs.microsoft.com/en-us/mem/intune/apps/macos-shell-scripts) to solve some common MDATP tasks.
 
