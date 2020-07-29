@@ -9,6 +9,8 @@ This script has a few scenarios
 - DEP/ADE enrolled Macs that need to complete their device registration for conditional access.
 - Provide end users with a quick and easy way to get started
 
+Copy and paste the following into a Terminal prompt to install and start Intune Company Portal.
+
 ```
 sudo /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/microsoft/shell-intune-samples/master/Apps/Company%20Portal/installCompanyPortal.sh)" ; open "/Applications/Company Portal.app"
 ```
