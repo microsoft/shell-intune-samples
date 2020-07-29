@@ -4,8 +4,14 @@ This script is an example to show how to use [Intune Shell Scripting](https://do
 
 ## Scenario
 
-This scripts intended usage scenario is for DEP/ADE enrolled Macs that need to complete their device registration for conditional access.
+This script has a few scenarios
 
+- DEP/ADE enrolled Macs that need to complete their device registration for conditional access.
+- Provide end users with a quick and easy way to get started
+
+```
+sudo /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/microsoft/shell-intune-samples/master/Apps/Company%20Portal/installCompanyPortal.sh)" ; open "/Applications/Company Portal.app"
+```
 
 ## Script Settings
 
