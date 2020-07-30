@@ -11,6 +11,7 @@ This script has a few scenarios
 
 >Note
 >To deploy via Intune, follow the instructions [here](https://docs.microsoft.com/en-us/mem/intune/apps/macos-shell-scripts).
+>
 >To deploy directly, advise the end users to copy and paste the following into a Terminal prompt.
 
 ```
