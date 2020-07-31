@@ -8,7 +8,7 @@ Common scenarios where these scripts might be used:
 
 - Needing to deploy a specific version of Office to some Macs
 - Needing to control the update channel for some users (InsiderFast, Slow etc). Note that the apps deployed via VPP will always be the Production channel)
-- Needing to control how the Microsoft Autoupdate App is configured
+- Needing to control how the Microsoft Autoupdate App is configured. Note that apps delivered via VPP do not use MAU.
 - Needing to remove OfficeBusinessPro
 - Installing Outlook Support Tools (OutlookResetPreferences, OutlookResetRecentAddresses and OutlookAsDefaultMailClient)
 
