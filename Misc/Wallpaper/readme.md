@@ -12,7 +12,7 @@ For this to work you will need a webserver to publish your Desktop Wallpaper ima
 
 ```
 # Define variables
-wallpaperurl="https://xxxx.blob.core.windows.net/Wallpaper/MacDesktopWallpaper.jpg"
+wallpaperurl="https://github.com/microsoft/shell-intune-samples/raw/master/img/M365.jpg"
 wallpaperdir="/Library/DesktopWallpaper"
 ```
 
