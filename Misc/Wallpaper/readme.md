@@ -16,9 +16,7 @@ wallpaperdir="/Library/DesktopWallpaper"
 
 ### Script Settings
 
->Note
->
->Script frequency should be set depending on how often you want your devices checking in for a new Desktop Wallpaper image.
+>Note: Script frequency should be set depending on how often you want your devices checking in for a new Desktop Wallpaper image.
 
 - Run script as signed-in user : No
 - Hide script notifications on devices : Yes
@@ -29,8 +27,7 @@ wallpaperdir="/Library/DesktopWallpaper"
 
 This is a mobileconfig file that configures the Mac to use a specific path for wallpaper. It should be delivered to the Mac via an Intune Custom Profile. For more information see the following: [Use custom settings for macOS devices in Microsoft Intune](https://docs.microsoft.com/en-us/mem/intune/configuration/custom-settings-macos)
 
->Note
->Make sure that the override-picture-path location is the same as the location you use to store the Wallpaper image downloaded in the downloadWallpaper.sh script.
+>Note: Make sure that the override-picture-path location is the same as the location you use to store the Wallpaper image downloaded in the downloadWallpaper.sh script.
 ```
 <key>override-picture-path</key>
 <string>/Library/Desktop/Wallpaper.jpg</string>
