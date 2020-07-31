@@ -15,7 +15,7 @@ Common scenarios where these scripts might be used:
 
 The following scripts are provided as examples of how you could use Intune Shell Scripting to solve unique requirements in your organisation, such as installing a specific version from a local cache or wanting to change the update
 
-> Unless stated, the scripts should be uploaded to Intune and deployed via the Intune Scripting Agent.
+>Note: Unless stated, the scripts should be uploaded to Intune and deployed via the Intune Scripting Agent.
 
 ## installOfficeBusinessPro.sh
 
