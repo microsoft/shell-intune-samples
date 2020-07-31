@@ -17,6 +17,7 @@ wallpaperdir="/Library/DesktopWallpaper"
 ### Script Settings
 
 >Note
+>
 >Script frequency should be set depending on how often you want your devices checking in for a new Desktop Wallpaper image.
 
 - Run script as signed-in user : No
