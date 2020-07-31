@@ -5,3 +5,4 @@ The scripts in this section are mostly related to app installation via the the [
 - App isn't signed and you don't have access to the correct certificate
 - App is complex, has embedded apps or multiple payloads (not compatible with macOS MDM stack pkg delivery)
 - App has complex dependencies and you want to handle those via a script
+- You just don't want the hassle of packaging the app regularly
