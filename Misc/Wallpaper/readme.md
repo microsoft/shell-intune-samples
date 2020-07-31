@@ -2,6 +2,8 @@
 
 These scripts provide examples of how to use [Intune Shell Scripting](https://docs.microsoft.com/en-us/mem/intune/apps/macos-shell-scripts) to set the Mac Desktop Wallpaper
 
+![Desktop Image](https://github.com/microsoft/shell-intune-samples/raw/master/img/desktop.png)
+
 ## downloadWallpaper.sh
 
 This script is intended to be delivered to the Mac by the Intune Scripting Agent. It will download the image that we want to use as the desktop Wallpaper. This stage just downloads the file to the Mac, it's the wallpaper.mobileconfig profile below that instructs the Mac to actually change the wallpaper image.
