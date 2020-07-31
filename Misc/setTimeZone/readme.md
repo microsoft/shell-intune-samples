@@ -2,6 +2,8 @@
 
 This script attempts to use the public IP address of the Mac to guesstimate it's TimeZone.
 
+![Timezone Image](https://github.com/microsoft/shell-intune-samples/raw/master/img/timezone.png)
+
 >Note:
 >The process is only as good as the tools allow. If the IP address cannot be determined or the Mac is configured to use a VPN/Proxy server then this process is unlikely to work correctly.
 
