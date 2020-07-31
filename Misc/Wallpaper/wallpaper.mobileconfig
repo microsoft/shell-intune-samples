@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>PayloadContent</key>
+	<array>
+		<dict>
+			<key>PayloadDisplayName</key>
+			<string>Desktop</string>
+			<key>PayloadEnabled</key>
+			<true/>
+			<key>PayloadIdentifier</key>
+			<string>com.setwallpaper</string>
+			<key>PayloadType</key>
+			<string>com.apple.desktop</string>
+			<key>PayloadUUID</key>
+			<string>24B00C30-4E4A-4CA9-A75F-9331B88ADE9F</string>
+			<key>PayloadVersion</key>
+			<integer>1</integer>
+			<key>override-picture-path</key>
+			<string>/Library/Desktop/Wallpaper.jpg</string>
+		</dict>
+	</array>
+	<key>PayloadDescription</key>
+	<string>Locks the wallpaper path</string>
+	<key>PayloadDisplayName</key>
+	<string>Desktop Wallpaper Picture</string>
+	<key>PayloadIdentifier</key>
+	<string>com.setwallpaper</string>
+	<key>PayloadOrganization</key>
+	<string>Intune</string>
+	<key>PayloadRemovalDisallowed</key>
+	<false/>
+	<key>PayloadScope</key>
+	<string>System</string>
+	<key>PayloadType</key>
+	<string>Configuration</string>
+	<key>PayloadUUID</key>
+	<string>83523B9B-511B-454E-9A3E-DBECEDA8C291</string>
+	<key>PayloadVersion</key>
+	<integer>1</integer>
+</dict>
+</plist>
