@@ -18,7 +18,7 @@
 			<key>PayloadVersion</key>
 			<integer>1</integer>
 			<key>override-picture-path</key>
-			<string>/Library/Desktop/Wallpaper.jpg</string>
+			<string>/Library/DesktopWallpaper/Wallpaper.jpg</string>
 		</dict>
 	</array>
 	<key>PayloadDescription</key>
