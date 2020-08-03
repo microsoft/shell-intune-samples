@@ -20,7 +20,7 @@
 # Define variables
 wallpaperurl="https://github.com/microsoft/shell-intune-samples/raw/master/img/M365.jpg"
 wallpaperdir="/Library/DesktopWallpaper"
-log="/var/log/installcp.log"
+log="/var/log/fetchdesktopwallpaper.log"
 
 # start logging
 
