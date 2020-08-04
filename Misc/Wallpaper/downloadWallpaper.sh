@@ -63,7 +63,7 @@ echo "$(date) | Downloading Wallpaper from [$wallpaperurl] to [$wallpaperdir/$wa
 curl -L -o $wallpaperdir/$wallpaperfile $wallpaperurl
 if [ "$?" = "0" ]; then
    echo "$(date) | Wallpaper [$wallpaperurl] downloaded to [$wallpaperdir/$wallpaperfile]"
-   killall Dock
+   #killall Dock
    exit 0
 else
    echo "$(date) | Failed to download wallpaper image from [$wallpaperurl]"
