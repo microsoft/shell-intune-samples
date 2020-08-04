@@ -12,7 +12,7 @@ For this to work you will need a webserver to publish your Desktop Wallpaper ima
 
 ```
 # Define variables
-usebingwallpaper=false  # If this is set to true the script will attempt to download the current Bing wallpaper
+usebingwallpaper=false
 wallpaperurl="https://github.com/microsoft/shell-intune-samples/raw/master/img/M365.jpg"
 wallpaperdir="/Library/Desktop"
 wallpaperfile="Wallpaper.jpg"
