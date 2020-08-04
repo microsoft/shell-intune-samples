@@ -28,7 +28,7 @@
 ##
 
 # Define variables
-log="/var/log/addAppstoDock.log"
+log="/tmp/addAppstoDock.log"
 appname="Dock Script"
 exec 1>> $log 2>&1
 
