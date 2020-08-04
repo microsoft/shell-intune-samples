@@ -18,7 +18,7 @@
 ## Feedback: neiljohn@microsoft.com
 
 # Define variables
-usebingwallpaper=false  # If this is set to true the script will attempt to download the current Bing wallpaper
+usebingwallpaper=false
 wallpaperurl="https://github.com/microsoft/shell-intune-samples/raw/master/img/M365.jpg"
 wallpaperdir="/Library/Desktop"
 wallpaperfile="Wallpaper.jpg"
@@ -45,36 +45,27 @@ else
     mkdir -p $wallpaperdir
 fi
 
+
+##
+## Attempt to download the image file. No point checking if it already exists since we want to overwrite it anyway
+##
+
 if [ "$usebingwallpaper" = true ]; then
 
   echo "$(date) | Attempting to dertermine URL of today's Bing Wallpaper"
   bingfileurl=( $(curl -sL https://www.bing.com | grep -Eo "th\?id=.*?.jpg" | sed -e "s/tmb/1920x1200/"))
-  bingurl="https://bing.com/$bingfileurl"
+  wallpaperurl="https://bing.com/$bingfileurl"
+  echo "$(date) | Setting wallpaperurl to todays Bing Desktop [$wallpaperurl]"
 
-  echo "$(date) | Attempting to download Bing Wallpaper from [$bingurl]"
-  curl -L -o $wallpaperdir/$wallpaperfile $bingurl
-  if [ "$?" = "0" ]; then
-     echo "$(date) | Wallpaper [$bingurl] downloaded to [$wallpaperdir/$wallpaperfile]"
-     # killall Dock
-     exit 0
-  else
-     echo "$(date) | Failed to download wallpaper image from [$bingurl]"
-     exit 1
-  fi
+fi
 
+echo "$(date) | Downloading Wallpaper from [$wallpaperurl] to [$wallpaperdir/$wallpaperfile]"
+curl -L -o $wallpaperdir/$wallpaperfile $wallpaperurl
+if [ "$?" = "0" ]; then
+   echo "$(date) | Wallpaper [$wallpaperurl] downloaded to [$wallpaperdir/$wallpaperfile]"
+   killall Dock
+   exit 0
 else
-
-  ##
-  ## Attempt to download the image file. No point checking if it already exists since we want to overwrite it anyway
-  ##
-  echo "$(date) | Downloading Wallpaper from [$wallpaperurl] to [$wallpaperdir/$wallpaperfile]"
-  curl -L -o $wallpaperdir/$wallpaperfile $wallpaperurl
-  if [ "$?" = "0" ]; then
-     echo "$(date) | Wallpaper [$wallpaperurl] downloaded to [$wallpaperdir/$wallpaperfile]"
-     # killall Dock
-     exit 0
-  else
-     echo "$(date) | Failed to download wallpaper image from [$wallpaperurl]"
-     exit 1
-  fi
+   echo "$(date) | Failed to download wallpaper image from [$wallpaperurl]"
+   exit 1
 fi
