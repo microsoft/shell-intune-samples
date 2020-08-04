@@ -41,7 +41,7 @@ Tue  4 Aug 2020 09:03:51 BST | Wallpaper [Wallpaper.jpg] downloaded to [/Library
 
 ### Script Settings
 
->Note: Script frequency should be set depending on how often you want your devices checking in for a new Desktop Wallpaper image. Once downloaded the Wallpaper will not change until the user logs out or you uncomment the 'killall Dock' lines 58 and 74 in the script which will trigger the Wallpaper to change immediately the script downloads the image.
+>Note: Script frequency should be set depending on how often you want your devices checking in for a new Desktop Wallpaper image. Once downloaded the Wallpaper will not change until the user logs out or you uncomment the 'killall Dock' lines 48 in the script which will trigger the Wallpaper to change immediately the script downloads the image.
 
 - Run script as signed-in user : No
 - Hide script notifications on devices : Yes
