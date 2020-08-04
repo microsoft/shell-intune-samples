@@ -12,8 +12,31 @@ For this to work you will need a webserver to publish your Desktop Wallpaper ima
 
 ```
 # Define variables
+usebingwallpaper=false  # If this is set to true the script will attempt to download the current Bing wallpaper
 wallpaperurl="https://github.com/microsoft/shell-intune-samples/raw/master/img/M365.jpg"
-wallpaperdir="/Library/DesktopWallpaper"
+wallpaperdir="/Library/Desktop"
+wallpaperfile="Wallpaper.jpg"
+log="/var/log/fetchdesktopwallpaper.log"
+```
+
+>Note: If you set usebingwallpaper=true the script will attempt to determine the Bing daily wallpaper image and download it instead of the one specified in wallpaperurl.
+
+### Log file example
+
+The log file will output to /var/log/fetchdesktopwallpaper.log by default. Exit status is either 0 or 1. To gather this log with Intune remotely take a look at  [Troubleshoot macOS shell script policies using log collection](https://docs.microsoft.com/en-us/mem/intune/apps/macos-shell-scripts#troubleshoot-macos-shell-script-policies-using-log-collection)
+
+```
+##############################################################
+# Tue  4 Aug 2020 09:03:51 BST | Starting download of Desktop Wallpaper
+############################################################
+
+Tue  4 Aug 2020 09:03:51 BST | Creating [/Library/Desktop]
+Tue  4 Aug 2020 09:03:51 BST | Downloading Wallpaper from [https://github.com/microsoft/shell-intune-samples/raw/master/img/M365.jpg] to [/Library/Desktop/Wallpaper.jpg]
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+100   150  100   150    0     0   1111      0 --:--:-- --:--:-- --:--:--  1111
+100  420k  100  420k    0     0  1343k      0 --:--:-- --:--:-- --:--:-- 1343k
+Tue  4 Aug 2020 09:03:51 BST | Wallpaper [Wallpaper.jpg] downloaded to [/Library/Desktop]
 ```
 
 ### Script Settings

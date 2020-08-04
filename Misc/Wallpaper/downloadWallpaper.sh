@@ -3,7 +3,7 @@
 
 ############################################################################################
 ##
-## Script to download DesktopWallpaper
+## Script to download Desktop Wallpaper
 ##
 ###########################################
 
@@ -18,8 +18,10 @@
 ## Feedback: neiljohn@microsoft.com
 
 # Define variables
+usebingwallpaper=false  # If this is set to true the script will attempt to download the current Bing wallpaper
 wallpaperurl="https://github.com/microsoft/shell-intune-samples/raw/master/img/M365.jpg"
-wallpaperdir="/Library/DesktopWallpaper"
+wallpaperdir="/Library/Desktop"
+wallpaperfile="Wallpaper.jpg"
 log="/var/log/fetchdesktopwallpaper.log"
 
 # start logging
@@ -32,8 +34,47 @@ echo "# $(date) | Starting download of Desktop Wallpaper"
 echo "############################################################"
 echo ""
 
+##
+## Checking if Wallpaper directory exists and create it if it's missing
+##
+if [ -d $wallpaperdir ]
+then
+    echo "$(date) | Wallpaper dir [$wallpaperdir] already exists"
+else
+    echo "$(date) | Creating [$wallpaperdir]"
+    mkdir -p $wallpaperdir
+fi
 
-mkdir -p $wallpaperdir
+if [ "$usebingwallpaper" = true ]; then
 
-echo "Downloading Wallpaper"
-curl -L -o $wallpaperdir/Wallpaper.jpg $wallpaperurl
+  echo "$(date) | Attempting to dertermine URL of today's Bing Wallpaper"
+  bingfileurl=( $(curl -sL https://www.bing.com | grep -Eo "th\?id=.*?.jpg" | sed -e "s/tmb/1920x1200/"))
+  bingurl="https://bing.com/$bingfileurl"
+
+  echo "$(date) | Attempting to download Bing Wallpaper from [$bingurl]"
+  curl -L -o $wallpaperdir/$wallpaperfile $bingurl
+  if [ "$?" = "0" ]; then
+     echo "$(date) | Wallpaper [$bingurl] downloaded to [$wallpaperdir/$wallpaperfile]"
+     # killall Dock
+     exit 0
+  else
+     echo "$(date) | Failed to download wallpaper image from [$bingurl]"
+     exit 1
+  fi
+
+else
+
+  ##
+  ## Attempt to download the image file. No point checking if it already exists since we want to overwrite it anyway
+  ##
+  echo "$(date) | Downloading Wallpaper from [$wallpaperurl] to [$wallpaperdir/$wallpaperfile]"
+  curl -L -o $wallpaperdir/$wallpaperfile $wallpaperurl
+  if [ "$?" = "0" ]; then
+     echo "$(date) | Wallpaper [$wallpaperurl] downloaded to [$wallpaperdir/$wallpaperfile]"
+     # killall Dock
+     exit 0
+  else
+     echo "$(date) | Failed to download wallpaper image from [$wallpaperurl]"
+     exit 1
+  fi
+fi
