@@ -12,7 +12,7 @@ For this to work you will need a webserver to publish your Desktop Wallpaper ima
 
 ```
 # Define variables
-usebingwallpaper=false  # If this is set to true the script will attempt to download the current Bing wallpaper
+usebingwallpaper=false
 wallpaperurl="https://github.com/microsoft/shell-intune-samples/raw/master/img/M365.jpg"
 wallpaperdir="/Library/Desktop"
 wallpaperfile="Wallpaper.jpg"
@@ -41,7 +41,7 @@ Tue  4 Aug 2020 09:03:51 BST | Wallpaper [Wallpaper.jpg] downloaded to [/Library
 
 ### Script Settings
 
->Note: Script frequency should be set depending on how often you want your devices checking in for a new Desktop Wallpaper image.
+>Note: Script frequency should be set depending on how often you want your devices checking in for a new Desktop Wallpaper image. Once downloaded the Wallpaper will not change until the user logs out or you uncomment the 'killall Dock' lines 58 and 74 in the script which will trigger the Wallpaper to change immediately the script downloads the image.
 
 - Run script as signed-in user : No
 - Hide script notifications on devices : Yes
