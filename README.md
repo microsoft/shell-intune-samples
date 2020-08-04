@@ -37,11 +37,8 @@ This section is for scripts that do general macOS configurations. This is an All
 
 ```
 ├── Misc
-│   ├── Create\ Local\ Admin\ Account
 │   ├── Dock
-│   ├── Location\ Services
 │   ├── MDATP
-│   ├── Rebuild\ Spotlight\ Database
 │   ├── Wallpaper
 │   └── setTimeZone
 ```
