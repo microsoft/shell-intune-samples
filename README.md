@@ -13,6 +13,7 @@ To get started, check out the following documentation
 - [Create a profile with custom settings in Intune](https://docs.microsoft.com/en-us/mem/intune/configuration/custom-settings-configure)
 - [Add iOS, iPadOS, or macOS device feature settings in Intune](https://docs.microsoft.com/en-us/mem/intune/configuration/device-features-configure)
 - [How to manage iOS and macOS apps purchased through Apple Volume Purchase Program with Microsoft Intune](https://docs.microsoft.com/en-us/mem/intune/apps/vpp-apps-ios)
+
 To make things a little easier to navigate the repo has been split up into three main sections:
 
 ## Apps
