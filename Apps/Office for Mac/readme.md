@@ -22,7 +22,7 @@ The following scripts are provided as examples of how you could use Intune Shell
 This scripts intended usage scenario is to install Office Business Pro for Mac. It will look for a pre-defined local copy of Office and fail back to the CDN server location if that cannot be found.
 
 ```
-sudo /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/microsoft/shell-intune-samples/master/Apps/Office%20for%20Mac/installOfficeBusinessPro.sh)" ; open "/Applications/Company Portal.app"
+sudo /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/microsoft/shell-intune-samples/master/Apps/Office%20for%20Mac/installOfficeBusinessPro.sh)"
 ```
 
 ### Script Settings
