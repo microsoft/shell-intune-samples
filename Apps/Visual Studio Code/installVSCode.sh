@@ -22,7 +22,7 @@
 tempfile="/tmp/vscode.zip"
 weburl="https://go.microsoft.com/fwlink/?LinkID=620882"
 appname="Visual Studio Code"
-log="/var/log/vscode_install.log"
+log="/var/log/installvscode.log"
 
 # start logging
 
@@ -40,7 +40,7 @@ echo "$(date) | Downloading $appname"
 curl -L -f -o $tempfile $weburl
 
 cd /tmp
-unzip $tempfile
+unzip -q $tempfile
 mv "/tmp/Visual Studio Code.app" "/Applications"
 
 rm -rf $tmpfile
