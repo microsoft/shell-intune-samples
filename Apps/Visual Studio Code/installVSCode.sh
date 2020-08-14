@@ -40,7 +40,10 @@ echo "$(date) | Downloading $appname"
 curl -L -f -o $tempfile $weburl
 
 cd /tmp
+echo "$(date) | Unzipping $tempfile"
 unzip -q $tempfile
-mv "/tmp/Visual Studio Code.app" "/Applications"
+
+echo "$(date) | Moving files to /Applications"
+mv -f "/tmp/Visual Studio Code.app" "/Applications"
 
 rm -rf $tmpfile
