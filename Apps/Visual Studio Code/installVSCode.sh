@@ -41,8 +41,15 @@ curl -L -f -o $tempfile $weburl
 
 cd /tmp
 echo "$(date) | Unzipping $tempfile"
-unzip -q -f -o $tempfile
+rm -rf "/tmp/$appname.app"
+unzip -q $tempfile
 
-echo "$(date) | Moving files to /Applications"
-mv -f "/tmp/Visual Studio Code.app" "/Applications/"
-rm -rf "$tmpfile"
+echo "$(date) | Copying files to /Applications"
+rsync -a "/tmp/$appname.app" "/Applications/"
+
+echo "$(date) | Fixing up permissions"
+sudo chown -R root:wheel "/Applications/$appname.app"
+
+echo "$(date) | Cleaning up tmp files"
+rm -rf "/tmp/$appname.app"
+rm -rf "$tempfile"
