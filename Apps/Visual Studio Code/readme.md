@@ -1,10 +1,10 @@
-# Intune Company Portal Installation Script
+# Visual Studio Code Installation Script
 
-This script is am example to show how to use [Intune Shell Scripting](https://docs.microsoft.com/en-us/mem/intune/apps/macos-shell-scripts) to install applications. In this case the script will download the Yammer dmg file from the Microsoft download servers and then install it onto the Mac.
+This script is am example to show how to use [Intune Shell Scripting](https://docs.microsoft.com/en-us/mem/intune/apps/macos-shell-scripts) to install applications. In this case the script will download Microsoft Visual Studio Code and then install it onto the Mac.
 
 ## Scenario
 
-This scripts intended usage scenario is for DEP/ADE enrolled Macs that need to complete their device registration for conditional access.
+This scripts intended usage scenario is to install Visual Studio Code via the Intune Scripting Agent.
 
 ## Quick Run
 
