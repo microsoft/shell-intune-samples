@@ -44,6 +44,6 @@ echo "$(date) | Unzipping $tempfile"
 unzip -q $tempfile
 
 echo "$(date) | Moving files to /Applications"
-mv -f "/tmp/Visual Studio Code.app" "/Applications"
-
-rm -rf $tmpfile
+cp -rf "/tmp/Visual Studio Code.app" "/Applications"
+rm -rf "/tmp/Visual Studio Code.app"
+rm -rf "$tmpfile"
