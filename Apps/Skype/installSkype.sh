@@ -26,7 +26,7 @@ log="/var/log/installskype.log"
 
 # start logging
 
-#exec 1>> $log 2>&1
+exec 1>> $log 2>&1
 
 # Begin Script Body
 

@@ -6,6 +6,11 @@ This script is am example to show how to use [Intune Shell Scripting](https://do
 
 This scripts intended usage scenario is for customers who wish to use a shell script to deploy the Microsoft Remote Desktop app.
 
+## Quick Run
+
+```
+sudo /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/microsoft/shell-intune-samples/master/Apps/Remote%20Desktop/installRemoteDesktop.sh)"
+```
 
 ## Script Settings
 
