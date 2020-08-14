@@ -41,7 +41,7 @@ curl -L -f -o $tempfile $weburl
 
 cd /tmp
 echo "$(date) | Unzipping $tempfile"
-unzip -q $tempfile
+unzip -q -o $tempfile
 
 echo "$(date) | Moving files to /Applications"
 cp -rf "/tmp/Visual Studio Code.app" "/Applications"
