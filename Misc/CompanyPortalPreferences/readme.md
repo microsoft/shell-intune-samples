@@ -16,4 +16,4 @@ This script attempts to enable the setting under **Company Portal > Preferences 
 - Run script as signed-in user : Yes
 - Hide script notifications on devices : Not configured
 - Script frequency : Daily
-- Mac number of times to retry if script fails : 3
+- Max number of times to retry if script fails : 3
