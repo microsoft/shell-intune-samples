@@ -52,7 +52,7 @@ This section is for example Custom Profiles for deployment via Intune. These com
 
 ```
 ├── Custom\ Profiles
-│   └── Disable\ External\ Storage
+│   └── Disable External Storage
 ├── LOBAppPrep
 ```
 
