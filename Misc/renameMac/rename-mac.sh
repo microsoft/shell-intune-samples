@@ -19,7 +19,9 @@
 ## Feedback: paoloma@microsoft.com
 
 ## Define variables
-log="/var/log/rename-mac.log"
+logandmetadir="/Library/Intune/Scripts/installMinecraftEducationEdition"
+log="$logandmetadir/rename-mac.log"
+
 appname="Rename a Mac device based on model type and serial number"
 
 # start logging
