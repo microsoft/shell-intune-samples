@@ -45,19 +45,41 @@ echo ""
 
 echo " $(date) | Checking if renaming is necessary"
 
-SerialCheck=$(system_profiler SPHardwareDataType | awk /'Serial Number \(system\):'/ | cut -c34-40)
-CurrentNameCheck=$(scutil --get ComputerName)
+SerialNum=$(system_profiler SPHardwareDataType | awk '/Serial/ {print $4}' | cut -d ':' -f2- | xargs)
+if [ "$?" = "0" ]; then
+  echo " $(date) | Serial detected as $SerialNum"
+else
+   echo "$(date) | Unable to determine serial number"
+   exit 1
+fi
 
-if [[ "$CurrentNameCheck" == *"$SerialCheck"* ]]
+
+CurrentNameCheck=$(scutil --get ComputerName)
+if [ "$?" = "0" ]; then
+  echo " $(date) | Current computername detected as $CurrentNameCheck"
+else
+   echo "$(date) | Unable to determine current name"
+   exit 1
+fi
+
+
+
+if [[ "$CurrentNameCheck" == *"$SerialNum"* ]]
   then
   echo "# $(date) | rename not necessary as the Mac name already includes the serial number. Exiting..."
   exit 0
 fi
 
 echo " $(date) | Old Name: $CurrentNameCheck"
-ModelName=$(system_profiler SPHardwareDataType | awk /'Model Name: '/ | cut -c19- )
+ModelName=$(system_profiler SPHardwareDataType | awk /'Model Name: '/ | cut -d ':' -f2- | xargs)
+if [ "$?" = "0" ]; then
+  echo " $(date) | Retrieved model name: $ModelName"
+else
+   echo "$(date) | Unable to determine modelname"
+   exit 1
+fi
 
-echo " $(date) | Retrieved model name: $ModelName"
+
 echo " $(date) | Generating four characters code based on retrieved model name $ModelName"
 
 case $ModelName in
@@ -67,27 +89,39 @@ case $ModelName in
   iMac*) ModelCode=IMAC;;
   Mac\ Pro*) ModelCode=MACP;;
   Mac\ mini*) ModelCode=MINI;;
-  *) ModelCode=$(echo $ModelName | cut -c1-4);;
+  *) ModelCode=$(echo $ModelName | tr -d ' ' | cut -c1-4);;
 esac
+
 echo " $(date) | ModelCode variable set to $ModelCode"
-
-SerialNum=$(system_profiler SPHardwareDataType | awk /'Serial Number \(system\):'/ | cut -c31-40)
 echo " $(date) | Retrieved serial number: $SerialNum"
-
 echo " $(date) | Building the new name..."
-NewName=$ModelCode
-NewName+=$SerialNum
+NewName=$ModelCode$SerialNum
+
 echo " $(date) | Generated Name: $NewName"
 
-#Name Computer
+#Setting ComputerName
 scutil --set ComputerName $NewName
-scutil --set HostName $NewName
-scutil --set LocalHostName $NewName
-
 if [ "$?" = "0" ]; then
-   echo "Device renamed from $CurrentNameCheck to $NewName"
-   exit 0
+   echo " $(date) | Computername changed from $CurrentNameCheck to $NewName"
 else
-   echo "$(date) | Failed to rename the device from $CurrentNameCheck to $NewName"
+   echo " $(date) | Failed to rename the device from $CurrentNameCheck to $NewName"
+   exit 1
+fi
+
+#Setting HostName
+scutil --set HostName $NewName
+if [ "$?" = "0" ]; then
+   echo " $(date) | HostName changed from $CurrentNameCheck to $NewName"
+else
+   echo " $(date) | Failed to rename the device from $CurrentNameCheck to $NewName"
+   exit 1
+fi
+
+#Setting LocalHostName
+scutil --set LocalHostName $NewName
+if [ "$?" = "0" ]; then
+   echo " $(date) | LocalHostName changed from $CurrentNameCheck to $NewName"
+else
+   echo " $(date) | Failed to rename the device from $CurrentNameCheck to $NewName"
    exit 1
 fi
