@@ -65,11 +65,6 @@ echo " $(date) | ModelCode variable set to $ModelCode"
 SerialNum=$(system_profiler SPHardwareDataType | awk /'Serial Number \(system\):'/ | cut -c31-40)
 echo " $(date) | Retrieved serial number: $SerialNum"
 
-#Adjust the serial number length to shorten it to adjust for the designation length
-DesignationLength="$((${#Designation} + 1))"
-SerialNum=$(echo $SerialNum | cut -c$DesignationLength-)
-echo " $(date) | Adjusted serial number: $SerialNum"
-
 echo " $(date) | Building the new name..."
 NewName=$ModelCode
 NewName+=$SerialNum
