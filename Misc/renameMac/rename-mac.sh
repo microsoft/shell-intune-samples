@@ -19,7 +19,7 @@
 ## Feedback: paoloma@microsoft.com
 
 ## Define variables
-logdir="/Library/Intune/Scripts"
+logdir="/var/log"
 log="$logdir/rename-mac.log"
 
 appname="Rename a Mac device based on model type and serial number"
