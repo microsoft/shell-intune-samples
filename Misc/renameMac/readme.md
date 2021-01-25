@@ -18,3 +18,19 @@ The script consists of three steps:
 - Hide script notifications on devices : Not configured
 - Script frequency : Not configured
 - Mac number of times to retry if script fails : 3
+
+## Sample log
+##############################################################
+# Mon Jan 25 10:06:44 GMT 2021 | Starting DeviceRename
+############################################################
+ Mon Jan 25 10:06:44 GMT 2021 | Checking if renaming is necessary
+ Mon Jan 25 10:06:44 GMT 2021 | Serial detected as ABCDEF000017
+ Mon Jan 25 10:06:44 GMT 2021 | Current computername detected as Testvm
+ Mon Jan 25 10:06:44 GMT 2021 | Old Name: Testvm
+ Mon Jan 25 10:06:45 GMT 2021 | Retrieved model name: MacBook Pro
+ Mon Jan 25 10:06:45 GMT 2021 | Generating four characters code based on retrieved model name MacBook Pro
+ Mon Jan 25 10:06:45 GMT 2021 | ModelCode variable set to MABP
+ Mon Jan 25 10:06:45 GMT 2021 | Retrieved serial number: ABCDEF000017
+ Mon Jan 25 10:06:45 GMT 2021 | Building the new name...
+ Mon Jan 25 10:06:45 GMT 2021 | Generated Name: MABPABCDEF000017
+ Device renamed from Testvm to MABPABCDEF000017
