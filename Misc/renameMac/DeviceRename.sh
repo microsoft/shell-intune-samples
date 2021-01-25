@@ -19,10 +19,19 @@
 ## Feedback: paoloma@microsoft.com
 
 ## Define variables
-logdir="/var/log"
-log="$logdir/rename-mac.log"
+appname="DeviceRename"
+logandmetadir="/Library/Logs/Microsoft/Intune/Scripts/$appname"
+log="$logandmetadir/$appname.log"
 
-appname="Rename a Mac device based on model type and serial number"
+## Check if the log directory has been created
+if [ -d $logandmetadir ]; then
+    ## Already created
+    echo "# $(date) | Log directory already exists - $logandmetadir"
+else
+    ## Creating Metadirectory
+    echo "# $(date) | creating log directory - $logandmetadir"
+    mkdir -p $logandmetadir
+fi
 
 # start logging
 exec 1>> $log 2>&1
