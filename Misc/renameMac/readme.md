@@ -12,6 +12,13 @@ The script consists of three steps:
     e.g. Serial Number = C02BA222DC79 ==> $SerialNum = C02BA222DC
 3) build the final name by combining $ModelCode and $serial
     e.g. $NewName = MABAC02BA222DC
+    
+```
+# Define variables
+logdir="/Library/Intune/Scripts"
+log="$logdir/rename-mac.log"
+```
+
 ## Script Settings
 
 - Run script as signed-in user : No
@@ -19,10 +26,15 @@ The script consists of three steps:
 - Script frequency : Not configured
 - Mac number of times to retry if script fails : 3
 
-## Sample log
-##############################################################
-# Mon Jan 25 10:06:44 GMT 2021 | Starting DeviceRename
-############################################################
+### Log file example
+
+The log file will output to /Library/Intune/Scripts/rename-mac.log by default. Exit status is either 0 or 1. To gather this log with Intune remotely take a look at  [Troubleshoot macOS shell script policies using log collection](https://docs.microsoft.com/en-us/mem/intune/apps/macos-shell-scripts#troubleshoot-macos-shell-script-policies-using-log-collection)
+
+```
+ ##############################################################
+ # Mon Jan 25 10:00:00 GMT 2021 | Starting DeviceRename
+ ############################################################
+
  Mon Jan 25 10:06:44 GMT 2021 | Checking if renaming is necessary
  Mon Jan 25 10:06:44 GMT 2021 | Serial detected as ABCDEF000017
  Mon Jan 25 10:06:44 GMT 2021 | Current computername detected as Testvm
@@ -34,3 +46,5 @@ The script consists of three steps:
  Mon Jan 25 10:06:45 GMT 2021 | Building the new name...
  Mon Jan 25 10:06:45 GMT 2021 | Generated Name: MABPABCDEF000017
  Device renamed from Testvm to MABPABCDEF000017
+
+```
