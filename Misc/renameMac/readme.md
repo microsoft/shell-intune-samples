@@ -15,7 +15,7 @@ The script consists of three steps:
     
 ```
 # Define variables
-logdir="/Library/Intune/Scripts"
+logdir="/var/log"
 log="$logdir/rename-mac.log"
 ```
 
@@ -28,7 +28,7 @@ log="$logdir/rename-mac.log"
 
 ### Log file example
 
-The log file will output to /Library/Intune/Scripts/rename-mac.log by default. Exit status is either 0 or 1. To gather this log with Intune remotely take a look at  [Troubleshoot macOS shell script policies using log collection](https://docs.microsoft.com/en-us/mem/intune/apps/macos-shell-scripts#troubleshoot-macos-shell-script-policies-using-log-collection)
+>**Note:** The log file will output to **/var/log/rename-mac.log** by default. Exit status is either 0 or 1. To gather this log with Intune remotely take a look at  [Troubleshoot macOS shell script policies using log collection](https://docs.microsoft.com/en-us/mem/intune/apps/macos-shell-scripts#troubleshoot-macos-shell-script-policies-using-log-collection)
 
 ```
  ##############################################################
