@@ -4,7 +4,7 @@
 
 ############################################################################################
 ##
-## Script to rename a Mac device based on device type and serial number
+## Script to rename a Mac based on device type and serial number
 ##
 ############################################################################################
 
