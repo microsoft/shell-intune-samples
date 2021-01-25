@@ -3,7 +3,7 @@
 This script renames a Mac device by looking at the model type and at the serial number
 This is ideal for devices that are enrolled without user affinity. The script can be further customized to include the user name as part of the device rename.
 
-## rename-mac.sh
+## DeviceRename.sh
 
 The script consists of three steps:
 1) determine the model type and, based on the retrieved type, set a 4 characters variable $ModelCode
@@ -15,8 +15,9 @@ The script consists of three steps:
     
 ```
 # Define variables
-logdir="/var/log"
-log="$logdir/rename-mac.log"
+appname="DeviceRename"
+logandmetadir="/Library/Logs/Microsoft/Intune/Scripts/$appname"
+log="$logandmetadir/$appname.log"
 ```
 
 ## Script Settings
@@ -28,7 +29,7 @@ log="$logdir/rename-mac.log"
 
 ### Log file example
 
->**Note:** The log file will output to **/var/log/rename-mac.log** by default. Exit status is either 0 or 1. To gather this log with Intune remotely take a look at  [Troubleshoot macOS shell script policies using log collection](https://docs.microsoft.com/en-us/mem/intune/apps/macos-shell-scripts#troubleshoot-macos-shell-script-policies-using-log-collection)
+>**Note:** The log file will output to **/Library/Logs/Microsoft/Intune/Scripts/$appname/DeviceRename.log** by default. Exit status is either 0 or 1. To gather this log with Intune remotely take a look at  [Troubleshoot macOS shell script policies using log collection](https://docs.microsoft.com/en-us/mem/intune/apps/macos-shell-scripts#troubleshoot-macos-shell-script-policies-using-log-collection)
 
 ```
  ##############################################################
