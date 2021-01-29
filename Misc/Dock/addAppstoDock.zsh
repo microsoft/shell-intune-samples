@@ -105,6 +105,9 @@ defaults write com.apple.dock showhidden -bool true
 #echo "$(date) | Enable Auto Hide dock"
 #defaults write com.apple.dock autohide -bool true
 
+#echo "$(date) | Disable show recent items"
+#defaults write com.apple.dock show-recents -bool FALSE
+
 echo "$(date) | Enable Minimise Icons into Dock Icons"
 defaults write com.apple.dock minimize-to-application -bool yes
 
