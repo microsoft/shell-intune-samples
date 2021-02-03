@@ -23,10 +23,21 @@
 
 tempdir="/tmp"
 tempfile="/tmp/office.pkg"
-weburl="https://go.microsoft.com/fwlink/?linkid=854187"   # This is where the script starts querying for the latest Office install files from CDN
-localcopy="http://192.168.68.150/MAU/OfficeBusinessPro.pkg"   # This is your local copy of the OfficeBusinessPro.pkg file. You need to handle this independently
+weburl="https://go.microsoft.com/fwlink/?linkid=2009112"
+localcopy="http://192.168.68.150/OfficeforMac/OfficeBusinessPro.pkg"   # This is your local copy of the OfficeBusinessPro.pkg file. You need to handle this independently
 appname="Office Business Pro for Mac"
-log="/var/log/installofficebusinesspro.log"
+logandmetadir="/Library/Intune/Scripts/installOfficeBusinessPro"
+log="$logandmetadir/installmee.log"
+
+## Check if the log directory has been created
+if [ -d $logandmetadir ]; then
+    ## Already created
+    echo "# $(date) | Log directory already exists - $logandmetadir"
+else
+    ## Creating Metadirectory
+    echo "# $(date) | creating log directory - $logandmetadir"
+    mkdir -p $logandmetadir
+fi
 
 # start logging
 
@@ -54,28 +65,8 @@ else
 
     echo "$(date) | Couldn't find local copy of $appname, need to fetch from CDN"
 
-    echo "$(date) | Downloading Manifest"
-    curl -L -o $tempdir/officemanifest.xml $weburl
-
-    if [ $? == 0 ]; then
-         echo "$(date) | Success"
-    else
-         echo "$(date) | Failure"
-         exit 3
-    fi
-
-    echo "$(date) | Determining $appname CDN url"
-    url="$(echo "cat /plist[@version="1.0"]//array[1]/dict[1]/string[2]/text()[1]" | xmllint --nocdata --shell $tempdir/officemanifest.xml | sed '1d;$d')"
-
-    if [ $? == 0 ]; then
-         echo "$(date) | Success"
-    else
-         echo "$(date) | Failure"
-         exit 4
-    fi
-
     echo "$(date) | Downloading $appname from CDN"
-    curl -L -o $tempfile $url
+    curl -L -o $tempfile $weburl
 
     if [ $? == 0 ]; then
          echo "$(date) | Success"
@@ -98,4 +89,3 @@ fi
 
 echo "$(date) | Removing tmp files"
 rm -rf $tempfile
-rm -rf $tempdir/officemanifest.xml
