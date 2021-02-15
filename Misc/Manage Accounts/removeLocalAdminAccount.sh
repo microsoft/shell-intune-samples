@@ -24,8 +24,8 @@
 
 # Define variables
 
-adminaccountname="localadmin"
-adminaccountfullname="Local Admin"
+adminaccountname="localadmin"       # This is the accountname of the new admin
+adminaccountfullname="Local Admin"  # This is the full name of the new admin user
 scriptname="Remove Local Admin Account"
 logandmetadir="/Library/Intune/Scripts/removeLocalAdminUser"
 log="$logandmetadir/removeLocalAdminUser.log"
@@ -39,7 +39,6 @@ else
     echo "# $(date) | creating log directory - $logandmetadir"
     mkdir -p $logandmetadir
 fi
-
 
 # start logging
 

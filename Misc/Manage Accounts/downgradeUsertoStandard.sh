@@ -29,8 +29,7 @@
 scriptname="Downgrade Admin Users to Standard"
 log="/var/log/downgradeadminusers.log"
 abmcheck=true   # Only downgrade users if this device is ABM managed
-downgrade=true
-
+downgrade=true  # If set to false, script will not do anything
 logandmetadir="/Library/Intune/Scripts/downgradeAdminUsers"
 log="$logandmetadir/downgradeAdminUsers.log"
 
