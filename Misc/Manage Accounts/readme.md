@@ -76,3 +76,11 @@ adminaccountfullname="Local Admin"  # This is the full name of the new admin use
 ### serialToAdminPassword.sh - Generates password based on cipher
 
 This is an example script to take a device serial and recalculate the temporary admin password for that device. It is not intended for deployment via Intune and would be run by IT Admin when trying to login to the Mac locally.
+
+Example:
+
+```
+% ./serialToAdminPassword.sh
+Enter device serial number :ABCD1234
+Password: S0xNTjU2NzgK
+```
