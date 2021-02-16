@@ -32,6 +32,215 @@ sudo /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/microsoft/shel
 - Script frequency : Not Configured
 - Number of times to retry if script fails : 3
 
+## installOfficeSuiteIndividualApps.sh
+
+This scripts intended usage scenario is to install the individual apps within Office Business Pro for Mac. It has a defined array of apps that you want to install and the script will download and install only those apps.
+
+The array definition is as follows. The values in the array come from the [XML File published by the Office Team](https://macadmins.software/latest.xml). The script will parse the XML for the 'id' value specified in the array and then attempt to download the URL found for that package.
+
+the intent of this script is to provide control over which apps get deployed.
+
+```
+AppsToInstall=(   "com.microsoft.word.standalone.365"
+                  "com.microsoft.excel.standalone.365"
+                  "com.microsoft.powerpoint.standalone.365"
+                  "com.microsoft.outlook.standalone.365"
+                  "com.microsoft.onenote.standalone.365"
+                  "com.microsoft.onedrive.standalone"
+                  "com.microsoft.skypeforbusiness.standalone"
+                  "com.microsoft.teams.standalone"
+                  )
+```
+### Log File
+
+The log file will output to ***/Library/Intune/Scripts/installOfficeSuiteIndividual/installOfficeSuiteIndividual.log*** by default. Exit status is either 0 or 1. To gather this log with Intune remotely take a look at  [Troubleshoot macOS shell script policies using log collection](https://docs.microsoft.com/en-us/mem/intune/apps/macos-shell-scripts#troubleshoot-macos-shell-script-policies-using-log-collection)
+
+```
+Tue 16 Feb 2021 21:20:57 GMT
+Tue 16 Feb 2021 21:20:57 GMT ##############################################################
+Tue 16 Feb 2021 21:20:57 GMT | Starting Individual Office App Installs [8] found
+Tue 16 Feb 2021 21:20:57 GMT ############################################################
+Tue 16 Feb 2021 21:20:57 GMT
+Tue 16 Feb 2021 21:20:57 GMT | Downloading latest XML file from [https://macadmins.software/latest.xml]
+Tue 16 Feb 2021 21:20:57 GMT | Successfully downloaded [https://macadmins.software/latest.xml] to [/tmp/latest.xml]
+Tue 16 Feb 2021 21:20:57 GMT | Looking for download URL for com.microsoft.word.standalone.365
+Tue 16 Feb 2021 21:20:57 GMT | Successfully parsed xml file [/tmp/latest.xml] for [com.microsoft.word.standalone.365] -> [https://go.microsoft.com/fwlink/?linkid=525134]
+Tue 16 Feb 2021 21:20:57 GMT
+Tue 16 Feb 2021 21:20:57 GMT ##############################################################
+Tue 16 Feb 2021 21:20:57 GMT | [1 / 8] Starting install of Word 365/2019 Standalone Installer
+Tue 16 Feb 2021 21:20:57 GMT ############################################################
+Tue 16 Feb 2021 21:20:57 GMT
+Tue 16 Feb 2021 21:20:57 GMT | AppName = Word 365/2019 Standalone Installer
+Tue 16 Feb 2021 21:20:57 GMT | AppUrl = https://go.microsoft.com/fwlink/?linkid=525134
+Tue 16 Feb 2021 21:20:57 GMT | MinOSVer = 10.14
+Tue 16 Feb 2021 21:20:57 GMT | Local Temp file = /tmp/com.microsoft.word.standalone.365.pkg
+Tue 16 Feb 2021 21:20:57 GMT | Attempting to download [https://go.microsoft.com/fwlink/?linkid=525134] to /tmp/com.microsoft.word.standalone.365.pkg
+Tue 16 Feb 2021 21:20:57 GMT | Successfully downloaded from [https://go.microsoft.com/fwlink/?linkid=525134] to [/tmp/com.microsoft.word.standalone.365.pkg]
+Tue 16 Feb 2021 21:20:57 GMT | Attempting to install [Word 365/2019 Standalone Installer] from /tmp/com.microsoft.word.standalone.365.pkg
+Tue 16 Feb 2021 21:20:57 GMT | Successfully installed [Word 365/2019 Standalone Installer] from [/tmp/com.microsoft.word.standalone.365.pkg]
+Tue 16 Feb 2021 21:20:57 GMT | Cleaning up tmp file [/tmp/com.microsoft.word.standalone.365.pkg]
+Tue 16 Feb 2021 21:20:57 GMT
+Tue 16 Feb 2021 21:20:57 GMT ##############################################################
+Tue 16 Feb 2021 21:20:57 GMT | End of Word 365/2019 Standalone Installer install
+Tue 16 Feb 2021 21:20:57 GMT ############################################################
+Tue 16 Feb 2021 21:20:57 GMT
+Tue 16 Feb 2021 21:20:57 GMT | Looking for download URL for com.microsoft.excel.standalone.365
+Tue 16 Feb 2021 21:20:57 GMT | Successfully parsed xml file [/tmp/latest.xml] for [com.microsoft.excel.standalone.365] -> [https://go.microsoft.com/fwlink/?linkid=525135]
+Tue 16 Feb 2021 21:20:57 GMT
+Tue 16 Feb 2021 21:20:57 GMT ##############################################################
+Tue 16 Feb 2021 21:20:57 GMT | [2 / 8] Starting install of Excel 365/2019 Standalone Installer
+Tue 16 Feb 2021 21:20:57 GMT ############################################################
+Tue 16 Feb 2021 21:20:57 GMT
+Tue 16 Feb 2021 21:20:57 GMT | AppName = Excel 365/2019 Standalone Installer
+Tue 16 Feb 2021 21:20:57 GMT | AppUrl = https://go.microsoft.com/fwlink/?linkid=525135
+Tue 16 Feb 2021 21:20:57 GMT | MinOSVer = 10.14
+Tue 16 Feb 2021 21:20:57 GMT | Local Temp file = /tmp/com.microsoft.excel.standalone.365.pkg
+Tue 16 Feb 2021 21:20:57 GMT | Attempting to download [https://go.microsoft.com/fwlink/?linkid=525135] to /tmp/com.microsoft.excel.standalone.365.pkg
+Tue 16 Feb 2021 21:20:57 GMT | Successfully downloaded from [https://go.microsoft.com/fwlink/?linkid=525135] to [/tmp/com.microsoft.excel.standalone.365.pkg]
+Tue 16 Feb 2021 21:20:57 GMT | Attempting to install [Excel 365/2019 Standalone Installer] from /tmp/com.microsoft.excel.standalone.365.pkg
+Tue 16 Feb 2021 21:20:57 GMT | Successfully installed [Excel 365/2019 Standalone Installer] from [/tmp/com.microsoft.excel.standalone.365.pkg]
+Tue 16 Feb 2021 21:20:57 GMT | Cleaning up tmp file [/tmp/com.microsoft.excel.standalone.365.pkg]
+Tue 16 Feb 2021 21:20:57 GMT
+Tue 16 Feb 2021 21:20:57 GMT ##############################################################
+Tue 16 Feb 2021 21:20:57 GMT | End of Excel 365/2019 Standalone Installer install
+Tue 16 Feb 2021 21:20:57 GMT ############################################################
+Tue 16 Feb 2021 21:20:57 GMT
+Tue 16 Feb 2021 21:20:57 GMT | Looking for download URL for com.microsoft.powerpoint.standalone.365
+Tue 16 Feb 2021 21:20:57 GMT | Successfully parsed xml file [/tmp/latest.xml] for [com.microsoft.powerpoint.standalone.365] -> [https://go.microsoft.com/fwlink/?linkid=525136]
+Tue 16 Feb 2021 21:20:57 GMT
+Tue 16 Feb 2021 21:20:57 GMT ##############################################################
+Tue 16 Feb 2021 21:20:57 GMT | [3 / 8] Starting install of PowerPoint 365/2019 Standalone Installer
+Tue 16 Feb 2021 21:20:57 GMT ############################################################
+Tue 16 Feb 2021 21:20:57 GMT
+Tue 16 Feb 2021 21:20:57 GMT | AppName = PowerPoint 365/2019 Standalone Installer
+Tue 16 Feb 2021 21:20:57 GMT | AppUrl = https://go.microsoft.com/fwlink/?linkid=525136
+Tue 16 Feb 2021 21:20:57 GMT | MinOSVer = 10.14
+Tue 16 Feb 2021 21:20:57 GMT | Local Temp file = /tmp/com.microsoft.powerpoint.standalone.365.pkg
+Tue 16 Feb 2021 21:20:57 GMT | Attempting to download [https://go.microsoft.com/fwlink/?linkid=525136] to /tmp/com.microsoft.powerpoint.standalone.365.pkg
+Tue 16 Feb 2021 21:20:57 GMT | Successfully downloaded from [https://go.microsoft.com/fwlink/?linkid=525136] to [/tmp/com.microsoft.powerpoint.standalone.365.pkg]
+Tue 16 Feb 2021 21:20:57 GMT | Attempting to install [PowerPoint 365/2019 Standalone Installer] from /tmp/com.microsoft.powerpoint.standalone.365.pkg
+Tue 16 Feb 2021 21:20:57 GMT | Successfully installed [PowerPoint 365/2019 Standalone Installer] from [/tmp/com.microsoft.powerpoint.standalone.365.pkg]
+Tue 16 Feb 2021 21:20:57 GMT | Cleaning up tmp file [/tmp/com.microsoft.powerpoint.standalone.365.pkg]
+Tue 16 Feb 2021 21:20:57 GMT
+Tue 16 Feb 2021 21:20:57 GMT ##############################################################
+Tue 16 Feb 2021 21:20:57 GMT | End of PowerPoint 365/2019 Standalone Installer install
+Tue 16 Feb 2021 21:20:57 GMT ############################################################
+Tue 16 Feb 2021 21:20:57 GMT
+Tue 16 Feb 2021 21:20:57 GMT | Looking for download URL for com.microsoft.outlook.standalone.365
+Tue 16 Feb 2021 21:20:57 GMT | Successfully parsed xml file [/tmp/latest.xml] for [com.microsoft.outlook.standalone.365] -> [https://go.microsoft.com/fwlink/?linkid=525137]
+Tue 16 Feb 2021 21:20:57 GMT
+Tue 16 Feb 2021 21:20:57 GMT ##############################################################
+Tue 16 Feb 2021 21:20:57 GMT | [4 / 8] Starting install of Outlook 365/2019 Standalone Installer
+Tue 16 Feb 2021 21:20:57 GMT ############################################################
+Tue 16 Feb 2021 21:20:57 GMT
+Tue 16 Feb 2021 21:20:57 GMT | AppName = Outlook 365/2019 Standalone Installer
+Tue 16 Feb 2021 21:20:57 GMT | AppUrl = https://go.microsoft.com/fwlink/?linkid=525137
+Tue 16 Feb 2021 21:20:57 GMT | MinOSVer = 10.14
+Tue 16 Feb 2021 21:20:57 GMT | Local Temp file = /tmp/com.microsoft.outlook.standalone.365.pkg
+Tue 16 Feb 2021 21:20:57 GMT | Attempting to download [https://go.microsoft.com/fwlink/?linkid=525137] to /tmp/com.microsoft.outlook.standalone.365.pkg
+Tue 16 Feb 2021 21:20:57 GMT | Successfully downloaded from [https://go.microsoft.com/fwlink/?linkid=525137] to [/tmp/com.microsoft.outlook.standalone.365.pkg]
+Tue 16 Feb 2021 21:20:57 GMT | Attempting to install [Outlook 365/2019 Standalone Installer] from /tmp/com.microsoft.outlook.standalone.365.pkg
+Tue 16 Feb 2021 21:20:57 GMT | Successfully installed [Outlook 365/2019 Standalone Installer] from [/tmp/com.microsoft.outlook.standalone.365.pkg]
+Tue 16 Feb 2021 21:20:57 GMT | Cleaning up tmp file [/tmp/com.microsoft.outlook.standalone.365.pkg]
+Tue 16 Feb 2021 21:20:57 GMT
+Tue 16 Feb 2021 21:20:57 GMT ##############################################################
+Tue 16 Feb 2021 21:20:57 GMT | End of Outlook 365/2019 Standalone Installer install
+Tue 16 Feb 2021 21:20:57 GMT ############################################################
+Tue 16 Feb 2021 21:20:57 GMT
+Tue 16 Feb 2021 21:20:57 GMT | Looking for download URL for com.microsoft.onenote.standalone.365
+Tue 16 Feb 2021 21:20:57 GMT | Successfully parsed xml file [/tmp/latest.xml] for [com.microsoft.onenote.standalone.365] -> [https://go.microsoft.com/fwlink/?linkid=820886]
+Tue 16 Feb 2021 21:20:57 GMT
+Tue 16 Feb 2021 21:20:57 GMT ##############################################################
+Tue 16 Feb 2021 21:20:57 GMT | [5 / 8] Starting install of OneNote Free Standalone Updater
+Tue 16 Feb 2021 21:20:57 GMT ############################################################
+Tue 16 Feb 2021 21:20:57 GMT
+Tue 16 Feb 2021 21:20:57 GMT | AppName = OneNote Free Standalone Updater
+Tue 16 Feb 2021 21:20:57 GMT | AppUrl = https://go.microsoft.com/fwlink/?linkid=820886
+Tue 16 Feb 2021 21:20:57 GMT | MinOSVer = 10.14
+Tue 16 Feb 2021 21:20:57 GMT | Local Temp file = /tmp/com.microsoft.onenote.standalone.365.pkg
+Tue 16 Feb 2021 21:20:57 GMT | Attempting to download [https://go.microsoft.com/fwlink/?linkid=820886] to /tmp/com.microsoft.onenote.standalone.365.pkg
+Tue 16 Feb 2021 21:20:57 GMT | Successfully downloaded from [https://go.microsoft.com/fwlink/?linkid=820886] to [/tmp/com.microsoft.onenote.standalone.365.pkg]
+Tue 16 Feb 2021 21:20:57 GMT | Attempting to install [OneNote Free Standalone Updater] from /tmp/com.microsoft.onenote.standalone.365.pkg
+Tue 16 Feb 2021 21:20:57 GMT | Successfully installed [OneNote Free Standalone Updater] from [/tmp/com.microsoft.onenote.standalone.365.pkg]
+Tue 16 Feb 2021 21:20:57 GMT | Cleaning up tmp file [/tmp/com.microsoft.onenote.standalone.365.pkg]
+Tue 16 Feb 2021 21:20:57 GMT
+Tue 16 Feb 2021 21:20:57 GMT ##############################################################
+Tue 16 Feb 2021 21:20:57 GMT | End of OneNote Free Standalone Updater install
+Tue 16 Feb 2021 21:20:57 GMT ############################################################
+Tue 16 Feb 2021 21:20:57 GMT
+Tue 16 Feb 2021 21:20:57 GMT | Looking for download URL for com.microsoft.onedrive.standalone
+Tue 16 Feb 2021 21:20:57 GMT | Successfully parsed xml file [/tmp/latest.xml] for [com.microsoft.onedrive.standalone] -> [https://go.microsoft.com/fwlink/?linkid=823060]
+Tue 16 Feb 2021 21:20:57 GMT
+Tue 16 Feb 2021 21:20:57 GMT ##############################################################
+Tue 16 Feb 2021 21:20:57 GMT | [6 / 8] Starting install of OneDrive Standalone Installer
+Tue 16 Feb 2021 21:20:57 GMT ############################################################
+Tue 16 Feb 2021 21:20:57 GMT
+Tue 16 Feb 2021 21:20:57 GMT | AppName = OneDrive Standalone Installer
+Tue 16 Feb 2021 21:20:57 GMT | AppUrl = https://go.microsoft.com/fwlink/?linkid=823060
+Tue 16 Feb 2021 21:20:57 GMT | MinOSVer = 10.12
+Tue 16 Feb 2021 21:20:57 GMT | Local Temp file = /tmp/com.microsoft.onedrive.standalone.pkg
+Tue 16 Feb 2021 21:20:57 GMT | Attempting to download [https://go.microsoft.com/fwlink/?linkid=823060] to /tmp/com.microsoft.onedrive.standalone.pkg
+Tue 16 Feb 2021 21:20:57 GMT | Successfully downloaded from [https://go.microsoft.com/fwlink/?linkid=823060] to [/tmp/com.microsoft.onedrive.standalone.pkg]
+Tue 16 Feb 2021 21:20:57 GMT | Attempting to install [OneDrive Standalone Installer] from /tmp/com.microsoft.onedrive.standalone.pkg
+Tue 16 Feb 2021 21:20:57 GMT | Successfully installed [OneDrive Standalone Installer] from [/tmp/com.microsoft.onedrive.standalone.pkg]
+Tue 16 Feb 2021 21:20:57 GMT | Cleaning up tmp file [/tmp/com.microsoft.onedrive.standalone.pkg]
+Tue 16 Feb 2021 21:20:57 GMT
+Tue 16 Feb 2021 21:20:57 GMT ##############################################################
+Tue 16 Feb 2021 21:20:57 GMT | End of OneDrive Standalone Installer install
+Tue 16 Feb 2021 21:20:57 GMT ############################################################
+Tue 16 Feb 2021 21:20:57 GMT
+Tue 16 Feb 2021 21:20:57 GMT | Looking for download URL for com.microsoft.skypeforbusiness.standalone
+Tue 16 Feb 2021 21:20:57 GMT | Successfully parsed xml file [/tmp/latest.xml] for [com.microsoft.skypeforbusiness.standalone] -> [https://go.microsoft.com/fwlink/?linkid=832978]
+Tue 16 Feb 2021 21:20:57 GMT
+Tue 16 Feb 2021 21:20:57 GMT ##############################################################
+Tue 16 Feb 2021 21:20:57 GMT | [7 / 8] Starting install of Skype for Business Standalone Installer
+Tue 16 Feb 2021 21:20:57 GMT ############################################################
+Tue 16 Feb 2021 21:20:57 GMT
+Tue 16 Feb 2021 21:20:57 GMT | AppName = Skype for Business Standalone Installer
+Tue 16 Feb 2021 21:20:57 GMT | AppUrl = https://go.microsoft.com/fwlink/?linkid=832978
+Tue 16 Feb 2021 21:20:57 GMT | MinOSVer = 10.11
+Tue 16 Feb 2021 21:20:57 GMT | Local Temp file = /tmp/com.microsoft.skypeforbusiness.standalone.pkg
+Tue 16 Feb 2021 21:20:57 GMT | Attempting to download [https://go.microsoft.com/fwlink/?linkid=832978] to /tmp/com.microsoft.skypeforbusiness.standalone.pkg
+Tue 16 Feb 2021 21:20:57 GMT | Successfully downloaded from [https://go.microsoft.com/fwlink/?linkid=832978] to [/tmp/com.microsoft.skypeforbusiness.standalone.pkg]
+Tue 16 Feb 2021 21:20:57 GMT | Attempting to install [Skype for Business Standalone Installer] from /tmp/com.microsoft.skypeforbusiness.standalone.pkg
+Tue 16 Feb 2021 21:20:57 GMT | Successfully installed [Skype for Business Standalone Installer] from [/tmp/com.microsoft.skypeforbusiness.standalone.pkg]
+Tue 16 Feb 2021 21:20:57 GMT | Cleaning up tmp file [/tmp/com.microsoft.skypeforbusiness.standalone.pkg]
+Tue 16 Feb 2021 21:20:57 GMT
+Tue 16 Feb 2021 21:20:57 GMT ##############################################################
+Tue 16 Feb 2021 21:20:57 GMT | End of Skype for Business Standalone Installer install
+Tue 16 Feb 2021 21:20:57 GMT ############################################################
+Tue 16 Feb 2021 21:20:57 GMT
+Tue 16 Feb 2021 21:20:57 GMT | Looking for download URL for com.microsoft.teams.standalone
+Tue 16 Feb 2021 21:20:57 GMT | Successfully parsed xml file [/tmp/latest.xml] for [com.microsoft.teams.standalone] -> [https://go.microsoft.com/fwlink/?linkid=869428]
+Tue 16 Feb 2021 21:20:57 GMT
+Tue 16 Feb 2021 21:20:57 GMT ##############################################################
+Tue 16 Feb 2021 21:20:57 GMT | [8 / 8] Starting install of Teams Standalone Installer
+Tue 16 Feb 2021 21:20:57 GMT ############################################################
+Tue 16 Feb 2021 21:20:57 GMT
+Tue 16 Feb 2021 21:20:57 GMT | AppName = Teams Standalone Installer
+Tue 16 Feb 2021 21:20:57 GMT | AppUrl = https://go.microsoft.com/fwlink/?linkid=869428
+Tue 16 Feb 2021 21:20:57 GMT | MinOSVer = 10.11
+Tue 16 Feb 2021 21:20:57 GMT | Local Temp file = /tmp/com.microsoft.teams.standalone.pkg
+Tue 16 Feb 2021 21:20:57 GMT | Attempting to download [https://go.microsoft.com/fwlink/?linkid=869428] to /tmp/com.microsoft.teams.standalone.pkg
+Tue 16 Feb 2021 21:20:57 GMT | Successfully downloaded from [https://go.microsoft.com/fwlink/?linkid=869428] to [/tmp/com.microsoft.teams.standalone.pkg]
+Tue 16 Feb 2021 21:20:57 GMT | Attempting to install [Teams Standalone Installer] from /tmp/com.microsoft.teams.standalone.pkg
+Tue 16 Feb 2021 21:20:57 GMT | Successfully installed [Teams Standalone Installer] from [/tmp/com.microsoft.teams.standalone.pkg]
+Tue 16 Feb 2021 21:20:57 GMT | Cleaning up tmp file [/tmp/com.microsoft.teams.standalone.pkg]
+Tue 16 Feb 2021 21:20:57 GMT
+Tue 16 Feb 2021 21:20:57 GMT ##############################################################
+Tue 16 Feb 2021 21:20:57 GMT | End of Teams Standalone Installer install
+Tue 16 Feb 2021 21:20:57 GMT ############################################################
+Tue 16 Feb 2021 21:20:57 GMT
+Tue 16 Feb 2021 21:20:57 GMT | Cleaning up tmp file [/tmp/latest.xml]
+```
+
+### Script Settings
+
+- Run script as signed-in user : No
+- Hide script notifications on devices : Yes
+- Script frequency : Not Configured
+- Number of times to retry if script fails : 3
+
 ## uninstallOfficeBusinessPro.sh
 
 This script is designed to remove Office Business Pro for Mac. It is meant for the following scenarios:
