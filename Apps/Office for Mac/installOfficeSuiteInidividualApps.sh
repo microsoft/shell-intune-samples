@@ -62,7 +62,7 @@ echo "$(date) ############################################################"
 echo "$(date) "
 
 echo "$(date) | Downloading latest XML file from [$SourceXML]"
-#curl -s --connect-timeout 30 --retry 300 --retry-delay 60 -L -o /tmp/latest.xml $SourceXML
+curl -s --connect-timeout 30 --retry 300 --retry-delay 60 -L -o /tmp/latest.xml $SourceXML
 if [ $? == 0 ]; then
      echo "$(date) | Successfully downloaded [$SourceXML] to [/tmp/latest.xml]"
 else
@@ -99,7 +99,7 @@ do
    echo "$(date) | Local Temp file = $localtmpfile"
 
    echo "$(date) | Attempting to download [$url] to $localtmpfile"
-   #curl  -s --connect-timeout 30 --retry 300 --retry-delay 60 -L -o $localtmpfile $url
+   curl  -s --connect-timeout 30 --retry 300 --retry-delay 60 -L -o $localtmpfile $url
    if [ $? == 0 ]; then
         echo "$(date) | Successfully downloaded from [$url] to [$localtmpfile]"
    else
@@ -108,7 +108,7 @@ do
    fi
 
    echo "$(date) | Attempting to install [$title] from $localtmpfile"
-   #installer -pkg $localtmpfile -target /Applications
+   installer -pkg $localtmpfile -target /Applications
    if [ $? == 0 ]; then
         echo "$(date) | Successfully installed [$title] from [$localtmpfile]"
    else
