@@ -56,7 +56,7 @@ echo "$(date) | logged in user is" $consoleuser
 #
 # Check to see if we can access our local copy of Office
 #
-curl -L -f -o $tempfile $localcopy
+curl -s --connect-timeout 30 --retry 300 --retry-delay 60 -L -o $tempfile $localcopy
 if [ $? == 0 ]; then
 
      echo "$(date) | Local copy of $appname downloaded at $tempfile"
@@ -64,15 +64,18 @@ if [ $? == 0 ]; then
 else
 
     echo "$(date) | Couldn't find local copy of $appname, need to fetch from CDN"
-
     echo "$(date) | Downloading $appname from CDN"
-    curl -L -o $tempfile $weburl
 
+    curl -s --connect-timeout 30 --retry 300 --retry-delay 60 -L -o $tempfile $weburl
     if [ $? == 0 ]; then
+
          echo "$(date) | Success"
+    
     else
+    
          echo "$(date) | Failure"
          exit 5
+    
     fi
 
 fi
