@@ -20,14 +20,8 @@
 
 # Define variables
 ##############################
-tempdir="/tmp"
-weburl="https://go.microsoft.com/fwlink/?linkid=854187"
-
-echo "$(date) | Downloading Manifest"
-curl -L -o $tempdir/officemanifest.xml $weburl
-
-echo "$(date) | Determining CDN url"
-url="$(echo "cat /plist[@version="1.0"]//array[1]/dict[1]/string[2]/text()[1]" | xmllint --nocdata --shell $tempdir/officemanifest.xml | sed '1d;$d')"
+weburl="https://go.microsoft.com/fwlink/?linkid=2009112"
+localcopy="/Library/WebServer/Documents/OfficeBusinessPro.pkg"
 
 echo "$(date) | Downloading Office from CDN"
-curl -L -o /Library/WebServer/Documents/OfficeBusinessPro.pkg $url
+curl -s --connect-timeout 30 --retry 300 --retry-delay 60 -L -o $localcopy $weburl
