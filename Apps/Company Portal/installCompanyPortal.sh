@@ -1,5 +1,5 @@
 #!/bin/bash
-#set -x
+set -x
 
 ############################################################################################
 ##
@@ -26,7 +26,7 @@ log="/var/log/installcp.log"
 
 # start logging
 
-exec 1>> $log 2>&1
+#exec 1>> $log 2>&1
 
 # Begin Script Body
 
