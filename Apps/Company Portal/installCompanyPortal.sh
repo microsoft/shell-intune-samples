@@ -39,13 +39,13 @@ echo ""
 # Let's check to see if we need Rosetta 2
 if [[ -n "$processor" ]]; then
     echo "$(date) | $processor processor installed. No need to install Rosetta."
-  else
+else
 
     # Check Rosetta LaunchDaemon. If no LaunchDaemon is found,
     # perform a non-interactive install of Rosetta.
     
     if [[ ! -f "/Library/Apple/System/Library/LaunchDaemons/com.apple.oahd.plist" ]]; then
-        /usr/sbin/softwareupdate –install-rosetta –agree-to-license
+        /usr/sbin/softwareupdate --install-rosetta –-agree-to-license
        
         if [[ $? -eq 0 ]]; then
         	echo "$(date) | Rosetta has been successfully installed."
