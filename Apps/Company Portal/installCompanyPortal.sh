@@ -1,5 +1,5 @@
 #!/bin/bash
-set -x
+#set -x
 
 ############################################################################################
 ##
@@ -26,7 +26,7 @@ log="/var/log/installcp.log"
 
 # start logging
 
-#exec 1>> $log 2>&1
+exec 1>> $log 2>&1
 
 # Begin Script Body
 
@@ -45,7 +45,7 @@ else
     # perform a non-interactive install of Rosetta.
     
     if [[ ! -f "/Library/Apple/System/Library/LaunchDaemons/com.apple.oahd.plist" ]]; then
-        /usr/sbin/softwareupdate --install-rosetta –-agree-to-license
+        /usr/sbin/softwareupdate --install-rosetta --agree-to-license
        
         if [[ $? -eq 0 ]]; then
         	echo "$(date) | Rosetta has been successfully installed."
