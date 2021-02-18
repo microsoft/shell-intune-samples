@@ -57,7 +57,7 @@ if [[ -n "$processor" ]]; then
     else
     	echo "$(date) | Rosetta is already installed. Nothing to do."
     fi
-
+fi
 # Let's download the files we need and attempt to install...
 
 echo "$(date) | Downloading $appname"
