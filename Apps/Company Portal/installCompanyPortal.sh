@@ -37,6 +37,7 @@ echo "############################################################"
 echo ""
 
 # Let's check to see if we need Rosetta 2
+processor=$(/usr/sbin/sysctl -n machdep.cpu.brand_string | grep -o "Intel")
 if [[ -n "$processor" ]]; then
     echo "$(date) | $processor processor installed. No need to install Rosetta."
 else
