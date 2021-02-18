@@ -36,10 +36,32 @@ echo "# $(date) | Starting install of $appname"
 echo "############################################################"
 echo ""
 
+# Let's check to see if we need Rosetta 2
+if [[ -n "$processor" ]]; then
+    echo "$(date) | $processor processor installed. No need to install Rosetta."
+  else
+
+    # Check Rosetta LaunchDaemon. If no LaunchDaemon is found,
+    # perform a non-interactive install of Rosetta.
+    
+    if [[ ! -f "/Library/Apple/System/Library/LaunchDaemons/com.apple.oahd.plist" ]]; then
+        /usr/sbin/softwareupdate –install-rosetta –agree-to-license
+       
+        if [[ $? -eq 0 ]]; then
+        	echo "$(date) | Rosetta has been successfully installed."
+        else
+        	echo "$(date) | Rosetta installation failed!"
+        	exit 1
+        fi
+   
+    else
+    	echo "$(date) | Rosetta is already installed. Nothing to do."
+    fi
+
 # Let's download the files we need and attempt to install...
 
 echo "$(date) | Downloading $appname"
-curl -L -f -o $tempfile $weburl
+curl -s --connect-timeout 30 --retry 300 --retry-delay 60 -L -o $tempfile $weburl
 
 echo "$(date) | Installing $appname"
 installer -dumplog -pkg $tempfile -target /Applications
