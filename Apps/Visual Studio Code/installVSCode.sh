@@ -24,6 +24,14 @@ weburl="https://go.microsoft.com/fwlink/?LinkID=620882"
 appname="Visual Studio Code"
 log="/var/log/installvscode.log"
 
+waitForCurl () {
+while ps aux | grep curl | grep -v grep; do
+echo "$(date) | Another instance of Curl is running, waiting 60s for it to complete"
+sleep 60
+done
+echo "$(date) | No Curl's running, let's start our download"
+}
+
 # start logging
 
 exec 1>> $log 2>&1
@@ -37,6 +45,7 @@ echo "############################################################"
 echo ""
 
 echo "$(date) | Downloading $appname"
+waitForCurl
 curl -L -f -o $tempfile $weburl
 
 cd /tmp

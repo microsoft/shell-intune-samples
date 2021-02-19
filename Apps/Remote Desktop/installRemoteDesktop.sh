@@ -24,6 +24,14 @@ weburl="https://go.microsoft.com/fwlink/?linkid=868963"
 appname="Microsoft Remote Desktop"
 log="/var/log/remotedesktop.log"
 
+waitForInstaller () {
+while ps aux | grep /System/Library/CoreServices/Installer.app/Contents/MacOS/Installer | grep -v grep; do
+echo "$(date) | Another installer is running, waiting 60s for it to complete"
+sleep 60
+done
+echo "$(date) | Installer not running, safe to start installing"
+}
+
 # start logging
 
 exec 1>> $log 2>&1
@@ -41,6 +49,7 @@ echo ""
 echo "$(date) | Downloading $appname"
 curl -L -f -o $tempfile $weburl
 
+waitForInstaller
 echo "$(date) | Installing $appname"
 installer -dumplog -pkg $tempfile -target /Applications
 if [ "$?" = "0" ]; then

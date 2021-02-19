@@ -24,15 +24,14 @@ SourceXML="https://macadmins.software/latest.xml"
 
 # Edit AppstoInstall array with "id" values from https://macadmins.software/latest.xml for the apps you want to install
 # Note: This script only handles installation of pkg files, DMG and ZIP files will NOT work.
-AppsToInstall=(   "com.microsoft.word.standalone.365"
-                  "com.microsoft.excel.standalone.365"
-                  "com.microsoft.powerpoint.standalone.365"
-                  "com.microsoft.outlook.standalone.365"
-                  "com.microsoft.onenote.standalone.365"
-                  "com.microsoft.onedrive.standalone"
-                  "com.microsoft.skypeforbusiness.standalone"
-                  "com.microsoft.teams.standalone"
-                  )
+AppsToInstall=(     "com.microsoft.outlook.standalone.365"
+                    "com.microsoft.word.standalone.365"
+                    "com.microsoft.excel.standalone.365"
+                    "com.microsoft.powerpoint.standalone.365"
+                    "com.microsoft.onenote.standalone.365"
+                    "com.microsoft.onedrive.standalone"
+                    "com.microsoft.teams.standalone"
+               )
 
 TotalAppsToInstall=${#AppsToInstall[*]}
 
@@ -45,6 +44,22 @@ else
     echo "$(date) | creating log directory - $logandmetadir"
     mkdir -p $logandmetadir
 fi
+
+waitForInstaller () {
+while ps aux | grep /System/Library/CoreServices/Installer.app/Contents/MacOS/Installer | grep -v grep; do
+echo "$(date) | Another installer is running, waiting 60s for it to complete"
+sleep 60
+done
+echo "$(date) | Installer not running, safe to start installing"
+}
+
+waitForCurl () {
+while ps aux | grep curl | grep -v grep; do
+echo "$(date) | Another instance of Curl is running, waiting 60s for it to complete"
+sleep 60
+done
+echo "$(date) | No Curl's running, let's start our download"
+}
 
 # start logging
 exec 1>> $log 2>&1
@@ -98,6 +113,7 @@ do
    echo "$(date) | MinOSVer = $minosver"
    echo "$(date) | Local Temp file = $localtmpfile"
 
+   waitForCurl
    echo "$(date) | Attempting to download [$url] to $localtmpfile"
    curl  -s --connect-timeout 30 --retry 300 --retry-delay 60 -L -o $localtmpfile $url
    if [ $? == 0 ]; then
@@ -107,6 +123,7 @@ do
         exit 1
    fi
 
+   waitForInstaller
    echo "$(date) | Attempting to install [$title] from $localtmpfile"
    installer -pkg $localtmpfile -target /Applications
    if [ $? == 0 ]; then

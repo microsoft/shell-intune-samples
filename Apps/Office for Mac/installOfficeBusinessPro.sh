@@ -39,6 +39,22 @@ else
     mkdir -p $logandmetadir
 fi
 
+waitForCurl () {
+while ps aux | grep curl | grep -v grep; do
+echo "$(date) | Another instance of Curl is running, waiting 60s for it to complete"
+sleep 60
+done
+echo "$(date) | No Curl's running, let's start our download"
+}
+
+waitForInstaller () {
+while ps aux | grep /System/Library/CoreServices/Installer.app/Contents/MacOS/Installer | grep -v grep; do
+echo "$(date) | Another installer is running, waiting 60s for it to complete"
+sleep 60
+done
+echo "$(date) | Installer not running, safe to start installing"
+}
+
 # start logging
 
 exec 1>> $log 2>&1
@@ -66,6 +82,7 @@ else
     echo "$(date) | Couldn't find local copy of $appname, need to fetch from CDN"
     echo "$(date) | Downloading $appname from CDN"
 
+    waitForCurl
     curl -s --connect-timeout 30 --retry 300 --retry-delay 60 -L -o $tempfile $weburl
     if [ $? == 0 ]; then
 
@@ -80,6 +97,7 @@ else
 
 fi
 
+waitForInstaller
 echo "$(date) | Installing $appname"
 installer -pkg $tempfile -target /Applications
 
