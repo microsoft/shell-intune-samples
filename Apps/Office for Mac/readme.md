@@ -270,7 +270,7 @@ This script supports installOfficeBusinessPro.sh. It is intended to run on a web
 
 ## Microsoft AutoUpdate PLIST Examples
 
-Not strictly speaking related to the Intune Scripting Agent but included here because they are part of Office deployment on Mac. These two examples are taken from the excellent documentation provided by Paul Bowden [here](https://docs.google.com/spreadsheets/d/1ESX5td0y0OP3jdzZ-C2SItm-TUi-iA_bcHCBvaoCumw/edit#gid=0).
+Not strictly speaking related to the Intune Scripting Agent but included here because they are part of Office deployment on Mac. These two examples are taken from the excellent documentation provided by Paul Bowden [here](https://docs.google.com/spreadsheets/d/1ESX5td0y0OP3jdzZ-C2SItm-TUi-iA_bcHCBvaoCumw/edit#gid=0). There is also more information about Mac Office Insiders [here](https://insider.office.com/en-gb/join/mac)
 
 These files are intended to be deployed via the [Microsoft Intune property list](https://docs.microsoft.com/en-us/mem/intune/configuration/preference-file-settings-macos) feature.
 
@@ -282,13 +282,18 @@ These files are intended to be deployed via the [Microsoft Intune property list]
 <string>http://192.168.68.150/MAU</string>
 ```
 
-### com.microsoft.autoupdate2_InsiderFast.plist
+### com.microsoft.autoupdate2_Beta.plist
 
-- This plist is intended to be deployed to your early adopter users. They will receive the [Office for Mac Insider Fast build](https://support.office.com/article/b3260859-2c1e-4f12-92a4-62a6997efb3a).
+- This plist is intended to be deployed to your very early adopter users. They will receive the [Office for Mac Insider Beta build](https://insider.office.com/en-gb/releasenotes/mac/fast).
+- It is recommended to have a static Azure AD group and add users directly for this assignment.
+
+### com.microsoft.autoupdate2_Preview.plist
+
+- This plist is intended to be deployed to your early adopter users. They will receive the [Office for Mac Insider Preview build](https://insider.office.com/en-gb/releasenotes/mac/slow).
 - It is recommended to have a static Azure AD group and add users directly for this assignment.
 
 ### com.microsoft.autoupdate2_Production.plist
 
-- This plist is intended to be deployed to your production users. They will receive the [Office for Mac Production build](https://docs.microsoft.com/en-us/officeupdates/release-notes-office-for-mac).
+- This plist is intended to be deployed to your production users. They will receive the [Office for Mac Current build](https://docs.microsoft.com/en-us/officeupdates/release-notes-office-for-mac).
 - This plist is intended to be deployed to your production users
-- It is recommended to exclude the the InsiderFast assignment group from this policy.
+- It is recommended to exclude the the Beta and Preview assignment group(s) from this policy.
