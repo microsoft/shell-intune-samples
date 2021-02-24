@@ -1,7 +1,7 @@
 <key>AcknowledgedDataCollectionPolicy</key>
 <string>RequiredAndOptionalData</string>
 <key>ChannelName</key>
-<string>Production</string>
+<string>Current</string>
 <key>UpdateCache</key>
 <string>http://192.168.68.150/MAU</string>
 <key>HowToCheck</key>
