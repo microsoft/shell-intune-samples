@@ -268,6 +268,32 @@ This script supports installOfficeBusinessPro.sh. It is intended to run on a web
 
 >This is NOT designed to be deployed via Intune. Instead you should schedule this to run via a LaunchDaemon or cron task. Zerowidth have a great [launchd plist generator](http://launched.zerowidth.com) to help with this process on macOS.
 
+## Microsoft 365 Apps for macOS Install PLIST Example
+
+When deploying the [Office 365 apps for macOS suite via Intune](https://docs.microsoft.com/en-us/mem/intune/apps/apps-add-office365-macos) it will automatically install all of the apps, including Teams. It is possible to control this by using a plist.
+
+### com.microsoft.office_installcontrols.plist
+
+
+These files are intended to be deployed via the [Microsoft Intune property list](https://docs.microsoft.com/en-us/mem/intune/configuration/preference-file-settings-macos) feature. This example plist should be modified and deployed to control which apps are installed. By changing the key bool value to false the setup package will not install those apps.
+
+```
+<key>InstallExcel</key>
+</true>
+<key>InstallOneDrive</key>
+</true>
+<key>InstallOneNote</key>
+</true>
+<key>InstallOutlook</key>
+</true>
+<key>InstallPowerPoint</key>
+</true>
+<key>InstallTeams</key>
+</true>
+<key>InstallWord</key>
+</true>
+```
+
 ## Microsoft AutoUpdate PLIST Examples
 
 Not strictly speaking related to the Intune Scripting Agent but included here because they are part of Office deployment on Mac. These two examples are taken from the excellent documentation provided by Paul Bowden [here](https://docs.google.com/spreadsheets/d/1ESX5td0y0OP3jdzZ-C2SItm-TUi-iA_bcHCBvaoCumw/edit#gid=0). There is also more information about Mac Office Insiders [here](https://insider.office.com/en-gb/join/mac)
