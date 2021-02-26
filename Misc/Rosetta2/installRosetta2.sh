@@ -58,7 +58,7 @@ else
     # OK, we need Rosetta but is it already installed?
     # Let's look for the LaunchDaemon...
     
-    if [[ ! -f "/Library/Apple/System/Library/LaunchDaemons/com.apple.oahd.plista" ]]; then
+    if [[ ! -f "/Library/Apple/System/Library/LaunchDaemons/com.apple.oahd.plist" ]]; then
 
         echo "$(date) | Rosettate2 not installed, starting install process"
         /usr/sbin/softwareupdate --install-rosetta --agree-to-license
