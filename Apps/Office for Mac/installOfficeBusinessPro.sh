@@ -24,7 +24,7 @@
 tempdir="/tmp"
 tempfile="/tmp/office.pkg"
 weburl="https://go.microsoft.com/fwlink/?linkid=2009112"
-localcopy="http://192.168.68.150/OfficeforMac/OfficeBusinessPro.pkg"   # This is your local copy of the OfficeBusinessPro.pkg file. You need to handle this independently
+localcopy="http://192.168.68.139/Office365forMac/Office365AppsFormacOS.pkg"   # This is your local copy of the OfficeBusinessPro.pkg file. You need to handle this independently
 appname="Office Business Pro for Mac"
 logandmetadir="/Library/Intune/Scripts/installOfficeBusinessPro"
 log="$logandmetadir/installmee.log"

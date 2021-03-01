@@ -21,7 +21,7 @@
 # Define variables
 ##############################
 weburl="https://go.microsoft.com/fwlink/?linkid=2009112"
-localcopy="/Library/WebServer/Documents/OfficeBusinessPro.pkg"
+localcopy="/Library/WebServer/Documents/Office365forMac/Office365AppsFormacOS.pkg"
 
 echo "$(date) | Downloading Office from CDN"
 curl -s --connect-timeout 30 --retry 300 --retry-delay 60 -L -o $localcopy $weburl
