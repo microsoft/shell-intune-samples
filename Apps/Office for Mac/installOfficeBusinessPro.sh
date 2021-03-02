@@ -3,7 +3,7 @@
 
 ############################################################################################
 ##
-## Script to install latest Microsoft Office Business Pro for Mac from CDN Servers
+## Script to install latest Microsoft Office 365 Apps for macOS from CDN Servers
 ## includes - Outlook, Word, Excel, PowerPoint, OneDrive, OneNote and Teams
 ##
 ###########################################
@@ -25,9 +25,9 @@ tempdir="/tmp"
 tempfile="/tmp/office.pkg"
 weburl="https://go.microsoft.com/fwlink/?linkid=2009112"
 localcopy="http://192.168.68.139/Office365forMac/Office365AppsFormacOS.pkg"   # This is your local copy of the OfficeBusinessPro.pkg file. You need to handle this independently
-appname="Office Business Pro for Mac"
-logandmetadir="/Library/Intune/Scripts/installOfficeBusinessPro"
-log="$logandmetadir/installmee.log"
+appname="Office 365 Apps for macOS"
+logandmetadir="/Library/Logs/Microsoft/IntuneScripts/installOffice365AppsformacOS"
+log="$logandmetadir/Office365AppsformacOS.log"
 
 ## Check if the log directory has been created
 if [ -d $logandmetadir ]; then
@@ -72,6 +72,8 @@ echo "$(date) | logged in user is" $consoleuser
 #
 # Check to see if we can access our local copy of Office
 #
+echo "$(date) | Trying local copy [$localcopy]"
+rm -rf $tempfile > /dev/null 2>&1
 curl -s --connect-timeout 30 --retry 300 --retry-delay 60 -L -o $tempfile $localcopy
 if [ $? == 0 ]; then
 
@@ -83,30 +85,29 @@ else
     echo "$(date) | Downloading $appname from CDN"
 
     waitForCurl
+    rm -rf $tempfile > /dev/null 2>&1
     curl -s --connect-timeout 30 --retry 300 --retry-delay 60 -L -o $tempfile $weburl
     if [ $? == 0 ]; then
-
-         echo "$(date) | Success"
-    
+         echo "$(date) | Downloaded $weburl to $tempfile"
     else
     
-         echo "$(date) | Failure"
-         exit 5
+         echo "$(date) | Failure to download $weburl to $tempfile"
+         exit 1
     
     fi
 
 fi
 
-waitForInstaller
-echo "$(date) | Installing $appname"
+#waitForInstaller
+echo "$(date) | Installing $appname from $tempfile"
 installer -pkg $tempfile -target /Applications
-
 if [ $? == 0 ]; then
-     echo "$(date) | Success"
+     echo "$(date) | Install of $appname succeeded"
 else
-     echo "$(date) | Failure"
-     exit 6
+     echo "$(date) | Install of $appname failed"
+     exit 1
 fi
 
 echo "$(date) | Removing tmp files"
 rm -rf $tempfile
+exit 0

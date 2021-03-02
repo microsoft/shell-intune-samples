@@ -28,7 +28,7 @@
 ##
 
 # Define variables
-log="/tmp/addAppstoDock.log"
+log="/var/log/addAppstoDock.log"
 appname="Dock Script"
 exec 1>> $log 2>&1
 
@@ -51,6 +51,17 @@ echo "# $(date) | Starting install of $appname"
 echo "############################################################"
 echo ""
 
+# function to delay until the user has finished setup assistant.
+waitForLogin () {
+until last | grep -i console | grep -i "still logged in"; do
+echo "$(date) | User not logged in to console yet, waiting..."
+sleep 5
+done
+echo "$(date) | Desktop is here, lets show Octory"
+}
+
+
+waitForLogin
 echo Looking for required applications...
 
 while [[ $ready -ne 1 ]];do
@@ -105,7 +116,7 @@ defaults write com.apple.dock showhidden -bool true
 #defaults write com.apple.dock autohide -bool true
 
 #echo "$(date) | Disable show recent items"
-#defaults write com.apple.dock show-recents -bool FALSE
+defaults write com.apple.dock show-recents -bool FALSE
 
 echo "$(date) | Enable Minimise Icons into Dock Icons"
 defaults write com.apple.dock minimize-to-application -bool yes
