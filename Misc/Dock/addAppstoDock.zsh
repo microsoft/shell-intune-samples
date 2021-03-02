@@ -57,7 +57,7 @@ until last | grep -i console | grep -i "still logged in"; do
 echo "$(date) | User not logged in to console yet, waiting..."
 sleep 5
 done
-echo "$(date) | Desktop is here, lets show Octory"
+echo "$(date) | Desktop is here, lets carry on"
 }
 
 
