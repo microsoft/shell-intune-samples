@@ -18,7 +18,7 @@
 ## Feedback: neiljohn@microsoft.com
 
 # Define variables
-usebingwallpaper=true
+usebingwallpaper=false # Set to true to have script fetch wallpaper from Bing
 wallpaperurl="https://github.com/microsoft/shell-intune-samples/raw/master/img/Ignite_Teams background2.png"
 wallpaperdir="/Library/Desktop"
 wallpaperfile="Wallpaper.jpg"
