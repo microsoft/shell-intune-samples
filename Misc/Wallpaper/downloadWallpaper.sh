@@ -18,8 +18,8 @@
 ## Feedback: neiljohn@microsoft.com
 
 # Define variables
-usebingwallpaper=false
-wallpaperurl="https://github.com/microsoft/shell-intune-samples/raw/master/img/M365.jpg"
+usebingwallpaper=true
+wallpaperurl="https://github.com/microsoft/shell-intune-samples/raw/master/img/Ignite_Teams background2.png"
 wallpaperdir="/Library/Desktop"
 wallpaperfile="Wallpaper.jpg"
 log="/var/log/fetchdesktopwallpaper.log"
