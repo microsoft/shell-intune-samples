@@ -77,7 +77,7 @@ echo "$(date) ############################################################"
 echo "$(date) "
 
 echo "$(date) | Downloading latest XML file from [$SourceXML]"
-curl -s --connect-timeout 30 --retry 300 --retry-delay 60 -L -o /tmp/latest.xml $SourceXML
+curl -f -s --connect-timeout 30 --retry 300 --retry-delay 60 -L -o /tmp/latest.xml $SourceXML
 if [ $? == 0 ]; then
      echo "$(date) | Successfully downloaded [$SourceXML] to [/tmp/latest.xml]"
 else

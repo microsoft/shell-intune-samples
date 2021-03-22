@@ -39,6 +39,7 @@ dockitems=( "/Applications/Microsoft Edge.app"
             "/Applications/Microsoft PowerPoint.app"
             "/Applications/Microsoft OneNote.app"
             "/Applications/Microsoft Teams.app"
+            "/Applications/Company Portal.app"
             "/Applications/Visual Studio Code.app"
             "/Library/Application Support/Microsoft/MAU2.0/Microsoft AutoUpdate.app"
             "/System/Applications/App Store.app"
@@ -52,16 +53,16 @@ echo "############################################################"
 echo ""
 
 # function to delay until the user has finished setup assistant.
-waitForLogin () {
-until last | grep -i console | grep -i "still logged in"; do
-echo "$(date) | User not logged in to console yet, waiting..."
+waitForDesktop () {
+until ps aux | grep /System/Library/CoreServices/Dock.app/Contents/MacOS/Dock | grep -v grep; do
+echo "$(date) | Dock not running, waiting..."
 sleep 5
 done
 echo "$(date) | Desktop is here, lets carry on"
 }
 
 
-waitForLogin
+waitForDesktop
 echo Looking for required applications...
 
 while [[ $ready -ne 1 ]];do
@@ -84,7 +85,7 @@ while [[ $ready -ne 1 ]];do
     echo " $(date) | All apps found, lets prep the dock"
   else
     echo " $(date) | Waiting for 60 seconds"
-    sleep 60
+    sleep 10
   fi
 
 done

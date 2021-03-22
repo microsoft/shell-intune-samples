@@ -55,6 +55,15 @@ done
 echo "$(date) | Installer not running, safe to start installing"
 }
 
+# function to delay install during setup assistant
+waitForDesktop () {
+until ps aux | grep /System/Library/CoreServices/Dock.app/Contents/MacOS/Dock | grep -v grep; do
+echo "$(date) | Dock not running, waiting..."
+sleep 5
+done
+echo "$(date) | Desktop is here, lets carry on"
+}
+
 # start logging
 
 exec 1>> $log 2>&1
@@ -65,6 +74,7 @@ echo "# $(date) | Starting install of $appname"
 echo "############################################################"
 echo ""
 
+#waitForDesktop
 consoleuser=$(ls -l /dev/console | awk '{ print $3 }')
 
 echo "$(date) | logged in user is" $consoleuser
@@ -74,7 +84,7 @@ echo "$(date) | logged in user is" $consoleuser
 #
 echo "$(date) | Trying local copy [$localcopy]"
 rm -rf $tempfile > /dev/null 2>&1
-curl -s --connect-timeout 30 --retry 300 --retry-delay 60 -L -o $tempfile $localcopy
+curl -f -s -L -o $tempfile $localcopy
 if [ $? == 0 ]; then
 
      echo "$(date) | Local copy of $appname downloaded at $tempfile"
@@ -86,7 +96,7 @@ else
 
     waitForCurl
     rm -rf $tempfile > /dev/null 2>&1
-    curl -s --connect-timeout 30 --retry 300 --retry-delay 60 -L -o $tempfile $weburl
+    curl -f -s --connect-timeout 30 --retry 5 --retry-delay 60 -L -o $tempfile $weburl
     if [ $? == 0 ]; then
          echo "$(date) | Downloaded $weburl to $tempfile"
     else
@@ -98,14 +108,23 @@ else
 
 fi
 
-#waitForInstaller
+waitForDesktop      # If we're running on an ABM device we don't want t0 try and install before the desktop appears
+waitForInstaller    # To avoid too much stress on the device, we'll try and only run setup when no other apps are installing
+
 echo "$(date) | Installing $appname from $tempfile"
+
 installer -pkg $tempfile -target /Applications
 if [ $? == 0 ]; then
      echo "$(date) | Install of $appname succeeded"
 else
-     echo "$(date) | Install of $appname failed"
-     exit 1
+     echo "$(date) | Install of $appname failed, trying once more"
+     installer -pkg $tempfile -target /Applications
+     if [ $? == 0 ]; then
+          echo "$(date) | Install of $appname succeeded on 2nd try"
+     else
+          echo "$(date) | Install of $appname failed on 2nd try, exiting"
+          exit 1
+     fi
 fi
 
 echo "$(date) | Removing tmp files"
