@@ -13,7 +13,7 @@ The script can be used for two scenarios:
 ## Description
 
 The script performs the following actions if the **GNU Image Manipulation Program** is not already installed:
-1. Downloads the DMG from Azure blob storage to **/tmp/mee.dmg**.
+1. Downloads the DMG from Azure blob storage.
 2. Mounts the DMG file at **/tmp/GIMP**.
 3. Copies (installs) the application to the **/Applications** directory.
 4. Unmounts the DMG file.
