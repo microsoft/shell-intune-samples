@@ -2,7 +2,7 @@
 
 This script is an example to show how to use [Intune Shell Scripting](https://docs.microsoft.com/en-us/mem/intune/apps/macos-shell-scripts) to install DMG applications via [Azure Blob Storage](https:/docs.microsoft.com/en-us/azure/storage/blobs/storage-blobs-introduction). In this example the script will download the Gimp dmg file from the Azure servers and then install it onto the Mac. To reduce unnecessary re-downloads, the script monitors the date-modified attrbiute on the HTTP header rather than checking if the file stored there is actually changed.
 
-The public site for the GNU Image Manipulation Program (GIMP) is here.
+The public site for the GNU Image Manipulation Program (GIMP) is [here](https://www.gimp.org/).
 
 ## Scenarios
 The script can be used for two scenarios:
