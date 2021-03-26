@@ -35,7 +35,7 @@ tempfile="/tmp/gimp.dmg"
 
 **volume** is the path we will use to mount the DMG file. For a DMG file we need to mount it as a volume before we can access the files on it. The actual path used here isn't important as long as it's not likely to be used by another process during the installation.
 ```
-VOLUME="/tmp/GIMP"
+volume="/tmp/GIMP"
 ```
 
 **weburl** is the http url of the installation files that we need. In this example we are using Azure Blob storage to host the file but it could be any http endpoint that will be accessible from the client.
@@ -114,7 +114,7 @@ The log file will output to **//Library/Logs/Microsoft/IntuneScripts/installGimp
 # Wed 24 Mar 2021 15:12:08 GMT | Starting install of Gimp
 ############################################################
 
-Wed 24 Mar 2021 15:12:08 GMT | https://numberwang.blob.core.windows.net/numberwang/gimp.dmg last update on Wed, 24 Mar 2021 11:21:40 GMT
+Wed 24 Mar 2021 15:12:08 GMT | https://neiljohn.blob.core.windows.net/macapps/gimp.dmg last update on Wed, 24 Mar 2021 11:21:40 GMT
 Wed 24 Mar 2021 15:12:08 GMT | Looking for metafile (/Library/Logs/Microsoft/IntuneScripts/installGimp/Gimp.meta)
 Wed 24 Mar 2021 15:12:08 GMT | Meta file /Library/Logs/Microsoft/IntuneScripts/installGimp/Gimp.meta notfound, downloading anyway
 Wed 24 Mar 2021 15:12:08 GMT | Downloading Gimp
@@ -152,29 +152,10 @@ Wed 24 Mar 2021 15:12:08 GMT | Downloading Gimp
  94  166M   94  156M    0     0  5777k      0  0:00:29  0:00:27  0:00:02 6044k
  97  166M   97  162M    0     0  5785k      0  0:00:29  0:00:28  0:00:01 6035k
 100  166M  100  166M    0     0  5789k      0  0:00:29  0:00:29 --:--:-- 6020k
-Wed 24 Mar 2021 15:12:37 GMT | Downloaded https://numberwang.blob.core.windows.net/numberwang/gimp.dmg to /tmp/gimp.dmg
+Wed 24 Mar 2021 15:12:37 GMT | Downloaded https://neiljohn.blob.core.windows.net/macapps/gimp.dmg to /tmp/gimp.dmg
 Wed 24 Mar 2021 15:12:38 GMT | Gimp.app isn't running, lets carry on
 Wed 24 Mar 2021 15:12:38 GMT | Installing Gimp
 Wed 24 Mar 2021 15:12:38 GMT | Mounting /tmp/gimp.dmg to /tmp/GIMP
-Checksumming Protective Master Boot Record (MBR : 0)…
-Protective Master Boot Record (MBR :: verified CRC32 $599CA830
-Checksumming GPT Header (Primary GPT Header : 1)…
- GPT Header (Primary GPT Header : 1): verified CRC32 $D860EC5C
-Checksumming GPT Partition Data (Primary GPT Table : 2)…
-GPT Partition Data (Primary GPT Tabl: verified CRC32 $605B2BB9
-Checksumming  (Apple_Free : 3)…
-                    (Apple_Free : 3): verified CRC32 $00000000
-Checksumming disk image (Apple_HFS : 4)…
-          disk image (Apple_HFS : 4): verified CRC32 $86BA9C3B
-Checksumming  (Apple_Free : 5)…
-                    (Apple_Free : 5): verified CRC32 $00000000
-Checksumming GPT Partition Data (Backup GPT Table : 6)…
-GPT Partition Data (Backup GPT Table: verified CRC32 $605B2BB9
-Checksumming GPT Header (Backup GPT Header : 7)…
-  GPT Header (Backup GPT Header : 7): verified CRC32 $DF2178E5
-verified CRC32 $4852FD94
-/dev/disk2          	GUID_partition_scheme          	
-/dev/disk2s1        	Apple_HFS                      	/private/tmp/GIMP
 Wed 24 Mar 2021 15:12:53 GMT | Copying /tmp/GIMP/*.app to /Applications/Gimp.app
 Wed 24 Mar 2021 15:14:41 GMT | Un-mounting /tmp/GIMP
 Wed 24 Mar 2021 15:14:42 GMT | Gimp Installed

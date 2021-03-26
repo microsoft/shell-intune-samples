@@ -19,12 +19,12 @@
 
 # Define variables
 tempfile="/tmp/gimp.dmg"                                                  # What filename are we going to store the downloaded files in?
-VOLUME="/tmp/GIMP"                                                        # Where are we going to mount the DMG?
-weburl="https://numberwang.blob.core.windows.net/numberwang/gimp.dmg"     # What is the Azure Blob Storage URL?
+volume="/tmp/GIMP"                                                        # Where are we going to mount the DMG?
+weburl="https://neiljohn.blob.core.windows.net/macapps/gimp.dmg"          # What is the Azure Blob Storage URL?
 appname="Gimp"                                                            # The name of our App deployment script
 app="Gimp.app"                                                            # The actual name of our App once installed
 logandmetadir="/Library/Logs/Microsoft/IntuneScripts/installGimp"         # The location of our logs and last updated data
-log="$logandmetadir/$appname.log"                                      # The location of the script log file
+log="$logandmetadir/$appname.log"                                         # The location of the script log file
 metafile="$logandmetadir/$appname.meta"                                   # The location of our meta file (for updates)
 processpath="/Applications/Gimp.app/Contents/MacOS/gimp"                  # The process name of the App we are installing
 terminateprocess="false"                                                  # Do we want to terminate the running process? If false we'll wait until its not running
@@ -115,7 +115,7 @@ if [ $install == "yes" ]; then
 
     #download the file
     echo "$(date) | Downloading $appname"
-    curl -L -f -o $tempfile $weburl
+    curl -f -s --connect-timeout 30 --retry 5 --retry-delay 60 -L -o $tempfile $weburl
     if [ $? == 0 ]; then
          echo "$(date) | Downloaded $weburl to $tempfile"
     else
@@ -132,16 +132,16 @@ if [ $install == "yes" ]; then
     echo "$(date) | Installing $appname"
 
     # Mount the dmg file...
-    echo "$(date) | Mounting $tempfile to $VOLUME"
-    hdiutil attach -nobrowse -mountpoint $VOLUME $tempfile
+    echo "$(date) | Mounting $tempfile to $volume"
+    hdiutil attach -quiet -nobrowse -mountpoint $volume $tempfile
 
     # Sync the application and unmount once complete
-    echo "$(date) | Copying $VOLUME/*.app to /Applications/$app"
-    cp -Rf "$VOLUME"/*.app/ "/Applications/$app"
+    echo "$(date) | Copying $volume/*.app to /Applications/$app"
+    cp -Rf "$volume"/*.app/ "/Applications/$app"
 
     # Unmount the dmg
-    echo "$(date) | Un-mounting $VOLUME"
-    hdiutil detach -quiet "$VOLUME"
+    echo "$(date) | Un-mounting $volume"
+    hdiutil detach -quiet "$volume"
 
     # Checking if the app was installed successfully
     if [ "$?" = "0" ]; then
