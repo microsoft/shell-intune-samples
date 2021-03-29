@@ -66,7 +66,7 @@ echo "$(date) | Desktop is here, lets carry on"
 
 # start logging
 
-#exec 1>> $log 2>&1
+exec 1>> $log 2>&1
 
 echo ""
 echo "##############################################################"
