@@ -107,7 +107,7 @@ else
 
 fi
 
-waitForDesktop      # If we're running on an ABM device we don't want to try and install before the desktop appears
+waitForDesktop      # If we're running on an ADE device we don't want to try and install before the desktop appears
 waitForInstaller    # To avoid too much stress on the device, we'll try and only run setup when no other apps are installing
 
 echo "$(date) | Installing $appname from $tempfile"
@@ -115,17 +115,12 @@ echo "$(date) | Installing $appname from $tempfile"
 installer -pkg $tempfile -target /Applications
 if [ $? == 0 ]; then
      echo "$(date) | Install of $appname succeeded"
+     echo "$(date) | Removing tmp files"
+     rm -rf $tempfile
+     exit 0
 else
-     echo "$(date) | Install of $appname failed, trying once more"
-     installer -pkg $tempfile -target /Applications
-     if [ $? == 0 ]; then
-          echo "$(date) | Install of $appname succeeded on 2nd try"
-     else
-          echo "$(date) | Install of $appname failed on 2nd try, exiting"
-          exit 1
-     fi
+     echo "$(date) | Install of $appname failed"
+     echo "$(date) | Removing tmp files"
+     rm -rf $tempfile
+     exit 1
 fi
-
-echo "$(date) | Removing tmp files"
-rm -rf $tempfile
-exit 0
