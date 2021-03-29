@@ -24,7 +24,7 @@
 tempdir="/tmp"
 tempfile="/tmp/office.pkg"
 weburl="https://go.microsoft.com/fwlink/?linkid=2009112"
-localcopy="http://192.168.68.139/Office365forMac/Office365AppsFormacOS.pkg"   # This is your local copy of the OfficeBusinessPro.pkg file. You need to handle this independently
+#localcopy="http://192.168.68.139/Office365forMac/Office365AppsFormacOS.pkg"   # This is your local copy of the OfficeBusinessPro.pkg file. You need to handle this independently, comment out if not required
 appname="Office 365 Apps for macOS"
 logandmetadir="/Library/Logs/Microsoft/IntuneScripts/installOffice365AppsformacOS"
 log="$logandmetadir/Office365AppsformacOS.log"
@@ -74,7 +74,6 @@ echo "# $(date) | Starting install of $appname"
 echo "############################################################"
 echo ""
 
-#waitForDesktop
 consoleuser=$(ls -l /dev/console | awk '{ print $3 }')
 
 echo "$(date) | logged in user is" $consoleuser
@@ -108,7 +107,7 @@ else
 
 fi
 
-waitForDesktop      # If we're running on an ABM device we don't want t0 try and install before the desktop appears
+waitForDesktop      # If we're running on an ABM device we don't want to try and install before the desktop appears
 waitForInstaller    # To avoid too much stress on the device, we'll try and only run setup when no other apps are installing
 
 echo "$(date) | Installing $appname from $tempfile"
