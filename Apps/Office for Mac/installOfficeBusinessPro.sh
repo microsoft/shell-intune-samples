@@ -39,33 +39,40 @@ else
     mkdir -p $logandmetadir
 fi
 
+# function to delay download if another download is running
 waitForCurl () {
-while ps aux | grep curl | grep -v grep; do
-echo "$(date) | Another instance of Curl is running, waiting 60s for it to complete"
-sleep 60
-done
-echo "$(date) | No instances of Curl found, safe to proceed"
+
+     while ps aux | grep curl | grep -v grep; do
+          echo "$(date) | Another instance of Curl is running, waiting 60s for it to complete"
+          sleep 60
+     done
+     echo "$(date) | No instances of Curl found, safe to proceed"
+
 }
 
+# function to delay install if another installation process is running
 waitForInstaller () {
-while ps aux | grep /System/Library/CoreServices/Installer.app/Contents/MacOS/Installer | grep -v grep; do
-echo "$(date) | Another installer is running, waiting 60s for it to complete"
-sleep 60
-done
-echo "$(date) | Installer not running, safe to start installing"
+
+     while ps aux | grep /System/Library/CoreServices/Installer.app/Contents/MacOS/Installer | grep -v grep; do
+          echo "$(date) | Another installer is running, waiting 60s for it to complete"
+          sleep 60
+     done
+     echo "$(date) | Installer not running, safe to start installing"
+
 }
 
 # function to delay install during setup assistant
 waitForDesktop () {
-until ps aux | grep /System/Library/CoreServices/Dock.app/Contents/MacOS/Dock | grep -v grep; do
-echo "$(date) | Dock not running, waiting..."
-sleep 5
-done
-echo "$(date) | Desktop is here, lets carry on"
+
+     until ps aux | grep /System/Library/CoreServices/Dock.app/Contents/MacOS/Dock | grep -v grep; do
+          echo "$(date) | Dock not running, waiting..."
+          sleep 5
+     done
+     echo "$(date) | Desktop is here, lets carry on"
+
 }
 
 # start logging
-
 exec 1>> $log 2>&1
 
 echo ""
@@ -78,6 +85,7 @@ consoleuser=$(ls -l /dev/console | awk '{ print $3 }')
 
 echo "$(date) | logged in user is" $consoleuser
 
+# If local copy is defined, let's try and download it...
 if [ $localcopy ]; then
 
      # Check to see if we can access our local copy of Office
@@ -90,6 +98,7 @@ if [ $localcopy ]; then
      fi
 fi
 
+# If we failed to download the local copy, or it wasn't defined then try to download from CDN
 if [[ "$downloadcomplete" != "true" ]]; then
 
     waitForCurl
@@ -105,9 +114,7 @@ if [[ "$downloadcomplete" != "true" ]]; then
     
     fi
 
-
 fi
-
 
 waitForDesktop      # If we're running on an ADE device we don't want to try and install before the desktop appears
 waitForInstaller    # To avoid too much stress on the device, we'll try and only run setup when no other apps are installing
