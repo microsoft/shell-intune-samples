@@ -44,7 +44,7 @@ while ps aux | grep curl | grep -v grep; do
 echo "$(date) | Another instance of Curl is running, waiting 60s for it to complete"
 sleep 60
 done
-echo "$(date) | No Curl's running, let's start our download"
+echo "$(date) | No instances of Curl found, safe to proceed"
 }
 
 waitForInstaller () {
@@ -66,7 +66,7 @@ echo "$(date) | Desktop is here, lets carry on"
 
 # start logging
 
-exec 1>> $log 2>&1
+#exec 1>> $log 2>&1
 
 echo ""
 echo "##############################################################"
@@ -78,23 +78,23 @@ consoleuser=$(ls -l /dev/console | awk '{ print $3 }')
 
 echo "$(date) | logged in user is" $consoleuser
 
-#
-# Check to see if we can access our local copy of Office
-#
-echo "$(date) | Trying local copy [$localcopy]"
-rm -rf $tempfile > /dev/null 2>&1
-curl -f -s -L -o $tempfile $localcopy
-if [ $? == 0 ]; then
+if [ $localcopy ]; then
 
-     echo "$(date) | Local copy of $appname downloaded at $tempfile"
+     # Check to see if we can access our local copy of Office
+     echo "$(date) | Downloading [$localcopy] to [$tempfile]"
+     rm -rf $tempfile > /dev/null 2>&1
+     curl -f -s -L -o $tempfile $localcopy
+     if [ $? == 0 ]; then
+          echo "$(date) | Local copy of $appname downloaded at $tempfile"
+          downloadcomplete="true"
+     fi
+fi
 
-else
-
-    echo "$(date) | Couldn't find local copy of $appname, need to fetch from CDN"
-    echo "$(date) | Downloading $appname from CDN"
+if [[ "$downloadcomplete" != "true" ]]; then
 
     waitForCurl
     rm -rf $tempfile > /dev/null 2>&1
+    echo "$(date) | Downloading [$weburl] to [$tempfile]"
     curl -f -s --connect-timeout 30 --retry 5 --retry-delay 60 -L -o $tempfile $weburl
     if [ $? == 0 ]; then
          echo "$(date) | Downloaded $weburl to $tempfile"
@@ -105,7 +105,9 @@ else
     
     fi
 
+
 fi
+
 
 waitForDesktop      # If we're running on an ADE device we don't want to try and install before the desktop appears
 waitForInstaller    # To avoid too much stress on the device, we'll try and only run setup when no other apps are installing
