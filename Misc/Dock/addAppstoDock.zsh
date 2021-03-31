@@ -28,7 +28,7 @@
 ##
 
 # Define variables
-log="/var/log/addAppstoDock.log"
+log="/tmp/addAppstoDock.log"
 appname="Dock Script"
 exec 1>> $log 2>&1
 
@@ -39,8 +39,8 @@ dockitems=( "/Applications/Microsoft Edge.app"
             "/Applications/Microsoft PowerPoint.app"
             "/Applications/Microsoft OneNote.app"
             "/Applications/Microsoft Teams.app"
-            "/Applications/Company Portal.app"
             "/Applications/Visual Studio Code.app"
+            "/Applications/Company Portal.app"
             "/Library/Application Support/Microsoft/MAU2.0/Microsoft AutoUpdate.app"
             "/System/Applications/App Store.app"
             "/System/Applications/Utilities/Terminal.app"
@@ -71,20 +71,20 @@ while [[ $ready -ne 1 ]];do
 
   for i in $dockitems; do
     if [[ -a "$i" ]]; then
-      echo " $(date) | $i found!"
+      echo " $(date) | $i is installed"
     else
-      echo " $(date) | $i not installed yet"
+      #echo " $(date) | $i is missing"
       let missingappcount=$missingappcount+1
     fi
   done
 
-  echo " $(date) | Missing app count is $missingappcount"
+  echo " $(date) | [$missingappcount] application missing"
 
   if [[ $missingappcount -eq 0 ]]; then
     ready=1
     echo " $(date) | All apps found, lets prep the dock"
   else
-    echo " $(date) | Waiting for 60 seconds"
+    echo " $(date) | Waiting for 10 seconds"
     sleep 10
   fi
 
@@ -95,9 +95,8 @@ defaults delete ~/Library/Preferences/com.apple.dock persistent-apps
 defaults delete ~/Library/Preferences/com.apple.dock persistent-others
 
 for i in $dockitems; do
-  echo " $(date) | Looking for $i"
   if [[ -a "$i" ]] ; then
-    echo " $(date) | Adding $i to Dock"
+    echo " $(date) | Adding [$i] to Dock"
     defaults write com.apple.dock persistent-apps -array-add "<dict><key>tile-data</key><dict><key>file-data</key><dict><key>_CFURLString</key><string>$i</string><key>_CFURLStringType</key><integer>0</integer></dict></dict></dict>"
   fi
 done
@@ -116,7 +115,7 @@ defaults write com.apple.dock showhidden -bool true
 #echo "$(date) | Enable Auto Hide dock"
 #defaults write com.apple.dock autohide -bool true
 
-#echo "$(date) | Disable show recent items"
+echo "$(date) | Disable show recent items"
 defaults write com.apple.dock show-recents -bool FALSE
 
 echo "$(date) | Enable Minimise Icons into Dock Icons"

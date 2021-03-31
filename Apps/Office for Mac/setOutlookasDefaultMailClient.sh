@@ -26,6 +26,40 @@ weburl="https://macadmins.software/tools/MailToOutlook.pkg"
 appname="MailToOutlook"
 log="/var/log/MailToOutlook.log"
 
+# function to check if we need Rosetta 2
+checkForRosetta2 () {
+
+    echo "$(date) | Checking if we need Rosetta 2 or not"
+
+    processor=$(/usr/sbin/sysctl -n machdep.cpu.brand_string)
+    if [[ "$processor" == *"Intel"* ]]; then
+
+        echo "$(date) | $processor processor detected, no need to install Rosetta."
+        
+    else
+
+        echo "$(date) | $processor processor detected, lets see if Rosetta 2 already installed"
+
+        # Check Rosetta LaunchDaemon. If no LaunchDaemon is found,
+        # perform a non-interactive install of Rosetta.
+        
+        if [[ ! -f "/Library/Apple/System/Library/LaunchDaemons/com.apple.oahd.plist" ]]; then
+            /usr/sbin/softwareupdate --install-rosetta --agree-to-license
+        
+            if [[ $? -eq 0 ]]; then
+                echo "$(date) | Rosetta has been successfully installed."
+            else
+                echo "$(date) | Rosetta installation failed!"
+                exit 1
+            fi
+    
+        else
+            echo "$(date) | Rosetta is already installed. Nothing to do."
+        fi
+    fi
+
+}
+
 # start logging
 
 exec 1>> $log 2>&1
@@ -38,6 +72,8 @@ echo "# $(date) | Starting install of $appname"
 echo "############################################################"
 echo ""
 
+# See if we need Rosetta
+checkForRosetta2
 
 echo "$(date) | Downloading $appname"
 curl -L -f -o $tempfile $weburl

@@ -24,7 +24,7 @@
 # Define variables
 
 appname="Rosetta2"
-logandmetadir="/Library/Intune/Scripts/$appname"
+logandmetadir="/Library/Logs/Microsoft/IntuneScripts/$appname"
 log="$logandmetadir/$appname.log"
 
 ## Check if the log directory has been created
@@ -36,6 +36,40 @@ else
     echo "$(date) | creating log directory - $logandmetadir"
     mkdir -p $logandmetadir
 fi
+
+# function to check if we need Rosetta 2
+checkForRosetta2 () {
+
+    echo "$(date) | Checking if we need Rosetta 2 or not"
+
+    processor=$(/usr/sbin/sysctl -n machdep.cpu.brand_string)
+    if [[ "$processor" == *"Intel"* ]]; then
+
+        echo "$(date) | $processor processor detected, no need to install Rosetta."
+        
+    else
+
+        echo "$(date) | $processor processor detected, lets see if Rosetta 2 already installed"
+
+        # Check Rosetta LaunchDaemon. If no LaunchDaemon is found,
+        # perform a non-interactive install of Rosetta.
+        
+        if [[ ! -f "/Library/Apple/System/Library/LaunchDaemons/com.apple.oahd.plist" ]]; then
+            /usr/sbin/softwareupdate --install-rosetta --agree-to-license
+        
+            if [[ $? -eq 0 ]]; then
+                echo "$(date) | Rosetta has been successfully installed."
+            else
+                echo "$(date) | Rosetta installation failed!"
+                exit 1
+            fi
+    
+        else
+            echo "$(date) | Rosetta is already installed. Nothing to do."
+        fi
+    fi
+
+}
 
 # start logging
 
@@ -50,26 +84,4 @@ echo "############################################################"
 echo ""
 
 # Let's check to see if we need Rosetta 2
-processor=$(/usr/sbin/sysctl -n machdep.cpu.brand_string | grep -o "Intel")
-if [[ -n "$processor" ]]; then
-    echo "$(date) | $processor processor installed. No need to install Rosetta."
-else
-
-    # OK, we need Rosetta but is it already installed?
-    # Let's look for the LaunchDaemon...
-    
-    if [[ ! -f "/Library/Apple/System/Library/LaunchDaemons/com.apple.oahd.plist" ]]; then
-
-        echo "$(date) | Rosettate2 not installed, starting install process"
-        /usr/sbin/softwareupdate --install-rosetta --agree-to-license
-        if [[ $? -eq 0 ]]; then
-        	echo "$(date) | Rosetta2 has been successfully installed."
-        else
-        	echo "$(date) | Rosetta2 installation failed!"
-        	exit 1
-        fi
-   
-    else
-    	echo "$(date) | Rosetta2 is already installed. Nothing to do."
-    fi
-fi
+checkForRosetta2

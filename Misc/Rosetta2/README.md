@@ -2,6 +2,8 @@
 
 This script is am example to show how to use [Intune Shell Scripting](https://docs.microsoft.com/en-us/mem/intune/apps/macos-shell-scripts) to install Rosetta 2. In this case the script will check if Rosetta 2 is required and install of necessary.
 
+The example script here uses a function to make it easy to merge into your existing scripts.
+
 ## Scenario
 
 This scripts intended usage scenario is to detect the processor type and then install Rosetta 2 if required. Rosetta 2 allowws Intel x86 binaries to run on new Apple Silicon Macs. You can find more information about Rosetta 2 here:

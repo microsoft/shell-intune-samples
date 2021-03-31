@@ -18,16 +18,107 @@
 ## Feedback: neiljohn@microsoft.com
 
 # Define variables
-
 tempdir="/tmp"
-tempfile="/tmp/GitHubDesktop.zip"
-weburl="https://central.github.com/deployments/desktop/desktop/latest/darwin"
-appname="GitHub Desktop"
-log="/var/log/installgithubdesktop.log"
+tempfile="/tmp/githubdesktop.zip"                                                              # What filename are we going to store the downloaded files in?
+weburl="https://neiljohn.blob.core.windows.net/macapps/GitHubDesktop.zip"                      # What is the Azure Blob Storage URL?
+appname="gitHub_Desktop"                                                                       # The name of our App deployment script
+app="GitHub Desktop.app"                                                                       # The actual name of our App once installed
+logandmetadir="/Library/Logs/Microsoft/IntuneScripts/installGitHubDesktop"                     # The location of our logs and last updated data
+log="$logandmetadir/$appname.log"                                                              # The location of the script log file
+metafile="$logandmetadir/$appname.meta"                                                        # The location of our meta file (for updates)
+processpath="/Applications/GitHub Desktop.app/Contents/MacOS/GitHub Desktop"                  # The process name of the App we are installing
+terminateprocess="false"                                                                       # Do we want to terminate the running process? If false we'll wait until its not running
+
+echo "# $(date) | Starting install of $appname"
+
+# function to delay download if another download is running
+waitForCurl () {
+
+     while ps aux | grep curl | grep -v grep; do
+          echo "$(date) | Another instance of Curl is running, waiting 60s for it to complete"
+          sleep 60
+     done
+     echo "$(date) | No instances of Curl found, safe to proceed"
+
+}
+
+# function to check if app is running and either terminate or wait
+isAppRunning () {
+
+    while ps aux | grep "$processpath" | grep -v grep; do
+      if [ $terminateprocess == "false" ]; then
+        echo "$(date) | $app running, waiting..."
+        sleep 60
+      else
+        echo "$(date) | $app running, terminating [$processpath]..."
+        pkill -f "$processpath"
+      fi
+    done
+
+    echo "$(date) | $app isn't running, lets carry on"
+
+}
+
+# function to check if we need Rosetta 2
+checkForRosetta2 () {
+
+    echo "$(date) | Checking if we need Rosetta 2 or not"
+
+    processor=$(/usr/sbin/sysctl -n machdep.cpu.brand_string)
+    if [[ "$processor" == *"Intel"* ]]; then
+
+        echo "$(date) | $processor processor detected, no need to install Rosetta."
+        
+    else
+
+        echo "$(date) | $processor processor detected, lets see if Rosetta 2 already installed"
+
+        # Check Rosetta LaunchDaemon. If no LaunchDaemon is found,
+        # perform a non-interactive install of Rosetta.
+        
+        if [[ ! -f "/Library/Apple/System/Library/LaunchDaemons/com.apple.oahd.plist" ]]; then
+            /usr/sbin/softwareupdate --install-rosetta --agree-to-license
+        
+            if [[ $? -eq 0 ]]; then
+                echo "$(date) | Rosetta has been successfully installed."
+            else
+                echo "$(date) | Rosetta installation failed!"
+                exit 1
+            fi
+    
+        else
+            echo "$(date) | Rosetta is already installed. Nothing to do."
+        fi
+    fi
+
+}
+
+# function to wait if another installer process is running
+waitForInstaller () {
+
+  while ps aux | grep "/System/Library/CoreServices/Installer.app/Contents/MacOS/Installer" | grep -v grep; do
+    echo "$(date) | Another installer is running, waiting 60s for it to complete"
+    sleep 60
+  done
+  echo "$(date) | Installer not running, safe to start installing"
+
+}
+
+# generate the last modified date of the file we need to download
+lastmodified=$(curl -sIL "$weburl" | grep -i "last-modified" | awk '{$1=""; print $0}' | awk '{ sub(/^[ \t]+/, ""); print }' | tr -d '\r')
+
+## Check if the log directory has been created
+if [ -d "$logandmetadir" ]; then
+    ## Already created
+    echo "# $(date) | Logging to - $logandmetadir"
+else
+    ## Creating Metadirectory
+    echo "# $(date) | creating log directory - $logandmetadir"
+    mkdir -p "$logandmetadir"
+fi
 
 # start logging
-
-exec 1>> $log 2>&1
+exec 1>> "$log" 2>&1    # Comment out this line to stop logging to a file.
 
 # Begin Script Body
 
@@ -37,40 +128,131 @@ echo "# $(date) | Starting install of $appname"
 echo "############################################################"
 echo ""
 
-# Let's download the files we need and attempt to install...
+# Install Rosetta if we need it
+checkForRosetta2
 
-echo "$(date) | Downloading $appname"
-curl -L -f -o $tempfile $weburl
-if [ "$?" = "0" ]; then
-   echo "$(date) | $appname downloaded to $tempfile"
+## Is the app already installed?
+if [ -d "/Applications/$app" ]; then
+
+  # App is already installed, we need to determine if it requires updating or not
+  echo "$(date) | $appname already installed"
+  
+  ## Let's determine when this file we're about to download was last modified
+  echo "$(date) | $weburl last update on $lastmodified"
+
+  ## Did we store the last modified date last time we installed/updated?
+  if [ -d "$logandmetadir" ]; then
+
+      echo "$(date) | Looking for metafile ($metafile)"
+      if [ -f "$metafile" ]; then
+        previouslastmodifieddate=$(cat "$metafile")
+        if [[ "$previouslastmodifieddate" != "$lastmodified" ]]; then
+          echo "$(date) | Update found, previous [$previouslastmodifieddate] and current [$lastmodified]"
+          install="yes"
+        else
+          echo "$(date) | No update between previous [$previouslastmodifieddate] and current [$lastmodified]"
+          exit 0
+        fi
+      else
+        echo "$(date) | Meta file $metafile notfound, downloading anyway"
+        install="yes"
+      fi
+      
+  fi
+
 else
-   echo "$(date) | Failed to download from $weburl"
-   exit 1
+
+  # App isn't installed, lets download and get ready for install
+  install="yes"
+
 fi
 
-echo "$(date) | Installing $appname"
-cd $tempdir
-unzip $tempfile
-if [ "$?" = "0" ]; then
-   echo "$(date) | $tmpfile unzipped"
-else
-   echo "$(date) | failed to unzip $tmpfile"
-   exit 2
-fi
+#check if we're downloading and installing
+if [ $install == "yes" ]; then
 
-mv -f "GitHub Desktop.app" /Applications
-if [ "$?" = "0" ]; then
-   echo "$(date) | $appname moved into /Applications"
-else
-   echo "$(date) | failed to move $appname to /Applications"
-   exit 3
-fi
+    # wait for other downloads to finish
+    waitForCurl
 
-echo "$(date) | Fix up permissions"
-sudo chown -R root:wheel /Applications/VOX.app
-if [ "$?" = "0" ]; then
-   echo "$(date) | correctly applied permissions to $appname"
+    #download the file
+    echo "$(date) | Downloading $appname"
+    curl -f -s --connect-timeout 30 --retry 5 --retry-delay 60 -L -o "$tempfile" "$weburl"
+    if [ $? == 0 ]; then
+         echo "$(date) | Downloaded $weburl to $tempfile"
+    else
+    
+         echo "$(date) | Failure to download $weburl to $tempfile"
+         exit 1
+    fi
+
+    
+    # Check if app is running, if it is we need to wait.
+    isAppRunning
+
+    echo "$(date) | Installing $appname"
+
+    cd "$tempdir"
+    rm -rf "$app"
+    unzip -qq -o "$tempfile"
+    if [ "$?" = "0" ]; then
+      echo "$(date) | $tempfile unzipped"
+    else
+      echo "$(date) | failed to unzip $tmpfile"
+      exit 1
+    fi
+
+    if [[ -a "/Applications/$app" ]]; then
+    
+      echo "$(date) | Renoving old installation at /Applications/$app"
+      rm -rf "/Applications/$app"
+    
+    fi
+
+    \cp -Rf "$app/" "/Applications/$app/"
+    if [ "$?" = "0" ]; then
+      echo "$(date) | $appname moved into /Applications"
+    else
+      echo "$(date) | failed to move $appname to /Applications"
+      exit 1
+    fi
+
+    echo "$(date) | Fix up permissions"
+    sudo chown -R root:wheel "/Applications/$app"
+    if [ "$?" = "0" ]; then
+      echo "$(date) | correctly applied permissions to $appname"
+    else
+      echo "$(date) | failed to apply permissions to $appname"
+      exit 1
+    fi
+
+    # Checking if the app was installed successfully
+    if [ "$?" = "0" ]; then
+        if [[ -a "/Applications/$app" ]]; then
+
+            echo "$(date) | $appname Installed"
+            echo "$(date) | Cleaning Up"
+            rm -rf "$tempfile"
+
+            echo "$(date) | Writing last modifieddate $lastmodified to $metafile"
+            echo "$lastmodified" > "$metafile"
+
+            echo "$(date) | Fixing up permissions"
+            sudo chown -R root:wheel "/Applications/$app"
+            echo "$(date) | Application [$appname] succesfully installed"
+            exit 0
+        else
+            echo "$(date) | Failed to install $appname"
+            exit 1
+        fi
+    else
+
+        # Something went wrong here, either the download failed or the install Failed
+        # intune will pick up the exit status and the IT Pro can use that to determine what went wrong.
+        # Intune can also return the log file if requested by the admin
+        
+        echo "$(date) | Failed to install $appname"
+        exit 1
+    fi
+
 else
-   echo "$(date) | failed to apply permissions to $appname"
-   exit 4
+    echo "$(date) | Not downloading or installing $appname"
 fi

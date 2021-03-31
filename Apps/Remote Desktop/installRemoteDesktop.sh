@@ -47,6 +47,40 @@ isAppRunning () {
 
 }
 
+# function to check if we need Rosetta 2
+checkForRosetta2 () {
+
+    echo "$(date) | Checking if we need Rosetta 2 or not"
+
+    processor=$(/usr/sbin/sysctl -n machdep.cpu.brand_string)
+    if [[ "$processor" == *"Intel"* ]]; then
+
+        echo "$(date) | $processor processor detected, no need to install Rosetta."
+        
+    else
+
+        echo "$(date) | $processor processor detected, lets see if Rosetta 2 already installed"
+
+        # Check Rosetta LaunchDaemon. If no LaunchDaemon is found,
+        # perform a non-interactive install of Rosetta.
+        
+        if [[ ! -f "/Library/Apple/System/Library/LaunchDaemons/com.apple.oahd.plist" ]]; then
+            /usr/sbin/softwareupdate --install-rosetta --agree-to-license
+        
+            if [[ $? -eq 0 ]]; then
+                echo "$(date) | Rosetta has been successfully installed."
+            else
+                echo "$(date) | Rosetta installation failed!"
+                exit 1
+            fi
+    
+        else
+            echo "$(date) | Rosetta is already installed. Nothing to do."
+        fi
+    fi
+
+}
+
 # function to wait if another installer process is running
 waitForInstaller () {
 
@@ -81,6 +115,9 @@ echo "##############################################################"
 echo "# $(date) | Starting install of $appname"
 echo "############################################################"
 echo ""
+
+# Check if we need Rosetta
+checkForRosetta2
 
 ## Is the app already installed?
 if [ -d "/Applications/$app" ]; then
@@ -118,10 +155,11 @@ else
 
 fi
 
-
-
 #check if we're downloading and installing
 if [ $install == "yes" ]; then
+
+    # Wait if other downloads are happening
+    waitForCurl
 
     #download the file
     echo "$(date) | Downloading $appname"
@@ -134,14 +172,13 @@ if [ $install == "yes" ]; then
          exit 1
     fi
 
-    
     # Check if app is running, if it is we need to wait.
     isAppRunning
 
+    # Wait for other installers to finish
+    waitForInstaller
 
     echo "$(date) | Installing $appname"
-
-    waitForInstaller
     installer -dumplog -pkg $tempfile -target /Applications
 
     # Checking if the app was installed successfully

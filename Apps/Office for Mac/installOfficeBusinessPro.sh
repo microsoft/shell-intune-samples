@@ -104,7 +104,7 @@ if [[ "$downloadcomplete" != "true" ]]; then
     waitForCurl
     rm -rf $tempfile > /dev/null 2>&1
     echo "$(date) | Downloading [$weburl] to [$tempfile]"
-    curl -f -s --connect-timeout 30 --retry 5 --retry-delay 60 -L -o $tempfile $weburl
+    curl -f -s --connect-timeout 60 --retry 10 --retry-delay 30 -L -o $tempfile $weburl
     if [ $? == 0 ]; then
          echo "$(date) | Downloaded $weburl to $tempfile"
     else
@@ -116,7 +116,6 @@ if [[ "$downloadcomplete" != "true" ]]; then
 
 fi
 
-waitForDesktop      # If we're running on an ADE device we don't want to try and install before the desktop appears
 waitForInstaller    # To avoid too much stress on the device, we'll try and only run setup when no other apps are installing
 
 echo "$(date) | Installing $appname from $tempfile"

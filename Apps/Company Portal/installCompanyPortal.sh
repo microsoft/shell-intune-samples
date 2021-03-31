@@ -24,6 +24,40 @@ weburl="https://go.microsoft.com/fwlink/?linkid=853070"
 appname="Intune Company Portal"
 log="/var/log/installcp.log"
 
+# function to check if we need Rosetta 2
+checkForRosetta2 () {
+
+    echo "$(date) | Checking if we need Rosetta 2 or not"
+
+    processor=$(/usr/sbin/sysctl -n machdep.cpu.brand_string)
+    if [[ "$processor" == *"Intel"* ]]; then
+
+        echo "$(date) | $processor processor detected, no need to install Rosetta."
+        
+    else
+
+        echo "$(date) | $processor processor detected, lets see if Rosetta 2 already installed"
+
+        # Check Rosetta LaunchDaemon. If no LaunchDaemon is found,
+        # perform a non-interactive install of Rosetta.
+        
+        if [[ ! -f "/Library/Apple/System/Library/LaunchDaemons/com.apple.oahd.plist" ]]; then
+            /usr/sbin/softwareupdate --install-rosetta --agree-to-license
+        
+            if [[ $? -eq 0 ]]; then
+                echo "$(date) | Rosetta has been successfully installed."
+            else
+                echo "$(date) | Rosetta installation failed!"
+                exit 1
+            fi
+    
+        else
+            echo "$(date) | Rosetta is already installed. Nothing to do."
+        fi
+    fi
+
+}
+
 # start logging
 
 exec 1>> $log 2>&1
@@ -36,36 +70,17 @@ echo "# $(date) | Starting install of $appname"
 echo "############################################################"
 echo ""
 
-# Let's check to see if we need Rosetta 2
-processor=$(/usr/sbin/sysctl -n machdep.cpu.brand_string | grep -o "Intel")
-if [[ -n "$processor" ]]; then
-    echo "$(date) | $processor processor installed. No need to install Rosetta."
-else
 
-    # Check Rosetta LaunchDaemon. If no LaunchDaemon is found,
-    # perform a non-interactive install of Rosetta.
-    
-    if [[ ! -f "/Library/Apple/System/Library/LaunchDaemons/com.apple.oahd.plist" ]]; then
-        /usr/sbin/softwareupdate --install-rosetta --agree-to-license
-       
-        if [[ $? -eq 0 ]]; then
-        	echo "$(date) | Rosetta has been successfully installed."
-        else
-        	echo "$(date) | Rosetta installation failed!"
-        	exit 1
-        fi
-   
-    else
-    	echo "$(date) | Rosetta is already installed. Nothing to do."
-    fi
-fi
+# Check if we're going to need Rosetta 2
+checkForRosetta2
+
 # Let's download the files we need and attempt to install...
 
 echo "$(date) | Downloading $appname"
 curl -s --connect-timeout 30 --retry 300 --retry-delay 60 -L -o $tempfile $weburl
 
 echo "$(date) | Installing $appname"
-installer -dumplog -pkg $tempfile -target /Applications
+installer -pkg $tempfile -target /Applications
 if [ "$?" = "0" ]; then
    echo "$(date) | $appname Installed"
    echo "$(date) | Cleaning Up"
