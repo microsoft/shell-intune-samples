@@ -37,8 +37,25 @@ else
     mkdir -p $logandmetadir
 fi
 
+# function to check if softwareupdate is running to prevent us from installing Rosetta at the same time as another script
+isSoftwareUpdateRunning () {
+
+    while ps aux | grep "/usr/sbin/softwareupdate" | grep -v grep; do
+
+        echo "$(date) | [/usr/sbin/softwareupdate] running, waiting..."
+        sleep 60
+
+    done
+
+    echo "$(date) | [/usr/sbin/softwareupdate] isn't running, lets carry on"
+
+}
+
 # function to check if we need Rosetta 2
 checkForRosetta2 () {
+
+    # Wait here if software update is already running
+    isSoftwareUpdateRunning
 
     echo "$(date) | Checking if we need Rosetta 2 or not"
 
@@ -72,16 +89,17 @@ checkForRosetta2 () {
 }
 
 # start logging
-
 exec 1>> $log 2>&1
 
 # Begin Script Body
-
 echo ""
 echo "##############################################################"
 echo "# $(date) | Starting install of $appname"
 echo "############################################################"
 echo ""
+
+# If another softwareupdate process is running, we should wait
+isSoftwareUpdateRunning
 
 # Let's check to see if we need Rosetta 2
 checkForRosetta2

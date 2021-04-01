@@ -24,8 +24,25 @@ weburl="https://go.microsoft.com/fwlink/?linkid=853070"
 appname="Intune Company Portal"
 log="/var/log/installcp.log"
 
+# function to check if softwareupdate is running to prevent us from installing Rosetta at the same time as another script
+isSoftwareUpdateRunning () {
+
+    while ps aux | grep "/usr/sbin/softwareupdate" | grep -v grep; do
+
+        echo "$(date) | [/usr/sbin/softwareupdate] running, waiting..."
+        sleep 60
+
+    done
+
+    echo "$(date) | [/usr/sbin/softwareupdate] isn't running, lets carry on"
+
+}
+
 # function to check if we need Rosetta 2
 checkForRosetta2 () {
+
+    # Wait here if software update is already running
+    isSoftwareUpdateRunning
 
     echo "$(date) | Checking if we need Rosetta 2 or not"
 
@@ -69,7 +86,6 @@ echo "##############################################################"
 echo "# $(date) | Starting install of $appname"
 echo "############################################################"
 echo ""
-
 
 # Check if we're going to need Rosetta 2
 checkForRosetta2

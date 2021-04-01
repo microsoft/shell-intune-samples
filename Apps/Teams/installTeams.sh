@@ -24,20 +24,71 @@ weburl="https://go.microsoft.com/fwlink/?linkid=869428"
 appname="Microsoft Teams"
 log="/var/log/installteams.log"
 
+# function to check if softwareupdate is running to prevent us from installing Rosetta at the same time as another script
+isSoftwareUpdateRunning () {
+
+    while ps aux | grep "/usr/sbin/softwareupdate" | grep -v grep; do
+
+        echo "$(date) | [/usr/sbin/softwareupdate] running, waiting..."
+        sleep 60
+
+    done
+
+    echo "$(date) | [/usr/sbin/softwareupdate] isn't running, lets carry on"
+
+}
+
+# function to check if we need Rosetta 2
+checkForRosetta2 () {
+
+    # Wait here if software update is already running
+    isSoftwareUpdateRunning
+
+    echo "$(date) | Checking if we need Rosetta 2 or not"
+
+    processor=$(/usr/sbin/sysctl -n machdep.cpu.brand_string)
+    if [[ "$processor" == *"Intel"* ]]; then
+
+        echo "$(date) | $processor processor detected, no need to install Rosetta."
+        
+    else
+
+        echo "$(date) | $processor processor detected, lets see if Rosetta 2 already installed"
+
+        # Check Rosetta LaunchDaemon. If no LaunchDaemon is found,
+        # perform a non-interactive install of Rosetta.
+        
+        if [[ ! -f "/Library/Apple/System/Library/LaunchDaemons/com.apple.oahd.plist" ]]; then
+            /usr/sbin/softwareupdate --install-rosetta --agree-to-license
+        
+            if [[ $? -eq 0 ]]; then
+                echo "$(date) | Rosetta has been successfully installed."
+            else
+                echo "$(date) | Rosetta installation failed!"
+                exit 1
+            fi
+    
+        else
+            echo "$(date) | Rosetta is already installed. Nothing to do."
+        fi
+    fi
+
+}
+
 waitForInstaller () {
-while ps aux | grep /System/Library/CoreServices/Installer.app/Contents/MacOS/Installer | grep -v grep; do
-echo "$(date) | Another installer is running, waiting 60s for it to complete"
-sleep 60
-done
-echo "$(date) | Installer not running, safe to start installing"
+   while ps aux | grep /System/Library/CoreServices/Installer.app/Contents/MacOS/Installer | grep -v grep; do
+   echo "$(date) | Another installer is running, waiting 60s for it to complete"
+   sleep 60
+   done
+   echo "$(date) | Installer not running, safe to start installing"
 }
 
 waitForCurl () {
-while ps aux | grep curl | grep -v grep; do
-echo "$(date) | Another instance of Curl is running, waiting 60s for it to complete"
-sleep 60
-done
-echo "$(date) | No Curl's running, let's start our download"
+   while ps aux | grep curl | grep -v grep; do
+   echo "$(date) | Another instance of Curl is running, waiting 60s for it to complete"
+   sleep 60
+   done
+   echo "$(date) | No Curl's running, let's start our download"
 }
 
 # start logging
@@ -51,6 +102,9 @@ echo "##############################################################"
 echo "# $(date) | Starting install of $appname"
 echo "############################################################"
 echo ""
+
+# Lets see if we need Rosetta
+checkForRosetta2
 
 # Let's download the files we need and attempt to install...
 
