@@ -31,6 +31,17 @@ terminateprocess="false"                                                  # Do w
 
 echo "# $(date) | Starting install of $appname"
 
+# function to delay download if another download is running
+waitForCurl () {
+
+     while ps aux | grep curl | grep -v grep; do
+          echo "$(date) | Another instance of Curl is running, waiting 60s for it to complete"
+          sleep 60
+     done
+     echo "$(date) | No instances of Curl found, safe to proceed"
+
+}
+
 # function to check if app is running and either terminate or wait
 isAppRunning () {
 
@@ -166,6 +177,9 @@ fi
 
 #check if we're downloading and installing
 if [ $install == "yes" ]; then
+
+    # wait for other downloads to complete
+    waitForCurl
 
     #download the file
     echo "$(date) | Downloading $appname"

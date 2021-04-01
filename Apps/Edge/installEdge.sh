@@ -3,7 +3,7 @@
 
 ############################################################################################
 ##
-## Script to install the latest Minecraft: Education Edition
+## Script to install the latest Edge stable channel from Microsoft CDN Servers
 ##
 ############################################################################################
 
@@ -15,30 +15,20 @@
 ## (including, without limitation, damages for loss of business profits, business interruption, loss of business information, or other pecuniary
 ## loss) arising out of the use of or inability to use the sample scripts or documentation, even if Microsoft has been advised of the possibility
 ## of such damages.
-## Feedback: scbree@microsoft.com
+## Feedback: neiljohn@microsoft.com
 
 # Define variables
-tempfile="/tmp/mee.dmg"
-VOLUME="/tmp/InstallMEE"
-weburl="https://aka.ms/meeclientmacos"
-appname="Minecraft Education Edition"
-app="minecraftpe.app"
-logandmetadir="/Library/Intune/Scripts/installMinecraftEducationEdition"
-log="$logandmetadir/installmee.log"
-metafile="$logandmetadir/$appname.meta"
-processpath="minecraftpe"
-lastmodified=$(curl -sIL "$weburl" | grep -i "last-modified" | awk '{$1=""; print $0}' | awk '{ sub(/^[ \t]+/, ""); print }' | tr -d '\r')
+tempfile="/tmp/edgestable.pkg"                                                                  # What filename are we going to store the downloaded files in?
+weburl="https://go.microsoft.com/fwlink/?linkid=2093504"                                        # What is the Azure Blob Storage URL?
+appname="Edge"                                                                                  # The name of our App deployment script
+app="Microsoft Edge.app"                                                                        # The actual name of our App once installed
+logandmetadir="/Library/Logs/Microsoft/IntuneScripts/installEdge"                               # The location of our logs and last updated data
+log="$logandmetadir/$appname.log"                                                               # The location of the script log file
+metafile="$logandmetadir/$appname.meta"                                                         # The location of our meta file (for updates)
+processpath="/Applications/Microsoft Edge.app/Contents/MacOS/Microsoft Edge"                    # The process name of the App we are installing
+terminateprocess="false"                                                                        # Do we want to terminate the running process? If false we'll wait until its not running
 
-
-## Check if the log directory has been created
-if [ -d $logandmetadir ]; then
-    ## Already created
-    echo "# $(date) | Log directory already exists - $logandmetadir"
-else
-    ## Creating Metadirectory
-    echo "# $(date) | creating log directory - $logandmetadir"
-    mkdir -p $logandmetadir
-fi
+echo "# $(date) | Starting install of $appname"
 
 # function to delay download if another download is running
 waitForCurl () {
@@ -51,59 +41,49 @@ waitForCurl () {
 
 }
 
-# function to check if softwareupdate is running to prevent us from installing Rosetta at the same time as another script
-isSoftwareUpdateRunning () {
+# function to check if app is running and either terminate or wait
+isAppRunning () {
 
-    while ps aux | grep "/usr/sbin/softwareupdate" | grep -v grep; do
-
-        echo "$(date) | [/usr/sbin/softwareupdate] running, waiting..."
+    while ps aux | grep "$processpath" | grep -v grep; do
+      if [ $terminateprocess == "false" ]; then
+        echo "$(date) | $app running, waiting..."
         sleep 60
-
+      else
+        echo "$(date) | $app running, terminating [$processpath]..."
+        pkill -f "$processpath"
+      fi
     done
 
-    echo "$(date) | [/usr/sbin/softwareupdate] isn't running, lets carry on"
+    echo "$(date) | $app isn't running, lets carry on"
 
 }
 
-# function to check if we need Rosetta 2
-checkForRosetta2 () {
+# function to wait if another installer process is running
+waitForInstaller () {
 
-    # Wait here if software update is already running
-    isSoftwareUpdateRunning
-
-    echo "$(date) | Checking if we need Rosetta 2 or not"
-
-    processor=$(/usr/sbin/sysctl -n machdep.cpu.brand_string)
-    if [[ "$processor" == *"Intel"* ]]; then
-
-        echo "$(date) | $processor processor detected, no need to install Rosetta."
-        
-    else
-
-        echo "$(date) | $processor processor detected, lets see if Rosetta 2 already installed"
-
-        # Check Rosetta LaunchDaemon. If no LaunchDaemon is found,
-        # perform a non-interactive install of Rosetta.
-        
-        if [[ ! -f "/Library/Apple/System/Library/LaunchDaemons/com.apple.oahd.plist" ]]; then
-            /usr/sbin/softwareupdate --install-rosetta --agree-to-license
-        
-            if [[ $? -eq 0 ]]; then
-                echo "$(date) | Rosetta has been successfully installed."
-            else
-                echo "$(date) | Rosetta installation failed!"
-                exit 1
-            fi
-    
-        else
-            echo "$(date) | Rosetta is already installed. Nothing to do."
-        fi
-    fi
+  while ps aux | grep /System/Library/CoreServices/Installer.app/Contents/MacOS/Installer | grep -v grep; do
+    echo "$(date) | Another installer is running, waiting 60s for it to complete"
+    sleep 60
+  done
+  echo "$(date) | Installer not running, safe to start installing"
 
 }
+
+# generate the last modified date of the file we need to download
+lastmodified=$(curl -sIL "$weburl" | grep -i "last-modified" | awk '{$1=""; print $0}' | awk '{ sub(/^[ \t]+/, ""); print }' | tr -d '\r')
+
+## Check if the log directory has been created
+if [ -d "$logandmetadir" ]; then
+    ## Already created
+    echo "# $(date) | Logging to - $logandmetadir"
+else
+    ## Creating Metadirectory
+    echo "# $(date) | creating log directory - $logandmetadir"
+    mkdir -p "$logandmetadir"
+fi
 
 # start logging
-exec 1>> $log 2>&1
+exec 1>> "$log" 2>&1    # Comment out this line to stop logging to a file.
 
 # Begin Script Body
 
@@ -113,33 +93,23 @@ echo "# $(date) | Starting install of $appname"
 echo "############################################################"
 echo ""
 
-# Check if we need Rosetta
-checkForRosetta2
-
 ## Is the app already installed?
 if [ -d "/Applications/$app" ]; then
 
   # App is already installed, we need to determine if it requires updating or not
   echo "$(date) | $appname already installed"
-
-  #If we're running, let's just drop out quietly
-  if pgrep -f $processpath; then
-
-    echo "$(date) | $processpath is currently running, nothing we can do here"
-    exit 1
-
-  fi
-
+  
   ## Let's determine when this file we're about to download was last modified
   echo "$(date) | $weburl last update on $lastmodified"
 
   ## Did we store the last modified date last time we installed/updated?
-  if [ -d $logandmetadir ]; then
+  if [ -d "$logandmetadir" ]; then
 
       echo "$(date) | Looking for metafile ($metafile)"
       if [ -f "$metafile" ]; then
         previouslastmodifieddate=$(cat "$metafile")
         if [[ "$previouslastmodifieddate" != "$lastmodified" ]]; then
+          echo "$(date) | Update found, previous [$previouslastmodifieddate] and current [$lastmodified]"
           install="yes"
         else
           echo "$(date) | No update between previous [$previouslastmodifieddate] and current [$lastmodified]"
@@ -167,23 +137,26 @@ if [ $install == "yes" ]; then
 
     # download the file
     echo "$(date) | Downloading $appname"
-    curl -L -f -o $tempfile $weburl
+    curl -f -s --connect-timeout 30 --retry 5 --retry-delay 60 -L -o "$tempfile" "$weburl"
+    if [ $? == 0 ]; then
+         echo "$(date) | Downloaded $weburl to $tempfile"
+    else
+    
+         echo "$(date) | Failure to download $weburl to $tempfile"
+         exit 1
+    fi
+
+    
+    # Check if app is running, if it is we need to wait.
+    isAppRunning
+
 
     echo "$(date) | Installing $appname"
 
-    # Mount the dmg file...
-    echo "$(date) | Mounting $tempfile to $VOLUME"
-    hdiutil attach -nobrowse -mountpoint $VOLUME $tempfile
+    waitForInstaller
+    installer -dumplog -pkg $tempfile -target /Applications
 
-    # Sync the application and unmount once complete
-    echo "$(date) | Copying $VOLUME/*.app to /Applications"
-    rsync -a "$VOLUME"/*.app "/Applications/"
-
-    #unmount the dmg
-    echo "$(date) | Un-mounting $VOLUME"
-    hdiutil detach -quiet "$VOLUME"
-
-    #checking if the app was installed successfully
+    # Checking if the app was installed successfully
     if [ "$?" = "0" ]; then
         if [[ -a "/Applications/$app" ]]; then
 
@@ -196,7 +169,7 @@ if [ $install == "yes" ]; then
 
             echo "$(date) | Fixing up permissions"
             sudo chown -R root:wheel "/Applications/$app"
-
+            echo "$(date) | Application [$appname] succesfully installed"
             exit 0
         else
             echo "$(date) | Failed to install $appname"

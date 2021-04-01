@@ -3,7 +3,7 @@
 
 ############################################################################################
 ##
-## Script to download latest Intune Company Portal for macOS
+## Script to download and run Octory
 ##
 ###########################################
 
@@ -19,21 +19,22 @@
 
 # Define variables
 
-tempfile="/tmp/cp.pkg"
-weburl="https://go.microsoft.com/fwlink/?linkid=853070"
-appname="Intune Company Portal"
-log="/var/log/installcp.log"
+tempfile="/tmp/octory/octory.zip"
+targetdir="/Library/Application Support/Octory"
+weburl="https://neiljohn.blob.core.windows.net/macapps/Octory.zip"
+appname="Octory"
+logandmetadir="/Library/Logs/Microsoft/IntuneScripts/installOctory"
+log="$logandmetadir/startOctory.log"
 
-# function to delay download if another download is running
-waitForCurl () {
-
-     while ps aux | grep curl | grep -v grep; do
-          echo "$(date) | Another instance of Curl is running, waiting 60s for it to complete"
-          sleep 60
-     done
-     echo "$(date) | No instances of Curl found, safe to proceed"
-
-}
+## Check if the log directory has been created
+if [ -d $logandmetadir ]; then
+    ## Already created
+    echo "$(date) | Log directory already exists - $logandmetadir"
+else
+    ## Creating Metadirectory
+    echo "$(date) | creating log directory - $logandmetadir"
+    mkdir -p $logandmetadir
+fi
 
 # function to check if softwareupdate is running to prevent us from installing Rosetta at the same time as another script
 isSoftwareUpdateRunning () {
@@ -87,7 +88,6 @@ checkForRosetta2 () {
 }
 
 # start logging
-
 exec 1>> $log 2>&1
 
 # Begin Script Body
@@ -98,28 +98,52 @@ echo "# $(date) | Starting install of $appname"
 echo "############################################################"
 echo ""
 
-# Check if we're going to need Rosetta 2
+# Check if we need Rosetta 2
 checkForRosetta2
 
-# Let's download the files we need and attempt to install...
+# function to delay until the user has finished setup assistant.
+waitForDesktop () {
+until ps aux | grep /System/Library/CoreServices/Dock.app/Contents/MacOS/Dock | grep -v grep; do
+echo "$(date) | Dock not running, waiting..."
+sleep 5
+done
+echo "$(date) | Desktop is here, lets carry on"
+}
 
-# wait for other downloads to complete
-waitForCurl
+echo "$(date) | Removing any old temp files"
+rm -rf /tmp/octory
+rm -rf /Library/Application\ Support/Octory
+mkdir -p /tmp/octory
 
-echo "$(date) | Downloading $appname"
-curl -s --connect-timeout 30 --retry 300 --retry-delay 60 -L -o $tempfile $weburl
+echo "$(date) | Downloading [$appname] from [$weburl]"
+curl -f -s --connect-timeout 30 --retry 5 --retry-delay 60 -L -o $tempfile $weburl
+cd /tmp/octory
+echo "$(date) | Unzipping binary and resource files"
+unzip -q octory.zip
+echo "$(date) | Copying to /Application Support/Octory"
+mv Octory/ /Library/Application\ Support/
+cd /Library/Application\ Support/Octory
+echo "$(date) | Setting Permissions"
+chown -R root:wheel Octory.app
+sleep 20
 
-echo "$(date) | Installing $appname"
-installer -pkg $tempfile -target /Applications
-if [ "$?" = "0" ]; then
-   echo "$(date) | $appname Installed"
-   echo "$(date) | Cleaning Up"
-   rm -rf $tempfile
-   exit 0
+waitForDesktop
+echo "$(date) | Launching Octory for user"
+Octory.app/Contents/MacOS/Octory -c Presets/Numberwang/Octory.plist
+if [[ $? -eq 0 ]]; then
+    echo "$(date) | Octory succesfully launched"
+    exit 0
 else
-  # Something went wrong here, either the download failed or the install Failed
-  # intune will pick up the exit status and the IT Pro can use that to determine what went wrong.
-  # Intune can also return the log file if requested by the admin
-   echo "$(date) | Failed to install $appname"
-   exit 1
+    echo "$(date) | Octory failed, let's try one more time"
+    sleep 20
+    Octory.app/Contents/MacOS/Octory -c Presets/Numberwang/Octory.plist
+    if [[ $? -eq 0 ]]; then
+        echo "$(date) | Octory succesfully launched"
+        exit 0
+    else
+        echo "$(date) | Octory failed on 2nd launch, let's try one more time"
+        exit 1
+    fi
 fi
+
+

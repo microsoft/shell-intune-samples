@@ -102,8 +102,8 @@ isAppRunning () {
 waitForCurl () {
 
      while ps aux | grep curl | grep -v grep; do
-          echo "$(date) | Another instance of Curl is running, waiting 5 minutes"
-          sleep 300
+          echo "$(date) | Another instance of Curl is running, waiting 3 minutes"
+          sleep 180
      done
      echo "$(date) | No instances of Curl found, safe to proceed"
 
@@ -186,11 +186,12 @@ fi
 #check if we're downloading and installing
 if [ $install == "yes" ]; then
 
-    #download the file
+
 
     # Wait for other downloads to complete before we start
     waitForCurl
 
+    # download the file
     echo "$(date) | Downloading $appname"
     curl -f -s --connect-timeout 30 --retry 5 --retry-delay 60 -L -o "$tempfile" "$weburl"
     if [ $? == 0 ]; then
