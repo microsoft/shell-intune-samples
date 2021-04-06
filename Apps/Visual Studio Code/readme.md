@@ -21,21 +21,33 @@ sudo /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/microsoft/shel
 
 ## Log File
 
-The log file will output to ***/var/log/installvscode.log*** by default. Exit status is either 0 or 1. To gather this log with Intune remotely take a look at  [Troubleshoot macOS shell script policies using log collection](https://docs.microsoft.com/en-us/mem/intune/apps/macos-shell-scripts#troubleshoot-macos-shell-script-policies-using-log-collection)
+The log file will output to ***/Library/Logs/Microsoft/IntuneScripts/installVSCode/Visual Studio Code.log*** by default. Exit status is either 0 or 1. To gather this log with Intune remotely take a look at  [Troubleshoot macOS shell script policies using log collection](https://docs.microsoft.com/en-us/mem/intune/apps/macos-shell-scripts#troubleshoot-macos-shell-script-policies-using-log-collection)
 
 ```
+Tue  6 Apr 2021 18:46:28 BST | Creating [/Library/Logs/Microsoft/IntuneScripts/installVSCode] to store logs
+
 ##############################################################
-# Fri 14 Aug 2020 14:51:37 BST | Starting install of Visual Studio Code
+# Tue  6 Apr 2021 18:46:28 BST | Logging install of [Visual Studio Code] to [/Library/Logs/Microsoft/IntuneScripts/installVSCode/Visual Studio Code.log]
 ############################################################
 
-Fri 14 Aug 2020 14:51:37 BST | Downloading Visual Studio Code
-  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
-                                 Dload  Upload   Total   Spent    Left  Speed
-  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
-100   125  100   125    0     0    350      0 --:--:-- --:--:-- --:--:--   350
-100 84.3M  100 84.3M    0     0  5953k      0  0:00:14  0:00:14 --:--:-- 6138k
-Fri 14 Aug 2020 14:51:51 BST | Unzipping /tmp/vscode.zip
-Fri 14 Aug 2020 14:51:57 BST | Copying files to /Applications
-Fri 14 Aug 2020 14:51:58 BST | Fixing up permissions
-Fri 14 Aug 2020 14:51:58 BST | Cleaning up tmp files
+Tue  6 Apr 2021 18:46:28 BST | Checking if we need Rosetta 2 or not
+Tue  6 Apr 2021 18:46:29 BST | [Intel(R) Core(TM) i9-9880H CPU @ 2.30GHz] found, Rosetta not needed
+Tue  6 Apr 2021 18:46:29 BST | Checking if we need to install or update [Visual Studio Code]
+Tue  6 Apr 2021 18:46:29 BST | [Visual Studio Code] not installed, need to download and install
+Tue  6 Apr 2021 18:46:29 BST | Starting downlading of [Visual Studio Code]
+Tue  6 Apr 2021 18:46:29 BST | Waiting for other Curl processes to end
+Tue  6 Apr 2021 18:46:29 BST | No instances of Curl found, safe to proceed
+Tue  6 Apr 2021 18:46:29 BST | Downloading Visual Studio Code
+Tue  6 Apr 2021 18:46:46 BST | Downloaded [Visual Studio Code.app]
+Tue  6 Apr 2021 18:46:46 BST | Checking if the application is running
+Tue  6 Apr 2021 18:46:46 BST | [Visual Studio Code] isn't running, lets carry on
+Tue  6 Apr 2021 18:46:46 BST | Installing Visual Studio Code
+Tue  6 Apr 2021 18:46:52 BST | /tmp/vscode.zip unzipped
+Tue  6 Apr 2021 18:47:15 BST | Visual Studio Code moved into /Applications
+Tue  6 Apr 2021 18:47:15 BST | Fix up permissions
+Tue  6 Apr 2021 18:47:15 BST | correctly applied permissions to Visual Studio Code
+Tue  6 Apr 2021 18:47:15 BST | Visual Studio Code Installed
+Tue  6 Apr 2021 18:47:16 BST | Cleaning Up
+Tue  6 Apr 2021 18:47:16 BST | Writing last modifieddate  to /Library/Logs/Microsoft/IntuneScripts/installVSCode/Visual Studio Code.meta
+Tue  6 Apr 2021 18:47:16 BST | Fixing up permissions
 ```
