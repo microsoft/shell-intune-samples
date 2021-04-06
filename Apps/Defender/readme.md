@@ -5,7 +5,7 @@ This script is an example to show how to use [Intune Shell Scripting](https://do
 ## Quick Run
 
 ```
-sudo /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/microsoft/shell-intune-samples/master/Apps/Company%20Portal/installCompanyPortal.sh)" ; open "/Applications/Company Portal.app"
+sudo /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/microsoft/shell-intune-samples/master/Apps/Defender/installDefender.sh)" 
 ```
 
 ## Script Settings
@@ -20,25 +20,33 @@ sudo /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/microsoft/shel
 The log file will output to ***/Library/Logs/Microsoft/IntuneScripts/installDefender*** by default. Exit status is either 0 or 1. To gather this log with Intune remotely take a look at  [Troubleshoot macOS shell script policies using log collection](https://docs.microsoft.com/en-us/mem/intune/apps/macos-shell-scripts#troubleshoot-macos-shell-script-policies-using-log-collection)
 
 ```
+Tue  6 Apr 2021 18:17:39 BST | Creating [/Library/Logs/Microsoft/IntuneScripts/installDefender] to store logs
+
 ##############################################################
-# Wed 31 Mar 2021 05:53:50 PDT | Starting install of Defender
+# Tue  6 Apr 2021 18:17:39 BST | Logging install of [Microsoft Defender ATP] to [/Library/Logs/Microsoft/IntuneScripts/installDefender/Microsoft Defender ATP.log]
 ############################################################
 
-Wed 31 Mar 2021 05:53:50 PDT | Checking if we need Rosetta 2 or not
-Wed 31 Mar 2021 05:53:50 PDT | Intel(R) Core(TM) i9-9880H CPU @ 2.30GHz processor detected, no need to install Rosetta.
-Wed 31 Mar 2021 05:53:50 PDT | No instances of Curl found, safe to proceed
-Wed 31 Mar 2021 05:53:50 PDT | Downloading Defender
-Wed 31 Mar 2021 05:54:46 PDT | Downloaded https://go.microsoft.com/fwlink/?linkid=2097502 to /tmp/defender.pkg
-Wed 31 Mar 2021 05:54:46 PDT | Microsoft Defender ATP.app isn't running, lets carry on
-Wed 31 Mar 2021 05:54:47 PDT | No instances of Curl found, safe to proceed
-Wed 31 Mar 2021 05:54:47 PDT | Installer not running, safe to start installing
-Wed 31 Mar 2021 05:54:47 PDT | Installing Defender
+Tue  6 Apr 2021 18:17:39 BST | Checking if we need Rosetta 2 or not
+Tue  6 Apr 2021 18:17:40 BST | [Intel(R) Core(TM) i9-9880H CPU @ 2.30GHz] found, Rosetta not needed
+Tue  6 Apr 2021 18:17:40 BST | Checking if we need to install or update [Microsoft Defender ATP]
+Tue  6 Apr 2021 18:17:40 BST | [Microsoft Defender ATP] not installed, need to download and install
+Tue  6 Apr 2021 18:17:40 BST | Starting downlading of [Microsoft Defender ATP]
+Tue  6 Apr 2021 18:17:40 BST | Waiting for other Curl processes to end
+Tue  6 Apr 2021 18:17:40 BST | No instances of Curl found, safe to proceed
+Tue  6 Apr 2021 18:17:40 BST | Downloading Microsoft Defender ATP
+Tue  6 Apr 2021 18:18:35 BST | Downloaded [Microsoft Defender ATP.app]
+Tue  6 Apr 2021 18:18:35 BST | Checking if the application is running
+Tue  6 Apr 2021 18:18:35 BST | [Microsoft Defender ATP] isn't running, lets carry on
+Tue  6 Apr 2021 18:18:35 BST | Installing Microsoft Defender ATP
+Tue  6 Apr 2021 18:18:35 BST | Installer not running, safe to start installing
+Tue  6 Apr 2021 18:18:35 BST | Waiting for other Curl processes to end
+Tue  6 Apr 2021 18:18:35 BST | No instances of Curl found, safe to proceed
 installer: Package name is Microsoft Defender ATP
 installer: Upgrading at base path /
 installer: The upgrade was successful.
-Wed 31 Mar 2021 05:55:34 PDT | Defender Installed
-Wed 31 Mar 2021 05:55:34 PDT | Cleaning Up
-Wed 31 Mar 2021 05:55:34 PDT | Writing last modifieddate Tue, 02 Mar 2021 10:22:11 GMT to /Library/Logs/Microsoft/IntuneScripts/installDefender/Defender.meta
-Wed 31 Mar 2021 05:55:34 PDT | Fixing up permissions
-Wed 31 Mar 2021 05:55:34 PDT | Application [Defender] succesfully installed
+Tue  6 Apr 2021 18:19:13 BST | Microsoft Defender ATP Installed
+Tue  6 Apr 2021 18:19:13 BST | Cleaning Up
+Tue  6 Apr 2021 18:19:13 BST | Writing last modifieddate  to /Library/Logs/Microsoft/IntuneScripts/installDefender/Microsoft Defender ATP.meta
+Tue  6 Apr 2021 18:19:13 BST | Application [Microsoft Defender ATP] succesfully installed
+Tue  6 Apr 2021 18:19:13 BST | Writing last modifieddate [Tue, 02 Mar 2021 10:22:11 GMT] to [/Library/Logs/Microsoft/IntuneScripts/installDefender/Microsoft Defender ATP.meta]
 ```

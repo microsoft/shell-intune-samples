@@ -3,7 +3,7 @@
 
 ############################################################################################
 ##
-## Script to install the latest GNU Image Manipulation Program (GIMP) from Azure Blob Storage
+## Script to install the latest Company Portal
 ##
 ############################################################################################
 
@@ -52,8 +52,8 @@ waitForCurl () {
 
     echo "$(date) | Waiting for other Curl processes to end"
      while ps aux | grep curl | grep -v grep &>/dev/null; do
-          echo "$(date) |  + Another instance of Curl is running, waiting 60s"
-          sleep 60
+          echo "$(date) |  + Another instance of Curl is running, waiting 10s"
+          sleep 10
      done
      echo "$(date) | No instances of Curl found, safe to proceed"
 
@@ -83,8 +83,8 @@ isAppRunning () {
     echo "$(date) | Checking if the application is running"
     while ps aux | grep "$processpath" | grep -v grep &>/dev/null; do
       if [ $terminateprocess == "false" ]; then
-        echo "$(date) |  + [$appname] running, waiting 60s..."
-        sleep 60
+        echo "$(date) |  + [$appname] running, waiting 5m..."
+        sleep 300
       else
         echo "$(date) | + [$appname] running, terminating [$processpath]..."
         pkill -f "$processpath"
@@ -120,7 +120,7 @@ checkForRosetta2 () {
     while ps aux | grep "/usr/sbin/softwareupdate" | grep -v grep &>/dev/null; do
 
         echo "$(date) | [/usr/sbin/softwareupdate] running, waiting 60s"
-        sleep 60
+        sleep 10
 
     done
 
@@ -337,6 +337,12 @@ function installPKG () {
 
     waitForInstaller
     updateOctory installing
+
+    # Remove existing files if present
+    if [[ -d "/Applications/$app" ]]; then
+        rm -rf "/Applications/$app"
+    fi
+
     installer -pkg $tempfile -target /Applications
 
     # Checking if the app was installed successfully
@@ -382,9 +388,12 @@ function updateOctory () {
 
     # Is Octory present
     if [[ -a "/Library/Application Support/Octory" ]]; then
-        echo "$(date) | Octory found, attempting to send status updates"
-        echo "$(date) | Updating Octory monitor for [$appname] to [$1]"
-        /Library/Application\ Support/Octory/octo-notifier monitor "$appname" --state $1 >/dev/null
+
+        # Octory is installed, but is it running?
+        if [[ $(ps aux | grep -i "Octory" | grep -v grep) ]]; then
+            echo "$(date) | Updating Octory monitor for [$appname] to [$1]"
+            /Library/Application\ Support/Octory/octo-notifier monitor "$appname" --state $1 >/dev/null
+        fi
     fi
 
 }
