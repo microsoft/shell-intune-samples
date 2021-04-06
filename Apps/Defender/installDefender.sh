@@ -52,7 +52,7 @@ waitForCurl () {
     echo "$(date) | Waiting for other Curl processes to end"
      while ps aux | grep curl | grep -v grep &>/dev/null; do
           echo "$(date) |  + Another instance of Curl is running, waiting 10s"
-          sleep 10
+          sleep 60
      done
      echo "$(date) | No instances of Curl found, safe to proceed"
 
