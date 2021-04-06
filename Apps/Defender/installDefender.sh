@@ -18,18 +18,17 @@
 ## Feedback: neiljohn@microsoft.com
 
 # User Defined variables
-tempfile="/tmp/defender.pkg"                                                          # What filename are we going to store the downloaded files in?
-weburl="https://go.microsoft.com/fwlink/?linkid=2097502"                         # What is the Azure Blob Storage URL?
-appname="Microsoft Defender ATP"                                                        # The name of our App deployment script (also used for Octory monitor)
-app="Microsoft Defender ATP.app"                                                        # The actual name of our App once installed
+tempfile="/tmp/defender.pkg"                                               # What filename are we going to store the downloaded files in?
+weburl="https://go.microsoft.com/fwlink/?linkid=2097502"                   # What is the Azure Blob Storage URL?
+appname="Microsoft Defender ATP"                                           # The name of our App deployment script (also used for Octory monitor)
+app="Microsoft Defender ATP.app"                                           # The actual name of our App once installed
 logandmetadir="/Library/Logs/Microsoft/IntuneScripts/installDefender"      # The location of our logs and last updated data
 processpath="/Applications/Microsoft Defender ATP.app/Contents/MacOS/Microsoft Defender.app/Contents/MacOS/Microsoft Defender"    # The process name of the App we are installing
-terminateprocess="true"                                                        # Do we want to terminate the running process? If false we'll wait until its not running
+terminateprocess="true"                                                    # Do we want to terminate the running process? If false we'll wait until its not running
 
 # Generated variables
 log="$logandmetadir/$appname.log"                                         # The location of the script log file
 metafile="$logandmetadir/$appname.meta"                                   # The location of our meta file (for updates)
-volume="/tmp/$appname"
 
 # function to delay download if another download is running
 waitForCurl () {
