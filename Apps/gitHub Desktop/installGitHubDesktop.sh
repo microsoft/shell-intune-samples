@@ -21,22 +21,40 @@
 tempdir="/tmp"
 tempfile="/tmp/githubdesktop.zip"                                                              # What filename are we going to store the downloaded files in?
 weburl="https://neiljohn.blob.core.windows.net/macapps/GitHubDesktop.zip"                      # What is the Azure Blob Storage URL?
-appname="gitHub_Desktop"                                                                       # The name of our App deployment script
+appname="GitHub Desktop"                                                                       # The name of our App deployment script
 app="GitHub Desktop.app"                                                                       # The actual name of our App once installed
 logandmetadir="/Library/Logs/Microsoft/IntuneScripts/installGitHubDesktop"                     # The location of our logs and last updated data
-log="$logandmetadir/$appname.log"                                                              # The location of the script log file
-metafile="$logandmetadir/$appname.meta"                                                        # The location of our meta file (for updates)
-processpath="/Applications/GitHub Desktop.app/Contents/MacOS/GitHub Desktop"                  # The process name of the App we are installing
+processpath="/Applications/GitHub Desktop.app/Contents/MacOS/GitHub Desktop"                   # The process name of the App we are installing
 terminateprocess="false"                                                                       # Do we want to terminate the running process? If false we'll wait until its not running
 
-echo "# $(date) | Starting install of $appname"
+# Generated variables
+log="$logandmetadir/$appname.log"                                         # The location of the script log file
+metafile="$logandmetadir/$appname.meta"                                   # The location of our meta file (for updates)
+volume="/tmp/$appname"
 
 # function to delay download if another download is running
 waitForCurl () {
 
-     while ps aux | grep curl | grep -v grep; do
-          echo "$(date) | Another instance of Curl is running, waiting 60s for it to complete"
-          sleep 60
+    #################################################################################################################
+    #################################################################################################################
+    ##
+    ##  Function to pause while other Curl processes are running to avoid swamping the network connection
+    ##
+    ##  Functions used
+    ##
+    ##      None
+    ##
+    ##  Variables used
+    ##
+    ##      None
+    ##
+    ###############################################################
+    ###############################################################
+
+    echo "$(date) | Waiting for other Curl processes to end"
+     while ps aux | grep -i curl | grep -v grep &>/dev/null; do
+          echo "$(date) |  + Another instance of Curl is running, waiting 10s"
+          sleep 10
      done
      echo "$(date) | No instances of Curl found, safe to proceed"
 
@@ -45,50 +63,76 @@ waitForCurl () {
 # function to check if app is running and either terminate or wait
 isAppRunning () {
 
-    while ps aux | grep "$processpath" | grep -v grep; do
+    #################################################################################################################
+    #################################################################################################################
+    ##
+    ##  Function to either terminate running application or wait until user closes it before we update
+    ##
+    ##  Functions used
+    ##
+    ##      None
+    ##
+    ##  Variables used
+    ##
+    ##      $terminateprocess = global variable if "true", kill the process or "false" wait until it's closed by the user
+    ##      $processpath = path to application binary
+    ##      $appname = Description of the App we are installing
+    ##
+    ###############################################################
+    ###############################################################
+
+    echo "$(date) | Checking if the application is running"
+    while ps aux | grep -i "$processpath" | grep -v grep &>/dev/null; do
       if [ $terminateprocess == "false" ]; then
-        echo "$(date) | $app running, waiting..."
-        sleep 60
+        echo "$(date) |  + [$appname] running, waiting 5m..."
+        sleep 300
       else
-        echo "$(date) | $app running, terminating [$processpath]..."
+        echo "$(date) | + [$appname] running, terminating [$processpath]..."
         pkill -f "$processpath"
       fi
     done
 
-    echo "$(date) | $app isn't running, lets carry on"
-
-}
-
-# function to check if softwareupdate is running to prevent us from installing Rosetta at the same time as another script
-isSoftwareUpdateRunning () {
-
-    while ps aux | grep "/usr/sbin/softwareupdate" | grep -v grep; do
-
-        echo "$(date) | [/usr/sbin/softwareupdate] running, waiting..."
-        sleep 60
-
-    done
-
-    echo "$(date) | [/usr/sbin/softwareupdate] isn't running, lets carry on"
+    echo "$(date) | [$appname] isn't running, lets carry on"
 
 }
 
 # function to check if we need Rosetta 2
 checkForRosetta2 () {
 
-    # Wait here if software update is already running
-    isSoftwareUpdateRunning
+    #################################################################################################################
+    #################################################################################################################
+    ##
+    ##  Simple function to install Rosetta 2 if needed.
+    ##
+    ##  Functions
+    ##
+    ##      isSoftwareUpdateRunning (pauses check if softwareupdate already running since it could be in the process of installing Rosetta anyway)
+    ##
+    ##  Variables
+    ##
+    ##      None
+    ##
+    ###############################################################
+    ###############################################################
 
     echo "$(date) | Checking if we need Rosetta 2 or not"
+
+    # if Software update is already running, we need to wait...
+    while ps aux | grep -i "/usr/sbin/softwareupdate" | grep -v grep &>/dev/null; do
+
+        echo "$(date) | [/usr/sbin/softwareupdate] running, waiting 10s"
+        sleep 10
+
+    done
 
     processor=$(/usr/sbin/sysctl -n machdep.cpu.brand_string)
     if [[ "$processor" == *"Intel"* ]]; then
 
-        echo "$(date) | $processor processor detected, no need to install Rosetta."
+        echo "$(date) | [$processor] found, Rosetta not needed"
         
     else
 
-        echo "$(date) | $processor processor detected, lets see if Rosetta 2 already installed"
+        echo "$(date) | [$processor] founbd, is Rosetta already installed?"
 
         # Check Rosetta LaunchDaemon. If no LaunchDaemon is found,
         # perform a non-interactive install of Rosetta.
@@ -110,102 +154,179 @@ checkForRosetta2 () {
 
 }
 
-# function to wait if another installer process is running
-waitForInstaller () {
+# Function to update the last modified date for this app
+fetchLastModifiedDate() {
 
-  while ps aux | grep "/System/Library/CoreServices/Installer.app/Contents/MacOS/Installer" | grep -v grep; do
-    echo "$(date) | Another installer is running, waiting 60s for it to complete"
-    sleep 60
-  done
-  echo "$(date) | Installer not running, safe to start installing"
+    #################################################################################################################
+    #################################################################################################################
+    ##
+    ##  This function takes the following global variables and downloads the URL provided to a temporary location
+    ##
+    ##  Functions
+    ##
+    ##      none
+    ##
+    ##  Variables
+    ##
+    ##      $logandmetadir = Directory to read nand write meta data to
+    ##      $metafile = Location of meta file (used to store last update time)
+    ##      $weburl = URL of download location
+    ##      $tempfile = location of temporary DMG file downloaded
+    ##      $lastmodified = Generated by the function as the last-modified http header from the curl request
+    ##
+    ##  Notes
+    ##
+    ##      If called with "fetchLastModifiedDate update" the function will overwrite the current lastmodified date into metafile
+    ##
+    ###############################################################
+    ###############################################################
+
+    ## Check if the log directory has been created
+    if [[ ! -d "$logandmetadir" ]]; then
+        ## Creating Metadirectory
+        echo "$(date) | Creating [$logandmetadir] to store metadata"
+        mkdir -p "$logandmetadir"
+    fi
+
+    # generate the last modified date of the file we need to download
+    lastmodified=$(curl -sIL "$weburl" | grep -i "last-modified" | awk '{$1=""; print $0}' | awk '{ sub(/^[ \t]+/, ""); print }' | tr -d '\r')
+
+    if [[ $1 == "update" ]]; then
+        echo "$(date) | Writing last modifieddate [$lastmodified] to [$metafile]"
+        echo "$lastmodified" > "$metafile"
+    fi
 
 }
 
-# generate the last modified date of the file we need to download
-lastmodified=$(curl -sIL "$weburl" | grep -i "last-modified" | awk '{$1=""; print $0}' | awk '{ sub(/^[ \t]+/, ""); print }' | tr -d '\r')
+function downloadApp () {
 
-## Check if the log directory has been created
-if [ -d "$logandmetadir" ]; then
-    ## Already created
-    echo "# $(date) | Logging to - $logandmetadir"
-else
-    ## Creating Metadirectory
-    echo "# $(date) | creating log directory - $logandmetadir"
-    mkdir -p "$logandmetadir"
-fi
+    #################################################################################################################
+    #################################################################################################################
+    ##
+    ##  This function takes the following global variables and downloads the URL provided to a temporary location
+    ##
+    ##  Functions
+    ##
+    ##      waitForCurl (Pauses download until all other instances of Curl have finished)
+    ##      downloadSize (Generates human readable size of the download for the logs)
+    ##
+    ##  Variables
+    ##
+    ##      $appname = Description of the App we are installing
+    ##      $weburl = URL of download location
+    ##      $tempfile = location of temporary DMG file downloaded
+    ##
+    ###############################################################
+    ###############################################################
 
-# start logging
-exec 1>> "$log" 2>&1    # Comment out this line to stop logging to a file.
+    echo "$(date) | Starting downlading of [$appname]"
 
-# Begin Script Body
-
-echo ""
-echo "##############################################################"
-echo "# $(date) | Starting install of $appname"
-echo "############################################################"
-echo ""
-
-# Install Rosetta if we need it
-checkForRosetta2
-
-## Is the app already installed?
-if [ -d "/Applications/$app" ]; then
-
-  # App is already installed, we need to determine if it requires updating or not
-  echo "$(date) | $appname already installed"
-  
-  ## Let's determine when this file we're about to download was last modified
-  echo "$(date) | $weburl last update on $lastmodified"
-
-  ## Did we store the last modified date last time we installed/updated?
-  if [ -d "$logandmetadir" ]; then
-
-      echo "$(date) | Looking for metafile ($metafile)"
-      if [ -f "$metafile" ]; then
-        previouslastmodifieddate=$(cat "$metafile")
-        if [[ "$previouslastmodifieddate" != "$lastmodified" ]]; then
-          echo "$(date) | Update found, previous [$previouslastmodifieddate] and current [$lastmodified]"
-          install="yes"
-        else
-          echo "$(date) | No update between previous [$previouslastmodifieddate] and current [$lastmodified]"
-          exit 0
-        fi
-      else
-        echo "$(date) | Meta file $metafile notfound, downloading anyway"
-        install="yes"
-      fi
-      
-  fi
-
-else
-
-  # App isn't installed, lets download and get ready for install
-  install="yes"
-
-fi
-
-#check if we're downloading and installing
-if [ $install == "yes" ]; then
-
-    # wait for other downloads to finish
+    # wait for other downloads to complete
     waitForCurl
 
     #download the file
+    updateOctory installing
     echo "$(date) | Downloading $appname"
+
     curl -f -s --connect-timeout 30 --retry 5 --retry-delay 60 -L -o "$tempfile" "$weburl"
     if [ $? == 0 ]; then
-         echo "$(date) | Downloaded $weburl to $tempfile"
+         echo "$(date) | Downloaded [$app]"
     else
     
-         echo "$(date) | Failure to download $weburl to $tempfile"
+         echo "$(date) | Failure to download [$weburl] to [$tempfile]"
          exit 1
     fi
 
-    
+}
+
+# Function to check if we need to update or not
+function updateCheck() {
+
+    #################################################################################################################
+    #################################################################################################################
+    ##
+    ##  This function takes the following dependencies and variables and exits if no update is required
+    ##
+    ##  Functions
+    ##
+    ##      fetchLastModifiedDate
+    ##
+    ##  Variables
+    ##
+    ##      $appname = Description of the App we are installing
+    ##      $tempfile = location of temporary DMG file downloaded
+    ##      $volume = name of volume mount point
+    ##      $app = name of Application directory under /Applications
+    ##
+    ###############################################################
+    ###############################################################
+
+
+    echo "$(date) | Checking if we need to install or update [$appname]"
+
+    ## Is the app already installed?
+    if [ -d "/Applications/$app" ]; then
+
+    # App is already installed, we need to determine if it requires updating or not
+        echo "$(date) | [$appname] already installed, let's see if we need to update"
+        fetchLastModifiedDate
+
+        ## Did we store the last modified date last time we installed/updated?
+        if [[ -d "$logandmetadir" ]]; then
+
+            if [ -f "$metafile" ]; then
+                previouslastmodifieddate=$(cat "$metafile")
+                if [[ "$previouslastmodifieddate" != "$lastmodified" ]]; then
+                    echo "$(date) | Update found, previous [$previouslastmodifieddate] and current [$lastmodified]"
+                    update="update"
+                else
+                    echo "$(date) | No update between previous [$previouslastmodifieddate] and current [$lastmodified]"
+                    echo "$(date) | Exiting, nothing to do"
+                    exit 0
+                fi
+            else
+                echo "$(date) | Meta file [$metafile] not found"
+                echo "$(date) | Unable to determine if update required, updating [$appname] anyway"
+
+            fi
+            
+        fi
+
+    else
+        echo "$(date) | [$appname] not installed, need to download and install"
+    fi
+
+}
+
+## Install DMG Function
+function installZIP () {
+
+    #################################################################################################################
+    #################################################################################################################
+    ##
+    ##  This function takes the following global variables and installs the DMG file into /Applications
+    ##
+    ##  Functions
+    ##
+    ##      isAppRunning (Pauses installation if the process defined in global variable $processpath is running )
+    ##      fetchLastModifiedDate (Called with update flag which causes the function to write the new lastmodified date to the metadata file)
+    ##
+    ##  Variables
+    ##
+    ##      $appname = Description of the App we are installing
+    ##      $tempfile = location of temporary DMG file downloaded
+    ##      $volume = name of volume mount point
+    ##      $app = name of Application directory under /Applications
+    ##
+    ###############################################################
+    ###############################################################
+
+
     # Check if app is running, if it is we need to wait.
     isAppRunning
 
     echo "$(date) | Installing $appname"
+    updateOctory installing
 
     cd "$tempdir"
     rm -rf "$app"
@@ -214,6 +335,7 @@ if [ $install == "yes" ]; then
       echo "$(date) | $tempfile unzipped"
     else
       echo "$(date) | failed to unzip $tmpfile"
+      updateOctory failed
       exit 1
     fi
 
@@ -229,6 +351,7 @@ if [ $install == "yes" ]; then
       echo "$(date) | $appname moved into /Applications"
     else
       echo "$(date) | failed to move $appname to /Applications"
+      updateOctory failed
       exit 1
     fi
 
@@ -238,6 +361,7 @@ if [ $install == "yes" ]; then
       echo "$(date) | correctly applied permissions to $appname"
     else
       echo "$(date) | failed to apply permissions to $appname"
+      updateOctory failed
       exit 1
     fi
 
@@ -246,6 +370,7 @@ if [ $install == "yes" ]; then
         if [[ -a "/Applications/$app" ]]; then
 
             echo "$(date) | $appname Installed"
+            updateOctory installed
             echo "$(date) | Cleaning Up"
             rm -rf "$tempfile"
 
@@ -269,7 +394,83 @@ if [ $install == "yes" ]; then
         echo "$(date) | Failed to install $appname"
         exit 1
     fi
+}
 
-else
-    echo "$(date) | Not downloading or installing $appname"
-fi
+function updateOctory () {
+
+    #################################################################################################################
+    #################################################################################################################
+    ##
+    ##  This function is designed to update Octory status (if required)
+    ##
+    ##
+    ##  Parameters (updateOctory parameter)
+    ##
+    ##      notInstalled
+    ##      installing
+    ##      installed
+    ##
+    ###############################################################
+    ###############################################################
+
+    # Is Octory present
+    if [[ -a "/Library/Application Support/Octory" ]]; then
+
+        # Octory is installed, but is it running?
+        if [[ $(ps aux | grep -i "Octory" | grep -v grep) ]]; then
+            echo "$(date) | Updating Octory monitor for [$appname] to [$1]"
+            /Library/Application\ Support/Octory/octo-notifier monitor "$appname" --state $1 >/dev/null
+        fi
+    fi
+
+}
+
+function startLog() {
+
+    ###################################################
+    ###################################################
+    ##
+    ##  start logging - Output to log file and STDOUT
+    ##
+    ####################
+    ####################
+
+    if [[ ! -d "$logandmetadir" ]]; then
+        ## Creating Metadirectory
+        echo "$(date) | Creating [$logandmetadir] to store logs"
+        mkdir -p "$logandmetadir"
+    fi
+
+    exec &> >(tee -a "$log")
+    
+}
+
+###################################################################################
+###################################################################################
+##
+## Begin Script Body
+##
+#####################################
+#####################################
+
+# Initiate logging
+startLog
+
+echo ""
+echo "##############################################################"
+echo "# $(date) | Logging install of [$appname] to [$log]"
+echo "############################################################"
+echo ""
+
+# Install Rosetta if we need it
+checkForRosetta2
+
+# Test if we need to install or update
+updateCheck
+
+# Download app
+downloadApp
+
+# Install ZIP file
+installZIP
+
