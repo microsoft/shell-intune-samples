@@ -32,6 +32,37 @@ sudo /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/microsoft/shel
 - Script frequency : Not Configured
 - Number of times to retry if script fails : 3
 
+### Log File
+
+```
+
+##############################################################
+# Tue  6 Apr 2021 18:58:21 BST | Logging install of [Microsoft Office] to [/Library/Logs/Microsoft/IntuneScripts/installOffice/Microsoft Office.log]
+############################################################
+
+Tue  6 Apr 2021 18:58:21 BST | Checking if we need Rosetta 2 or not
+Tue  6 Apr 2021 18:58:21 BST | [Intel(R) Core(TM) i9-9880H CPU @ 2.30GHz] found, Rosetta not needed
+Tue  6 Apr 2021 18:58:21 BST | Checking if we need to install or update [Microsoft Office]
+Tue  6 Apr 2021 18:58:21 BST | Meta file [/Library/Logs/Microsoft/IntuneScripts/installOffice/Microsoft Office.meta] not found
+Tue  6 Apr 2021 18:58:21 BST | Unable to determine if update required, updating [Microsoft Office] anyway
+Tue  6 Apr 2021 18:58:21 BST | Starting downlading of [Microsoft Office]
+Tue  6 Apr 2021 18:58:21 BST | Waiting for other Curl processes to end
+Tue  6 Apr 2021 18:58:21 BST | No instances of Curl found, safe to proceed
+Tue  6 Apr 2021 18:58:21 BST | Downloading [http://192.168.68.139/Office365forMac/Office365AppsFormacOS.pkg] to [/tmp/office.pkg]
+Tue  6 Apr 2021 18:58:51 BST | Local copy of Microsoft Office downloaded at /tmp/office.pkg
+Tue  6 Apr 2021 18:58:51 BST | Installing Microsoft Office
+Tue  6 Apr 2021 18:58:51 BST | Updating Octory monitor for [Microsoft Office] to [installing]
+installer: Package name is Microsoft Office
+installer: Upgrading at base path /
+installer: The upgrade was successful.
+Tue  6 Apr 2021 19:01:19 BST | Microsoft Office Installed
+Tue  6 Apr 2021 19:01:19 BST | Cleaning Up
+Tue  6 Apr 2021 19:01:19 BST | Writing last modifieddate Mon, 15 Mar 2021 15:01:23 GMT to /Library/Logs/Microsoft/IntuneScripts/installOffice/Microsoft Office.meta
+Tue  6 Apr 2021 19:01:19 BST | Application [Microsoft Office] succesfully installed
+Tue  6 Apr 2021 19:01:20 BST | Writing last modifieddate [Mon, 15 Mar 2021 15:01:23 GMT] to [/Library/Logs/Microsoft/IntuneScripts/installOffice/Microsoft Office.meta]
+```
+
+
 ## installOfficeSuiteIndividualApps.sh
 
 This scripts intended usage scenario is to install the individual apps within Office Business Pro for Mac. It has a defined array of apps that you want to install and the script will download and install only those apps.
