@@ -182,16 +182,10 @@ function downloadApp () {
 
     echo "$(date) | Starting downlading of [$appname]"
 
-
-
-    # wait for other downloads to complete
-    waitForCurl
-
-    updateOctory installing
-
     # If local copy is defined, let's try and download it...
     if [ $localcopy ]; then
 
+        updateOctory installing
         # Check to see if we can access our local copy of Office
         echo "$(date) | Downloading [$localcopy] to [$tempfile]"
         rm -rf $tempfile > /dev/null 2>&1
@@ -206,6 +200,7 @@ function downloadApp () {
     if [[ "$downloadcomplete" != "true" ]]; then
 
         waitForCurl
+        updateOctory installing
         rm -rf $tempfile > /dev/null 2>&1
         echo "$(date) | Downloading [$weburl] to [$tempfile]"
         curl -f -s --connect-timeout 60 --retry 10 --retry-delay 30 -L -o "$tempfile" "$weburl"
