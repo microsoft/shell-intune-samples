@@ -9,7 +9,7 @@ This scripts intended usage scenario is for DEP/ADE enrolled Macs that need to c
 ## Quick Run
 
 ```
-sudo /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/microsoft/shell-intune-samples/master/Apps/Skype/installSkype.sh)"
+sudo /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/microsoft/shell-intune-samples/master/Apps/Skype%20for%20Business/installSFB.sh)"
 ```
 
 ## Script Settings
