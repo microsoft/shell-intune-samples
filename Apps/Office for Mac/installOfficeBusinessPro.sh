@@ -29,13 +29,13 @@ terminateprocess="true"                                                         
 log="$logandmetadir/$appname.log"                                         # The location of the script log file
 metafile="$logandmetadir/$appname.meta"                                   # The location of our meta file (for updates)
 
-# function to delay download if another download is running
-waitForCurl () {
+# function to delay script if the specified process is running
+waitForProcess () {
 
     #################################################################################################################
     #################################################################################################################
     ##
-    ##  Function to pause while other Curl processes are running to avoid swamping the network connection
+    ##  Function to pause while a specified process is running
     ##
     ##  Functions used
     ##
@@ -43,20 +43,38 @@ waitForCurl () {
     ##
     ##  Variables used
     ##
-    ##      None
+    ##      $1 = name of process to check for
     ##
     ###############################################################
     ###############################################################
 
-    echo "$(date) | Waiting for other Curl processes to end"
-     while ps aux | grep curl | grep -v grep &>/dev/null; do
-          echo "$(date) |  + Another instance of Curl is running, waiting 10s"
-          sleep 10
-     done
-     echo "$(date) | No instances of Curl found, safe to proceed"
+    processName=$1
+    fixedDelay=$2
+    terminate=$3
+
+    echo "$(date) | Waiting for other [$processName] processes to end"
+    while ps aux | grep "$processName" | grep -v grep &>/dev/null; do
+
+        if [[ $terminate == "true" ]]; then
+            echo "$(date) | + [$appname] running, terminating [$processpath]..."
+            pkill -f "$processName"
+            return
+        fi
+
+        # If we've been passed a delay we should use it, otherwise we'll create a random delay each run
+        if [[ ! $fixedDelay ]]; then
+            delay=$(( $RANDOM % 50 + 10 ))
+        else
+            delay=$fixedDelay
+        fi
+
+        echo "$(date) |  + Another instance of $processName is running, waiting [$delay] seconds"
+        sleep $delay
+    done
+    
+    echo "$(date) | No instances of [$processName] found, safe to proceed"
 
 }
-
 
 # function to check if we need Rosetta 2
 checkForRosetta2 () {
@@ -80,12 +98,7 @@ checkForRosetta2 () {
     echo "$(date) | Checking if we need Rosetta 2 or not"
 
     # if Software update is already running, we need to wait...
-    while ps aux | grep "/usr/sbin/softwareupdate" | grep -v grep &>/dev/null; do
-
-        echo "$(date) | [/usr/sbin/softwareupdate] running, waiting 60s"
-        sleep 10
-
-    done
+    waitForProcess "/usr/sbin/softwareupdate"
 
     processor=$(/usr/sbin/sysctl -n machdep.cpu.brand_string)
     if [[ "$processor" == *"Intel"* ]]; then
@@ -183,12 +196,12 @@ function downloadApp () {
     echo "$(date) | Starting downlading of [$appname]"
 
     # If local copy is defined, let's try and download it...
-    if [ $localcopy ]; then
+    if [ "$localcopy" ]; then
 
         updateOctory installing
         # Check to see if we can access our local copy of Office
         echo "$(date) | Downloading [$localcopy] to [$tempfile]"
-        rm -rf $tempfile > /dev/null 2>&1
+        rm -rf "$tempfile" > /dev/null 2>&1
         curl -f -s -L -o "$tempfile" "$localcopy"
         if [ $? == 0 ]; then
             echo "$(date) | Local copy of $appname downloaded at $tempfile"
@@ -199,9 +212,9 @@ function downloadApp () {
     # If we failed to download the local copy, or it wasn't defined then try to download from CDN
     if [[ "$downloadcomplete" != "true" ]]; then
 
-        waitForCurl
+        waitForProcess "curl"
         updateOctory installing
-        rm -rf $tempfile > /dev/null 2>&1
+        rm -rf "$tempfile" > /dev/null 2>&1
         echo "$(date) | Downloading [$weburl] to [$tempfile]"
         curl -f -s --connect-timeout 60 --retry 10 --retry-delay 30 -L -o "$tempfile" "$weburl"
         if [ $? == 0 ]; then
@@ -270,16 +283,6 @@ function updateCheck() {
 
 }
 
-waitForInstaller () {
-
-     while ps aux | grep /System/Library/CoreServices/Installer.app/Contents/MacOS/Installer | grep -v grep &>/dev/null; do
-          echo "$(date) | Another installer is running, waiting 60s for it to complete"
-          sleep 60
-     done
-     echo "$(date) | Installer not running, safe to start installing"
-
-}
-
 ## Install PKG Function
 function installPKG () {
 
@@ -304,19 +307,22 @@ function installPKG () {
     ###############################################################
 
 
-    echo "$(date) | Installing $appname"
+    # Wait for other "install processes to complete to avoid resource exhaustion"
+    waitForProcess "installer -pkg"
+    waitForProcess "cp -Rf"
+    waitForProcess "unzip"
 
-    waitForInstaller
+    echo "$(date) | Installing [$appname]"
     updateOctory installing
 
-    installer -pkg $tempfile -target /Applications
+    installer -pkg "$tempfile" -target /Applications
 
     # Checking if the app was installed successfully
     if [ "$?" = "0" ]; then
 
         echo "$(date) | $appname Installed"
         echo "$(date) | Cleaning Up"
-        rm -rf $tempfile
+        rm -rf "$tempfile"
 
         echo "$(date) | Writing last modifieddate $lastmodified to $metafile"
         echo "$lastmodified" > "$metafile"
@@ -384,6 +390,15 @@ function startLog() {
 
 }
 
+# function to delay until the user has finished setup assistant.
+waitForDesktop () {
+  until ps aux | grep /System/Library/CoreServices/Dock.app/Contents/MacOS/Dock | grep -v grep; do
+    echo "$(date) | Dock not running, waiting..."
+    sleep 5
+  done
+  echo "$(date) | Desktop is here, lets carry on"
+}
+
 ###################################################################################
 ###################################################################################
 ##
@@ -406,6 +421,9 @@ checkForRosetta2
 
 # Test if we need to install or update
 updateCheck
+
+# Wait for Desktop
+waitForDesktop
 
 # Download app
 downloadApp

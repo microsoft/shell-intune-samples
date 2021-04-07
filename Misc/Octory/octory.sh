@@ -42,7 +42,7 @@ isSoftwareUpdateRunning () {
     while ps aux | grep "/usr/sbin/softwareupdate" | grep -v grep; do
 
         echo "$(date) | [/usr/sbin/softwareupdate] running, waiting..."
-        sleep 60
+        sleep 10
 
     done
 
@@ -125,7 +125,7 @@ mv Octory/ /Library/Application\ Support/
 cd /Library/Application\ Support/Octory
 echo "$(date) | Setting Permissions"
 chown -R root:wheel Octory.app
-sleep 20
+sleep 10
 
 waitForDesktop
 echo "$(date) | Launching Octory for user"
@@ -135,7 +135,7 @@ if [[ $? -eq 0 ]]; then
     exit 0
 else
     echo "$(date) | Octory failed, let's try one more time"
-    sleep 20
+    sleep 10
     Octory.app/Contents/MacOS/Octory -c Presets/Numberwang/Octory.plist
     if [[ $? -eq 0 ]]; then
         echo "$(date) | Octory succesfully launched"

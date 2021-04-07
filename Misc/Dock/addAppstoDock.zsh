@@ -54,11 +54,11 @@ echo ""
 
 # function to delay until the user has finished setup assistant.
 waitForDesktop () {
-until ps aux | grep /System/Library/CoreServices/Dock.app/Contents/MacOS/Dock | grep -v grep; do
-echo "$(date) | Dock not running, waiting..."
-sleep 5
-done
-echo "$(date) | Desktop is here, lets carry on"
+  until ps aux | grep /System/Library/CoreServices/Dock.app/Contents/MacOS/Dock | grep -v grep; do
+    echo "$(date) | Dock not running, waiting..."
+    sleep 5
+  done
+  echo "$(date) | Desktop is here, lets carry on"
 }
 
 

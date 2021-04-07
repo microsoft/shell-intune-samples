@@ -32,13 +32,13 @@ log="$logandmetadir/$appname.log"                                         # The 
 metafile="$logandmetadir/$appname.meta"                                   # The location of our meta file (for updates)
 volume="/tmp/$appname"
 
-# function to delay download if another download is running
-waitForCurl () {
+# function to delay script if the specified process is running
+waitForProcess () {
 
     #################################################################################################################
     #################################################################################################################
     ##
-    ##  Function to pause while other Curl processes are running to avoid swamping the network connection
+    ##  Function to pause while a specified process is running
     ##
     ##  Functions used
     ##
@@ -46,53 +46,36 @@ waitForCurl () {
     ##
     ##  Variables used
     ##
-    ##      None
+    ##      $1 = name of process to check for
     ##
     ###############################################################
     ###############################################################
 
-    echo "$(date) | Waiting for other Curl processes to end"
-     while ps aux | grep -i curl | grep -v grep &>/dev/null; do
-          echo "$(date) |  + Another instance of Curl is running, waiting 10s"
-          sleep 10
-     done
-     echo "$(date) | No instances of Curl found, safe to proceed"
+    processName=$1
+    fixedDelay=$2
+    terminate=$3
 
-}
+    echo "$(date) | Waiting for other [$processName] processes to end"
+    while ps aux | grep "$processName" | grep -v grep &>/dev/null; do
 
-# function to check if app is running and either terminate or wait
-isAppRunning () {
+        if [[ $terminate == "true" ]]; then
+            echo "$(date) | + [$appname] running, terminating [$processpath]..."
+            pkill -f "$processName"
+            return
+        fi
 
-    #################################################################################################################
-    #################################################################################################################
-    ##
-    ##  Function to either terminate running application or wait until user closes it before we update
-    ##
-    ##  Functions used
-    ##
-    ##      None
-    ##
-    ##  Variables used
-    ##
-    ##      $terminateprocess = global variable if "true", kill the process or "false" wait until it's closed by the user
-    ##      $processpath = path to application binary
-    ##      $appname = Description of the App we are installing
-    ##
-    ###############################################################
-    ###############################################################
+        # If we've been passed a delay we should use it, otherwise we'll create a random delay each run
+        if [[ ! $fixedDelay ]]; then
+            delay=$(( $RANDOM % 50 + 10 ))
+        else
+            delay=$fixedDelay
+        fi
 
-    echo "$(date) | Checking if the application is running"
-    while ps aux | grep -i "$processpath" | grep -v grep &>/dev/null; do
-      if [ $terminateprocess == "false" ]; then
-        echo "$(date) |  + [$appname] running, waiting 5m..."
-        sleep 300
-      else
-        echo "$(date) | + [$appname] running, terminating [$processpath]..."
-        pkill -f "$processpath"
-      fi
+        echo "$(date) |  + Another instance of $processName is running, waiting [$delay] seconds"
+        sleep $delay
     done
-
-    echo "$(date) | [$appname] isn't running, lets carry on"
+    
+    echo "$(date) | No instances of [$processName] found, safe to proceed"
 
 }
 
@@ -118,12 +101,7 @@ checkForRosetta2 () {
     echo "$(date) | Checking if we need Rosetta 2 or not"
 
     # if Software update is already running, we need to wait...
-    while ps aux | grep -i "/usr/sbin/softwareupdate" | grep -v grep &>/dev/null; do
-
-        echo "$(date) | [/usr/sbin/softwareupdate] running, waiting 10s"
-        sleep 10
-
-    done
+    waitForProcess "/usr/sbin/softwareupdate"
 
     processor=$(/usr/sbin/sysctl -n machdep.cpu.brand_string)
     if [[ "$processor" == *"Intel"* ]]; then
@@ -222,7 +200,7 @@ function downloadApp () {
     echo "$(date) | Starting downlading of [$appname]"
 
     # wait for other downloads to complete
-    waitForCurl
+    waitForProcess "curl"
 
     #download the file
     updateOctory installing
@@ -323,7 +301,12 @@ function installZIP () {
 
 
     # Check if app is running, if it is we need to wait.
-    isAppRunning
+    waitForProcess "$processpath" "300" "$terminateprocess"
+
+    # Wait for other "install processes to complete to avoid resource exhaustion"
+    waitForProcess "installer -pkg"
+    waitForProcess "cp -Rf"
+    waitForProcess "unzip"
 
     echo "$(date) | Installing $appname"
     updateOctory installing
@@ -445,6 +428,15 @@ function startLog() {
     
 }
 
+# function to delay until the user has finished setup assistant.
+waitForDesktop () {
+  until ps aux | grep /System/Library/CoreServices/Dock.app/Contents/MacOS/Dock | grep -v grep; do
+    echo "$(date) | Dock not running, waiting..."
+    sleep 5
+  done
+  echo "$(date) | Desktop is here, lets carry on"
+}
+
 ###################################################################################
 ###################################################################################
 ##
@@ -467,6 +459,9 @@ checkForRosetta2
 
 # Test if we need to install or update
 updateCheck
+
+# Wait for Desktop
+waitForDesktop
 
 # Download app
 downloadApp

@@ -3,9 +3,9 @@
 
 ############################################################################################
 ##
-## Script to install the latest Company Portal
+## Script to download latest Microsoft Skype app for macOS
 ##
-############################################################################################
+###########################################
 
 ## Copyright (c) 2020 Microsoft Corp. All rights reserved.
 ## Scripts are not supported under any Microsoft standard support program or service. The scripts are provided AS IS without warranty of any kind.
@@ -18,12 +18,12 @@
 ## Feedback: neiljohn@microsoft.com
 
 # User Defined variables
-tempfile="/tmp/remotedesktop.pkg"                                                          # What filename are we going to store the downloaded files in?
-weburl="https://neiljohn.blob.core.windows.net/macapps/MicrosoftRemoteDesktop.pkg"                         # What is the Azure Blob Storage URL?
-appname="Remote Desktop"                                                        # The name of our App deployment script (also used for Octory monitor)
-app="Microsoft Remote Desktop.app"                                                        # The actual name of our App once installed
-logandmetadir="/Library/Logs/Microsoft/IntuneScripts/installRemoteDesktop"      # The location of our logs and last updated data
-processpath="/Applications/Microsoft Remote Desktop.app/Contents/MacOS/Microsoft Remote Desktop"    # The process name of the App we are installing
+tempfile="/tmp/skype.pkg"                                                          # What filename are we going to store the downloaded files in?
+weburl="https://go.microsoft.com/fwlink/?linkid=832978"                         # What is the Azure Blob Storage URL?
+appname="Skype for Business"                                                        # The name of our App deployment script (also used for Octory monitor)
+app="Skype for Business.app"                                                        # The actual name of our App once installed
+logandmetadir="/Library/Logs/Microsoft/IntuneScripts/installSkypeForBusiness"      # The location of our logs and last updated data
+processpath="/Applications/Skype for Business.app/Contents/MacOS/Skype for Business"    # The process name of the App we are installing
 terminateprocess="false"                                                         # Do we want to terminate the running process? If false we'll wait until its not running
 
 # Generated variables
