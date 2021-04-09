@@ -58,16 +58,6 @@ app="Gimp.app"
 logandmetadir="/Library/Logs/Microsoft/IntuneScripts/installGimp"
 ```
 
-**log** this is the path of the logfile. It is made up of the **logandmetadir** path and the **appname**. There isn't usually a need to change this but it's provided here in case you specifically want to set the log file path somewhere specific.
-```
-log="$logandmetadir/$appname.log"
-```
-
-**metafile** just in the same way as the **log** path above this value is automatically generated based on the **logandmetadir** path and the **appname**. It's used by the script to store the last update time. You shouldn't need to change this but it's provided here in case you have a need to set it to an explicit location.
-```
-metafile="$logandmetadir/$appname.meta"
-```
-
 **processpath** this is used to check if the application is running or not. Mac applications have a fairly strict directory format, so one of the quickest methods is to run `ls -Fl /Applications/Gimp.app/Contents/MacOS/*`. This will return a list of files, it's usually pretty easy to guess which one is the main application by the name, in our case **/Applications/Gimp.app/Contents/MacOS/gimp**.
 
 For example, in our case the Gimp directory structure looks like this
@@ -127,7 +117,6 @@ Tue  6 Apr 2021 17:16:10 BST | Downloaded [Gimp.app]
 Tue  6 Apr 2021 17:16:10 BST | Checking if the application is running
 Tue  6 Apr 2021 17:16:11 BST | [Gimp] isn't running, lets carry on
 Tue  6 Apr 2021 17:16:11 BST | Installing [Gimp]
-Tue  6 Apr 2021 17:16:11 BST | Octory found, attempting to send status updates
 Tue  6 Apr 2021 17:16:11 BST | Mounting [/tmp/gimp.dmg] to [/tmp/Gimp]
 Tue  6 Apr 2021 17:16:31 BST | Copying /tmp/Gimp/*.app to /Applications/Gimp.app
 Tue  6 Apr 2021 17:17:07 BST | Un-mounting [/tmp/Gimp]
@@ -136,6 +125,5 @@ Tue  6 Apr 2021 17:17:07 BST | Cleaning Up
 Tue  6 Apr 2021 17:17:07 BST | Fixing up permissions
 Tue  6 Apr 2021 17:17:09 BST | Application [Gimp] succesfully installed
 Tue  6 Apr 2021 17:17:09 BST | Writing last modifieddate [Tue, 06 Apr 2021 14:04:10 GMT] to [/Library/Logs/Microsoft/IntuneScripts/installGimp/Gimp.meta]
-Tue  6 Apr 2021 17:17:09 BST | Octory found, attempting to send status updates
 
 ```

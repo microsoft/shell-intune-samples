@@ -3,7 +3,7 @@
 
 ############################################################################################
 ##
-## Script to install the latest Yammer client
+## Script to install the latest Minecraft for Education
 ##
 ############################################################################################
 
@@ -17,19 +17,19 @@
 ## of such damages.
 ## Feedback: neiljohn@microsoft.com
 
-# Define variables
-weburl="https://neiljohn.blob.core.windows.net/macapps/yammer.dmg"          # What is the Azure Blob Storage URL?
-appname="Yammer"                                                            # The name of our App deployment script
-app="Yammer.app"                                                            # The actual name of our App once installed
-logandmetadir="/Library/Logs/Microsoft/IntuneScripts/installYammer"         # The location of our logs and last updated data
-processpath="/Applications/Yammer.app/Contents/MacOS/Yammer"                # The process name of the App we are installing
-terminateprocess="false"                                                    # Do we want to terminate the running process? If false we'll wait until its not running
-autoUpdates="true"                                                               # If true, application updates itself and we should not attempt to update
+# User Defined variables
+weburl="https://neiljohn.blob.core.windows.net/macapps/Minecraft_Education_Edition_1-14-50-0.dmg"
+appname="Minecraft EE"
+app="Minecraft EE.app"
+logandmetadir="/Library/Logs/Microsoft/IntuneScripts/installMinecraftEE"
+processpath="minecraftpe"
+terminateprocess="false"                                                         # Do we want to terminate the running process? If false we'll wait until its not running
+autoUpdate="true"   
 
 # Generated variables
 tempdir=$(mktemp -d)
-log="$logandmetadir/$appname.log"                                                                   # The location of the script log file
-metafile="$logandmetadir/$appname.meta"                                                             # The location of our meta file (for updates)
+log="$logandmetadir/$appname.log"                                               # The location of the script log file
+metafile="$logandmetadir/$appname.meta"                                         # The location of our meta file (for updates)
 
 # function to delay script if the specified process is running
 waitForProcess () {
@@ -232,7 +232,7 @@ function downloadApp () {
                 ;;
 
             *)
-                echo "$(date) | Unknown file type [$f], quitting"
+                echo "$(date) | Unknown file type, quitting"
                 rm -rf "$tempdir"
                 updateOctory failed
                 exit 1

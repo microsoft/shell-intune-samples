@@ -18,16 +18,18 @@
 ## Feedback: neiljohn@microsoft.com
 
 # User Defined variables
-tempfile="/tmp/office.pkg"                                                      # What filename are we going to store the downloaded files in?
 weburl="https://go.microsoft.com/fwlink/?linkid=2009112"                        # What is the Azure Blob Storage URL?
-localcopy="http://192.168.68.139/Office365forMac/Office365AppsFormacOS.pkg"    # This is your local copy of the OfficeBusinessPro.pkg file. You need to handle this independently, comment out if not required
-appname="Microsoft Office"                                                        # The name of our App deployment script (also used for Octory monitor)
-logandmetadir="/Library/Logs/Microsoft/IntuneScripts/installOffice"      # The location of our logs and last updated data
+#localcopy="http://192.168.68.139/Office365forMac/Office365AppsFormacOS.pkg"    # This is your local copy of the OfficeBusinessPro.pkg file. You need to handle this independently, comment out if not required
+appname="Microsoft Office"                                                      # The name of our App deployment script (also used for Octory monitor)
+logandmetadir="/Library/Logs/Microsoft/IntuneScripts/installOffice"             # The location of our logs and last updated data
 terminateprocess="true"                                                         # Do we want to terminate the running process? If false we'll wait until its not running
+autoUpdate="false"                                                               # Application updates itself, if already installed we should exit
 
 # Generated variables
-log="$logandmetadir/$appname.log"                                         # The location of the script log file
-metafile="$logandmetadir/$appname.meta"                                   # The location of our meta file (for updates)
+tempdir=$(mktemp -d)
+tempfile="$tempdir/$appname.pkg"
+log="$logandmetadir/$appname.log"                                               # The location of the script log file
+metafile="$logandmetadir/$appname.meta"                                         # The location of our meta file (for updates)
 
 # function to delay script if the specified process is running
 waitForProcess () {
@@ -71,7 +73,7 @@ waitForProcess () {
         echo "$(date) |  + Another instance of $processName is running, waiting [$delay] seconds"
         sleep $delay
     done
-    
+
     echo "$(date) | No instances of [$processName] found, safe to proceed"
 
 }
@@ -220,11 +222,11 @@ function downloadApp () {
         if [ $? == 0 ]; then
             echo "$(date) | Downloaded $weburl to $tempfile"
         else
-        
+
             echo "$(date) | Failure to download $weburl to $tempfile"
             updateOctory failed
             exit 1
-        
+
         fi
 
     fi
@@ -256,30 +258,53 @@ function updateCheck() {
 
     echo "$(date) | Checking if we need to install or update [$appname]"
 
-    fetchLastModifiedDate
+    # App Array for Office 365 Apps for Mac
+    OfficeApps=( "/Applications/Microsoft Excel.app"
+                "/Applications/Microsoft OneNote.app"
+                "/Applications/Microsoft Outlook.app"
+                "/Applications/Microsoft PowerPoint.app"
+                "/Applications/Microsoft Teams.app"
+                "/Applications/Microsoft Word.app")
 
-    ## Did we store the last modified date last time we installed/updated?
-    if [[ -d "$logandmetadir" ]]; then
+    for i in "${OfficeApps[@]}"; do
+        if [[ ! -e "$i" ]]; then
+            echo "$(date) | [$i] not installed, need to perform full installation"
+            let missingappcount=$missingappcount+1
+        fi
+    done
 
-        if [ -f "$metafile" ]; then
-            previouslastmodifieddate=$(cat "$metafile")
-            if [[ "$previouslastmodifieddate" != "$lastmodified" ]]; then
-                echo "$(date) | Update found, previous [$previouslastmodifieddate] and current [$lastmodified]"
-                update="update"
+    if [[ ! "$missingappcount" ]]; then
+
+        # App is installed, if it's updates are handled by MAU we should quietly exit
+        if [[ $autoUpdate == "true" ]]; then
+            echo "$(date) | [$appname] is already installed and handles updates itself, exiting"
+            exit 0;
+        fi
+
+        fetchLastModifiedDate
+
+        ## Did we store the last modified date last time we installed/updated?
+        if [[ -d "$logandmetadir" ]]; then
+
+            if [ -f "$metafile" ]; then
+                previouslastmodifieddate=$(cat "$metafile")
+                if [[ "$previouslastmodifieddate" != "$lastmodified" ]]; then
+                    echo "$(date) | Update found, previous [$previouslastmodifieddate] and current [$lastmodified]"
+                    update="update"
+                else
+                    echo "$(date) | No update between previous [$previouslastmodifieddate] and current [$lastmodified]"
+                    echo "$(date) | Exiting, nothing to do"
+                    exit 0
+                fi
             else
-                echo "$(date) | No update between previous [$previouslastmodifieddate] and current [$lastmodified]"
-                echo "$(date) | Exiting, nothing to do"
-                exit 0
+                echo "$(date) | Meta file [$metafile] not found"
+                echo "$(date) | Unable to determine if update required, updating [$appname] anyway"
+
             fi
-        else
-            echo "$(date) | Meta file [$metafile] not found"
-            echo "$(date) | Unable to determine if update required, updating [$appname] anyway"
 
         fi
 
     fi
-
-
 
 }
 
@@ -309,7 +334,7 @@ function installPKG () {
 
     # Wait for other "install processes to complete to avoid resource exhaustion"
     waitForProcess "installer -pkg"
-    waitForProcess "cp -Rf"
+    waitForProcess "rsync -a"
     waitForProcess "unzip"
 
     echo "$(date) | Installing [$appname]"
@@ -322,7 +347,7 @@ function installPKG () {
 
         echo "$(date) | $appname Installed"
         echo "$(date) | Cleaning Up"
-        rm -rf "$tempfile"
+        rm -rf "$tempdir"
 
         echo "$(date) | Writing last modifieddate $lastmodified to $metafile"
         echo "$lastmodified" > "$metafile"
@@ -335,6 +360,7 @@ function installPKG () {
     else
 
         echo "$(date) | Failed to install $appname"
+        rm -rf "$tempdir"
         updateOctory failed
         exit 1
     fi
@@ -392,11 +418,12 @@ function startLog() {
 
 # function to delay until the user has finished setup assistant.
 waitForDesktop () {
-  until ps aux | grep /System/Library/CoreServices/Dock.app/Contents/MacOS/Dock | grep -v grep; do
-    echo "$(date) | Dock not running, waiting..."
-    sleep 5
+  until ps aux | grep /System/Library/CoreServices/Dock.app/Contents/MacOS/Dock | grep -v grep &>/dev/null; do
+    delay=$(( $RANDOM % 50 + 10 ))
+    echo "$(date) |  + Dock not running, waiting [$delay] seconds"
+    sleep $delay
   done
-  echo "$(date) | Desktop is here, lets carry on"
+  echo "$(date) | Dock is here, lets carry on"
 }
 
 ###################################################################################

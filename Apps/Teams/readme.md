@@ -25,54 +25,36 @@ The log file will output to ***/var/log/installteams.log*** by default. Exit sta
 
 ```
 ##############################################################
-# Wed Aug  5 12:13:32 PDT 2020 | Starting install of Microsoft Teams
+# Fri  9 Apr 2021 13:18:12 BST | Logging install of [Microsoft Teams] to [/Library/Logs/Microsoft/IntuneScripts/installTeams/Microsoft Teams.log]
 ############################################################
 
-Wed Aug  5 12:13:32 PDT 2020 | Downloading Microsoft Teams
-  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
-                                 Dload  Upload   Total   Spent    Left  Speed
-  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
-  0     0    0     0    0     0      0      0 --:--:--  0:00:01 --:--:--     0
-100   195  100   195    0     0    124      0  0:00:01  0:00:01 --:--:--   124
-100 78.6M  100 78.6M    0     0   945k      0  0:01:25  0:01:25 --:--:-- 1240k
-Wed Aug  5 20:14:57 BST 2020 | Installing Microsoft Teams
-Aug  5 20:14:58  installer[3635] <Debug>: Product archive /tmp/teams.pkg trustLevel=350
-Aug  5 20:14:58  installer[3635] <Debug>: External component packages (1) trustLevel=350
-Aug  5 20:14:58  installer[3635] <Debug>: -[IFDInstallController(Private) _buildInstallPlanReturningError:]: location = file://localhost
-Aug  5 20:14:58  installer[3635] <Debug>: -[IFDInstallController(Private) _buildInstallPlanReturningError:]: file://localhost/tmp/teams.pkg#Teams_osx_app.pkg
-Aug  5 20:14:58  installer[3635] <Debug>: Set authorization level to root for session
-Aug  5 20:14:58  installer[3635] <Info>: Administrator authorization granted.
-Aug  5 20:14:58  installer[3635] <Debug>: Will use PK session
-Aug  5 20:14:58  installer[3635] <Debug>: Using authorization level of root for IFPKInstallElement
-Aug  5 20:14:59  installer[3635] <Info>: Starting installation:
-Aug  5 20:14:59  installer[3635] <Notice>: Configuring volume "Macintosh HD"
-Aug  5 20:14:59  installer[3635] <Info>: Preparing disk for local booted install.
-Aug  5 20:14:59  installer[3635] <Notice>: Free space on "Macintosh HD": 18.96 GB (18955206656 bytes).
-Aug  5 20:14:59  installer[3635] <Notice>: Create temporary directory "/var/folders/zz/zyxvpxvq6csfxvn_n0000000000000/T//Install.3635YuKCH8"
-Aug  5 20:14:59  installer[3635] <Notice>: IFPKInstallElement (1 packages)
-Aug  5 20:14:59  installer[3635] <Info>: Current Path: /usr/sbin/installer
-Aug  5 20:14:59  installer[3635] <Info>: Current Path: /bin/bash
-Aug  5 20:14:59  installer[3635] <Info>: Current Path: /Library/Intune/Microsoft Intune Agent.app/Contents/MacOS/IntuneMdmDaemon
-Aug  5 20:14:59  installer[3635] <Notice>: PackageKit: Enqueuing install with framework-specified quality of service (utility)
-Aug  5 20:15:12  installer[3635] <Info>: PackageKit: Registered bundle file:///Applications/Microsoft%20Teams.app/ for uid 0
-Aug  5 20:15:12  installer[3635] <Info>: PackageKit: Registered bundle file:///Applications/Microsoft%20Teams.app/Contents/Frameworks/Microsoft%20Teams%20Helper.app/ for uid 0
-Aug  5 20:15:12  installer[3635] <Notice>: Running install actions
-Aug  5 20:15:12  installer[3635] <Notice>: Removing temporary directory "/var/folders/zz/zyxvpxvq6csfxvn_n0000000000000/T//Install.3635YuKCH8"
-Aug  5 20:15:12  installer[3635] <Notice>: Finalize disk "Macintosh HD"
-Aug  5 20:15:12  installer[3635] <Notice>: Notifying system of updated components
-Aug  5 20:15:12  installer[3635] <Notice>:
-Aug  5 20:15:12  installer[3635] <Notice>: **** Summary Information ****
-Aug  5 20:15:12  installer[3635] <Notice>:   Operation      Elapsed time
-Aug  5 20:15:12  installer[3635] <Notice>: -----------------------------
-Aug  5 20:15:12  installer[3635] <Notice>:        disk      0.03 seconds
-Aug  5 20:15:12  installer[3635] <Notice>:      script      0.00 seconds
-Aug  5 20:15:12  installer[3635] <Notice>:        zero      0.09 seconds
-Aug  5 20:15:12  installer[3635] <Notice>:     install      13.46 seconds
-Aug  5 20:15:12  installer[3635] <Notice>:     -total-      13.57 seconds
-Aug  5 20:15:12  installer[3635] <Notice>:
+Fri  9 Apr 2021 13:18:12 BST | Checking if we need Rosetta 2 or not
+Fri  9 Apr 2021 13:18:12 BST | Waiting for other [/usr/sbin/softwareupdate] processes to end
+Fri  9 Apr 2021 13:18:12 BST | No instances of [/usr/sbin/softwareupdate] found, safe to proceed
+Fri  9 Apr 2021 13:18:12 BST | [Intel(R) Core(TM) i9-9880H CPU @ 2.30GHz] found, Rosetta not needed
+Fri  9 Apr 2021 13:18:12 BST | Checking if we need to install or update [Microsoft Teams]
+Fri  9 Apr 2021 13:18:12 BST | [Microsoft Teams] not installed, need to download and install
+Fri  9 Apr 2021 13:18:12 BST | Dock is here, lets carry on
+Fri  9 Apr 2021 13:18:12 BST | Starting downlading of [Microsoft Teams]
+Fri  9 Apr 2021 13:18:12 BST | Waiting for other [curl] processes to end
+Fri  9 Apr 2021 13:18:12 BST | No instances of [curl] found, safe to proceed
+Fri  9 Apr 2021 13:18:12 BST | Downloading Microsoft Teams
+Fri  9 Apr 2021 13:18:30 BST | Downloaded [Microsoft Teams.app] to [/var/folders/zz/zyxvpxvq6csfxvn_n0000000000000/T/tmp.i76crR36/Teams_osx.pkg]
+Fri  9 Apr 2021 13:18:30 BST | Detected install type as [PKG]
+Fri  9 Apr 2021 13:18:30 BST | Waiting for other [/Applications/Microsoft Teams.app/Contents/MacOS/Teams] processes to end
+Fri  9 Apr 2021 13:18:30 BST | No instances of [/Applications/Microsoft Teams.app/Contents/MacOS/Teams] found, safe to proceed
+Fri  9 Apr 2021 13:18:30 BST | Installing Microsoft Teams
+Fri  9 Apr 2021 13:18:30 BST | Waiting for other [installer -pkg] processes to end
+Fri  9 Apr 2021 13:18:30 BST | No instances of [installer -pkg] found, safe to proceed
+Fri  9 Apr 2021 13:18:30 BST | Waiting for other [cp -Rf] processes to end
+Fri  9 Apr 2021 13:18:30 BST | No instances of [cp -Rf] found, safe to proceed
+Fri  9 Apr 2021 13:18:30 BST | Waiting for other [unzip] processes to end
+Fri  9 Apr 2021 13:18:30 BST | No instances of [unzip] found, safe to proceed
 installer: Package name is Microsoft Teams
-installer: Installing at base path /
-installer: The install was successful.
-Wed Aug  5 20:15:12 BST 2020 | Microsoft Teams Installed
-Wed Aug  5 20:15:12 BST 2020 | Cleaning Up
+installer: Upgrading at base path /
+installer: The upgrade was successful.
+Fri  9 Apr 2021 13:18:38 BST | Microsoft Teams Installed
+Fri  9 Apr 2021 13:18:38 BST | Cleaning Up
+Fri  9 Apr 2021 13:18:38 BST | Application [Microsoft Teams] succesfully installed
+Fri  9 Apr 2021 13:18:38 BST | Writing last modifieddate [Fri, 09 Apr 2021 12:17:06 GMT] to [/Library/Logs/Microsoft/IntuneScripts/installTeams/Microsoft Teams.meta]
 ```

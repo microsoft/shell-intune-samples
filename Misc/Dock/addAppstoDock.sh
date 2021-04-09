@@ -1,4 +1,4 @@
-#!/usr/bin/env zsh
+#!/bin/bash
 #set -x
 
 ############################################################################################
@@ -30,7 +30,10 @@
 # Define variables
 log="/tmp/addAppstoDock.log"
 appname="Dock Script"
-exec 1>> $log 2>&1
+startCompanyPortalifADE="true"
+
+exec &> >(tee -a "$log")
+
 
 dockitems=( "/Applications/Microsoft Edge.app"
             "/Applications/Microsoft Outlook.app"
@@ -45,6 +48,7 @@ dockitems=( "/Applications/Microsoft Edge.app"
             "/System/Applications/App Store.app"
             "/System/Applications/Utilities/Terminal.app"
             "/System/Applications/System Preferences.app")
+
 
 echo ""
 echo "##############################################################"
@@ -69,11 +73,10 @@ while [[ $ready -ne 1 ]];do
 
   missingappcount=0
 
-  for i in $dockitems; do
+  for i in "${dockitems[@]}"; do
     if [[ -a "$i" ]]; then
       echo " $(date) | $i is installed"
     else
-      #echo " $(date) | $i is missing"
       let missingappcount=$missingappcount+1
     fi
   done
@@ -94,7 +97,7 @@ echo " $(date) | Removing Dock Persistent Apps"
 defaults delete ~/Library/Preferences/com.apple.dock persistent-apps
 defaults delete ~/Library/Preferences/com.apple.dock persistent-others
 
-for i in $dockitems; do
+for i in "${dockitems[@]}"; do
   if [[ -a "$i" ]] ; then
     echo " $(date) | Adding [$i] to Dock"
     defaults write com.apple.dock persistent-apps -array-add "<dict><key>tile-data</key><dict><key>file-data</key><dict><key>_CFURLString</key><string>$i</string><key>_CFURLStringType</key><integer>0</integer></dict></dict></dict>"
@@ -123,3 +126,16 @@ defaults write com.apple.dock minimize-to-application -bool yes
 
 echo "$(date) | Restarting Dock"
 killall Dock
+
+# If this is a ADE enrolled device (DEP) we should launch the Company Portal for the end user to complete registration
+if [ "$startCompanyPortalifADE" = true ]; then
+  echo "Checking MDM Profile Type"
+  profiles status -type enrollment | grep "Enrolled via DEP: Yes"
+  if [ ! $? == 0 ]; then
+    echo "This device is not ABM managed, exiting"
+    exit 0;
+  else
+    echo "Device is ABM Managed. launching Company Portal"
+    open "/Applications/Company Portal.app"
+  fi
+fi

@@ -67,7 +67,6 @@ if [ "$abmcheck" = true ]; then
     echo "Device is ABM Managed"
     downgrade=true
   fi
-
 fi
 
 if [ $downgrade = true ]; then

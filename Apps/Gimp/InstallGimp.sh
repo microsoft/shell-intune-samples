@@ -25,6 +25,7 @@ app="Gimp.app"
 logandmetadir="/Library/Logs/Microsoft/IntuneScripts/installGimp"
 processpath="/Applications/Gimp.app/Contents/MacOS/gimp"
 terminateprocess="false"
+autoUpdates="false"
 
 # Generated variables
 log="$logandmetadir/$appname.log"                                         # The location of the script log file
@@ -244,6 +245,12 @@ function updateCheck() {
     ## Is the app already installed?
     if [ -d "/Applications/$app" ]; then
 
+    # App is installed, if it's updates are handled by MAU we should quietly exit
+    if [[ $autoUpdates == "true" ]]; then
+        echo "$(date) | [$appname] is already installed and handles updates itself, exiting"
+        exit 0;
+    fi
+
     # App is already installed, we need to determine if it requires updating or not
         echo "$(date) | [$appname] already installed, let's see if we need to update"
         fetchLastModifiedDate
@@ -304,7 +311,7 @@ function installDMG () {
 
     # Wait for other "install processes to complete to avoid resource exhaustion"
     waitForProcess "installer -pkg"
-    waitForProcess "cp -Rf"
+    waitForProcess "rsync -a"
     waitForProcess "unzip"
 
     echo "$(date) | Installing [$appname]"
@@ -403,11 +410,12 @@ function startLog() {
 
 # function to delay until the user has finished setup assistant.
 waitForDesktop () {
-  until ps aux | grep /System/Library/CoreServices/Dock.app/Contents/MacOS/Dock | grep -v grep; do
-    echo "$(date) | Dock not running, waiting..."
-    sleep 5
+  until ps aux | grep /System/Library/CoreServices/Dock.app/Contents/MacOS/Dock | grep -v grep &>/dev/null; do
+    delay=$(( $RANDOM % 50 + 10 ))
+    echo "$(date) |  + Dock not running, waiting [$delay] seconds"
+    sleep $delay
   done
-  echo "$(date) | Desktop is here, lets carry on"
+  echo "$(date) | Dock is here, lets carry on"
 }
 
 ###################################################################################
