@@ -23,7 +23,7 @@ weburl="https://go.microsoft.com/fwlink/?linkid=2009112"                        
 appname="Microsoft Office"                                                      # The name of our App deployment script (also used for Octory monitor)
 logandmetadir="/Library/Logs/Microsoft/IntuneScripts/installOffice"             # The location of our logs and last updated data
 terminateprocess="true"                                                         # Do we want to terminate the running process? If false we'll wait until its not running
-autoUpdate="false"                                                               # Application updates itself, if already installed we should exit
+autoUpdate="true"                                                               # Application updates itself, if already installed we should exit
 
 # Generated variables
 tempdir=$(mktemp -d)
