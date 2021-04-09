@@ -247,7 +247,7 @@ function downloadApp () {
                     tempfile="$tempdir/install.pkg"
                 fi
 
-                if [[ "$metadata" == *"bzip2 compressed data"* ]]; then
+                if [[ "$metadata" == *"bzip2 compressed data"* ]]  | [[ "$metadata" == *"zlib compressed data"* ]] ; then
                     packageType="DMG"
                     mv "$tempfile" "$tempdir/install.dmg"
                     tempfile="$tempdir/install.dmg"

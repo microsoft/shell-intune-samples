@@ -18,8 +18,7 @@
 ## Feedback: neiljohn@microsoft.com
 
 # Define variables
-weburl="https://central.github.com/deployments/desktop/desktop/latest/darwin"                  # What is the Azure Blob Storage URL?
-#weburl="https://neiljohn.blob.core.windows.net/macapps/GitHubDesktop.zip"                  # What is the Azure Blob Storage URL?
+weburl="https://central.github.com/deployments/desktop/desktop/latest/darwin"                  # What is the Azure Blob Storage URL?                # What is the Azure Blob Storage URL?
 appname="GitHub Desktop"                                                                       # The name of our App deployment script
 app="GitHub Desktop.app"                                                                       # The actual name of our App once installed
 logandmetadir="/Library/Logs/Microsoft/IntuneScripts/installGitHubDesktop"                     # The location of our logs and last updated data
@@ -258,7 +257,7 @@ function downloadApp () {
             esac
 
             if [[ ! $packageType ]]; then
-                echo "Failed to determine temp file type"
+                echo "Failed to determine temp file type [$metadata]"
                 rm -rf "$tempdir"
             else
                 echo "$(date) | Downloaded [$app] to [$tempfile]"

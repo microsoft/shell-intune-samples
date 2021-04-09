@@ -257,7 +257,7 @@ function downloadApp () {
             esac
 
             if [[ ! $packageType ]]; then
-                echo "Failed to determine temp file type"
+                echo "Failed to determine temp file type [$metadata]"
                 rm -rf "$tempdir"
             else
                 echo "$(date) | Downloaded [$app] to [$tempfile]"
