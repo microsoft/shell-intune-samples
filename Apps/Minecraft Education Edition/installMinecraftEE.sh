@@ -18,7 +18,7 @@
 ## Feedback: neiljohn@microsoft.com
 
 # User Defined variables
-weburl="https://neiljohn.blob.core.windows.net/macapps/Minecraft_Education_Edition_1-14-50-0.dmg"
+weburl="https://aka.ms/meeclientmacos"
 appname="Minecraft EE"
 app="Minecraft EE.app"
 logandmetadir="/Library/Logs/Microsoft/IntuneScripts/installMinecraftEE"
@@ -232,15 +232,31 @@ function downloadApp () {
                 ;;
 
             *)
-                echo "$(date) | Unknown file type, quitting"
-                rm -rf "$tempdir"
-                updateOctory failed
-                exit 1
+                # We can't tell what this is by the file name, lets look at the metadata
+                echo "$(date) | Unknown file type [$f], analysing metadata"
+                metadata=$(file "$tempfile")
+                if [[ "$metadata" == *"Zip archive data"* ]]; then
+                    packageType="ZIP"
+                    mv "$tempfile" "$tempdir/install.zip"
+                    tempfile="$tempdir/install.zip"
+                fi
+
+                if [[ "$metadata" == *"xar archive"* ]]; then
+                    packageType="PKG"
+                    mv "$tempfile" "$tempdir/install.pkg"
+                    tempfile="$tempdir/install.pkg"
+                fi
+
+                if [[ "$metadata" == *"bzip2 compressed data"* ]]  | [[ "$metadata" == *"zlib compressed data"* ]] ; then
+                    packageType="DMG"
+                    mv "$tempfile" "$tempdir/install.dmg"
+                    tempfile="$tempdir/install.dmg"
+                fi
                 ;;
             esac
 
             if [[ ! $packageType ]]; then
-                echo "Failed to determine temp file type"
+                echo "Failed to determine temp file type [$metadata]"
                 rm -rf "$tempdir"
             else
                 echo "$(date) | Downloaded [$app] to [$tempfile]"

@@ -18,13 +18,13 @@
 ## Feedback: neiljohn@microsoft.com
 
 # User Defined variables
-weburl="https://neiljohn.blob.core.windows.net/macapps/Teams_osx.pkg"   # What is the Azure Blob Storage URL?
+weburl="https://go.microsoft.com/fwlink/?linkid=869428"   # What is the Azure Blob Storage URL?
 appname="Microsoft Teams"                                               # The name of our App deployment script (also used for Octory monitor)
 app="Microsoft Teams.app"                                               # The actual name of our App once installed
 logandmetadir="/Library/Logs/Microsoft/IntuneScripts/installTeams"      # The location of our logs and last updated data
 processpath="/Applications/Microsoft Teams.app/Contents/MacOS/Teams"    # The process name of the App we are installing
 terminateprocess="false"                                                # Do we want to terminate the running process? If false we'll wait until its not running
-autoUpdates="true"                                                      # If true, application updates itself and we should not attempt to update
+autoUpdate="true"                                                      # If true, application updates itself and we should not attempt to update
 
 # Generated variables
 tempdir=$(mktemp -d)
@@ -232,10 +232,26 @@ function downloadApp () {
                 ;;
 
             *)
-                echo "$(date) | Unknown file type [$f], quitting"
-                rm -rf "$tempdir"
-                updateOctory failed
-                exit 1
+                # We can't tell what this is by the file name, lets look at the metadata
+                echo "$(date) | Unknown file type [$f], analysing metadata"
+                metadata=$(file "$tempfile")
+                if [[ "$metadata" == *"Zip archive data"* ]]; then
+                    packageType="ZIP"
+                    mv "$tempfile" "$tempdir/install.zip"
+                    tempfile="$tempdir/install.zip"
+                fi
+
+                if [[ "$metadata" == *"xar archive"* ]]; then
+                    packageType="PKG"
+                    mv "$tempfile" "$tempdir/install.pkg"
+                    tempfile="$tempdir/install.pkg"
+                fi
+
+                if [[ "$metadata" == *"bzip2 compressed data"* ]]  | [[ "$metadata" == *"zlib compressed data"* ]] ; then
+                    packageType="DMG"
+                    mv "$tempfile" "$tempdir/install.dmg"
+                    tempfile="$tempdir/install.dmg"
+                fi
                 ;;
             esac
 
