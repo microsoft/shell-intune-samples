@@ -3,7 +3,7 @@
 
 ############################################################################################
 ##
-## Script to install the latest GNU Image Manipulation Program (GIMP) from Azure Blob Storage
+## Script to install the latest GNU Imagine Manipulation client
 ##
 ############################################################################################
 
@@ -18,19 +18,18 @@
 ## Feedback: neiljohn@microsoft.com
 
 # User Defined variables
-tempfile="/tmp/gimp.dmg"
-weburl="https://neiljohn.blob.core.windows.net/macapps/gimp.dmg"
-appname="Gimp"
-app="Gimp.app"
-logandmetadir="/Library/Logs/Microsoft/IntuneScripts/installGimp"
-processpath="/Applications/Gimp.app/Contents/MacOS/gimp"
-terminateprocess="false"
-autoUpdates="false"
+weburl="https://neiljohn.blob.core.windows.net/macapps/gimp.dmg"        # What is the Azure Blob Storage URL?
+appname="Gimp"                                                          # The name of our App deployment script (also used for Octory monitor)
+app="Gimp.app"                                                          # The actual name of our App once installed
+logandmetadir="/Library/Logs/Microsoft/IntuneScripts/installGimp"       # The location of our logs and last updated data
+processpath="/Applications/Gimp.app/Contents/MacOS/gimp"                # The process name of the App we are installing
+terminateprocess="false"                                                # Do we want to terminate the running process? If false we'll wait until its not running
+autoUpdate="false"                                                      # Application updates itself, if already installed we should exit
 
 # Generated variables
-log="$logandmetadir/$appname.log"                                         # The location of the script log file
-metafile="$logandmetadir/$appname.meta"                                   # The location of our meta file (for updates)
-volume="/tmp/$appname"
+tempdir=$(mktemp -d)
+log="$logandmetadir/$appname.log"                                       # The location of the script log file
+metafile="$logandmetadir/$appname.meta"                                 # The location of our meta file (for updates)
 
 # function to delay script if the specified process is running
 waitForProcess () {
@@ -47,6 +46,8 @@ waitForProcess () {
     ##  Variables used
     ##
     ##      $1 = name of process to check for
+    ##      $2 = length of delay (if missing, function to generate random delay between 10 and 60s)
+    ##      $3 = true/false if = "true" terminate process, if "false" wait for it to close
     ##
     ###############################################################
     ###############################################################
@@ -89,7 +90,7 @@ checkForRosetta2 () {
     ##
     ##  Functions
     ##
-    ##      isSoftwareUpdateRunning (pauses check if softwareupdate already running since it could be in the process of installing Rosetta anyway)
+    ##      waitForProcess (used to pause script if another instance of softwareupdate is running)
     ##
     ##  Variables
     ##
@@ -120,9 +121,9 @@ checkForRosetta2 () {
         
             if [[ $? -eq 0 ]]; then
                 echo "$(date) | Rosetta has been successfully installed."
+                return
             else
                 echo "$(date) | Rosetta installation failed!"
-                exit 1
             fi
     
         else
@@ -206,9 +207,46 @@ function downloadApp () {
     updateOctory installing
     echo "$(date) | Downloading $appname"
 
-    curl -f -s --connect-timeout 30 --retry 5 --retry-delay 60 -L -o "$tempfile" "$weburl"
+    cd "$tempdir"
+    curl -f -s --connect-timeout 30 --retry 5 --retry-delay 60 -L -J -O "$weburl"
     if [ $? == 0 ]; then
-         echo "$(date) | Downloaded [$app]"
+
+            # We have downloaded a file, we need to know what the file is called and what type of file it is
+            tempSearchPath="$tempdir/*"
+            for f in $tempSearchPath; do
+                tempfile=$f
+            done
+
+            case $tempfile in
+
+            *.pkg|*.PKG)
+                packageType="PKG"
+                ;;
+
+            *.zip|*.ZIP)
+                packageType="ZIP"
+                ;;
+
+            *.dmg|*.DMG)
+                packageType="DMG"
+                ;;
+
+            *)
+                echo "$(date) | Unknown file type, quitting"
+                rm -rf "$tempdir"
+                updateOctory failed
+                exit 1
+                ;;
+            esac
+
+            if [[ ! $packageType ]]; then
+                echo "Failed to determine temp file type"
+                rm -rf "$tempdir"
+            else
+                echo "$(date) | Downloaded [$app] to [$tempfile]"
+                echo "$(date) | Detected install type as [$packageType]"
+            fi
+         
     else
     
          echo "$(date) | Failure to download [$weburl] to [$tempfile]"
@@ -246,7 +284,7 @@ function updateCheck() {
     if [ -d "/Applications/$app" ]; then
 
     # App is installed, if it's updates are handled by MAU we should quietly exit
-    if [[ $autoUpdates == "true" ]]; then
+    if [[ $autoUpdate == "true" ]]; then
         echo "$(date) | [$appname] is already installed and handles updates itself, exiting"
         exit 0;
     fi
@@ -278,6 +316,71 @@ function updateCheck() {
 
     else
         echo "$(date) | [$appname] not installed, need to download and install"
+    fi
+
+}
+
+## Install PKG Function
+function installPKG () {
+
+    #################################################################################################################
+    #################################################################################################################
+    ##
+    ##  This function takes the following global variables and installs the PKG file
+    ##
+    ##  Functions
+    ##
+    ##      isAppRunning (Pauses installation if the process defined in global variable $processpath is running )
+    ##      fetchLastModifiedDate (Called with update flag which causes the function to write the new lastmodified date to the metadata file)
+    ##
+    ##  Variables
+    ##
+    ##      $appname = Description of the App we are installing
+    ##      $tempfile = location of temporary DMG file downloaded
+    ##      $volume = name of volume mount point
+    ##      $app = name of Application directory under /Applications
+    ##
+    ###############################################################
+    ###############################################################
+
+
+    # Check if app is running, if it is we need to wait.
+    waitForProcess "$processpath" "300" "$terminateprocess"
+
+    echo "$(date) | Installing $appname"
+    # Wait for other "install processes to complete to avoid resource exhaustion"
+    waitForProcess "installer -pkg"
+    waitForProcess "rsync -a"
+    waitForProcess "unzip"
+
+    # Update Octory monitor
+    updateOctory installing
+
+    # Remove existing files if present
+    if [[ -d "/Applications/$app" ]]; then
+        rm -rf "/Applications/$app"
+    fi
+
+    installer -pkg "$tempfile" -target /Applications
+
+    # Checking if the app was installed successfully
+    if [ "$?" = "0" ]; then
+
+        echo "$(date) | $appname Installed"
+        echo "$(date) | Cleaning Up"
+        rm -rf "$tempdir"
+
+        echo "$(date) | Application [$appname] succesfully installed"
+        fetchLastModifiedDate update
+        updateOctory installed
+        exit 0
+
+    else
+
+        echo "$(date) | Failed to install $appname"
+        rm -rf "$tempdir"
+        updateOctory failed
+        exit 1
     fi
 
 }
@@ -318,43 +421,150 @@ function installDMG () {
     updateOctory installing
 
     # Mount the dmg file...
-    echo "$(date) | Mounting [$tempfile] to [$volume]"
+    volume="$tempdir/$appname"
+    echo "$(date) | Mounting Image"
     hdiutil attach -quiet -nobrowse -mountpoint "$volume" "$tempfile"
 
     # Remove existing files if present
     if [[ -d "/Applications/$app" ]]; then
+        echo "$(date) | Removing existing files"
         rm -rf "/Applications/$app"
     fi
 
     # Sync the application and unmount once complete
-    echo "$(date) | Copying $volume/*.app to /Applications/$app"
-    cp -Rf "$volume"/*.app/ "/Applications/$app"
+    echo "$(date) | Copying app files to /Applications/$app"
+    rsync -a "$volume"/*.app/ "/Applications/$app"
 
     # Unmount the dmg
     echo "$(date) | Un-mounting [$volume]"
     hdiutil detach -quiet "$volume"
 
     # Checking if the app was installed successfully
+
+    if [[ -a "/Applications/$app" ]]; then
+
+        echo "$(date) | [$appname] Installed"
+        echo "$(date) | Cleaning Up"
+        rm -rf "$tempfile"
+
+        echo "$(date) | Fixing up permissions"
+        sudo chown -R root:wheel "/Applications/$app"
+        echo "$(date) | Application [$appname] succesfully installed"
+        fetchLastModifiedDate update
+        updateOctory installed
+        exit 0
+    else
+        echo "$(date) | Failed to install [$appname]"
+        rm -rf "$tempdir"
+        updateOctory failed
+        exit 1
+    fi
+
+}
+
+## Install ZIP Function
+function installZIP () {
+
+    #################################################################################################################
+    #################################################################################################################
+    ##
+    ##  This function takes the following global variables and installs the DMG file into /Applications
+    ##
+    ##  Functions
+    ##
+    ##      isAppRunning (Pauses installation if the process defined in global variable $processpath is running )
+    ##      fetchLastModifiedDate (Called with update flag which causes the function to write the new lastmodified date to the metadata file)
+    ##
+    ##  Variables
+    ##
+    ##      $appname = Description of the App we are installing
+    ##      $tempfile = location of temporary DMG file downloaded
+    ##      $volume = name of volume mount point
+    ##      $app = name of Application directory under /Applications
+    ##
+    ###############################################################
+    ###############################################################
+
+
+    # Check if app is running, if it is we need to wait.
+    waitForProcess "$processpath" "300" "$terminateprocess"
+
+    # Wait for other "install processes to complete to avoid resource exhaustion"
+    waitForProcess "installer -pkg"
+    waitForProcess "rsync -a"
+    waitForProcess "unzip"
+
+    echo "$(date) | Installing $appname"
+    updateOctory installing
+
+    cd "$tempdir"
+    rm -rf "$app"
+    unzip -qq -o "$tempfile"
+    if [ "$?" = "0" ]; then
+      echo "$(date) | $tempfile unzipped"
+    else
+      echo "$(date) | failed to unzip $tmpfile"
+      rm -rf "$tempdir"
+      updateOctory failed
+      exit 1
+    fi
+
+    if [[ -a "/Applications/$app" ]]; then
+    
+      echo "$(date) | Renoving old installation at /Applications/$app"
+      rm -rf "/Applications/$app"
+    
+    fi
+
+    rsync -a "$app/" "/Applications/$app"
+    if [ "$?" = "0" ]; then
+      echo "$(date) | $appname moved into /Applications"
+    else
+      echo "$(date) | failed to move $appname to /Applications"
+      rm -rf "$tempdir"
+      updateOctory failed
+      exit 1
+    fi
+
+    echo "$(date) | Fix up permissions"
+    sudo chown -R root:wheel "/Applications/$app"
+    if [ "$?" = "0" ]; then
+      echo "$(date) | correctly applied permissions to $appname"
+    else
+      echo "$(date) | failed to apply permissions to $appname"
+      rm -rf "$tempdir"
+      updateOctory failed
+      exit 1
+    fi
+
+    # Checking if the app was installed successfully
     if [ "$?" = "0" ]; then
         if [[ -a "/Applications/$app" ]]; then
 
-            echo "$(date) | [$appname] Installed"
+            echo "$(date) | $appname Installed"
+            updateOctory installed
             echo "$(date) | Cleaning Up"
             rm -rf "$tempfile"
+
+            echo "$(date) | Writing last modifieddate $lastmodified to $metafile"
+            echo "$lastmodified" > "$metafile"
 
             echo "$(date) | Fixing up permissions"
             sudo chown -R root:wheel "/Applications/$app"
             echo "$(date) | Application [$appname] succesfully installed"
-            fetchLastModifiedDate update
-            updateOctory installed
             exit 0
         else
-            echo "$(date) | Failed to install [$appname]"
-            updateOctory failed
+            echo "$(date) | Failed to install $appname"
             exit 1
         fi
-    else        
-        echo "$(date) | Failed to install [$appname]"
+    else
+
+        # Something went wrong here, either the download failed or the install Failed
+        # intune will pick up the exit status and the IT Pro can use that to determine what went wrong.
+        # Intune can also return the log file if requested by the admin
+        
+        echo "$(date) | Failed to install $appname"
+        rm -rf "$tempdir"
         exit 1
     fi
 }
@@ -447,6 +657,17 @@ waitForDesktop
 # Download app
 downloadApp
 
-# Install DMG file
-installDMG
+# Install PKG file
+if [[ $packageType == "PKG" ]]; then
+    installPKG
+fi
 
+# Install PKG file
+if [[ $packageType == "ZIP" ]]; then
+    installZIP
+fi
+
+# Install PKG file
+if [[ $packageType == "DMG" ]]; then
+    installDMG
+fi
