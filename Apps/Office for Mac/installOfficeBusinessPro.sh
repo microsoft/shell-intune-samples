@@ -332,10 +332,7 @@ function installPKG () {
     ###############################################################
 
 
-    # Wait for other "install processes to complete to avoid resource exhaustion"
-    waitForProcess "installer -pkg"
-    waitForProcess "rsync -a"
-    waitForProcess "unzip"
+
 
     echo "$(date) | Installing [$appname]"
     updateOctory installing

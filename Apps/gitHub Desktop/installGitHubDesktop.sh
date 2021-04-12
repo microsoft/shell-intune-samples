@@ -247,7 +247,7 @@ function downloadApp () {
                     tempfile="$tempdir/install.pkg"
                 fi
 
-                if [[ "$metadata" == *"bzip2 compressed data"* ]]  | [[ "$metadata" == *"zlib compressed data"* ]] ; then
+                if [[ "$metadata" == *"bzip2 compressed data"* ]] || [[ "$metadata" == *"zlib compressed data"* ]] ; then
                     packageType="DMG"
                     mv "$tempfile" "$tempdir/install.dmg"
                     tempfile="$tempdir/install.dmg"
@@ -365,10 +365,7 @@ function installPKG () {
     waitForProcess "$processpath" "300" "$terminateprocess"
 
     echo "$(date) | Installing $appname"
-    # Wait for other "install processes to complete to avoid resource exhaustion"
-    waitForProcess "installer -pkg"
-    waitForProcess "rsync -a"
-    waitForProcess "unzip"
+
 
     # Update Octory monitor
     updateOctory installing
@@ -429,10 +426,7 @@ function installDMG () {
     # Check if app is running, if it is we need to wait.
     waitForProcess "$processpath" "300" "$terminateprocess"
 
-    # Wait for other "install processes to complete to avoid resource exhaustion"
-    waitForProcess "installer -pkg"
-    waitForProcess "rsync -a"
-    waitForProcess "unzip"
+
 
     echo "$(date) | Installing [$appname]"
     updateOctory installing
@@ -506,10 +500,7 @@ function installZIP () {
     # Check if app is running, if it is we need to wait.
     waitForProcess "$processpath" "300" "$terminateprocess"
 
-    # Wait for other "install processes to complete to avoid resource exhaustion"
-    waitForProcess "installer -pkg"
-    waitForProcess "rsync -a"
-    waitForProcess "unzip"
+
 
     echo "$(date) | Installing $appname"
     updateOctory installing
