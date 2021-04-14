@@ -18,18 +18,18 @@
 ## Feedback: neiljohn@microsoft.com
 
 # User Defined variables
-weburl="https://neiljohn.blob.core.windows.net/macapps/gimp.dmg"        # What is the Azure Blob Storage URL?
-appname="Gimp"                                                          # The name of our App deployment script (also used for Octory monitor)
-app="Gimp.app"                                                          # The actual name of our App once installed
-logandmetadir="/Library/Logs/Microsoft/IntuneScripts/installGimp"       # The location of our logs and last updated data
-processpath="/Applications/Gimp.app/Contents/MacOS/gimp"                # The process name of the App we are installing
-terminateprocess="false"                                                # Do we want to terminate the running process? If false we'll wait until its not running
-autoUpdate="false"                                                      # Application updates itself, if already installed we should exit
+weburl="https://download.gimp.org/mirror/pub/gimp/v2.10/osx/gimp-2.10.22-x86_64-3.dmg"      # What is the Azure Blob Storage URL?
+appname="Gimp"                                                                              # The name of our App deployment script (also used for Octory monitor)
+app="Gimp.app"                                                                              # The actual name of our App once installed
+logandmetadir="/Library/Logs/Microsoft/IntuneScripts/installGimp"                           # The location of our logs and last updated data
+processpath="/Applications/Gimp.app/Contents/MacOS/gimp"                                    # The process name of the App we are installing
+terminateprocess="false"                                                                    # Do we want to terminate the running process? If false we'll wait until its not running
+autoUpdate="false"                                                                          # Application updates itself, if already installed we should exit
 
 # Generated variables
 tempdir=$(mktemp -d)
-log="$logandmetadir/$appname.log"                                       # The location of the script log file
-metafile="$logandmetadir/$appname.meta"                                 # The location of our meta file (for updates)
+log="$logandmetadir/$appname.log"                                                           # The location of the script log file
+metafile="$logandmetadir/$appname.meta"                                                     # The location of our meta file (for updates)
 
 # function to delay script if the specified process is running
 waitForProcess () {
@@ -265,7 +265,8 @@ function downloadApp () {
          
     else
     
-         echo "$(date) | Failure to download [$weburl] to [$tempfile]"
+        echo "$(date) | Failure to download [$weburl] to [$tempfile]"
+         updateOctory failed
          exit 1
     fi
 
@@ -302,7 +303,7 @@ function updateCheck() {
     # App is installed, if it's updates are handled by MAU we should quietly exit
     if [[ $autoUpdate == "true" ]]; then
         echo "$(date) | [$appname] is already installed and handles updates itself, exiting"
-        exit 0;
+        exit 0
     fi
 
     # App is already installed, we need to determine if it requires updating or not
