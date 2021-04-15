@@ -28,4 +28,4 @@ echo "# $(date) | Starting $appname"
 echo "############################################################"
 echo ""
 
-/usr/local/bin/mdatp --scan --quick
+/usr/local/bin/mdatp scan quick >/dev/null

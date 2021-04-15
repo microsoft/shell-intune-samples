@@ -104,8 +104,9 @@ fi
 echo "$(date) | Running $appname"
 installer -pkg $tempfile -target /Applications
 if [ "$?" = "0" ]; then
-   echo "$(date) | $appname downloaded to $tempfile"
+   echo "$(date) | $appname installed"
+   exit 0
 else
-   echo "$(date) | Failed to download from $weburl"
+   echo "$(date) | Failed to install $appname"
    exit 2
 fi

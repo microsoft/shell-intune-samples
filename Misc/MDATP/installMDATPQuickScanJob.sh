@@ -67,3 +67,5 @@ launchctl load $plistfile
 
 echo "$(date) - Starting $plistname"
 launchctl start $plistname
+
+exit 0

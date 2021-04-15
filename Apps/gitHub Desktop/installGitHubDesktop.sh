@@ -266,7 +266,8 @@ function downloadApp () {
          
     else
     
-         echo "$(date) | Failure to download [$weburl] to [$tempfile]"
+        echo "$(date) | Failure to download [$weburl] to [$tempfile]"
+         updateOctory failed
          exit 1
     fi
 
