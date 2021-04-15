@@ -26,10 +26,67 @@ processpath="/Applications/Microsoft Defender ATP.app/Contents/MacOS/Microsoft D
 terminateprocess="true"                                                    # Do we want to terminate the running process? If false we'll wait until its not running
 autoUpdate="true"                                                         # If true, application updates itself and we should not attempt to update
 
+waitForTheseApps=(  "/Applications/Microsoft Edge.app"
+                    "/Applications/Microsoft Outlook.app"
+                    "/Applications/Gimp.app"
+                    "/Applications/Microsoft Word.app"
+                    "/Applications/Microsoft Excel.app"
+                    "/Applications/Microsoft PowerPoint.app"
+                    "/Applications/Microsoft OneNote.app"
+                    "/Applications/Microsoft Teams.app"
+                    "/Applications/Visual Studio Code.app"
+                    "/Applications/Company Portal.app")
+
 # Generated variables
 tempdir=$(mktemp -d)
 log="$logandmetadir/$appname.log"                                               # The location of the script log file
 metafile="$logandmetadir/$appname.meta"                                         # The location of our meta file (for updates)
+
+# Function to pause installation until we've finished installing other apps
+waitForOtherApps() {
+
+    #################################################################################################################
+    #################################################################################################################
+    ##
+    ##  Function to wait until all dependent apps are installed. This is required for Defender since it will hang
+    ##  any running TCP connections when it's network extension is loaded.
+    ##
+    ##  Functions used
+    ##
+    ##      None
+    ##
+    ##  Variables used
+    ##
+    ##      $waitForTheseApps = Array of apps to wait for
+    ##
+    ###############################################################
+    ###############################################################
+
+echo "Looking for required applications before we install"
+
+    while [[ $ready -ne 1 ]];do
+        
+        missingappcount=0
+        for i in "${waitForTheseApps[@]}"; do
+            
+            if [[ ! -a "$i" ]]; then
+            echo " $(date) | waiting for installation of [$i]"
+            let missingappcount=$missingappcount+1
+            fi
+        done
+
+        if [[ $missingappcount -eq 0 ]]; then
+            ready=1
+            echo " $(date) | All apps installed, safe to continue"
+        else
+            echo " $(date) | [$missingappcount] application missing"
+            echo " $(date) | Waiting for 60 seconds"
+            sleep 60
+        fi
+
+    done
+
+}
 
 # function to delay script if the specified process is running
 waitForProcess () {
@@ -67,7 +124,7 @@ waitForProcess () {
 
         # If we've been passed a delay we should use it, otherwise we'll create a random delay each run
         if [[ ! $fixedDelay ]]; then
-            delay=$(( $RANDOM % 50 + 10 ))
+            delay=$(( $RANDOM % 180 + 60 ))
         else
             delay=$fixedDelay
         fi
@@ -265,8 +322,9 @@ function downloadApp () {
          
     else
     
-         echo "$(date) | Failure to download [$weburl] to [$tempfile]"
-         exit 1
+        echo "$(date) | Failure to download [$weburl] to [$tempfile]"
+        updateOctory failed
+        exit 1
     fi
 
 }
@@ -362,9 +420,11 @@ function installPKG () {
 
     # Check if app is running, if it is we need to wait.
     waitForProcess "$processpath" "300" "$terminateprocess"
+    
+    # Second wait for Curl, we'll hang any downloads once we begin installing Defender
+    waitForProcess "curl"
 
     echo "$(date) | Installing $appname"
-
 
     # Update Octory monitor
     updateOctory installing
@@ -663,6 +723,9 @@ waitForDesktop
 
 # Download app
 downloadApp
+
+# Don't start install until our other apps have finished, otherwise we will terminate their download
+waitForOtherApps
 
 # Install PKG file
 if [[ $packageType == "PKG" ]]; then
