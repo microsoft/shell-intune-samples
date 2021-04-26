@@ -34,6 +34,12 @@ startCompanyPortalifADE="true"
 
 exec &> >(tee -a "$log")
 
+if [[ -f "$HOME/Library/Logs/prepareDock" ]]; then
+
+  echo "Script has already run, nothing to do"
+  exit 0
+
+fi
 
 dockitems=( "/Applications/Microsoft Edge.app"
             "/Applications/Microsoft Outlook.app"
@@ -94,8 +100,8 @@ while [[ $ready -ne 1 ]];do
 done
 
 echo " $(date) | Removing Dock Persistent Apps"
-defaults delete ~/Library/Preferences/com.apple.dock persistent-apps
-defaults delete ~/Library/Preferences/com.apple.dock persistent-others
+defaults delete $HOME/Library/Preferences/com.apple.dock persistent-apps
+defaults delete $HOME/Library/Preferences/com.apple.dock persistent-others
 
 for i in "${dockitems[@]}"; do
   if [[ -a "$i" ]] ; then
@@ -106,7 +112,7 @@ done
 
 echo "$(date) | Adding Downloads Stack"
 consoleuser=$(ls -l /dev/console | awk '{ print $3 }')
-downloadfolder="/Users/$consoleuser/Downloads"
+downloadfolder="$HOME/Downloads"
 defaults write com.apple.dock persistent-others -array-add "<dict><key>tile-data</key><dict><key>file-data</key><dict><key>_CFURLString</key><string>$downloadfolder</string><key>_CFURLStringType</key><integer>0</integer></dict><key>file-label</key><string>Downloads</string><key>file-type</key><string>2</string></dict><key>tile-type</key><string>directory-tile</string></dict>"
 
 echo "$(date) | Enabling Magnification"
@@ -127,7 +133,10 @@ defaults write com.apple.dock minimize-to-application -bool yes
 echo "$(date) | Restarting Dock"
 killall Dock
 
-# If this is a ADE enrolled device (DEP) we should launch the Company Portal for the end user to complete registration
+echo "$(date) | Writng completion lock to [~/Library/Logs/prepareDock]"
+touch "$HOME/Library/Logs/prepareDock"
+
+# If this is an ADE enrolled device (DEP) we should launch the Company Portal for the end user to complete registration
 if [ "$startCompanyPortalifADE" = true ]; then
   echo "Checking MDM Profile Type"
   profiles status -type enrollment | grep "Enrolled via DEP: Yes"

@@ -1,6 +1,6 @@
 # Rosetta 2 Installation Script
 
-This script is am example to show how to use [Intune Shell Scripting](https://docs.microsoft.com/en-us/mem/intune/apps/macos-shell-scripts) to install Rosetta 2. In this case the script will check if Rosetta 2 is required and install of necessary.
+This script is an example to show how to use [Intune Shell Scripting](https://docs.microsoft.com/en-us/mem/intune/apps/macos-shell-scripts) to install Rosetta 2. In this case the script will check if Rosetta 2 is required and install of necessary.
 
 The example script here uses a function to make it easy to merge into your existing scripts.
 

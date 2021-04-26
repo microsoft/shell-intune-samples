@@ -313,6 +313,24 @@
 					<key>SoundsEnabled</key>
 					<true/>
 				</dict>
+				<dict>
+					<key>BadgesEnabled</key>
+					<true/>
+					<key>BundleIdentifier</key>
+					<string>com.microsoft.wdav.tray</string>
+					<key>CriticalAlertEnabled</key>
+					<true/>
+					<key>NotificationsEnabled</key>
+					<true/>
+					<key>ShowInCarPlay</key>
+					<true/>
+					<key>ShowInLockScreen</key>
+					<true/>
+					<key>ShowInNotificationCenter</key>
+					<true/>
+					<key>SoundsEnabled</key>
+					<true/>
+				</dict>
 			</array>
 			<key>PayloadDisplayName</key>
 			<string>Notifications</string>
@@ -333,7 +351,7 @@
 	<key>PayloadType</key>
 	<string>Configuration</string>
 	<key>PayloadUUID</key>
-	<string>FD0FB560-AB2F-4D5A-B990-F5CE315C8DEC</string>
+	<string>D6F21A2A-BD1B-4D2C-AF9E-54AA3874A1EE</string>
 	<key>PayloadVersion</key>
 	<integer>1</integer>
 </dict>

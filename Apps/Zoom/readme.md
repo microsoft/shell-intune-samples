@@ -1,6 +1,6 @@
 # Zoom Installation Script
 
-This script is am example to show how to use [Intune Shell Scripting](https://docs.microsoft.com/en-us/mem/intune/apps/macos-shell-scripts) to install applications. In this case the script will download the Zoom.pkg file from the Zoom download servers and then install it onto the Mac.
+This script is an example to show how to use [Intune Shell Scripting](https://docs.microsoft.com/en-us/mem/intune/apps/macos-shell-scripts) to install applications. In this case the script will download the Zoom.pkg file from the Zoom download servers and then install it onto the Mac.
 
 
 ## Script Settings

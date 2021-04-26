@@ -1,6 +1,6 @@
 # Script to add apps to the Mac Dock
 
-This script is am example showing how to use [Intune Shell Scripting](https://docs.microsoft.com/en-us/mem/intune/apps/macos-shell-scripts) to modify the macOS dock. In this instance the script has a list of apps that it waits to be present on the device before clearing the dock and adding the apps defined.
+This script is an example showing how to use [Intune Shell Scripting](https://docs.microsoft.com/en-us/mem/intune/apps/macos-shell-scripts) to modify the macOS dock. In this instance the script has a list of apps that it waits to be present on the device before clearing the dock and adding the apps defined.
 
 ![Desktop Image](https://github.com/microsoft/shell-intune-samples/raw/master/img/desktop.png)
 
