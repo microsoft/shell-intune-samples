@@ -111,7 +111,7 @@ checkForRosetta2 () {
         
     else
 
-        echo "$(date) | [$processor] founbd, is Rosetta already installed?"
+        echo "$(date) | [$processor] found, is Rosetta already installed?"
 
         # Check Rosetta LaunchDaemon. If no LaunchDaemon is found,
         # perform a non-interactive install of Rosetta.
