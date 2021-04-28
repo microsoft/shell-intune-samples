@@ -45,7 +45,7 @@ cat > $plistfile <<EOF
 	<array>
 		<string>sh</string>
 		<string>-c</string>
-		<string>/usr/local/bin/mdatp --scan --quick</string>
+		<string>/usr/local/bin/mdatp scan quick</string>
 	</array>
 	<key>RootDirectory</key>
 	<string>/usr/local/bin</string>
