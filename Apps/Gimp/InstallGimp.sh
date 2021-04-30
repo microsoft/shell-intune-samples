@@ -519,7 +519,7 @@ function installZIP () {
 
     if [[ -a "/Applications/$app" ]]; then
     
-      echo "$(date) | Renoving old installation at /Applications/$app"
+      echo "$(date) | Removing old installation at /Applications/$app"
       rm -rf "/Applications/$app"
     
     fi
