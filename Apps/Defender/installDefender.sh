@@ -124,7 +124,7 @@ waitForProcess () {
 
         # If we've been passed a delay we should use it, otherwise we'll create a random delay each run
         if [[ ! $fixedDelay ]]; then
-            delay=$(( $RANDOM % 180 + 60 ))
+            delay=$(( $RANDOM % 60 + 1 ))
         else
             delay=$fixedDelay
         fi
