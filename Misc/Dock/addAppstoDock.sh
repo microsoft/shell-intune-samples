@@ -73,7 +73,7 @@ waitForDesktop () {
 
 
 waitForDesktop
-echo Looking for required applications...
+echo "Looking for required applications..."
 
 while [[ $ready -ne 1 ]];do
 
