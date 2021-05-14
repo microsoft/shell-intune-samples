@@ -78,6 +78,59 @@ waitForProcess () {
 
 }
 
+# Function to change the download URL to an older version if the current version isn't supported on this Mac
+function OfficeURLCheck() {
+
+    # Download location for latest version of Office for Mac 2019
+    weburl="https://go.microsoft.com/fwlink/?linkid=2009112" 
+
+    echo "$(date) | Checking that the version of Office we have will work on this Mac"
+    os_ver=$(sw_vers -productVersion)
+
+    case $os_ver in
+
+    10.10.*)
+        echo "$(date) |  + macOS 10.10 Yosemite detected, setting install to Office 2016 v16.16"
+        weburl="https://officecdn-microsoft-com.akamaized.net/pr/C1297A47-86C4-4C1F-97FA-950631F94777/MacAutoupdate/Microsoft_Office_16.16.20091400_Installer.pkg"
+        unset localcopy # Note, enter your own localcopy URL if you have one here
+        ;;
+
+    10.11.*)
+        echo "$(date) |  + macOS 10.11 El Capitan detected, setting install to Office 2016 v16.16"
+        weburl="https://officecdn-microsoft-com.akamaized.net/pr/C1297A47-86C4-4C1F-97FA-950631F94777/MacAutoupdate/Microsoft_Office_16.16.20091400_Installer.pkg"
+        unset localcopy # Note, enter your own localcopy URL if you have one here
+        ;;
+
+    10.12.*)
+        echo "$(date) |  + macOS 10.12 Sierra detected, setting install to Office 2016 v16.30"
+        weburl="https://officecdn-microsoft-com.akamaized.net/pr/C1297A47-86C4-4C1F-97FA-950631F94777/MacAutoupdate/Microsoft_Office_16.30.19101301_Installer.pkg"
+        unset localcopy # Note, enter your own localcopy URL if you have one here
+        ;;
+
+    10.13.*)
+        echo "$(date) |  + macOS 10.13 High Sierra detected, setting install to Office 2019 v16.43"
+        weburl="https://officecdn-microsoft-com.akamaized.net/pr/C1297A47-86C4-4C1F-97FA-950631F94777/MacAutoupdate/Microsoft_Office_16.43.20110804_Installer.pkg"
+        unset localcopy # Note, enter your own localcopy URL if you have one here
+        ;;
+
+    10.14.*)
+        echo "$(date) |  + macOS 10.14 Mojave detected, installing latest available version"
+        ;;
+
+    10.15.*)
+        echo "$(date) |  + macOS 10.15 Catalina detected, installing latest available version"
+        ;;
+
+    11.*)
+        echo "$(date) |  + macOS 11.x Big Sur detected, installing latest available version"
+        ;;
+
+    *)
+        echo "$(date) |  + Unknown OS $os_ver"
+        ;;
+    esac
+}
+
 # function to check if we need Rosetta 2
 checkForRosetta2 () {
 
@@ -196,6 +249,9 @@ function downloadApp () {
     ###############################################################
 
     echo "$(date) | Starting downlading of [$appname]"
+
+    # Check download location to see if we can handle the latest version of Office
+    OfficeURLCheck
 
     # If local copy is defined, let's try and download it...
     if [ "$localcopy" ]; then

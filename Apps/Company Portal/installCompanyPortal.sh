@@ -501,23 +501,32 @@ function installZIP () {
     # Check if app is running, if it is we need to wait.
     waitForProcess "$processpath" "300" "$terminateprocess"
 
-
-
     echo "$(date) | Installing $appname"
     updateOctory installing
 
+    # Change into temp dir
     cd "$tempdir"
-    rm -rf "$app"
-    unzip -qq -o "$tempfile"
     if [ "$?" = "0" ]; then
-      echo "$(date) | $tempfile unzipped"
+      echo "$(date) | Changed current directory to $tempdir"
     else
-      echo "$(date) | failed to unzip $tmpfile"
-      rm -rf "$tempdir"
+      echo "$(date) | failed to change to $tempfile"
+      if [ -d "$tempdir" ]; then rm -rf $tempdir; fi
       updateOctory failed
       exit 1
     fi
 
+    # Unzip files in temp dir
+    unzip -qq -o "$tempfile"
+    if [ "$?" = "0" ]; then
+      echo "$(date) | $tempfile unzipped"
+    else
+      echo "$(date) | failed to unzip $tempfile"
+      if [ -d "$tempdir" ]; then rm -rf $tempdir; fi
+      updateOctory failed
+      exit 1
+    fi
+
+    # If app is already installed, remove all old files
     if [[ -a "/Applications/$app" ]]; then
     
       echo "$(date) | Removing old installation at /Applications/$app"
@@ -525,23 +534,25 @@ function installZIP () {
     
     fi
 
+    # Copy over new files
     rsync -a "$app/" "/Applications/$app"
     if [ "$?" = "0" ]; then
       echo "$(date) | $appname moved into /Applications"
     else
       echo "$(date) | failed to move $appname to /Applications"
-      rm -rf "$tempdir"
+      if [ -d "$tempdir" ]; then rm -rf $tempdir; fi
       updateOctory failed
       exit 1
     fi
 
+    # Make sure permissions are correct
     echo "$(date) | Fix up permissions"
     sudo chown -R root:wheel "/Applications/$app"
     if [ "$?" = "0" ]; then
       echo "$(date) | correctly applied permissions to $appname"
     else
       echo "$(date) | failed to apply permissions to $appname"
-      rm -rf "$tempdir"
+      if [ -d "$tempdir" ]; then rm -rf $tempdir; fi
       updateOctory failed
       exit 1
     fi
@@ -555,8 +566,8 @@ function installZIP () {
             echo "$(date) | Cleaning Up"
             rm -rf "$tempfile"
 
-            echo "$(date) | Writing last modifieddate $lastmodified to $metafile"
-            echo "$lastmodified" > "$metafile"
+            # Update metadata
+            fetchLastModifiedDate update
 
             echo "$(date) | Fixing up permissions"
             sudo chown -R root:wheel "/Applications/$app"
@@ -573,7 +584,7 @@ function installZIP () {
         # Intune can also return the log file if requested by the admin
         
         echo "$(date) | Failed to install $appname"
-        rm -rf "$tempdir"
+        if [ -d "$tempdir" ]; then rm -rf $tempdir; fi
         exit 1
     fi
 }
