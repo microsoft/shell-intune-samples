@@ -270,7 +270,7 @@ function downloadApp () {
     # If we failed to download the local copy, or it wasn't defined then try to download from CDN
     if [[ "$downloadcomplete" != "true" ]]; then
 
-        waitForProcess "curl"
+        waitForProcess "curl -f"
         updateOctory installing
         rm -rf "$tempfile" > /dev/null 2>&1
         echo "$(date) | Downloading [$weburl] to [$tempfile]"

@@ -258,7 +258,7 @@ function downloadApp () {
     echo "$(date) | Starting downlading of [$appname]"
 
     # wait for other downloads to complete
-    waitForProcess "curl"
+    waitForProcess "curl -f"
 
     #download the file
     updateOctory installing
@@ -422,7 +422,7 @@ function installPKG () {
     waitForProcess "$processpath" "300" "$terminateprocess"
     
     # Second wait for Curl, we'll hang any downloads once we begin installing Defender
-    waitForProcess "curl"
+    waitForProcess "curl -f"
 
     echo "$(date) | Installing $appname"
 

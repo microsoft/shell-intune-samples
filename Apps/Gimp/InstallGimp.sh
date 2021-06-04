@@ -201,7 +201,7 @@ function downloadApp () {
     echo "$(date) | Starting downlading of [$appname]"
 
     # wait for other downloads to complete
-    waitForProcess "curl"
+    waitForProcess "curl -f"
 
     #download the file
     updateOctory installing
