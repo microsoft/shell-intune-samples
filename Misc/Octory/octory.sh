@@ -3,7 +3,7 @@
 
 ############################################################################################
 ##
-## Script to download and run Octory
+## Script to download and run Octory splash screen
 ##
 ###########################################
 
@@ -21,7 +21,7 @@
 
 tempfile="/tmp/octory/octory.zip"
 targetdir="/Library/Application Support/Octory"
-weburl="https://neiljohn.blob.core.windows.net/macapps/Octory.zip"
+weburl="https://neiljohn.blob.core.windows.net/macapps/Octory.zip?sp=r&st=2021-06-22T11:00:42Z&se=2099-06-22T19:00:42Z&spr=https&sv=2020-02-10&sr=b&sig=%2FxK9Xhy07R9yZnD%2F4L1saDzV2a5VvXBlqr9GJbrBzSw%3D"
 appname="Octory"
 logandmetadir="/Library/Logs/Microsoft/IntuneScripts/installOctory"
 log="$logandmetadir/startOctory.log"
@@ -111,37 +111,53 @@ waitForDesktop () {
 }
 
 echo "$(date) | Removing any old temp files"
-rm -rf /tmp/octory
-rm -rf /Library/Application\ Support/Octory
-mkdir -p /tmp/octory
+rm -rf "/tmp/octory"
+rm -rf "/Library/Application\ Support/Octory"
+mkdir -p "/tmp/octory"
 
+#########################
+##
+##   Download, unzip and move application and resources into correct locations
+##
+##############
+
+# Download Octory
 echo "$(date) | Downloading [$appname] from [$weburl]"
-curl -f -s --connect-timeout 30 --retry 5 --retry-delay 60 -L -o $tempfile $weburl
+curl -f -s --connect-timeout 30 --retry 5 --retry-delay 60 -L -o "$tempfile" "$weburl"
 cd /tmp/octory
+
+# Unzip files
 echo "$(date) | Unzipping binary and resource files"
 unzip -q octory.zip
+
+# Move files into correct location
 echo "$(date) | Copying to /Application Support/Octory"
 mv Octory/ /Library/Application\ Support/
 cd /Library/Application\ Support/Octory
+
+# Ensure correct permissions are set
 echo "$(date) | Setting Permissions"
 chown -R root:wheel Octory.app
 sleep 10
 
+# If we get here during Setup Assistant we should wait until that process is completed
 waitForDesktop
+
+# Launch Octory splash screen to show the end user how app installation progress is doing
 echo "$(date) | Launching Octory for user"
 Octory.app/Contents/MacOS/Octory -c Presets/Numberwang/Octory.plist
 if [[ $? -eq 0 ]]; then
     echo "$(date) | Octory succesfully launched"
     exit 0
 else
-    echo "$(date) | Octory failed, let's try one more time"
+    echo "$(date) | Octory failed to launch, let's try one more time"
     sleep 10
     Octory.app/Contents/MacOS/Octory -c Presets/Numberwang/Octory.plist
     if [[ $? -eq 0 ]]; then
         echo "$(date) | Octory succesfully launched"
         exit 0
     else
-        echo "$(date) | Octory failed on 2nd launch, let's try one more time"
+        echo "$(date) | Octory failed on 2nd launch"
         exit 1
     fi
 fi
