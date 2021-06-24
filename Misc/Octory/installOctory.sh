@@ -17,14 +17,19 @@
 ## of such damages.
 ## Feedback: neiljohn@microsoft.com
 
-# Define variables
-
-tempfile="/tmp/octory/octory.zip"
-targetdir="/Library/Application Support/Octory"
+# User Defined variables
 weburl="https://neiljohn.blob.core.windows.net/macapps/Octory.zip?sp=r&st=2021-06-22T11:00:42Z&se=2099-06-22T19:00:42Z&spr=https&sv=2020-02-10&sr=b&sig=%2FxK9Xhy07R9yZnD%2F4L1saDzV2a5VvXBlqr9GJbrBzSw%3D"
-appname="Octory"
-logandmetadir="/Library/Logs/Microsoft/IntuneScripts/installOctory"
-log="$logandmetadir/startOctory.log"
+
+# Standard Variables
+targetdir="/Library/Application Support/Octory"                 # Installation directory
+appname="Octory"                                                # Name of application to display in the logs
+logandmetadir="/Library/Logs/Microsoft/IntuneScripts/Octory"    # Log file directory
+
+# Generated variables
+tempdir=$(mktemp -d)                                            # Temp directory
+tempfile="/$tempdir/octory.zip"                                 # Temp file
+log="$logandmetadir/$appname.log"                               # Log file name
+consoleuser=$(ls -l /dev/console | awk '{ print $3 }')          # Current user
 
 ## Check if the log directory has been created
 if [ -d $logandmetadir ]; then
@@ -88,7 +93,7 @@ checkForRosetta2 () {
 }
 
 # start logging
-exec 1>> $log 2>&1
+exec &> >(tee -a "$log")
 
 # Begin Script Body
 
@@ -110,11 +115,6 @@ waitForDesktop () {
     echo "$(date) | Desktop is here, lets carry on"
 }
 
-echo "$(date) | Removing any old temp files"
-rm -rf "/tmp/octory"
-rm -rf "/Library/Application\ Support/Octory"
-mkdir -p "/tmp/octory"
-
 #########################
 ##
 ##   Download, unzip and move application and resources into correct locations
@@ -124,11 +124,20 @@ mkdir -p "/tmp/octory"
 # Download Octory
 echo "$(date) | Downloading [$appname] from [$weburl]"
 curl -f -s --connect-timeout 30 --retry 5 --retry-delay 60 -L -o "$tempfile" "$weburl"
-cd /tmp/octory
+cd "$tempdir"
+
+curl -f -s --connect-timeout 30 --retry 5 --retry-delay 60 -L -o "$tempfile" https://neiljohn.blob.core.windows.net/macapps/octo-notifier-0.1.1.pkg?sp=r&st=2021-06-24T14:29:11Z&se=2099-06-24T22:29:11Z&spr=https&sv=2020-08-04&sr=b&sig=4%2BcMPc4CSew%2BcGuooXIx7jkDv5dR7uG00eYePUTxuT4%3D
 
 # Unzip files
 echo "$(date) | Unzipping binary and resource files"
 unzip -q octory.zip
+
+# Remove previous Octory files if they exist
+if [ -d "$targetdir" ]; then
+    ## Octory directory already exists, we need to remove it
+    echo "$(date) | Removing previous Octory files from [$targetdir]"
+    rm -rf "$targetdir"
+fi
 
 # Move files into correct location
 echo "$(date) | Copying to /Application Support/Octory"
@@ -137,22 +146,22 @@ cd /Library/Application\ Support/Octory
 
 # Ensure correct permissions are set
 echo "$(date) | Setting Permissions"
-chown -R root:wheel Octory.app
-sleep 10
-
-# If we get here during Setup Assistant we should wait until that process is completed
-waitForDesktop
+sudo chown -R root:wheel /Library/Application\ Support/Octory
+sudo chmod -R 755 /Library/Application\ Support/Octory
+sudo chmod 644 /Library/Application\ Support/Octory/onboarding.plist
+cd $HOME
+rm -rf "$tempdir"
 
 # Launch Octory splash screen to show the end user how app installation progress is doing
-echo "$(date) | Launching Octory for user"
-Octory.app/Contents/MacOS/Octory -c Presets/Numberwang/Octory.plist
+echo "$(date) | Launching Octory for user [$consoleuser]"
+sudo -u "$consoleuser" Octory.app/Contents/MacOS/Octory -c onboarding.plist
 if [[ $? -eq 0 ]]; then
     echo "$(date) | Octory succesfully launched"
     exit 0
 else
     echo "$(date) | Octory failed to launch, let's try one more time"
     sleep 10
-    Octory.app/Contents/MacOS/Octory -c Presets/Numberwang/Octory.plist
+    sudo -u "$consoleuser" Octory.app/Contents/MacOS/Octory -c onboarding.plist
     if [[ $? -eq 0 ]]; then
         echo "$(date) | Octory succesfully launched"
         exit 0
