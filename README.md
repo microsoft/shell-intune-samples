@@ -21,29 +21,51 @@ To make things a little easier to navigate the repo has been split up into three
 This section is for scripts that install or configure applications on the Mac. There are many reasons to deploy apps via shell script rather than via the macOS mdmclient. Our preferred method of app deployment is via the [Mac App Store VPP](https://docs.microsoft.com/en-us/mem/intune/apps/vpp-apps-ios), but the Intune Scripting agent provides an almost infinte level of possibilities where the apps you need on your Macs can't be deployed via VPP.
 
 ```
-|-Apps
-|---Company Portal
-|---Minecraft Education Edition
-|---Office for Mac
-|---Remote Desktop
-|---Skype
-|---Teams
-|---Visual Studio Code
-|---Yammer
-|---gitHub Desktop
+   |-Apps
+   |---Cisco AMP
+   |---Company Portal
+   |---Defender
+   |---Edge
+   |---Gimp
+   |---Minecraft Education Edition
+   |---Office for Mac
+   |---Remote Desktop
+   |---Skype for Business
+   |---Teams
+   |---Visual Studio Code
+   |---Yammer
+   |---Zoom
+   |---gitHub Desktop
 ```
 ## Misc
 
 This section is for scripts that do general macOS configurations. This is an Alladin's cave of scripts to get your Macs in shape. Feel free to submit your own examples too, we'd love to get contributions.
 
 ```
-|-Misc
-|---CompanyPortalPreferences
-|---Dock
-|---EnableOneDriveFinderSync
-|---MDATP
-|---Wallpaper
-|---setTimeZone
+   |-Misc
+   |---DeviceRename
+   |---Dock
+   |---EnableOneDriveFinderSync
+   |---MDATP
+   |---Manage Accounts
+   |---Octory
+   |---Rosetta2
+   |---Wallpaper
+   |---checkPasswordPolicy
+   |---mdmDiagnose
+   |---setTimeZone
+```
+
+## Custom Attributes
+
+This section is for example [Custom Attributes](https://docs.microsoft.com/en-us/mem/intune/apps/macos-shell-scripts#custom-attributes-for-macos) for deployment via Intune. These come from customer requirements and are stored here for the community.
+
+```
+   |-Custom Attributes
+   |---CPU Architecture
+   |---Defender
+   |---Gimp
+   |---Hackintosh
 ```
 
 ## Custom Profiles
@@ -51,9 +73,9 @@ This section is for scripts that do general macOS configurations. This is an All
 This section is for example Custom Profiles for deployment via Intune. These come from various places, either hand written, Apple Condigurator 2 or OS X Server Manager's Profile Manager. Our aim is to have everything in here written into the Intune UI directly, but while we're working on that we're storing some useful profiles here.
 
 ```
-├── Custom\ Profiles
-│   └── Disable External Storage
-├── LOBAppPrep
+   |-Custom Profiles
+   |---Disable External Storage
+   |---Notifications
 ```
 
 ### Disclaimer
