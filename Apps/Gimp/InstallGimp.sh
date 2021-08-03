@@ -611,7 +611,7 @@ function updateOctory () {
         # Octory is installed, but is it running?
         if [[ $(ps aux | grep -i "Octory" | grep -v grep) ]]; then
             echo "$(date) | Updating Octory monitor for [$appname] to [$1]"
-            /Library/Application\ Support/Octory/octo-notifier monitor "$appname" --state $1 >/dev/null
+            /usr/local/bin/octo-notifier monitor "$appname" --state $1 >/dev/null
         fi
     fi
 

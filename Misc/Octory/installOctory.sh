@@ -55,6 +55,35 @@ isSoftwareUpdateRunning () {
 
 }
 
+# function to delay until the user has finished setup assistant.
+waitForDesktop () {
+    until ps aux | grep /System/Library/CoreServices/Dock.app/Contents/MacOS/Dock | grep -v grep; do
+        echo "$(date) |  + Dock not running, waiting..."
+        sleep 5
+    done
+    echo "$(date) | Desktop is here, lets carry on"
+}
+
+# function to remove Octory after user finishes onboarding
+cleanup() {
+
+    cd "$HOME"
+
+    if [ -d "$tempdir" ]; then
+        echo "$(date) | Cleanup - Removing temp directory [$tempdir]"
+        rm -rf "$tempdir"
+    fi
+
+    if [ -d "$targetdir" ]; then
+        ## Octory directory already exists, we need to remove it
+        echo "$(date) | Cleanup - Removing target directory [$targetdir]"
+        rm -rf "$targetdir"
+    fi
+
+    ## Remove octo-notifier
+    rm -rf /usr/bin/local/octo-notifier
+}
+
 # function to check if we need Rosetta 2
 checkForRosetta2 () {
 
@@ -106,15 +135,6 @@ echo ""
 # Check if we need Rosetta 2
 checkForRosetta2
 
-# function to delay until the user has finished setup assistant.
-waitForDesktop () {
-    until ps aux | grep /System/Library/CoreServices/Dock.app/Contents/MacOS/Dock | grep -v grep; do
-        echo "$(date) |  + Dock not running, waiting..."
-        sleep 5
-    done
-    echo "$(date) | Desktop is here, lets carry on"
-}
-
 #########################
 ##
 ##   Download, unzip and move application and resources into correct locations
@@ -139,24 +159,34 @@ if [ -d "$targetdir" ]; then
     rm -rf "$targetdir"
 fi
 
+# Install octo-notifier
+sudo installer -pkg "$tempdir/Octory/Octory notifier.pkg" -target /
+if [[ $? -eq 0 ]]; then
+    echo "$(date) | octo-notifier succesfully installed"
+    else
+    echo "$(date) | octo-notifier installation failed"
+fi
+
 # Move files into correct location
 echo "$(date) | Copying to /Application Support/Octory"
 mv Octory/ /Library/Application\ Support/
 cd /Library/Application\ Support/Octory
 
 # Ensure correct permissions are set
-echo "$(date) | Setting Permissions"
-sudo chown -R root:wheel /Library/Application\ Support/Octory
-sudo chmod -R 755 /Library/Application\ Support/Octory
-sudo chmod 644 /Library/Application\ Support/Octory/onboarding.plist
-cd $HOME
-rm -rf "$tempdir"
+echo "$(date) | Setting Permissions on [$targetdir]"
+sudo chown -R root:wheel "$targetdir"
+sudo chmod -R 755 "$targetdir"
+sudo chmod 644 "$targetdir/onboarding.plist"
+
+# We don't want to interrupt setup assistant
+waitForDesktop
 
 # Launch Octory splash screen to show the end user how app installation progress is doing
 echo "$(date) | Launching Octory for user [$consoleuser]"
 sudo -u "$consoleuser" Octory.app/Contents/MacOS/Octory -c onboarding.plist
 if [[ $? -eq 0 ]]; then
     echo "$(date) | Octory succesfully launched"
+    #cleanup
     exit 0
 else
     echo "$(date) | Octory failed to launch, let's try one more time"
@@ -164,9 +194,11 @@ else
     sudo -u "$consoleuser" Octory.app/Contents/MacOS/Octory -c onboarding.plist
     if [[ $? -eq 0 ]]; then
         echo "$(date) | Octory succesfully launched"
+        #cleanup
         exit 0
     else
         echo "$(date) | Octory failed on 2nd launch"
+        #cleanup
         exit 1
     fi
 fi

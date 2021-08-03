@@ -24,19 +24,20 @@
 ## by some other means than this script. Either via MDM, VPP, or other scripts. This script will wait indefinitely until all
 ## of the apps are present and then it will clear the current dock and add the apps.
 ##
-## Lines 94 onwards confiure Dock look and feel, uncomment as necessary
+## Lines 146 onwards confiure Dock look and feel, uncomment as necessary
 ##
 
 # Define variables
-log="/tmp/addAppstoDock.log"
-appname="Dock Script"
+log="$HOME/addAppstoDock.log"
+appname="Dock"
 startCompanyPortalifADE="true"
+consoleuser=$(ls -l /dev/console | awk '{ print $3 }')
 
 exec &> >(tee -a "$log")
 
 if [[ -f "$HOME/Library/Logs/prepareDock" ]]; then
 
-  echo "Script has already run, nothing to do"
+  echo "$(date) | Script has already run, nothing to do"
   exit 0
 
 fi
@@ -62,50 +63,83 @@ echo "# $(date) | Starting install of $appname"
 echo "############################################################"
 echo ""
 
-# function to delay until the user has finished setup assistant.
-waitForDesktop () {
-  until ps aux | grep /System/Library/CoreServices/Dock.app/Contents/MacOS/Dock | grep -v grep; do
-    echo "$(date) | Dock not running, waiting..."
-    sleep 5
-  done
-  echo "$(date) | Desktop is here, lets carry on"
+function updateOctory () {
+
+    #################################################################################################################
+    #################################################################################################################
+    ##
+    ##  This function is designed to update Octory status (if required)
+    ##
+    ##
+    ##  Parameters (updateOctory parameter)
+    ##
+    ##      notInstalled
+    ##      installing
+    ##      installed
+    ##
+    ###############################################################
+    ###############################################################
+
+    # Is Octory present
+    if [[ -a "/Library/Application Support/Octory" ]]; then
+
+        # Octory is installed, but is it running?
+        if [[ $(ps aux | grep -i "Octory" | grep -v grep) ]]; then
+            echo "$(date) | Updating Octory monitor for [$appname] to [$1]"
+            /usr/local/bin/octo-notifier monitor "$appname" --state $1
+        fi
+    fi
+
 }
 
+# function to delay until the user has finished setup assistant.
+waitForDesktop () {
+  until ps aux | grep /System/Library/CoreServices/Dock.app/Contents/MacOS/Dock | grep -v grep &>/dev/null; do
+    delay=$(( $RANDOM % 50 + 10 ))
+    echo "$(date) |  + Dock not running, waiting [$delay] seconds"
+    sleep $delay
+  done
+  echo "$(date) | Dock is here, lets carry on"
+}
 
 waitForDesktop
-echo "Looking for required applications..."
+
+updateOctory installing
+
+echo "$(date) | Looking for required applications..."
 
 while [[ $ready -ne 1 ]];do
 
+  updateOctory installing
   missingappcount=0
 
   for i in "${dockitems[@]}"; do
     if [[ -a "$i" ]]; then
-      echo " $(date) | $i is installed"
+      echo "$(date) |  $i is installed"
     else
       let missingappcount=$missingappcount+1
     fi
   done
 
-  echo " $(date) | [$missingappcount] application missing"
+  echo "$(date) |  [$missingappcount] application missing"
 
   if [[ $missingappcount -eq 0 ]]; then
     ready=1
-    echo " $(date) | All apps found, lets prep the dock"
+    echo "$(date) |  All apps found, lets prep the dock"
   else
-    echo " $(date) | Waiting for 10 seconds"
+    echo "$(date) |  Waiting for 10 seconds"
     sleep 10
   fi
 
 done
 
-echo " $(date) | Removing Dock Persistent Apps"
+echo "$(date) |  Removing Dock Persistent Apps"
 defaults delete $HOME/Library/Preferences/com.apple.dock persistent-apps
 defaults delete $HOME/Library/Preferences/com.apple.dock persistent-others
 
 for i in "${dockitems[@]}"; do
   if [[ -a "$i" ]] ; then
-    echo " $(date) | Adding [$i] to Dock"
+    echo "$(date) |  Adding [$i] to Dock"
     defaults write com.apple.dock persistent-apps -array-add "<dict><key>tile-data</key><dict><key>file-data</key><dict><key>_CFURLString</key><string>$i</string><key>_CFURLStringType</key><integer>0</integer></dict></dict></dict>"
   fi
 done
@@ -136,15 +170,17 @@ killall Dock
 echo "$(date) | Writng completion lock to [~/Library/Logs/prepareDock]"
 touch "$HOME/Library/Logs/prepareDock"
 
+updateOctory installed
+
 # If this is an ADE enrolled device (DEP) we should launch the Company Portal for the end user to complete registration
 if [ "$startCompanyPortalifADE" = true ]; then
-  echo "Checking MDM Profile Type"
+  echo "$(date) | Checking MDM Profile Type"
   profiles status -type enrollment | grep "Enrolled via DEP: Yes"
   if [ ! $? == 0 ]; then
-    echo "This device is not ABM managed, exiting"
+    echo "$(date) | This device is not ABM managed, exiting"
     exit 0;
   else
-    echo "Device is ABM Managed. launching Company Portal"
+    echo "$(date) | Device is ABM Managed. launching Company Portal"
     open "/Applications/Company Portal.app"
   fi
 fi
