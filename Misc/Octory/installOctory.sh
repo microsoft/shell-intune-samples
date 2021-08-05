@@ -18,7 +18,7 @@
 ## Feedback: neiljohn@microsoft.com
 
 # User Defined variables
-weburl="https://neiljohn.blob.core.windows.net/macapps/Octory.zip?sp=r&st=2021-06-22T11:00:42Z&se=2099-06-22T19:00:42Z&spr=https&sv=2020-02-10&sr=b&sig=%2FxK9Xhy07R9yZnD%2F4L1saDzV2a5VvXBlqr9GJbrBzSw%3D"
+weburl="https://neiljohn.blob.core.windows.net/macapps/Octory.zip"
 
 # Standard Variables
 targetdir="/Library/Application Support/Octory"                 # Installation directory
@@ -145,8 +145,6 @@ checkForRosetta2
 echo "$(date) | Downloading [$appname] from [$weburl]"
 curl -f -s --connect-timeout 30 --retry 5 --retry-delay 60 -L -o "$tempfile" "$weburl"
 cd "$tempdir"
-
-curl -f -s --connect-timeout 30 --retry 5 --retry-delay 60 -L -o "$tempfile" https://neiljohn.blob.core.windows.net/macapps/octo-notifier-0.1.1.pkg?sp=r&st=2021-06-24T14:29:11Z&se=2099-06-24T22:29:11Z&spr=https&sv=2020-08-04&sr=b&sig=4%2BcMPc4CSew%2BcGuooXIx7jkDv5dR7uG00eYePUTxuT4%3D
 
 # Unzip files
 echo "$(date) | Unzipping binary and resource files"
