@@ -101,7 +101,7 @@
 					<key>BadgesEnabled</key>
 					<true/>
 					<key>BundleIdentifier</key>
-					<string>com.microsoft.skype.teams</string>
+					<string>com.microsoft.teams</string>
 					<key>CriticalAlertEnabled</key>
 					<true/>
 					<key>NotificationsEnabled</key>
