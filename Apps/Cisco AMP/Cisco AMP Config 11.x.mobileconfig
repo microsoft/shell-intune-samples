@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>PayloadContent</key>
+	<array>
+		<dict>
+			<key>AllowUserOverrides</key>
+			<true/>
+			<key>AllowedSystemExtensionTypes</key>
+			<dict>
+				<key>DE8Y96K9QP</key>
+				<array>
+					<string>EndpointSecurityExtension</string>
+					<string>NetworkExtension</string>
+				</array>
+			</dict>
+			<key>AllowedSystemExtensions</key>
+			<dict>
+				<key>DE8Y96K9QP</key>
+				<array>
+					<string>com.cisco.endpoint.svc.securityextension</string>
+					<string>com.cisco.endpoint.svc.networkextension</string>
+				</array>
+			</dict>
+			<key>PayloadDescription</key>
+			<string></string>
+			<key>PayloadDisplayName</key>
+			<string>System Extensions</string>
+			<key>PayloadIdentifier</key>
+			<string>EB2A2110-BCA3-4EFD-AEE8-EB18B0FE57C5</string>
+			<key>PayloadOrganization</key>
+			<string>YOUR COMPANY HERE</string>
+			<key>PayloadType</key>
+			<string>com.apple.system-extension-policy</string>
+			<key>PayloadUUID</key>
+			<string>7B2A2110-BCA3-4EFD-AEE8-EB18B0FE57C5</string>
+			<key>PayloadVersion</key>
+			<integer>1</integer>
+		</dict>
+		<dict>
+			<key>FilterBrowsers</key>
+			<false/>
+			<key>FilterDataProviderBundleIdentifier</key>
+			<string>com.cisco.endpoint.svc.networkextension</string>
+			<key>FilterDataProviderDesignatedRequirement</key>
+			<string>anchor apple generic and identifier "com.cisco.endpoint.svc.networkextension" and (certificate leaf[field.1.2.840.113635.100.6.1.9] /* exists */ or certificate 1[field.1.2.840.113635.100.6.2.6] /* exists */ and certificate leaf[field.1.2.840.113635.100.6.1.13] /* exists */ and certificate leaf[subject.OU] = DE8Y96K9QP)</string>
+			<key>FilterGrade</key>
+			<string>firewall</string>
+			<key>FilterPackets</key>
+			<false/>
+			<key>FilterSockets</key>
+			<true/>
+			<key>FilterType</key>
+			<string>Plugin</string>
+			<key>PayloadDescription</key>
+			<string>Adds a Web Content Filter</string>
+			<key>PayloadDisplayName</key>
+			<string>Web Content Filter</string>
+			<key>PayloadIdentifier</key>
+			<string>19DE21F8-35AE-45B4-B8EE-3AC2A1F2B8B5.com.apple.webcontent-filter.BF054105-5232-49DB-ADA2-F334BFAFE7EA</string>
+			<key>PayloadOrganization</key>
+			<string></string>
+			<key>PayloadType</key>
+			<string>com.apple.webcontent-filter</string>
+			<key>PayloadUUID</key>
+			<string>7F054105-5232-49DB-ADA2-F334BFAFE7EA</string>
+			<key>PayloadVersion</key>
+			<integer>1</integer>
+			<key>PluginBundleID</key>
+			<string>com.cisco.endpoint.svc</string>
+			<key>UserDefinedName</key>
+			<string>AMP Network Extension</string>
+		</dict>
+		<dict>
+			<key>PayloadDescription</key>
+			<string>Configures Privacy Preferences Policy Control settings</string>
+			<key>PayloadDisplayName</key>
+			<string>Privacy Preferences Policy Control</string>
+			<key>PayloadIdentifier</key>
+			<string>6FB36903-B1BD-4670-B489-377AD3666415</string>
+			<key>PayloadOrganization</key>
+			<string>YOUR COMPANY HERE</string>
+			<key>PayloadType</key>
+			<string>com.apple.TCC.configuration-profile-policy</string>
+			<key>PayloadUUID</key>
+			<string>7FB36903-B1BD-4670-B489-377AD3666415</string>
+			<key>PayloadVersion</key>
+			<integer>1</integer>
+			<key>Services</key>
+			<dict>
+				<key>SystemPolicyAllFiles</key>
+				<array>
+					<dict>
+						<key>Allowed</key>
+						<integer>1</integer>
+						<key>CodeRequirement</key>
+						<string>anchor apple generic and identifier "com.cisco.endpoint.svc" and (certificate leaf[field.1.2.840.113635.100.6.1.9] /* exists */ or certificate 1[field.1.2.840.113635.100.6.2.6] /* exists */ and certificate leaf[field.1.2.840.113635.100.6.1.13] /* exists */ and certificate leaf[subject.OU] = DE8Y96K9QP)</string>
+						<key>Comment</key>
+						<string></string>
+						<key>Identifier</key>
+						<string>com.cisco.endpoint.svc</string>
+						<key>IdentifierType</key>
+						<string>bundleID</string>
+						<key>StaticCode</key>
+						<integer>1</integer>
+					</dict>
+					<dict>
+						<key>Allowed</key>
+						<integer>1</integer>
+						<key>CodeRequirement</key>
+						<string>anchor apple generic and identifier "com.cisco.endpoint.svc.securityextension" and (certificate leaf[field.1.2.840.113635.100.6.1.9] /* exists */ or certificate 1[field.1.2.840.113635.100.6.2.6] /* exists */ and certificate leaf[field.1.2.840.113635.100.6.1.13] /* exists */ and certificate leaf[subject.OU] = DE8Y96K9QP)</string>
+						<key>Comment</key>
+						<string></string>
+						<key>Identifier</key>
+						<string>com.cisco.endpoint.svc.securityextension</string>
+						<key>IdentifierType</key>
+						<string>bundleID</string>
+						<key>StaticCode</key>
+						<integer>1</integer>
+					</dict>
+				</array>
+			</dict>
+		</dict>
+	</array>
+	<key>PayloadDescription</key>
+	<string>Allow AMP system and policy extensions and full disk access</string>
+	<key>PayloadDisplayName</key>
+	<string>Cisco AMP 1.14.0 BigSur Ready</string>
+	<key>PayloadIdentifier</key>
+	<string>19DE21F8-35AE-45B4-B8EE-3AC2A1F2B8B5</string>
+	<key>PayloadOrganization</key>
+	<string>YOUR COMPANY HERE</string>
+	<key>PayloadScope</key>
+	<string>System</string>
+	<key>PayloadType</key>
+	<string>Configuration</string>
+	<key>PayloadUUID</key>
+	<string>7482535B-CFA3-4ECB-86D8-3473FE933DB6</string>
+	<key>PayloadVersion</key>
+	<integer>1</integer>
+</dict>
+</plist>
