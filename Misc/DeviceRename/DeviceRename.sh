@@ -34,13 +34,14 @@ else
 fi
 
 # start logging
-exec 1>> $log 2>&1
+exec &> >(tee -a "$log")
 
 # Begin Script Body
 echo ""
 echo "##############################################################"
 echo "# $(date) | Starting $appname"
 echo "############################################################"
+echo "Writing log output to [$log]"
 echo ""
 
 echo " $(date) | Checking if renaming is necessary"
@@ -63,13 +64,6 @@ else
 fi
 
 
-
-if [[ "$CurrentNameCheck" == *"$SerialNum"* ]]
-  then
-  echo "# $(date) | rename not necessary as the Mac name already includes the serial number. Exiting..."
-  exit 0
-fi
-
 echo " $(date) | Old Name: $CurrentNameCheck"
 ModelName=$(system_profiler SPHardwareDataType | awk /'Model Name: '/ | cut -d ':' -f2- | xargs)
 if [ "$?" = "0" ]; then
@@ -79,25 +73,39 @@ else
    exit 1
 fi
 
+## What is our public IP
+echo " $(date) | Looking up public IP"
+myip=$(dig +short myip.opendns.com @resolver1.opendns.com)
+Country=$(curl -s https://ipapi.co/$myip/country)
+
+
 
 echo " $(date) | Generating four characters code based on retrieved model name $ModelName"
 
 case $ModelName in
-  MacBook\ Air*) ModelCode=MABA;;
-  MacBook\ Pro*) ModelCode=MABP;;
-  MacBook*) ModelCode=MACB;;
+  MacBook\ Air*) ModelCode=MBA;;
+  MacBook\ Pro*) ModelCode=MBP;;
+  MacBook*) ModelCode=MB;;
   iMac*) ModelCode=IMAC;;
-  Mac\ Pro*) ModelCode=MACP;;
+  Mac\ Pro*) ModelCode=PRO;;
   Mac\ mini*) ModelCode=MINI;;
   *) ModelCode=$(echo $ModelName | tr -d ' ' | cut -c1-4);;
 esac
 
 echo " $(date) | ModelCode variable set to $ModelCode"
 echo " $(date) | Retrieved serial number: $SerialNum"
+echo " $(date) | Detected country as: $Country"
 echo " $(date) | Building the new name..."
-NewName=$ModelCode$SerialNum
+NewName=$ModelCode-$SerialNum-$Country
 
 echo " $(date) | Generated Name: $NewName"
+
+
+if [[ "$CurrentNameCheck" == "$NewName" ]]
+  then
+  echo " $(date) | Rename not required already set to [$CurrentNameCheck]"
+  exit 0
+fi
 
 #Setting ComputerName
 scutil --set ComputerName $NewName
