@@ -18,6 +18,7 @@
 ## Feedback: neiljohn@microsoft.com
 
 # User Defined variables
+mauurl="https://go.microsoft.com/fwlink/?linkid=830196"                         # URL to fetch latest MAU
 weburl="https://go.microsoft.com/fwlink/?linkid=853070"                         # What is the Azure Blob Storage URL?
 appname="Company Portal"                                                        # The name of our App deployment script (also used for Octory monitor)
 app="Company Portal.app"                                                        # The actual name of our App once installed
@@ -30,6 +31,62 @@ autoUpdate="true"                                                               
 tempdir=$(mktemp -d)
 log="$logandmetadir/$appname.log"                                               # The location of the script log file
 metafile="$logandmetadir/$appname.meta"                                         # The location of our meta file (for updates)
+
+function updateMAU () {
+
+    #################################################################################################################
+    #################################################################################################################
+    ##
+    ##  This function downloads and installs the latest Microsoft Audo Update (MAU) tool 
+    ##
+    ##  Functions
+    ##
+    ##      waitForCurl (Pauses download until all other instances of Curl have finished)
+    ##      downloadSize (Generates human readable size of the download for the logs)
+    ##
+    ##  Variables
+    ##
+    ##      $appname = Description of the App we are installing
+    ##      $weburl = URL of download location
+    ##      $tempfile = location of temporary DMG file downloaded
+    ##
+    ###############################################################
+    ###############################################################
+
+    echo "$(date) | Starting downlading of [MAU]"
+
+    cd "$tempdir"
+    curl -o "$tempdir/mau.pkg" -f -s --connect-timeout 30 --retry 5 --retry-delay 60 -L -J -O "$mauurl"
+    if [ $? == 0 ]; then
+
+        echo "$(date) | Downloaded [$mauurl] to [$tempdir/mau.pkg]"
+        echo "$(date) | Starting installation of latest MAU"
+        
+        installer -pkg "$tempdir/mau.pkg" -target /
+
+        # Checking if the app was installed successfully
+        if [ "$?" = "0" ]; then
+
+            echo "$(date) | MAU Installed"
+            echo "$(date) | Cleaning Up"
+            rm -rf "$tempdir/mau.pkg"
+
+        else
+
+            echo "$(date) | Failed to install [MAU]"
+            echo "$(date) | Cleaning Up"
+            rm -rf "$tempdir/mau.pkg"
+        fi
+         
+    else
+    
+         echo "$(date) | Failure to download [MAU] to [$tempfile]"
+ 
+         exit 1
+    fi
+
+}
+
 
 # function to delay script if the specified process is running
 waitForProcess () {
@@ -676,6 +733,9 @@ waitForDesktop
 
 # Download app
 downloadApp
+
+# Update MAU
+updateMAU
 
 # Install PKG file
 if [[ $packageType == "PKG" ]]; then
