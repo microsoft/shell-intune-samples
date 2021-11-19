@@ -132,6 +132,15 @@ echo "# $(date) | Starting install of $appname"
 echo "############################################################"
 echo ""
 
+
+# Exit if machine has already been deployed and Company Portal plist detected
+if [[ -f "/Users/$consoleuser/Library/Preferences/com.microsoft.CompanyPortalMac.plist" ]]; then
+
+    echo "$(date) | Skipping Octory launch for user [$consoleuser], Company Portal already Launched."
+    exit 0
+
+fi
+
 # Check if we need Rosetta 2
 checkForRosetta2
 
