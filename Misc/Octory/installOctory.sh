@@ -133,12 +133,12 @@ echo ""
 
 
 # Exit if machine has already been deployed and Company Portal plist detected
-#if [[ -f "/Users/$consoleuser/Library/Preferences/com.microsoft.CompanyPortalMac.plist" ]]; then
-#
-#    echo "$(date) | Skipping Octory launch for user [$consoleuser], Company Portal already Launched."
-#   exit 0
-#
-#fi
+if [[ -f "/Users/$consoleuser/Library/Preferences/com.microsoft.CompanyPortalMac.plist" ]]; then
+
+    echo "$(date) | Skipping Octory launch for user [$consoleuser], Company Portal already Launched."
+   exit 0
+
+fi
 
 # Check if we need Rosetta 2
 checkForRosetta2
@@ -189,8 +189,8 @@ waitForDesktop
 consoluser=$( echo "show State:/Users/ConsoleUser" | scutil | awk '/Name :/ { print $3 }' ) 
 
 # Launch Octory splash screen to show the end user how app installation progress is doing
-echo "$(date) | Launching Octory for user [$consoluser]"
-sudo -u "$consoluser" Octory.app/Contents/MacOS/Octory -c onboarding.plist
+echo "$(date) | Launching Octory for user [$consoleuser]"
+sudo -u "$consoleuser" Octory.app/Contents/MacOS/Octory -c onboarding.plist
 if [[ $? -eq 0 ]]; then
     echo "$(date) | Octory succesfully launched"
     #cleanup
