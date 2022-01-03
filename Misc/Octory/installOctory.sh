@@ -18,7 +18,7 @@
 ## Feedback: neiljohn@microsoft.com
 
 # User Defined variables
-weburl="https://djstorage2.blob.core.windows.net/intunesupport/TAG/Octory.zip"
+weburl="" # Enter blob URL for Octory archive
 
 # Standard Variables
 targetdir="/Library/Application Support/Octory"                 # Installation directory
