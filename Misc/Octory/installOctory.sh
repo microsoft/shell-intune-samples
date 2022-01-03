@@ -26,7 +26,7 @@ appname="Octory"                                                # Name of applic
 logandmetadir="/Library/Logs/Microsoft/IntuneScripts/Octory"    # Log file directory
 
 # Generated variables
-tempdir=$(mktemp -d)                                             # Temp directory
+tempdir=$(mktemp -d)                                            # Temp directory
 tempfile="/$tempdir/octory.zip"                                 # Temp file
 log="$logandmetadir/$appname.log"                               # Log file name
 
