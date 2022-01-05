@@ -34,6 +34,16 @@ scriptname="Create Local Admin Account"
 logandmetadir="/Library/Intune/Scripts/createLocalAdminAccount"
 log="$logandmetadir/createLocalAdminAccount.log"
 
+# function to delay until the user has finished setup assistant.
+waitforSetupAssistant () {
+  until [[ -f /var/db/.AppleSetupDone ]]; do
+    delay=$(( $RANDOM % 50 + 10 ))
+    echo "$(date) |  + Setup Assistant not done, waiting [$delay] seconds"
+    sleep $delay
+  done
+  echo "$(date) | Setup Assistant is done, lets carry on"
+}
+
 ## Check if the log directory has been created and start logging
 if [ -d $logandmetadir ]; then
     ## Already created
@@ -58,6 +68,7 @@ echo ""
 
 echo "Creating new local admin account [$adminaccountname]"
 p=`system_profiler SPHardwareDataType | awk '/Serial/ {print $4}' | tr '[A-Z]' '[K-ZA-J]' | tr 0-9 4-90-3 | base64`
+waitforSetupAssistant
 echo "Adding $adminaccountname to hidden users list"
 sudo defaults write /Library/Preferences/com.apple.loginwindow HiddenUsersList -array-add "$adminaccountname"
 sudo sysadminctl -deleteUser "$adminaccountname" # Remove existing admin account if it exists
