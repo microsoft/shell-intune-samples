@@ -18,7 +18,7 @@
 ## Feedback: neiljohn@microsoft.com
 
 # User Defined variables
-weburl="https://neiljohn.blob.core.windows.net/macapps/Octory.zip"
+weburl="" # Enter blob URL for Octory archive
 
 # Standard Variables
 targetdir="/Library/Application Support/Octory"                 # Installation directory
@@ -29,7 +29,6 @@ logandmetadir="/Library/Logs/Microsoft/IntuneScripts/Octory"    # Log file direc
 tempdir=$(mktemp -d)                                            # Temp directory
 tempfile="/$tempdir/octory.zip"                                 # Temp file
 log="$logandmetadir/$appname.log"                               # Log file name
-consoleuser=$(ls -l /dev/console | awk '{ print $3 }')          # Current user
 
 ## Check if the log directory has been created
 if [ -d $logandmetadir ]; then
@@ -104,18 +103,18 @@ checkForRosetta2 () {
         # Check Rosetta LaunchDaemon. If no LaunchDaemon is found,
         # perform a non-interactive install of Rosetta.
         
-        if [[ ! -f "/Library/Apple/System/Library/LaunchDaemons/com.apple.oahd.plist" ]]; then
+        if /usr/bin/pgrep oahd >/dev/null 2>&1; then 
+            echo "Rosetta 2 is installed"
+        else 
             /usr/sbin/softwareupdate --install-rosetta --agree-to-license
         
-            if [[ $? -eq 0 ]]; then
+                if [[ $? -eq 0 ]]; then
                 echo "$(date) | Rosetta has been successfully installed."
-            else
+                else
                 echo "$(date) | Rosetta installation failed!"
-                exit 1
-            fi
-    
-        else
-            echo "$(date) | Rosetta is already installed. Nothing to do."
+                exit 1                
+                fi  
+        
         fi
     fi
 
@@ -137,7 +136,7 @@ echo ""
 if [[ -f "/Users/$consoleuser/Library/Preferences/com.microsoft.CompanyPortalMac.plist" ]]; then
 
     echo "$(date) | Skipping Octory launch for user [$consoleuser], Company Portal already Launched."
-    exit 0
+   exit 0
 
 fi
 
@@ -187,6 +186,7 @@ sudo chmod 644 "$targetdir/onboarding.plist"
 
 # We don't want to interrupt setup assistant
 waitForDesktop
+consoluser=$(ls -l /dev/console | awk '{ print $3 }') 
 
 # Launch Octory splash screen to show the end user how app installation progress is doing
 echo "$(date) | Launching Octory for user [$consoleuser]"
@@ -198,7 +198,7 @@ if [[ $? -eq 0 ]]; then
 else
     echo "$(date) | Octory failed to launch, let's try one more time"
     sleep 10
-    sudo -u "$consoleuser" Octory.app/Contents/MacOS/Octory -c onboarding.plist
+    sudo -u "$consoluser" open Octory.app --args -c onboarding.plist
     if [[ $? -eq 0 ]]; then
         echo "$(date) | Octory succesfully launched"
         #cleanup
@@ -209,5 +209,3 @@ else
         exit 1
     fi
 fi
-
-
