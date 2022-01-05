@@ -99,36 +99,48 @@ checkForRosetta2 () {
     ###############################################################
     ###############################################################
 
+    
+
     echo "$(date) | Checking if we need Rosetta 2 or not"
 
     # if Software update is already running, we need to wait...
     waitForProcess "/usr/sbin/softwareupdate"
 
-    processor=$(/usr/sbin/sysctl -n machdep.cpu.brand_string)
-    if [[ "$processor" == *"Intel"* ]]; then
 
-        echo "$(date) | [$processor] found, Rosetta not needed"
-        
-    else
+    ## Note, Rosetta detection code from https://derflounder.wordpress.com/2020/11/17/installing-rosetta-2-on-apple-silicon-macs/
+    OLDIFS=$IFS
+    IFS='.' read osvers_major osvers_minor osvers_dot_version <<< "$(/usr/bin/sw_vers -productVersion)"
+    IFS=$OLDIFS
 
-        echo "$(date) | [$processor] founbd, is Rosetta already installed?"
+    if [[ ${osvers_major} -ge 11 ]]; then
 
-        # Check Rosetta LaunchDaemon. If no LaunchDaemon is found,
-        # perform a non-interactive install of Rosetta.
+        # Check to see if the Mac needs Rosetta installed by testing the processor
+
+        processor=$(/usr/sbin/sysctl -n machdep.cpu.brand_string | grep -o "Intel")
         
-        if [[ ! -f "/Library/Apple/System/Library/LaunchDaemons/com.apple.oahd.plist" ]]; then
-            /usr/sbin/softwareupdate --install-rosetta --agree-to-license
-        
-            if [[ $? -eq 0 ]]; then
-                echo "$(date) | Rosetta has been successfully installed."
-                return
-            else
-                echo "$(date) | Rosetta installation failed!"
-            fi
-    
+        if [[ -n "$processor" ]]; then
+            echo "$(date) | $processor processor installed. No need to install Rosetta."
         else
-            echo "$(date) | Rosetta is already installed. Nothing to do."
+
+            # Check for Rosetta "oahd" process. If not found,
+            # perform a non-interactive install of Rosetta.
+            
+            if /usr/bin/pgrep oahd >/dev/null 2>&1; then
+                echo "$(date) | Rosetta is already installed and running. Nothing to do."
+            else
+                /usr/sbin/softwareupdate –install-rosetta –agree-to-license
+            
+                if [[ $? -eq 0 ]]; then
+                    echo "$(date) | Rosetta has been successfully installed."
+                else
+                    echo "$(date) | Rosetta installation failed!"
+                    exitcode=1
+                fi
+            fi
         fi
+        else
+            echo "$(date) | Mac is running macOS $osvers_major.$osvers_minor.$osvers_dot_version."
+            echo "$(date) | No need to install Rosetta on this version of macOS."
     fi
 
 }

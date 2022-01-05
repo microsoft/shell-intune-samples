@@ -3,7 +3,16 @@
 
 ############################################################################################
 ##
-## Script to install the latest Intune Company Portal client
+## Script to install the latest [APPNAME]
+## 
+## VER 3.0.1
+##
+## Change Log
+##
+## 2022-01-05   - Updated Rosetta detection code
+## 2021-11-19   - Added logic to handle both APP and PKG inside DMG file. New function DMGPKG
+## 2021-12-06   - Added --compressed to curl cli
+##              - Fixed DMGPKG detection
 ##
 ############################################################################################
 
@@ -18,75 +27,18 @@
 ## Feedback: neiljohn@microsoft.com
 
 # User Defined variables
-mauurl="https://go.microsoft.com/fwlink/?linkid=830196"                         # URL to fetch latest MAU
-weburl="https://go.microsoft.com/fwlink/?linkid=853070"                         # What is the Azure Blob Storage URL?
-appname="Company Portal"                                                        # The name of our App deployment script (also used for Octory monitor)
-app="Company Portal.app"                                                        # The actual name of our App once installed
-logandmetadir="/Library/Logs/Microsoft/IntuneScripts/installCompanyPortal"      # The location of our logs and last updated data
-processpath="/Applications/Company Portal.app/Contents/MacOS/Company Portal"    # The process name of the App we are installing
-terminateprocess="true"                                                         # Do we want to terminate the running process? If false we'll wait until its not running
-autoUpdate="true"                                                               # Application updates itself, if already installed we should exit
+weburl=$(curl --silent --fail -H "Sec-Fetch-Site: same-origin" -H "Accept-Encoding: gzip, deflate, br" -H "Accept-Language: en-US;q=0.9,en;q=0.8" -H "DNT: 1" -H "Sec-Fetch-Mode: cors" -H "X-Requested-With: XMLHttpRequest" -H "Referer: https://get.adobe.com/reader/enterprise/" -H "Accept: */*" "https://get.adobe.com/reader/webservices/json/standalone/?platform_type=Macintosh&platform_dist=OSX&platform_arch=x86-32&language=English&eventname=readerotherversions" | grep -Eo '"download_url":.*?[^\\]",' | head -n 1 | cut -d \" -f 4)
+appname="Adobe Acrobat Reader DC"                                                       # The name of our App deployment script (also used for Octory monitor)
+app="Adobe Acrobat Reader DC.app"                                                       # The actual name of our App once installed
+logandmetadir="/Library/Logs/Microsoft/IntuneScripts/Adobe Acrobat Reader DC"           # The location of our logs and last updated data
+processpath="/Applications/Adobe Acrobat Reader DC.app/Contents/MacOS/AdobeReader"      # The process name of the App we are installing
+terminateprocess="false"                                                                # Do we want to terminate the running process? If false we'll wait until its not running
+autoUpdate="true"                                                                       # Application updates itself, if already installed we should exit
 
 # Generated variables
 tempdir=$(mktemp -d)
 log="$logandmetadir/$appname.log"                                               # The location of the script log file
 metafile="$logandmetadir/$appname.meta"                                         # The location of our meta file (for updates)
-
-function updateMAU () {
-
-    #################################################################################################################
-    #################################################################################################################
-    ##
-    ##  This function downloads and installs the latest Microsoft Audo Update (MAU) tool 
-    ##
-    ##  Functions
-    ##
-    ##      waitForCurl (Pauses download until all other instances of Curl have finished)
-    ##      downloadSize (Generates human readable size of the download for the logs)
-    ##
-    ##  Variables
-    ##
-    ##      $appname = Description of the App we are installing
-    ##      $weburl = URL of download location
-    ##      $tempfile = location of temporary DMG file downloaded
-    ##
-    ###############################################################
-    ###############################################################
-
-    echo "$(date) | Starting downlading of [MAU]"
-
-    cd "$tempdir"
-    curl -o "$tempdir/mau.pkg" -f -s --connect-timeout 30 --retry 5 --retry-delay 60 -L -J -O "$mauurl"
-    if [ $? == 0 ]; then
-
-        echo "$(date) | Downloaded [$mauurl] to [$tempdir/mau.pkg]"
-        echo "$(date) | Starting installation of latest MAU"
-        
-        installer -pkg "$tempdir/mau.pkg" -target /
-
-        # Checking if the app was installed successfully
-        if [ "$?" = "0" ]; then
-
-            echo "$(date) | MAU Installed"
-            echo "$(date) | Cleaning Up"
-            rm -rf "$tempdir/mau.pkg"
-
-        else
-
-            echo "$(date) | Failed to install [MAU]"
-            echo "$(date) | Cleaning Up"
-            rm -rf "$tempdir/mau.pkg"
-        fi
-         
-    else
-    
-         echo "$(date) | Failure to download [MAU] to [$tempfile]"
- 
-         exit 1
-    fi
-
-}
-
 
 # function to delay script if the specified process is running
 waitForProcess () {
@@ -274,10 +226,10 @@ function downloadApp () {
 
     #download the file
     updateOctory installing
-    echo "$(date) | Downloading $appname"
+    echo "$(date) | Downloading $appname [$weburl]"
 
     cd "$tempdir"
-    curl -f -s --connect-timeout 30 --retry 5 --retry-delay 60 -L -J -O "$weburl"
+    curl -f -s --connect-timeout 30 --retry 5 --retry-delay 60 --compressed -L -J -O "$weburl"
     if [ $? == 0 ]; then
 
             # We have downloaded a file, we need to know what the file is called and what type of file it is
@@ -297,7 +249,44 @@ function downloadApp () {
                 ;;
 
             *.dmg|*.DMG)
-                packageType="DMG"
+                
+
+                # We have what we think is a DMG, but we don't know what is inside it yet, could be an APP or PKG
+                # Let's mount it and try to guess what we're dealing with...
+                echo "$(date) | Found DMG, looking inside..."
+
+                # Mount the dmg file...
+                volume="$tempdir/$appname"
+                echo "$(date) | Mounting Image [$volume] [$tempfile]"
+                hdiutil attach -quiet -nobrowse -mountpoint "$volume" "$tempfile"
+                if [ "$?" = "0" ]; then
+                    echo "$(date) | Mounted succesfully to [$volume]"
+                else
+                    echo "$(date) | Failed to mount [$tempfile]"
+                    
+                fi
+
+                if  [[ $(ls "$volume" | grep -i .app) ]] && [[ $(ls "$volume" | grep -i .pkg) ]]; then
+
+                    echo "$(date) | Detected both APP and PKG in same DMG, exiting gracefully"
+
+                else
+
+                    if  [[ $(ls "$volume" | grep -i .app) ]]; then 
+                        echo "$(date) | Detected APP, setting PackageType to DMG"
+                        packageType="DMG"
+                    fi 
+
+                    if  [[ $(ls "$volume" | grep -i .pkg) ]]; then 
+                        echo "$(date) | Detected PKG, setting PackageType to DMGPKG"
+                        packageType="DMGPKG"
+                    fi 
+
+                fi
+
+                # Unmount the dmg
+                echo "$(date) | Un-mounting [$volume]"
+                hdiutil detach -quiet "$volume"
                 ;;
 
             *)
@@ -468,6 +457,81 @@ function installPKG () {
     fi
 
 }
+
+## Install DMG Function
+function installDMGPKG () {
+
+    #################################################################################################################
+    #################################################################################################################
+    ##
+    ##  This function takes the following global variables and installs the DMG file into /Applications
+    ##
+    ##  Functions
+    ##
+    ##      isAppRunning (Pauses installation if the process defined in global variable $processpath is running )
+    ##      fetchLastModifiedDate (Called with update flag which causes the function to write the new lastmodified date to the metadata file)
+    ##
+    ##  Variables
+    ##
+    ##      $appname = Description of the App we are installing
+    ##      $tempfile = location of temporary DMG file downloaded
+    ##      $volume = name of volume mount point
+    ##      $app = name of Application directory under /Applications
+    ##
+    ###############################################################
+    ###############################################################
+
+
+    # Check if app is running, if it is we need to wait.
+    waitForProcess "$processpath" "300" "$terminateprocess"
+
+    echo "$(date) | Installing [$appname]"
+    updateOctory installing
+
+    # Mount the dmg file...
+    volume="$tempdir/$appname"
+    echo "$(date) | Mounting Image"
+    hdiutil attach -quiet -nobrowse -mountpoint "$volume" "$tempfile"
+
+    # Remove existing files if present
+    if [[ -d "/Applications/$app" ]]; then
+        echo "$(date) | Removing existing files"
+        rm -rf "/Applications/$app"
+    fi
+
+    for file in "$volume"/*.pkg
+    do
+        echo "$(date) | Starting installer for [$file]"
+        installer -pkg "$file" -target /Applications
+    done
+
+    # Unmount the dmg
+    echo "$(date) | Un-mounting [$volume]"
+    hdiutil detach -quiet "$volume"
+
+    # Checking if the app was installed successfully
+
+    if [[ -a "/Applications/$app" ]]; then
+
+        echo "$(date) | [$appname] Installed"
+        echo "$(date) | Cleaning Up"
+        rm -rf "$tempfile"
+
+        echo "$(date) | Fixing up permissions"
+        sudo chown -R root:wheel "/Applications/$app"
+        echo "$(date) | Application [$appname] succesfully installed"
+        fetchLastModifiedDate update
+        updateOctory installed
+        exit 0
+    else
+        echo "$(date) | Failed to install [$appname]"
+        rm -rf "$tempdir"
+        updateOctory failed
+        exit 1
+    fi
+
+}
+
 
 ## Install DMG Function
 function installDMG () {
@@ -746,9 +810,6 @@ waitForDesktop
 # Download app
 downloadApp
 
-# Update MAU
-updateMAU
-
 # Install PKG file
 if [[ $packageType == "PKG" ]]; then
     installPKG
@@ -762,4 +823,9 @@ fi
 # Install PKG file
 if [[ $packageType == "DMG" ]]; then
     installDMG
+fi
+
+# Install DMGPKG file
+if [[ $packageType == "DMGPKG" ]]; then
+    installDMGPKG
 fi
