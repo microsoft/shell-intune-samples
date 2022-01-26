@@ -186,7 +186,7 @@ sudo chmod 644 "$targetdir/onboarding.plist"
 
 # We don't want to interrupt setup assistant
 waitForDesktop
-consoluser=$(ls -l /dev/console | awk '{ print $3 }') 
+consoleuser=$(ls -l /dev/console | awk '{ print $3 }') 
 
 # Launch Octory splash screen to show the end user how app installation progress is doing
 echo "$(date) | Launching Octory for user [$consoleuser]"
