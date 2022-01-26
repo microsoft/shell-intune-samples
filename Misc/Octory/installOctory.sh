@@ -186,11 +186,10 @@ sudo chmod 644 "$targetdir/onboarding.plist"
 
 # We don't want to interrupt setup assistant
 waitForDesktop
-consoleuser=$(ls -l /dev/console | awk '{ print $3 }') 
 
 # Launch Octory splash screen to show the end user how app installation progress is doing
-echo "$(date) | Launching Octory for user [$consoleuser]"
-sudo -u "$consoleuser" Octory.app/Contents/MacOS/Octory -c onboarding.plist
+echo "$(date) | Launching Octory"
+sudo Octory.app/Contents/MacOS/Octory -c onboarding.plist
 if [[ $? -eq 0 ]]; then
     echo "$(date) | Octory succesfully launched"
     #cleanup
@@ -198,7 +197,7 @@ if [[ $? -eq 0 ]]; then
 else
     echo "$(date) | Octory failed to launch, let's try one more time"
     sleep 10
-    sudo -u "$consoluser" open Octory.app --args -c onboarding.plist
+    sudo Octory.app/Contents/MacOS/Octory -c onboarding.plist
     if [[ $? -eq 0 ]]; then
         echo "$(date) | Octory succesfully launched"
         #cleanup
