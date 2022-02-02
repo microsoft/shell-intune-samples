@@ -29,6 +29,7 @@ logandmetadir="/Library/Logs/Microsoft/IntuneScripts/Octory"    # Log file direc
 tempdir=$(mktemp -d)                                            # Temp directory
 tempfile="/$tempdir/octory.zip"                                 # Temp file
 log="$logandmetadir/$appname.log"                               # Log file name
+consoleuser=$(ls -l /dev/console | awk '{ print $3 }')          # Current user
 
 ## Check if the log directory has been created
 if [ -d $logandmetadir ]; then
