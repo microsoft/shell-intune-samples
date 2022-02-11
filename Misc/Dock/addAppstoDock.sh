@@ -42,7 +42,7 @@ if [[ -f "$HOME/Library/Logs/prepareDock" ]]; then
 
 fi
 
-dockitems=( "/Applications/Microsoft Edge.app"
+dockapps=( "/Applications/Microsoft Edge.app"
             "/Applications/Microsoft Outlook.app"
             "/Applications/Microsoft Word.app"
             "/Applications/Microsoft Excel.app"
@@ -56,6 +56,11 @@ dockitems=( "/Applications/Microsoft Edge.app"
             "/System/Applications/Utilities/Terminal.app"
             "/System/Applications/System Preferences.app")
 
+# Uncomment these lines if you want to add network shares to the Dock
+
+#netshares=(   "smb://192.168.0.12/Data"
+#              "smb://192.168.0.12/Home"
+#              "smb://192.168.0.12/Tools")
 
 echo ""
 echo "##############################################################"
@@ -137,12 +142,23 @@ echo "$(date) |  Removing Dock Persistent Apps"
 defaults delete $HOME/Library/Preferences/com.apple.dock persistent-apps
 defaults delete $HOME/Library/Preferences/com.apple.dock persistent-others
 
-for i in "${dockitems[@]}"; do
+echo "$(date) |  Adding Apps to Dock"
+for i in "${dockapps[@]}"; do
   if [[ -a "$i" ]] ; then
     echo "$(date) |  Adding [$i] to Dock"
     defaults write com.apple.dock persistent-apps -array-add "<dict><key>tile-data</key><dict><key>file-data</key><dict><key>_CFURLString</key><string>$i</string><key>_CFURLStringType</key><integer>0</integer></dict></dict></dict>"
   fi
 done
+
+if [[ "$netshares" ]]; then
+  echo "$(date) |  Adding Network Shares to Dock"
+  for j in "${netshares[@]}"; do
+      label="$(basename $j)"
+      echo "$(date) |  Adding [$j][$label] to Dock"
+      defaults write com.apple.dock persistent-others -array-add "<dict><key>tile-data</key><dict><key>label</key><string>$label</string><key>url</key><dict><key>_CFURLString</key><string>$j</string><key>_CFURLStringType</key><integer>15</integer></dict></dict><key>tile-type</key><string>url-tile</string></dict>"
+
+  done
+fi
 
 echo "$(date) | Adding Downloads Stack"
 consoleuser=$(ls -l /dev/console | awk '{ print $3 }')
