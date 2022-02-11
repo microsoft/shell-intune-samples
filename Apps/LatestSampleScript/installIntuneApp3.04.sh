@@ -283,6 +283,11 @@ function downloadApp () {
                         packageType="DMGPKG"
                     fi 
 
+                    if  [[ $(ls "$volume" | grep -i .mpkg) ]]; then 
+                        echo "$(date) | Detected PKG, setting PackageType to DMGPKG"
+                        packageType="DMGPKG"
+                    fi 
+
                 fi
 
                 # Unmount the dmg
@@ -501,6 +506,12 @@ function installDMGPKG () {
     fi
 
     for file in "$volume"/*.pkg
+    do
+        echo "$(date) | Starting installer for [$file]"
+        installer -pkg "$file" -target /Applications
+    done
+
+    for file in "$volume"/*.mpkg
     do
         echo "$(date) | Starting installer for [$file]"
         installer -pkg "$file" -target /Applications
