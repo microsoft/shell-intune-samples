@@ -21,8 +21,8 @@
 
 # Define variables
 log="/var/log/schedquickscan.log"
-plistname="com.microsoft.mdatp.schedquickscan"
-plistfile="/Library/LaunchDaemons/com.microsoft.mdatp.schedquickscan.plist"
+plistname="com.microsoft.wdav.schedquickscan"
+plistfile="/Library/LaunchDaemons/com.microsoft.wdav.schedquickscan.plist"
 exec 1>> $log 2>&1
 
 if test -f "$plistfile"; then
@@ -40,7 +40,7 @@ cat > $plistfile <<EOF
 <plist version="1.0">
 <dict>
 	<key>Label</key>
-	<string>com.microsoft.mdatp.schedquickscan</string>
+	<string>com.microsoft.wdav.schedquickscan</string>
 	<key>ProgramArguments</key>
 	<array>
 		<string>sh</string>
