@@ -10,25 +10,29 @@ This scripts intended usage scenario is to be deployed during the initial app en
 
 The script searches for Apps listed in the DockItems array and once they are all present it adds them to the Dock in the order they appear in the list. Edit the list as appropriate for your use.
 
+Add Applications to the Dock
 ```
-dockitems=( "/Applications/Microsoft Edge.app"
+dockapps=( "/Applications/Microsoft Edge.app"
             "/Applications/Microsoft Outlook.app"
             "/Applications/Microsoft Word.app"
             "/Applications/Microsoft Excel.app"
             "/Applications/Microsoft PowerPoint.app"
             "/Applications/Microsoft OneNote.app"
             "/Applications/Microsoft Teams.app"
-            "/Applications/Atom.app"
             "/Applications/Visual Studio Code.app"
+            "/Applications/Company Portal.app"
             "/Library/Application Support/Microsoft/MAU2.0/Microsoft AutoUpdate.app"
             "/System/Applications/App Store.app"
             "/System/Applications/Utilities/Terminal.app"
             "/System/Applications/System Preferences.app")
 ```
 
->Note
->This is written in ZSH rather than bash. I'd love feedback on how to make this better.
-
+Add Network Shares to the Dock ()
+```
+netshares=(   "smb://192.168.0.12/Data"
+              "smb://192.168.0.12/Home"
+              "smb://192.168.0.12/Tools")
+```
 
 ## Script Settings
 
