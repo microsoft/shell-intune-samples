@@ -27,6 +27,7 @@ This section is for scripts that install or configure applications on the Mac. T
    |---Defender
    |---Edge
    |---Gimp
+   |---VMware Horizon Client
    |---Minecraft Education Edition
    |---Office for Mac
    |---Remote Desktop
