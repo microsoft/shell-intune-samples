@@ -117,7 +117,7 @@ checkForRosetta2 () {
 }
 
 # start logging
-exec 1>> $log 2>&1
+exec &> >(tee -a "$log")
 
 # Begin Script Body
 echo ""
