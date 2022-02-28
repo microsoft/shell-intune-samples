@@ -33,7 +33,7 @@ weburl="https:xxx.yyy.zzz/filename.file"                                # What i
 appname="APPNAME"                                                       # The name of our App deployment script (also used for Octory monitor)
 app="APP NAME.app"                                                      # The actual name of our App once installed
 logandmetadir="/Library/Logs/Microsoft/IntuneScripts/$appname"          # The location of our logs and last updated data
-processpath="/Applications/ImageOptim.app/Contents/MacOS/ImageOptim"    # The process name of the App we are installing
+processpath="/Applications/$app/Contents/MacOS/APPEXE"                  # The process name of the App we are installing
 terminateprocess="true"                                                 # Do we want to terminate the running process? If false we'll wait until its not running
 autoUpdate="false"                                                      # Application updates itself, if already installed we should exit
 
