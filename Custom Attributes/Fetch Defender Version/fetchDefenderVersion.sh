@@ -18,7 +18,7 @@
 ## Feedback: neiljohn@microsoft.com
 
 # User Defined variables
-app="Microsoft Defender ATP.app"
+app="Microsoft Defender.app"
 
 # Fixed Variables
 attribute="CFBundleShortVersionString"
