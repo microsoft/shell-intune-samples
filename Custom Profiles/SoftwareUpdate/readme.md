@@ -1,6 +1,6 @@
 # Custom Profile to provide controls over com.apple.SoftwareUpdate
 
-Latest [Apple Documentation](https://developer.apple.com/documentation/devicemanagement/softwareupdate)
+Latest on com.apple.SoftwareUpdate can be found in the [Apple Documentation](https://developer.apple.com/documentation/devicemanagement/softwareupdate)
 
 To understand how to use this profile with Intune, see the following doc page on [Add a property list file to macOS devices using Microsoft Intune](https://docs.microsoft.com/en-us/mem/intune/configuration/preference-file-settings-macos)
 
