@@ -1,0 +1,10 @@
+<key>AutomaticCheckEnabled</key>
+<true/>
+<key>AutomaticDownload</key>
+<true/>
+<key>AutomaticallyInstallMacOSUpdates</key>
+<true/>
+<key>ConfigDataInstall</key>
+<true/>
+<key>CriticalUpdateInstall</key>
+<true/>
