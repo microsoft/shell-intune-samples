@@ -118,7 +118,7 @@ while [[ $ready -ne 1 ]];do
   updateOctory installing
   missingappcount=0
 
-  for i in "${dockitems[@]}"; do
+  for i in "${dockapps[@]}"; do
     if [[ -a "$i" ]]; then
       echo "$(date) |  $i is installed"
     else
