@@ -27,7 +27,8 @@
 ## Feedback: neiljohn@microsoft.com
 
 # User Defined variables
-weburl=$(curl --silent --fail -H "Sec-Fetch-Site: same-origin" -H "Accept-Encoding: gzip, deflate, br" -H "Accept-Language: en-US;q=0.9,en;q=0.8" -H "DNT: 1" -H "Sec-Fetch-Mode: cors" -H "X-Requested-With: XMLHttpRequest" -H "Referer: https://get.adobe.com/reader/enterprise/" -H "Accept: */*" "https://get.adobe.com/reader/webservices/json/standalone/?platform_type=Macintosh&platform_dist=OSX&platform_arch=x86-32&language=English&eventname=readerotherversions" | grep -Eo '"download_url":.*?[^\\]",' | head -n 1 | cut -d \" -f 4)
+currentVersion=$(curl -LSs "https://armmf.adobe.com/arm-manifests/mac/AcrobatDC/acrobat/current_version.txt" | sed 's/\.//g')
+weburl="https://ardownload2.adobe.com/pub/adobe/reader/mac/AcrobatDC/${currentVersion}/AcroRdrDC_${currentVersion}_MUI.dmg"
 appname="Adobe Acrobat Reader DC"                                                       # The name of our App deployment script (also used for Octory monitor)
 app="Adobe Acrobat Reader DC.app"                                                       # The actual name of our App once installed
 logandmetadir="/Library/Logs/Microsoft/IntuneScripts/Adobe Acrobat Reader DC"           # The location of our logs and last updated data
@@ -323,7 +324,7 @@ function downloadApp () {
          
     else
     
-         echo "$(date) | Failure to download [$weburl] to [$tempfile]"
+         echo "$(date) | Failure to download [$weburl]"
          updateOctory failed
 
          exit 1
