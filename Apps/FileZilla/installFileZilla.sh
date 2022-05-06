@@ -139,7 +139,7 @@ checkForRosetta2 () {
             if /usr/bin/pgrep oahd >/dev/null 2>&1; then
                 echo "$(date) | Rosetta is already installed and running. Nothing to do."
             else
-                /usr/sbin/softwareupdate –install-rosetta –agree-to-license
+                /usr/sbin/softwareupdate --install-rosetta --agree-to-license
             
                 if [[ $? -eq 0 ]]; then
                     echo "$(date) | Rosetta has been successfully installed."
