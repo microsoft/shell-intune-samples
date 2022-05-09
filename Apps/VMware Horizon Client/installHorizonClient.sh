@@ -17,7 +17,7 @@
 ## of such damages.
 
 # User Defined variables
-weburl="https://download3.vmware.com/software/view/viewclients/CART22FH2/VMware-Horizon-Client-2111-8.4.0-18968281.dmg"
+weburl="https://download3.vmware.com/software/CART23FQ1_MAC_2203_1/VMware-Horizon-Client-2203.1-8.5.1-19641512.dmg"
 appname="VMware Horizon Client"                                         # The name of our App deployment script (also used for Octory monitor)
 app="VMware Horizon Client.app"                                         # The actual name of our App once installed
 logandmetadir="/Library/Logs/Microsoft/IntuneScripts/installHorizonClient"        # The location of our logs and last updated data
