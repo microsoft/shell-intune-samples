@@ -9,7 +9,7 @@ This script is intended for customers who need to deploy Horizon Client via the 
 ## Quick Run
 
 ```
-sudo /bin/bash -c "$(curl -fsSL 'https://raw.githubusercontent.com/microsoft/shell-intune-samples/master/Apps/VMware Horizon Client/installHorizonClient.sh')"
+sudo /bin/bash -c "$(curl -fsSL 'https://raw.githubusercontent.com/microsoft/shell-intune-samples/master/Apps/VMware%20Horizon%20Client/installHorizonClient.sh')"
 ```
 
 ## Script Settings
