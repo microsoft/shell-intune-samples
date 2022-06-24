@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>PayloadContent</key>
+	<array>
+		<dict>
+			<key>PayloadDisplayName</key>
+			<string>Nudge</string>
+			<key>PayloadIdentifier</key>
+			<string>com.github.macadmins.Nudge.F03C927F-3AC5-4D18-A2BF-0C03CDEE9BB1</string>
+			<key>PayloadType</key>
+			<string>com.github.macadmins.Nudge</string>
+			<key>PayloadUUID</key>
+			<string>F03C927F-3AC5-4D18-A2BF-0C03CDEE9BB1</string>
+			<key>PayloadVersion</key>
+			<integer>1</integer>
+			<key>osVersionRequirements</key>
+			<array>
+				<dict>
+					<key>aboutUpdateURLs</key>
+					<array/>
+					<key>majorUpgradeAppPath</key>
+					<string>/Applications/Install macOS Monterey.app</string>
+					<key>requiredInstallationDate</key>
+					<string>2022-10-1T00:00:00Z</string>
+					<key>requiredMinimumOSVersion</key>
+					<string>12.4</string>
+					<key>targetedOSVersions</key>
+					<array/>
+				</dict>
+			</array>
+			<key>userExperience</key>
+			<dict>
+				<key>allowedDeferrals</key>
+				<integer>5</integer>
+				<key>allowedDeferralsUntilForcedSecondaryQuitButton</key>
+				<integer>5</integer>
+			</dict>
+		</dict>
+	</array>
+	<key>PayloadDisplayName</key>
+	<string>Nudge (12.x)</string>
+	<key>PayloadIdentifier</key>
+	<string>Neils-Mac-mini.FD43331C-C73E-4CD2-AB73-17A1BDD07828</string>
+	<key>PayloadRemovalDisallowed</key>
+	<true/>
+	<key>PayloadType</key>
+	<string>Configuration</string>
+	<key>PayloadUUID</key>
+	<string>FD43331C-C73E-4CD2-AB73-17A1BDD07828</string>
+	<key>PayloadVersion</key>
+	<integer>1</integer>
+</dict>
+</plist>
