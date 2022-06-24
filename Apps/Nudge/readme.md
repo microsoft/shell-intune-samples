@@ -33,6 +33,8 @@ Once you've configured the mobileconfig file according to your needs, deploy it 
 </array>
 ```
 
+![Nudge UI](https://github.com/microsoft/shell-intune-samples/raw/master/img/NudgeSample.png)
+
 ## Script Settings
 
 - Run script as signed-in user : No
