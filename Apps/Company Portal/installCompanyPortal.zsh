@@ -974,7 +974,7 @@ function startLog() {
         mkdir -p "$logandmetadir"
     fi
 
-    exec > >(tee -a /var/log/brew.log) 2>&1
+    exec > >(tee -a "$log") 2>&1
     
 }
 
