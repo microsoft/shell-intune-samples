@@ -32,6 +32,7 @@ Once you've configured the mobileconfig file according to your needs, deploy it 
 </dict>
 </array>
 ```
+Once deployed and configured, the following dialog will be shown to users that do not meet the requirements defined in the mobileconfig file.
 
 ![Nudge UI](https://github.com/microsoft/shell-intune-samples/raw/master/img/NudgeSample.png)
 
