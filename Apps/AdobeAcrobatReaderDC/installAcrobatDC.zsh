@@ -942,7 +942,7 @@ waitForDesktop () {
 #####################################
 
 # Initiate logging
-startLog - broken under ZSH
+startLog
 
 echo ""
 echo "##############################################################"
