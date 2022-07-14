@@ -71,7 +71,7 @@ function updateMAU () {
 
     cd "$tempdir"
     curl -o "$tempdir/mau.pkg" -f -s --connect-timeout 30 --retry 5 --retry-delay 60 -L -J -O "$mauurl"
-    if [ $? == 0 ]; then
+    if [[ $? == 0 ]]; then
 
         echo "$(date) | Downloaded [$mauurl] to [$tempdir/mau.pkg]"
         echo "$(date) | Starting installation of latest MAU"
