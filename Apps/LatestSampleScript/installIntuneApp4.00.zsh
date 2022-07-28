@@ -686,7 +686,7 @@ function installZIP () {
 
     # Unzip files in temp dir
     unzip -qq -o "$tempfile"
-    if [ ["$?" = "0" ]]; then
+    if [["$?" = "0" ]]; then
       echo "$(date) | $tempfile unzipped"
     else
       echo "$(date) | failed to unzip $tempfile"
