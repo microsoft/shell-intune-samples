@@ -4,7 +4,7 @@ OUTPUT='/Library/Logs/Microsoft/Intune/mdmDiagnose'
 
 # Clean up and re-create output directory
 sudo rm -r $OUTPUT
-mkdir $OUTPUT
+mkdir -p "$OUTPUT"
 
 exec &> >(tee -a "${OUTPUT}/mdmDiagnose.log")
 
