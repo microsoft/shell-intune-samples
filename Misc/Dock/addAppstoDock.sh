@@ -42,6 +42,10 @@ if [[ -f "$HOME/Library/Logs/prepareDock" ]]; then
 
 fi
 
+# workaround for Ventura (macOS Ver 13.x) System Settings.app name change
+productVersion=$( /usr/bin/sw_vers -productVersion )
+if (( $(echo "$productVersion < 13.0" | bc -l) )); then settingsApp="System Preferences.app"; else settingsApp="System Settings.app"; fi
+
 dockapps=( "/Applications/Microsoft Edge.app"
             "/Applications/Microsoft Outlook.app"
             "/Applications/Microsoft Word.app"
@@ -54,7 +58,7 @@ dockapps=( "/Applications/Microsoft Edge.app"
             "/Library/Application Support/Microsoft/MAU2.0/Microsoft AutoUpdate.app"
             "/System/Applications/App Store.app"
             "/System/Applications/Utilities/Terminal.app"
-            "/System/Applications/System Preferences.app")
+            "/System/Applications/$settingsApp")
 
 # Uncomment these lines if you want to add network shares to the Dock
 

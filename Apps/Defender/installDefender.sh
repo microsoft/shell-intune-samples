@@ -236,8 +236,18 @@ fetchLastModifiedDate() {
         mkdir -p "$logandmetadir"
     fi
 
-    # generate the last modified date of the file we need to download
-    lastmodified=$(curl -sIL "$weburl" | grep -i "last-modified" | awk '{$1=""; print $0}' | awk '{ sub(/^[ \t]+/, ""); print }' | tr -d '\r')
+    # If lastmodified isn't already generated
+    if [[ -z $lastmodified ]]; then
+        # generate the last modified date of the file we need to download
+        lastmodified=$(curl -sIL "$weburl" --retry 5 --retry-delay 60 | grep -i "last-modified" | awk '{$1=""; print $0}' | awk '{ sub(/^[ \t]+/, ""); print }' | tr -d '\r')
+    fi
+
+    # Check if it was it successfully got the last modified date
+    if [[ -z $lastmodified ]]; then
+        echo "$(date) | Failed to get lastmodified from [$weburl]"
+        updateOctory failed
+        exit 1
+    fi
 
     if [[ $1 == "update" ]]; then
         echo "$(date) | Writing last modifieddate [$lastmodified] to [$metafile]"
