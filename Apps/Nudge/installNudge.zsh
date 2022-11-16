@@ -387,7 +387,7 @@ function updateCheck() {
     echo "$(date) | Checking if we need to install or update [$appname]"
 
     ## Is the app already installed?
-    if [ -d "/Applications/$app" ]; then
+    if [ -d "/Applications/Utilities/$app" ]; then
 
     # App is installed, if it's updates are handled by MAU we should quietly exit
     if [[ $autoUpdate == "true" ]]; then
@@ -460,8 +460,8 @@ function installPKG () {
     updateOctory installing
 
     # Remove existing files if present
-    if [[ -d "/Applications/$app" ]]; then
-        rm -rf "/Applications/$app"
+    if [[ -d "/Applications/Utilities/$app" ]]; then
+        rm -rf "/Applications/Utilities/$app"
     fi
 
     installer -pkg "$tempfile" -target /Applications

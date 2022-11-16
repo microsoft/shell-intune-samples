@@ -120,7 +120,10 @@ function OfficeURLCheck() {
         ;;
 
     10.15.*)
-        echo "$(date) |  + macOS 10.15 Catalina detected, installing latest available version"
+        
+        echo "$(date) |  + macOS 10.15 Catalina detected, setting install to Office 2019 v16.66"
+        weburl="https://officecdnmac.microsoft.com/pr/C1297A47-86C4-4C1F-97FA-950631F94777/MacAutoupdate/Microsoft_Office_16.66.22101101_BusinessPro_Installer.pkg"
+        unset localcopy # Note, enter your own localcopy URL if you have one here
         ;;
 
     11.*)

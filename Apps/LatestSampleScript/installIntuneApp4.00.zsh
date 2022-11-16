@@ -239,7 +239,7 @@ function downloadApp () {
     if [[ $? == 0 ]]; then
 
             # We have downloaded a file, we need to know what the file is called and what type of file it is
-            #tempSearchPath="$tempdir/*"
+            cd "$tempdir"
             for f in *; do
                 tempfile=$f
                 echo "$(date) | Found downloaded tempfile [$tempfile]"

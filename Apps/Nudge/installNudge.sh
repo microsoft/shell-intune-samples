@@ -451,8 +451,8 @@ function installPKG () {
     updateOctory installing
 
     # Remove existing files if present
-    if [[ -d "/Applications/Utilities$app" ]]; then
-        rm -rf "/Applications/Utilities$app"
+    if [[ -d "/Applications/Utilities/$app" ]]; then
+        rm -rf "/Applications/Utilities/$app"
     fi
 
     installer -pkg "$tempfile" -target /Applications/Utilities
