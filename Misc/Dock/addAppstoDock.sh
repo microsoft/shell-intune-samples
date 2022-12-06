@@ -43,8 +43,7 @@ if [[ -f "$HOME/Library/Logs/prepareDock" ]]; then
 fi
 
 # workaround for Ventura (macOS Ver 13.x) System Settings.app name change
-productVersion=$( /usr/bin/sw_vers -productVersion )
-if (( $(echo "$productVersion < 13.0" | bc -l) )); then settingsApp="System Preferences.app"; else settingsApp="System Settings.app"; fi
+if [[ -a "/System/Applications/System Settings.app" ]]; then settingsApp="System Settings.app"; else settingsApp="System Preferences.app"; fi
 
 dockapps=( "/Applications/Microsoft Edge.app"
             "/Applications/Microsoft Outlook.app"
