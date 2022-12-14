@@ -1,83 +1,34 @@
-# Intune macOS Shell Script Samples
+        ____      __                      _____ __         ____   _____           _       __      
+       /  _/___  / /___  ______  ___     / ___// /_  ___  / / /  / ___/__________(_)___  / /______
+       / // __ \/ __/ / / / __ \/ _ \    \__ \/ __ \/ _ \/ / /   \__ \/ ___/ ___/ / __ \/ __/ ___/
+     _/ // / / / /_/ /_/ / / / /  __/   ___/ / / / /  __/ / /   ___/ / /__/ /  / / /_/ / /_(__  ) 
+    /___/_/ /_/\__/\__,_/_/ /_/\___/   /____/_/ /_/\___/_/_/   /____/\___/_/  /_/ .___/\__/____/  
+                                                                               /_/                
 
-This repository is for macOS Intune sample scripts and custom configuration profiles. There are many cases where it is necessary to use a custom profile or shell script to accomplish a task.
 
-To get started, check out the following documentation
-- [Set up enrollment for macOS devices in Intune](https://docs.microsoft.com/en-us/mem/intune/enrollment/macos-enroll)
+# Intune Customer Experience Engineering Shell Script Repo
+
+This repository is for Intune Shell Script Samples. It is maintained by the Microsoft Intune Customer Experience Engineering Team. The samples provided here are for education and showing the art of the possible. You are encouraged to download, test and enhance for your own use.
+
 - ***[Use shell scripts on macOS devices in Intune](https://docs.microsoft.com/en-us/mem/intune/apps/macos-shell-scripts)***
-- [macOS settings to mark devices as compliant or not compliant using Intune](https://docs.microsoft.com/en-us/mem/intune/protect/compliance-policy-create-mac-os)
-- [macOS device settings to allow or restrict features using Intune](https://docs.microsoft.com/en-us/mem/intune/configuration/device-restrictions-macos)
-- [Add macOS system and kernel extensions in Intune](https://docs.microsoft.com/en-us/mem/intune/configuration/kernel-extensions-overview-macos)
-- [Add a property list file to macOS devices using Microsoft Intune](https://docs.microsoft.com/en-us/mem/intune/configuration/preference-file-settings-macos)
-- [Add and use wired networks settings on your macOS devices in Microsoft Intune](https://docs.microsoft.com/en-us/mem/intune/configuration/wired-networks-configure)
-- [Create a profile with custom settings in Intune](https://docs.microsoft.com/en-us/mem/intune/configuration/custom-settings-configure)
-- [Add iOS, iPadOS, or macOS device feature settings in Intune](https://docs.microsoft.com/en-us/mem/intune/configuration/device-features-configure)
-- [How to manage iOS and macOS apps purchased through Apple Volume Purchase Program with Microsoft Intune](https://docs.microsoft.com/en-us/mem/intune/apps/vpp-apps-ios)
+- ***[Use custom compliance settings in Linux](https://learn.microsoft.com/en-us/mem/intune/protect/compliance-use-custom-settings)***
 
-To make things a little easier to navigate the repo has been split up into three main sections:
 
-## Apps
-
-This section is for scripts that install or configure applications on the Mac. There are many reasons to deploy apps via shell script rather than via the macOS mdmclient. Our preferred method of app deployment is via the [Mac App Store VPP](https://docs.microsoft.com/en-us/mem/intune/apps/vpp-apps-ios), but the Intune Scripting agent provides an almost infinte level of possibilities where the apps you need on your Macs can't be deployed via VPP.
+The Repo is split into scripts for Linux and macOS
 
 ```
-   |-Apps
-   |---Cisco AMP
-   |---Company Portal
-   |---Defender
-   |---Edge
-   |---Gimp
-   |---VMware Horizon Client
-   |---Minecraft Education Edition
-   |---Office for Mac
-   |---Remote Desktop
-   |---Skype for Business
-   |---Teams
-   |---Visual Studio Code
-   |---Yammer
-   |---Zoom
-   |---gitHub Desktop
-```
-## Misc
+   |-Linux
+   |---Custom Compliance
+   |---Misc
+   |
+   |-macOS
+   |---Apps
+   |---Config
+   |---Custom Attributes
+   |---Custom Profiles
+   ```
 
-This section is for scripts that do general macOS configurations. This is an Alladin's cave of scripts to get your Macs in shape. Feel free to submit your own examples too, we'd love to get contributions.
 
-```
-   |-Misc
-   |---DeviceRename
-   |---Dock
-   |---EnableOneDriveFinderSync
-   |---MDATP
-   |---Manage Accounts
-   |---Octory
-   |---Rosetta2
-   |---Wallpaper
-   |---checkPasswordPolicy
-   |---mdmDiagnose
-   |---setTimeZone
-```
-
-## Custom Attributes
-
-This section is for example [Custom Attributes](https://docs.microsoft.com/en-us/mem/intune/apps/macos-shell-scripts#custom-attributes-for-macos) for deployment via Intune. These come from customer requirements and are stored here for the community.
-
-```
-   |-Custom Attributes
-   |---CPU Architecture
-   |---Defender
-   |---Gimp
-   |---Hackintosh
-```
-
-## Custom Profiles
-
-This section is for example Custom Profiles for deployment via Intune. These come from various places, either hand written, Apple Condigurator 2 or OS X Server Manager's Profile Manager. Our aim is to have everything in here written into the Intune UI directly, but while we're working on that we're storing some useful profiles here.
-
-```
-   |-Custom Profiles
-   |---Disable External Storage
-   |---Notifications
-```
 
 ### Disclaimer
 Understand the impact of each sample script prior to running it; samples should be run in a non-production or "test" environment.
