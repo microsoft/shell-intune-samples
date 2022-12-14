@@ -1,4 +1,4 @@
-# Script to prepare dependencies before Intune Enrollment
+# Instructions to Create and prepare an Ubuntu Virtual Machine in Azure for Intune Testing
 
 This document is a guide to creating an Ubuntu Linux Virtual Machine in
 Azure that you can use for Intune testing.
