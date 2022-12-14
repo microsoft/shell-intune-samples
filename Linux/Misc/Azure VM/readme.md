@@ -1,4 +1,4 @@
-# Deploying Azure Linux VM for Intune Testing
+# Script to prepare dependencies before Intune Enrollment
 
 This document is a guide to creating an Ubuntu Linux Virtual Machine in
 Azure that you can use for Intune testing.
@@ -168,6 +168,13 @@ sudo add-apt-repository "deb [arch=amd64]
 https://packages.microsoft.com/repos/edge stable main"
 sudo apt install microsoft-edge-stable -y
 ```
+
+Alternatively, you can pase this line, which will download a script that executes the previous commands in one go
+
+```
+sudo /bin/bash -c "$(curl -fsSL https://github.com/microsoft/shell-intune-samples/raw/master/Linux/Misc/Enrollment%20Prep%20Script/LinuxIntuneEnrollmentPrep.sh)"
+```
+
 ---
 
 ## Step 5 -- Enrol into Intune
