@@ -141,7 +141,7 @@ sudo /bin/bash -c "$(curl -fsSL https://github.com/microsoft/shell-intune-sample
 
 ---
 
-## Step 5 -- Enrol into Intune
+## Step 5 -- Enroll into Intune
 
 -   Press **Windows Key** \> Type **Microsoft Intune** \> Press
     **Enter**
