@@ -14,9 +14,13 @@ Azure that you can use for Intune testing.
 
 Contact: <neiljohn@microsoft.com> for errors and omissions.
 
-The guide assumes the following:
+This guide is based on the following documentation:
 
-1.  You have a functioning Azure environment and have the permissions to create virtual machines
+- [Install and configure xrdp to use Remote Desktop with Ubuntu](https://learn.microsoft.com/en-us/azure/virtual-machines/linux/use-remote-desktop?tabs=azure-cli)
+- [Enroll Linux Device in Intune](https://learn.microsoft.com/en-us/mem/intune/user-help/enroll-device-linux)
+- [Get The Microsoft App for Linux](https://learn.microsoft.com/en-us/mem/intune/user-help/microsoft-intune-app-linux)
+
+
 ---
 ## Step 1 -- Create VM
 
