@@ -1,5 +1,4 @@
 #!/bin/bash
-#set -x
 
 ############################################################################################
 ##
@@ -15,34 +14,56 @@
 ## (including, without limitation, damages for loss of business profits, business interruption, loss of business information, or other pecuniary
 ## loss) arising out of the use of or inability to use the sample scripts or documentation, even if Microsoft has been advised of the possibility
 ## of such damages.
-## Feedback: anders ahl
+## Feedback: Anders Ahl
 
-# Install pre-requisite packages
-sudo apt install wget apt-transport-https software-properties-common
+if [ "$EUID" -ne 0 ]
+  then echo "Please run this script as root"
+  exit 1
+fi
 
-# Download the Microsoft repository and GPG keys
-wget -q "https://packages.microsoft.com/config/ubuntu/$(lsb_release -rs)/packages-microsoft-prod.deb"
+# Start of a bash "try-catch loop" that will safely exit the script if a command fails or causes an error. 
+(
+    # Set the error status
+    set -e
 
-# Register the Microsoft repository and GPG keys
-sudo dpkg -i packages-microsoft-prod.deb
+    # Install pre-requisite packages
+    apt install -y wget apt-transport-https software-properties-common
 
-# Update the list of packages after we have added packages.microsoft.com
-sudo apt update
+    # Download the Microsoft repository and GPG keys
+    wget -q "https://packages.microsoft.com/config/ubuntu/$(lsb_release -rs)/packages-microsoft-prod.deb"
 
-# Remove the repository & GPG key package (as we imported it above)
-rm packages-microsoft-prod.deb
+    # Register the Microsoft repository and GPG keys
+    dpkg -i packages-microsoft-prod.deb
 
-# Install the Intune portal
-sudo apt install intune-portal
+    # Update the list of packages after we have added packages.microsoft.com
+    apt update
 
-# Enable the Edge browser repository
-sudo add-apt-repository "deb [arch=amd64] https://packages.microsoft.com/repos/edge stable main"
+    # Remove the repository & GPG key package (as we imported it above)
+    rm packages-microsoft-prod.deb
 
-# Install Microsoft Edge
-# sudo apt install microsoft-edge-dev
-# sudo apt install microsoft-edge-beta
-sudo apt install microsoft-edge-stable
+    # Install the Intune portal
+    apt install -y intune-portal
 
-# Enable the Microsoft Teams repository
-sudo add-apt-repository "deb [arch=amd64] https://packages.microsoft.com/repos/ms-teams stable main"
+    # Enable the Edge browser repository
+    add-apt-repository "deb [arch=amd64] https://packages.microsoft.com/repos/edge stable main"
 
+    # Install Microsoft Edge
+    # apt install -y microsoft-edge-dev
+    # apt install -y microsoft-edge-beta
+    apt install -y microsoft-edge-stable
+
+    # Enable the Microsoft Teams repository
+    add-apt-repository "deb [arch=amd64] https://packages.microsoft.com/repos/ms-teams stable main"
+
+    # Install Microsoft Teams
+    apt install -y teams
+
+    # Install Microsoft Defender for Endpoint
+    apt install -y mdatp
+)
+# Catch any necessary errors to prevent the program from improperly exiting. 
+ERROR_CODE=$?
+if [ $ERROR_CODE -ne 0 ]; then
+    echo "There was an error. Please restart the script or contact your admin if the error persists."
+    exit $ERROR_CODE
+fi
