@@ -75,22 +75,16 @@ Azure Bastion allows us to have Virtual Machines running in the cloud with no ex
     -   Local File: **Profile path to key saved earlier.**
     -   Click \> **Connect** (*A terminal should appear in the browser*)
 
--   Run the following commands
-
-> Tip: Paste into the terminal by right-click mouse button after copying
-> from your host machine.
+-   Run the following script and enter a new password for the local user when prompted - you'll need this to login, so make sure you remember it!
 
 ```
-sudo apt update -y && sudo apt upgrade -y
-sudo apt install ubuntu-desktop -y
-sudo apt install xrdp -y
-sudo systemctl enable xrdp
-sudo adduser xrdp ssl-cert
-sudo passwd azureuser
+sudo /bin/bash -c "$(curl -fsSL https://github.com/microsoft/shell-intune-samples/raw/master/Linux/Misc/Azure%20VM/installUbuntuDesktopandXRDP.sh)"
 ```
+
+
 ## Step 3 -- Configure XRDP
 
--   Edit the XRDP sesman file by running the following command in the
+-   Edit the XRDP sesman file by running the following script
     terminal session
 ```
 sudo wget -O /etc/pam.d/xrdp-sesman https://github.com/microsoft/shell-intune-samples/raw/master/Linux/Misc/Azure%20VM/xrdp-sesman
