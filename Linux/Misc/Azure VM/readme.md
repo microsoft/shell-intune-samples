@@ -84,6 +84,8 @@ Azure Bastion allows us to have Virtual Machines running in the cloud with no ex
 sudo apt update -y && sudo apt upgrade -y
 sudo apt install ubuntu-desktop -y
 sudo apt install xrdp -y
+sudo systemctl enable xrdp
+sudo adduser xrdp ssl-cert
 sudo passwd azureuser
 ```
 ## Step 3 -- Configure XRDP
@@ -91,45 +93,9 @@ sudo passwd azureuser
 -   Edit the XRDP sesman file by running the following command in the
     terminal session
 ```
-sudo nano /etc/pam.d/xrdp-sesman
+https://github.com/microsoft/shell-intune-samples/raw/master/Linux/Misc/Azure%20VM/xrdp-sesman
 ```
-
--   Paste the following into xrdp-sesman
-```
-#%PAM-1.0
-auth    requisite       pam_nologin.so
-auth    sufficient      pam_succeed_if.so user ingroup nopasswdlogin
-@include common-auth
-auth    optional        pam_gnome_keyring.so
-auth    optional        pam_kwallet.so
-@include common-account
-session [success=ok ignore=ignore module_unknown=ignore default=bad] pam_selinux.so close
-session required        pam_limits.so
-@include common-session
-session [success=ok ignore=ignore module_unknown=ignore default=bad] pam_selinux.so open
-session optional        pam_gnome_keyring.so auto_start
-session optional        pam_kwallet.so auto_start
-session required        pam_env.so readenv=1
-session required        pam_env.so readenv=1 user_readenv=1 envfile=/etc/default/locale
-@include common-password
-```
-> TIPS
->
->-   In nano you can use **CTRL+K** to cut entire lines but you'll need
->    to remember to re-copy the content above after doing it because it
->    puts those lines on the clipboard.
->-   On Windows you can paste into the Linux terminal using the **right
->    mouse button**.
->-   Windows often adds in extra spaces when pasting. Remove them before
->    saving.
-
--   Once you have edited **xrdp-sesman** save the file
-
-    -   **CTRL+X**
-    -   **Save modified buffer** \> **Y**
-    -   **Enter**
-
--   Reboot
+-   Now we have everything installed, lets reboot before we login via RDP
 
 ```
 sudo reboot
