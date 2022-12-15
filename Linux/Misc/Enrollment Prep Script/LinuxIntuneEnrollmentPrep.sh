@@ -56,10 +56,11 @@ fi
     add-apt-repository "deb [arch=amd64] https://packages.microsoft.com/repos/ms-teams stable main"
 
     # Install Microsoft Teams
-    apt install -y teams
+    # Note, Teams is no longer being developed and has been replaced with PWA version of the app
+    #apt install -y teams 
 
     # Install Microsoft Defender for Endpoint
-    apt install -y mdatp
+    #apt install -y mdatp
 )
 # Catch any necessary errors to prevent the program from improperly exiting. 
 ERROR_CODE=$?
