@@ -93,7 +93,7 @@ sudo passwd azureuser
 -   Edit the XRDP sesman file by running the following command in the
     terminal session
 ```
-https://github.com/microsoft/shell-intune-samples/raw/master/Linux/Misc/Azure%20VM/xrdp-sesman
+sudo wget -O /etc/pam.d/xrdp-sesman https://github.com/microsoft/shell-intune-samples/raw/master/Linux/Misc/Azure%20VM/xrdp-sesman
 ```
 -   Now we have everything installed, lets reboot before we login via RDP
 
