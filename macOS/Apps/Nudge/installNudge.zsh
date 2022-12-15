@@ -32,7 +32,11 @@
 ## Feedback: neiljohn@microsoft.com
 
 # User Defined variables
-weburl="https://github.com/macadmins/nudge/releases/download/v1.1.7.81411/Nudge_Suite-1.1.7.81411.pkg"                                # What is the Azure Blob Storage URL?
+nudgeLatestURL="https://github.com/macadmins/nudge/releases/latest/"
+versionUrl=$(curl "${nudgeLatestURL}" -s -L -I -o /dev/null -w '%{url_effective}')
+versionNumber=$(printf "%s" "${versionUrl[@]}" | sed 's@.*/@@' | sed 's/%20/-/g')
+versionNumber=${versionNumber:1}
+weburl="https://github.com/macadmins/nudge/releases/download/v$versionNumber/Nudge_Suite-$versionNumber.pkg"
 appname="Nudge"                                                       # The name of our App deployment script (also used for Octory monitor)
 app="$appname.app"                                                      # The actual name of our App once installed
 logandmetadir="/Library/Logs/Microsoft/IntuneScripts/$appname"          # The location of our logs and last updated data
