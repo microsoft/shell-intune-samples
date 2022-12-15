@@ -28,6 +28,4 @@ sudo apt install xrdp -y
 sudo systemctl enable xrdp
 sudo adduser xrdp ssl-cert
 
-# Prompt for new password
-sudo passwd azureuser
 
