@@ -1,3 +1,12 @@
+
+        __    _                              ___                      
+       / /   (_)___  __  ___  __     __     /   |____  __  __________ 
+      / /   / / __ \/ / / / |/_/  __/ /_   / /| /_  / / / / / ___/ _ \
+     / /___/ / / / / /_/ />  <   /_  __/  / ___ |/ /_/ /_/ / /  /  __/
+    /_____/_/_/ /_/\__,_/_/|_|    /_/    /_/  |_/___/\__,_/_/   \___/ 
+                                                                  
+
+
 # Instructions to Create and prepare an Ubuntu Virtual Machine in Azure for Intune Testing
 
 This document is a guide to creating an Ubuntu Linux Virtual Machine in
