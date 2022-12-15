@@ -119,21 +119,8 @@ sudo reboot
 -   Follow Ubuntu Welcome screens and change whatever you need to for
     your region
 -   Press \> **Windows Key** \> Type **Terminal** and press **Enter**
--   Paste the following commands into the terminal session
+-   Paste the following command into the terminal window, which will run a script to install dependencies, plus the Intune Portal and Microsoft Edge Stable apps. 
 
-```
-sudo apt install wget apt-transport-https software-properties-common -y
-wget -q "https://packages.microsoft.com/config/ubuntu/\$(lsb_release-rs)/packages-microsoft-prod.deb"
-sudo dpkg -i packages-microsoft-prod.deb
-sudo apt update
-rm packages-microsoft-prod.deb
-sudo apt install intune-portal -y
-sudo add-apt-repository "deb [arch=amd64]
-https://packages.microsoft.com/repos/edge stable main"
-sudo apt install microsoft-edge-stable -y
-```
-
-Alternatively, you can pase this line, which will download a script that executes the previous commands in one go
 
 ```
 sudo /bin/bash -c "$(curl -fsSL https://github.com/microsoft/shell-intune-samples/raw/master/Linux/Misc/Enrollment%20Prep%20Script/LinuxIntuneEnrollmentPrep.sh)"
