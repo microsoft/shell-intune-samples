@@ -7,7 +7,7 @@
 
 # Intune Linux Custom Compliance Samples
 
-This repository is for macOS Intune sample scripts and custom configuration profiles. There are many cases where it is necessary to use a custom profile or shell script to accomplish a task.
+This repository is for Linux Intune sample scripts and custom configuration profiles. There are many cases where it is necessary to use a custom profile or shell script to accomplish a task.
 
 
 To make things a little easier to navigate the Linux repo has been split up into sections:
