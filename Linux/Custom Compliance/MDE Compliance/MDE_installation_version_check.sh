@@ -87,24 +87,24 @@ fi
 
             # If MDE version is at least ____, then all variables are true.
             if [[ $VERSION -gt 00.00 ]]; then
-                echo "{{"MDE_installed", "True"}, {"MDE_licensed", "True"}, {"MDE_version", "True"}}"
+                echo "[{"MDE_installed": "True"}, {"MDE_licensed": "True"}, {"MDE_version": "True"}]"
             else
                 # If not, MDE version is false but license and installation are true. 
-                echo "{{"MDE_installed", "True"}, {"MDE_licensed", "True"}, {"MDE_version", "False"}}"
+                echo "[{"MDE_installed": "True"}, {"MDE_licensed": "True"}, {"MDE_version": "False"}]"
             fi
         # If MDE is not licenesd, check version installed. 
         else
             # If MDE version is at least ____, then installation and version are true and license is false. 
             if [[ $VERSION -gt 00.00 ]]; then
-                echo "{{"MDE_installed", "True"}, {"MDE_licensed", "False"}, {"MDE_version", "True"}}"
+                echo "[{"MDE_installed": "True"}, {"MDE_licensed": "False"}, {"MDE_version": "True"}]"
             else
                 # If not, version and license are false and installation is true. 
-                echo "{{"MDE_installed", "True"}, {"MDE_licensed", "False"}, {"MDE_version", "False"}}"
+                echo "[{"MDE_installed": "True"}, {"MDE_licensed": "False"}, {"MDE_version": "False"}]"
             fi
         fi
     # If MDE is not installed on the device, all variables are false. 
     else
-        echo "{{"MDE_installed", "False"}, {"MDE_licensed", "False"}, {"MDE_version", "False"}}"
+        echo "[{"MDE_installed": "False"}, {"MDE_licensed": "False"}, {"MDE_version": "False"}]"
     fi
 
 )
