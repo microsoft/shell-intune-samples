@@ -24,16 +24,9 @@
 ## Feedback: neiljohn@microsoft.com
 
 # Get logged in user
-USER=$(ls -l /dev/console | awk '{print $3}')
+USER=$( ls -l /dev/console | awk '{print $3}' )
 
 # Check if FileVault is already off - no need to run script if so
-
-    if [[ $(sudo fdesetup isactive | grep "false") ]]; then
-
-        echo "$(date) |  Filevault is not enabled, nothing to do"
-        exit 0
-
-    fi
 
 if fdesetup status | grep -q Off; then
 /usr/bin/osascript <<EOT
@@ -52,7 +45,7 @@ fi
 PASS=$(/usr/bin/osascript <<EOT
 tell application "System Events"
 activate
-display dialog "Please enter your computer login password to rotate the FileVault key:" default answer "" with hidden answer
+display dialog "Please enter your Mac password to rotate the FileVault key:" default answer "" with hidden answer
 if button returned of result is "OK" then
 set pw to text returned of result
 return pw
@@ -91,10 +84,8 @@ EOT)
 
 
 # If the output has key = in it, then the key has been rotated
-# Running a jamf recon will also submit this new key to jamf
 echo $OUTPUT
-if [ `echo $OUTPUT | grep -c "key =" ` -gt 0 ]
-then 
+if [ `echo $OUTPUT | grep -c "key =" ` -gt 0 ]; then 
 /usr/bin/osascript <<EOT
 tell application "System Events"
 activate
@@ -104,11 +95,86 @@ end if
 end tell
 EOT
 else
-# Most likely the password was wrong, but we can't be fully certain
+i=1
+while [ "$i" -lt 4 ]; do
+OUTPUT=$(/usr/bin/expect <<EOT
+spawn fdesetup changerecovery -personal
+expect ":"
+sleep 1
+send -- {$USER}
+send -- "
+"
+expect ":"
+sleep 1
+send -- {$PASS}
+send -- "
+"
+expect "New*"
+puts $expect_out(0,string)
+return $expect_out
+EOT)
+if [ `echo $OUTPUT | grep -c "key =" ` -gt 0 ]; then
 /usr/bin/osascript <<EOT
 tell application "System Events"
 activate
-display dialog "Your password was incorrect or some other error occurred. Please try again." buttons {"OK"} default button 1
+display dialog "Recovery key was successfully rotated." buttons {"OK"} default button 1
+if button returned of result is "OK" then
+end if
+end tell
+EOT
+exit 0
+else
+if [ "$i" -lt 3 ]; then
+PASS=$(/usr/bin/osascript <<EOT
+tell application "System Events"
+activate
+display dialog "Wrong passowrd, try again:" default answer "" with hidden answer
+if button returned of result is "OK" then
+set pw to text returned of result
+return pw
+end if
+if button returned of result is "Cancel" then
+error number -128
+end if
+end tell
+EOT)
+elif [ "$i" -eq 3 ]; then
+/usr/bin/osascript <<EOT
+tell application "System Events"
+activate
+display dialog "Incorrect password entered 3 times. Please contact Service Desk for the support." buttons {"OK"} default button 1
+if button returned of result is "OK" then
+end if
+end tell
+EOT
+fi
+
+i=$(( i+1 ))
+
+fi
+done
+fi
+OUTPUT=$(/usr/bin/expect <<EOT
+spawn fdesetup changerecovery -personal
+expect ":"
+sleep 1
+send -- {$USER}
+send -- "
+"
+expect ":"
+sleep 1
+send -- {$PASS}
+send -- "
+"
+expect "New*"
+puts $expect_out(0,string)
+return $expect_out
+EOT)
+if [ `echo $OUTPUT | grep -c "key =" ` -gt 0 ]; then
+/usr/bin/osascript <<EOT
+tell application "System Events"
+activate
+display dialog "Recovery key was successfully rotated." buttons {"OK"} default button 1
 if button returned of result is "OK" then
 end if
 end tell
