@@ -9,6 +9,8 @@
 ##
 ## Change Log
 ##
+## 2022-02-03   - Changed ZIP and DMG process to include dot_clean after file copy
+##              - Added Apple Silicon architecture detection logic
 ## 2022-06-24   - First re-write in ZSH
 ## 2022-06-20   - Fixed terminate process function bugs
 ## 2022-02-28   - Updated file type detection logic where we can't tell what the file is by filename in downloadApp function
@@ -32,18 +34,30 @@
 ## Feedback: neiljohn@microsoft.com
 
 # User Defined variables
-weburl="https://download.parallels.com/desktop/tools/pd-autodeploy.zip"             # What is the Azure Blob Storage URL?
-appname="Parallels Desktop"                                                         # The name of our App deployment script (also used for Octory monitor)
-app="Parallels Desktop"                                                             # The actual name of our App once installed
-logandmetadir="/Library/Logs/Microsoft/IntuneScripts/$appname"                      # The location of our logs and last updated data
-processpath="/Applications/Parallels Desktop.app/Contents/MacOS/prl_client_app"     # The process name of the App we are installing
-terminateprocess="false"                                                            # Do we want to terminate the running process? If false we'll wait until its not running
-autoUpdate="false"                                                                  # Application updates itself, if already installed we should exit
+
+#
+# Note, where you have a universal binary, either put the same URL for both, or set weburl explicitly
+#
+# Pick correct URL for the CPU architecture
+if [[ $(uname -m) == 'arm64' ]]; then
+    # This is Apple Silicon URL
+    weburl="https://central.github.com/deployments/desktop/desktop/latest/darwin-arm64" 
+    else
+    # This is x64 URL
+    weburl="https://central.github.com/deployments/desktop/desktop/latest/darwin"   
+fi
+
+appname="WhatsApp"                                                      # The name of our App deployment script (also used for Octory monitor)
+app="WhatsApp.app"                                                      # The actual name of our App once installed
+logandmetadir="/Library/Logs/Microsoft/IntuneScripts/$appname"          # The location of our logs and last updated data
+processpath="/Applications/$app/Contents/MacOS/WhatsApp"                # The process name of the App we are installing
+terminateprocess="false"                                                # Do we want to terminate the running process? If false we'll wait until its not running
+autoUpdate="false"                                                      # Application updates itself, if already installed we should exit
 
 # Generated variables
 tempdir=$(mktemp -d)
-log="$logandmetadir/$appname.log"                                                   # The location of the script log file
-metafile="$logandmetadir/$appname.meta"                                             # The location of our meta file (for updates)
+log="$logandmetadir/$appname.log"                                               # The location of the script log file
+metafile="$logandmetadir/$appname.meta"                                         # The location of our meta file (for updates)
 
 # function to delay script if the specified process is running
 waitForProcess () {
@@ -616,6 +630,10 @@ function installDMG () {
     echo "$(date) | Copying app files to /Applications/$app"
     rsync -a "$volume"/*.app/ "/Applications/$app"
 
+    # Make sure permissions are correct
+    echo "$(date) | Fix up permissions"
+    dot_clean "/Applications/$app"
+
     # Unmount the dmg
     echo "$(date) | Un-mounting [$volume]"
     hdiutil detach -quiet "$volume"
@@ -716,7 +734,8 @@ function installZIP () {
 
     # Make sure permissions are correct
     echo "$(date) | Fix up permissions"
-    sudo chown -R root:wheel "/Applications/$app"
+    dot_clean "/Applications/$app"
+
     if [ "$?" = "0" ]; then
       echo "$(date) | correctly applied permissions to $appname"
     else
