@@ -18,7 +18,16 @@
 ## Feedback: neiljohn@microsoft.com
 
 # Define variables
-weburl="https://central.github.com/deployments/desktop/desktop/latest/darwin"                  # What is the Azure Blob Storage URL?                # What is the Azure Blob Storage URL?
+
+# Pick correct URL for the CPU architecture
+if [[ $(uname -m) == 'arm64' ]]; then
+    # This is Apple Silicon URL
+    weburl="https://central.github.com/deployments/desktop/desktop/latest/darwin-arm64" 
+    else
+    # This is x64 URL
+    weburl="https://central.github.com/deployments/desktop/desktop/latest/darwin"   
+fi
+
 appname="GitHub Desktop"                                                                       # The name of our App deployment script
 app="GitHub Desktop.app"                                                                       # The actual name of our App once installed
 logandmetadir="/Library/Logs/Microsoft/IntuneScripts/installGitHubDesktop"                     # The location of our logs and last updated data
@@ -559,7 +568,7 @@ function installZIP () {
 
     # Make sure permissions are correct
     echo "$(date) | Fix up permissions"
-    sudo chown -R root:wheel "/Applications/$app"
+    dot_clean "/Applications/$app"
     if [ "$?" = "0" ]; then
       echo "$(date) | correctly applied permissions to $appname"
     else
