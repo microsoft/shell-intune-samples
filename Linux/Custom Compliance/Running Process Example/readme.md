@@ -15,6 +15,8 @@ This is the shell script and will run during check-in. It is written to look at 
 
 As a purely ficticious sample, we're looking for msedge (Edge Browser) and the gnome-shell (Gnome Desktop).
 
+Inside the shell script, you can see the following on line 5. These are the processes that we're going to check for.
+
 ```
 processes="msedge gnome-shell"
 ```
