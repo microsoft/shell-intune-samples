@@ -1,0 +1,32 @@
+{
+    "Rules":[ 
+        { 
+           "SettingName":"msedge",
+           "Operator":"IsEquals",
+           "DataType":"String",
+           "Operand":"Running",
+           "MoreInfoUrl":"https://www.microsoftedgeinsider.com/en-us/download/?platform=linux",
+           "RemediationStrings":[ 
+              { 
+                 "Language": "en_US",
+                 "Title": "Microsoft Edge Not Running",
+                 "Description": "Please ensure that Microsoft Edge is running at all times"
+              }
+           ]
+         },
+         { 
+            "SettingName":"gnome-shell",
+            "Operator":"IsEquals",
+            "DataType":"String",
+            "Operand":"Running",
+            "MoreInfoUrl":"https://www.gnome.org/",
+            "RemediationStrings":[ 
+               { 
+                  "Language": "en_US",
+                  "Title": "Gnome Shell Not Running",
+                  "Description": "Please ensure that Gnome Shell is running"
+               }
+            ]
+         }
+     ]
+}
