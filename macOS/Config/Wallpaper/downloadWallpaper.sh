@@ -18,7 +18,7 @@
 ## Feedback: neiljohn@microsoft.com
 
 # Define variables
-usebingwallpaper=false # Set to true to have script fetch wallpaper from Bing
+usebingwallpaper=true # Set to true to have script fetch wallpaper from Bing
 wallpaperurl="https://numberwang.blob.core.windows.net/numberwang/macOSWallpaper.jpg"
 wallpaperdir="/Library/Desktop"
 wallpaperfile="Wallpaper.jpg"
@@ -53,7 +53,7 @@ fi
 if [ "$usebingwallpaper" = true ]; then
 
   echo "$(date) | Attempting to dertermine URL of today's Bing Wallpaper"
-  bingfileurl=( $(curl -sL https://www.bing.com | grep -Eo "th\?id=.*?.jpg" | sed -e "s/tmb/1920x1200/"))
+  bingfileurl=( $(curl -sL https://www.bing.com | grep -Eo "th\?id=.*?.jpg" | head -n 1| sed -e "s/tmb/UHD/"))
   wallpaperurl="https://bing.com/$bingfileurl"
   echo "$(date) | Setting wallpaperurl to todays Bing Desktop [$wallpaperurl]"
 
