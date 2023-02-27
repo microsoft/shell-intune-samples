@@ -28,9 +28,9 @@ This guide is based on the following documentation:
 
     -   Instance Details
 
-        -   Image: **Ubuntu Server 20.04 LTS -- x64 Gen2**
+        -   Image: **Ubuntu Server 22.04 LTS -- x64 Gen2**
         -   VM Architecture: **x64**
-        -   Size: **Standard_B2s -- 2 vcpus, 4GiB memory**
+        -   Size: **Standard_D2s_v3 -- 2 vcpus, 8GiB memory** (necessary to support Azure Disk Encryption - otherwise choose B2s
 
     -   Administrator Account
 
@@ -40,16 +40,19 @@ This guide is based on the following documentation:
         -   Key pair name: **Linux-Test_key** (*Choose whatever you
             like*)
 
+    -   Networking Details
+
+        -   Public IP: **None**
+
     -   Inbound port rules
 
         -   Public inbound ports: **None**
+        -   Delete NIC when VM is deleted: **Yes**
 
 -   Click \> **Review + create** \> **Create** \> **Download private key
     and create.**
 
     -   Download private key somewhere safe.
-
--   Wait for resource to be created.
 
 [Bastion Host]
 Azure Bastion allows us to have Virtual Machines running in the cloud with no external access. We can then manage them via the Azure web portal, either via RDP or SSH.

@@ -53,7 +53,7 @@ fi
     apt install -y microsoft-edge-stable
 
     # Enable the Microsoft Teams repository
-    add-apt-repository "deb [arch=amd64] https://packages.microsoft.com/repos/ms-teams stable main"
+    # add-apt-repository "deb [arch=amd64] https://packages.microsoft.com/repos/ms-teams stable main"
 
     # Install Microsoft Teams
     # Note, Teams is no longer being developed and has been replaced with PWA version of the app
