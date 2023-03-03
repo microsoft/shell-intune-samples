@@ -12,7 +12,13 @@
 This document is a guide to creating an Ubuntu Linux Virtual Machine in
 Azure that you can use for Intune testing.
 
-Contact: <neiljohn@microsoft.com> for errors and omissions.
+> IMPORTANT:
+> Please note that these instructions are for testing only. The Ubuntu image suggested in these
+> steps is free but is based on Ubuntu Server with the ubuntu-desktop installed, which is not formally supported.
+>
+> Please see the Intune Linux [system requirments](https://learn.microsoft.com/en-us/mem/intune/user-help/enroll-device-linux#system-requirements) for more information.
+>
+> Contact: <neiljohn@microsoft.com> for errors and omissions.
 
 This guide is based on the following documentation:
 
