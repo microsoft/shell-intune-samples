@@ -89,6 +89,7 @@ case $ModelName in
   iMac*) ModelCode=IMAC;;
   Mac\ Pro*) ModelCode=PRO;;
   Mac\ mini*) ModelCode=MINI;;
+  Mac\ Studio*) ModelCode=MS;;
   *) ModelCode=$(echo $ModelName | tr -d ' ' | cut -c1-4);;
 esac
 
