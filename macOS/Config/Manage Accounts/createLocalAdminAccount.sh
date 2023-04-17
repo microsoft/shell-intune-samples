@@ -67,7 +67,8 @@ echo "############################################################"
 echo ""
 
 echo "Creating new local admin account [$adminaccountname]"
-p=`system_profiler SPHardwareDataType | awk '/Serial/ {print $4}' | tr '[A-Z]' '[K-ZA-J]' | tr 0-9 4-90-3 | base64`
+#p=`system_profiler SPHardwareDataType | awk '/Serial/ {print $4}' | tr '[A-Z]' '[K-ZA-J]' | tr 0-9 4-90-3 | base64`
+p="9zUQARy374zC4LXB"
 waitforSetupAssistant
 echo "Adding $adminaccountname to hidden users list"
 sudo defaults write /Library/Preferences/com.apple.loginwindow HiddenUsersList -array-add "$adminaccountname"
