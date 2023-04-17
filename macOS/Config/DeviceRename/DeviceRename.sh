@@ -65,39 +65,39 @@ fi
 
 
 echo " $(date) | Old Name: $CurrentNameCheck"
-ModelName=$(system_profiler SPHardwareDataType | awk /'Model Name: '/ | cut -d ':' -f2- | xargs)
-if [ "$?" = "0" ]; then
-  echo " $(date) | Retrieved model name: $ModelName"
-else
-   echo "$(date) | Unable to determine modelname"
-   exit 1
-fi
+#ModelName=$(system_profiler SPHardwareDataType | awk /'Model Name: '/ | cut -d ':' -f2- | xargs)
+#if [ "$?" = "0" ]; then
+#  echo " $(date) | Retrieved model name: $ModelName"
+#else
+#   echo "$(date) | Unable to determine modelname"
+#   exit 1
+#fi
 
 ## What is our public IP
-echo " $(date) | Looking up public IP"
-myip=$(dig +short myip.opendns.com @resolver1.opendns.com)
-Country=$(curl -s https://ipapi.co/$myip/country)
+#echo " $(date) | Looking up public IP"
+#myip=$(dig +short myip.opendns.com @resolver1.opendns.com)
+#Country=$(curl -s https://ipapi.co/$myip/country)
 
 
 
-echo " $(date) | Generating four characters code based on retrieved model name $ModelName"
+#echo " $(date) | Generating four characters code based on retrieved model name $ModelName"
 
-case $ModelName in
-  MacBook\ Air*) ModelCode=MBA;;
-  MacBook\ Pro*) ModelCode=MBP;;
-  MacBook*) ModelCode=MB;;
-  iMac*) ModelCode=IMAC;;
-  Mac\ Pro*) ModelCode=PRO;;
-  Mac\ mini*) ModelCode=MINI;;
-  Mac\ Studio*) ModelCode=MS;;
-  *) ModelCode=$(echo $ModelName | tr -d ' ' | cut -c1-4);;
-esac
+#case $ModelName in
+#  MacBook\ Air*) ModelCode=MBA;;
+#  MacBook\ Pro*) ModelCode=MBP;;
+#  MacBook*) ModelCode=MB;;
+#  iMac*) ModelCode=IMAC;;
+#  Mac\ Pro*) ModelCode=PRO;;
+#  Mac\ mini*) ModelCode=MINI;;
+#  Mac\ Studio*) ModelCode=MS;;
+#  *) ModelCode=$(echo $ModelName | tr -d ' ' | cut -c1-4);;
+#esac
 
-echo " $(date) | ModelCode variable set to $ModelCode"
+#echo " $(date) | ModelCode variable set to $ModelCode"
 echo " $(date) | Retrieved serial number: $SerialNum"
-echo " $(date) | Detected country as: $Country"
+#echo " $(date) | Detected country as: $Country"
 echo " $(date) | Building the new name..."
-NewName=$ModelCode-$SerialNum-$Country
+NewName=L-$SerialNum
 
 echo " $(date) | Generated Name: $NewName"
 
