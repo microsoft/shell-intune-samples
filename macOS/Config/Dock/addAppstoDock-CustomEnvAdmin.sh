@@ -46,7 +46,6 @@ fi
 if [[ -a "/System/Applications/System Settings.app" ]]; then settingsApp="System Settings.app"; else settingsApp="System Preferences.app"; fi
 
 dockapps=(
-  "/System/Applications/$settingsApp"
   "/Applications/Company Portal.app"
   "/Applications/Microsoft Defender.app"
   "/Applications/TeamViewer.app"
@@ -54,7 +53,6 @@ dockapps=(
   "/Applications/Google Chrome.app"
   "/Applications/Google Drive.app"
   "/Applications/zoom.us.app"
-  "/System/Applications/App Store.app"
   "/System/Applications/Utilities/Terminal.app"
   )
 
