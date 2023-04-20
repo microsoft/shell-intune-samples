@@ -27,14 +27,19 @@
 ## Lines 146 onwards confiure Dock look and feel, uncomment as necessary
 ##
 
-# Define variables
-log="$HOME/addAppstoDock.log"
+# Define Logging variables
 appname="Dock"
+logandmetadir="/Library/Logs/Microsoft/IntuneScripts/addAppstoDock"
+log="$logandmetadir/addAppstoDock.log"
+# Define variables
+completedCheckPath="$HOME/Library/Logs/prepareDock"
 startCompanyPortalifADE="true"
 consoleuser=$(ls -l /dev/console | awk '{ print $3 }')
 
+# Start Logging
 exec &> >(tee -a "$log")
 
+# Check if dock has already been updated
 if [[ -f "$HOME/Library/Logs/prepareDock" ]]; then
 
   echo "$(date) | Script has already run, nothing to do"
@@ -45,16 +50,23 @@ fi
 # workaround for Ventura (macOS Ver 13.x) System Settings.app name change
 if [[ -a "/System/Applications/System Settings.app" ]]; then settingsApp="System Settings.app"; else settingsApp="System Preferences.app"; fi
 
-dockapps=(
-  "/Applications/Company Portal.app"
-  "/Applications/Microsoft Defender.app"
-  "/Applications/TeamViewer.app"
-  "/Applications/Slack.app"
-  "/Applications/Google Chrome.app"
-  "/Applications/Google Drive.app"
-  "/Applications/zoom.us.app"
-  "/System/Applications/Utilities/Terminal.app"
-  )
+dockapps=( "/Applications/Company Portal.app"
+            "/Applications/Microsoft Defender.app"
+            "/Applications/TeamViewer.app"
+            "/System/Applications/Calendar.app"
+            "/System/Applications/Reminders.app"
+            "/System/Applications/Contacts.app"
+            "/System/Applications/Messages.app"
+            "/Applications/Slack.app"
+            "/System/Applications/Notes.app"
+            "/Applications/Google Chrome.app"
+            "/Applications/Google Drive.app"
+            "/Applications/zoom.us.app"
+            "/System/Applications/Music.app"
+            "/System/Applications/Podcasts.app"
+            "/System/Applications/App Store.app"
+            "/System/Applications/Utilities/Terminal.app"
+            "/System/Applications/$settingsApp")
 
 # Uncomment these lines if you want to add network shares to the Dock
 
@@ -138,10 +150,12 @@ while [[ $ready -ne 1 ]];do
 
 done
 
+# Clear dock from current persistent aps
 echo "$(date) |  Removing Dock Persistent Apps"
 defaults delete $HOME/Library/Preferences/com.apple.dock persistent-apps
 defaults delete $HOME/Library/Preferences/com.apple.dock persistent-others
 
+# Add default apps to dock
 echo "$(date) |  Adding Apps to Dock"
 for i in "${dockapps[@]}"; do
   if [[ -a "$i" ]] ; then
@@ -183,8 +197,8 @@ defaults write com.apple.dock minimize-to-application -bool yes
 echo "$(date) | Restarting Dock"
 killall Dock
 
-echo "$(date) | Writng completion lock to [~/Library/Logs/prepareDock]"
-touch "$HOME/Library/Logs/prepareDock"
+echo "$(date) | Writng completion lock to [$completedCheckPath]"
+touch "$completedCheckPath"
 
 updateOctory installed
 
