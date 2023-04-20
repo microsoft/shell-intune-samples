@@ -27,12 +27,12 @@
 ## WARNING: It is strongly recommended to change the cipher on line 54 before deploying into production, this is shown for example purposes only
 
 # Define variables
-
 adminaccountname="localadmin"       # This is the accountname of the new admin
 adminaccountfullname="Local Admin"  # This is the full name of the new admin user
 scriptname="Create Local Admin Account"
-logandmetadir="/Library/Intune/Scripts/createLocalAdminAccount"
+logandmetadir="/Library/Logs/Microsoft/IntuneScripts/createLocalAdminAccount"
 log="$logandmetadir/createLocalAdminAccount.log"
+p="9zUQARy374$"
 
 # function to delay until the user has finished setup assistant.
 waitforSetupAssistant () {
@@ -59,17 +59,41 @@ fi
 exec 1>> $log 2>&1
 
 # Begin Script Body
-
 echo ""
 echo "##############################################################"
 echo "# $(date) | Starting $scriptname"
 echo "############################################################"
 echo ""
 
-echo "Creating new local admin account [$adminaccountname]"
-p=`system_profiler SPHardwareDataType | awk '/Serial/ {print $4}' | tr '[A-Z]' '[K-ZA-J]' | tr 0-9 4-90-3 | base64`
+echo "Checking if user has already been created"
+$userCreated="`dscl . -list /Users |grep $adminaccountname`"
+if ["$userCreated" != "" ]; then
+  echo "$(date) | User has already beed created, nothing to do"
+  exit 0
+fi
+
+echo "Creating new local admin account [$adminaccountfullname]"
 waitforSetupAssistant
-echo "Adding $adminaccountname to hidden users list"
-sudo defaults write /Library/Preferences/com.apple.loginwindow HiddenUsersList -array-add "$adminaccountname"
-sudo sysadminctl -deleteUser "$adminaccountname" # Remove existing admin account if it exists
-sudo sysadminctl -adminUser "$adminaccountname" -adminPassword "$p" -addUser "$adminaccountname" -fullName "$adminaccountfullname" -password "$p" -admin
+
+## Configure account
+echo "Create a new user with the username $adminaccountname"
+dscl . -create /Users/$adminaccountname
+echo "Set the shell interpreter to Bash for $adminaccountname"
+dscl . -create /Users/$adminaccountname UserShell /bin/bash
+echo "Add the display name of the User as $adminaccountfullname"
+dscl . -create /Users/$adminaccountname RealName "$adminaccountfullname"
+echo "Set the Unique ID for $adminaccountfullname."
+dscl . -create /Users/$adminaccountname UniqueID "510"
+echo "Set the group ID for the user"
+dscl . -create /Users/$adminaccountname PrimaryGroupID "510"
+echo "Create a Home folder for the user"
+dscl . -create /Users/$adminaccountname NFSHomeDirectory "/Users/$adminaccountname"
+sleep 10
+echo "Applying preset password."
+dscl . -passwd /Users/$adminaccountname $p
+echo "Adding a password hint"
+sudo dscl . -create /Users/$adminaccountname hint "Cloud\ LAPS"
+echo "Append the User with admin privilege."
+sudo dscl . -append /Groups/admin GroupMembership $adminaccountname
+echo "Create the home directory"
+createhomedir -c > /dev/null
