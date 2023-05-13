@@ -60,11 +60,6 @@
 					<string>eject</string>
 					<string>alert</string>
 				</array>
-				<key>disk-image</key>
-				<array>
-					<string>eject</string>
-					<string>alert</string>
-				</array>
 				<key>dvd</key>
 				<array>
 					<string>eject</string>
