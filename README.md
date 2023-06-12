@@ -10,14 +10,16 @@
 
 This repository is for Intune Shell Script Samples. It is maintained by the Microsoft Intune Customer Experience Engineering Team. The samples provided here are for education and showing the art of the possible. You are encouraged to download, test and enhance for your own use.
 
-- ***[Use shell scripts on macOS devices in Intune](https://docs.microsoft.com/en-us/mem/intune/apps/macos-shell-scripts)***
-- ***[Use custom compliance settings in Linux](https://learn.microsoft.com/en-us/mem/intune/protect/compliance-use-custom-settings)***
+- ***[Use shell scripts on macOS devices in Intune](https://learn.microsoft.com/mem/intune/apps/macos-shell-scripts)***
+- ***[Use shell scripts on Linux devices in Intune](https://learn.microsoft.com/mem/intune/configuration/custom-settings-linux)***
+- ***[Use custom compliance settings in Linux](https://learn.microsoft.com/mem/intune/protect/compliance-use-custom-settings)***
 
 
 The Repo is split into scripts for Linux and macOS
 
 ```
    |-Linux
+   |---Config
    |---Custom Compliance
    |---Misc
    |
