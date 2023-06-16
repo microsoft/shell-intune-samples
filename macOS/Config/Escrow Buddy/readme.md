@@ -28,7 +28,7 @@ To deploy Escrow Buddy to devices managed by Intune, a shell script will be used
 - Checks that Escrow Buddy is in the Authorization Database, if not, installs again
 - Checks if a FileVault profile has been installed and that the key has been escrowed. If it hasn't Escrow Buddy is configured to generate a new key
 
-Download the current version of the deployment script on the [intune-shell-scripts repository]().
+Download the current version of the deployment script [here](https://github.com/microsoft/shell-intune-samples/blob/master/macOS/Config/Escrow%20Buddy/installEscrowBuddyIntune.sh).
 
 To deploy the script below, follow these steps:
 - Navigate to **Devices** > **Scripts**, click **Add** > **macOS** 
