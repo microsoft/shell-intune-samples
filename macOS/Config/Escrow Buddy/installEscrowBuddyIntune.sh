@@ -10,6 +10,9 @@
 # Author: Tobias Almén
 # Date: 2023-06-16
 
+# Manual version override
+version="" # Only configure this if you want to control the version of Escrow Buddy that is installed, otherwise leave it blank. Example: version="1.0.0"
+
 # Set the path to the installed Escrow Buddy bundle
 install_path="/Library/Security/SecurityAgentPlugins/Escrow Buddy.bundle"
 # Set the path to the log directory
@@ -94,7 +97,7 @@ function remediate() {
     fi
 }
 
-function version() {
+function getVersion() {
     # Convert a version string in the format x.y.z.w to an integer
     # Nabbed from Matt's WS1 example and slightly modified
     #
@@ -164,7 +167,7 @@ function updateEscrowBuddy() {
     # Update Escrow Buddy if a new version is available
     #
     # Arguments:
-    #   None
+    #   input_version: The highest version of Escrow Buddy to install
     # Returns:
     #   None
     # Variables:
@@ -174,31 +177,62 @@ function updateEscrowBuddy() {
     #   $previouslastmodifieddate: The last modified date of the previously installed release of Escrow Buddy
     #   $lastupdated: The path to the file containing the last modified date of the previously installed release of Escrow Buddy
 
-    # Get the download URL for the latest release
-    download_url=$(echo "$response" | grep -o '"browser_download_url": "[^"]*' | grep -o '[^"]*$' | grep -i '\.pkg$')
-    # Get the last modified date for the latest release
-    lastmodified=$(curl -sIL "$download_url" | grep -i "last-modified" | awk '{$1=""; print $0}' | awk '{ sub(/^[ \t]+/, ""); print }' | tr -d '\r')
+    # Manual version override
+    input_version=$1
 
-    # Check if the last modified date of the latest release is different to the last modified date of the previously installed release
-    if [ -f "$lastupdated" ]; then
-        previouslastmodifieddate=$(cat "$lastupdated")
-        if [[ "$previouslastmodifieddate" != "$lastmodified" ]]; then
-            logger "INFO" "Update found, previous [$previouslastmodifieddate] and current [$lastmodified]"
+    # If the input version is set, check if an update is available
+    if [ "$input_version" ]; then 
+        # Check if Escrow Buddy is installed
+        if [ -d "$install_path" ]; then
+            # If the input version is not the same as the latest version, log a warning
+            if [ $(getVersion $input_version) != $(getVersion $latest_version) ]; then
+                logger "WARNING" "Input version [$input_version] does not match latest version [$latest_version]"
+            # If the input version and the latest version are the same, check if an update is available
+            else
+                # Get the version of the currently installed release of Escrow Buddy
+                installed_version=$(defaults read "$install_path"/Contents/Info.plist CFBundleShortVersionString)
+                if [ $(getVersion $input_version) -gt $(getVersion $installed_version) ]; then
+                    logger "INFO" "Update found, input version [$input_version] and current [$installed_version]"
+                    # Install the latest release of Escrow Buddy
+                    installEscrowBuddy
+                else
+                    logger "INFO" "No update found, input version [$input_version] and current [$installed_version]"
+                fi
+            fi
+        else
+            logger "INFO" "Unable to check for updates, Escrow Buddy is not installed, installing"
+            # Install the latest release of Escrow Buddy
+            installEscrowBuddy
+        fi
+
+    else
+        # Get the download URL for the latest release
+        download_url=$(echo "$response" | grep -o '"browser_download_url": "[^"]*' | grep -o '[^"]*$' | grep -i '\.pkg$')
+        # Get the last modified date for the latest release
+        lastmodified=$(curl -sIL "$download_url" | grep -i "last-modified" | awk '{$1=""; print $0}' | awk '{ sub(/^[ \t]+/, ""); print }' | tr -d '\r')
+
+        # Check if the last modified date of the latest release is different to the last modified date of the previously installed release
+        if [ -f "$lastupdated" ]; then
+            previouslastmodifieddate=$(cat "$lastupdated")
+            if [[ "$previouslastmodifieddate" != "$lastmodified" ]]; then
+                logger "INFO" "Update found, previous [$previouslastmodifieddate] and current [$lastmodified]"
+
+                # Install the latest release of Escrow Buddy
+                installEscrowBuddy
+            # If the last modified date of the latest release is the same as the last modified date of the previously installed release, do nothing
+            else
+                logger "INFO" "No update between previous [$previouslastmodifieddate] and current [$lastmodified]"
+            fi
+
+        # If the last modified date of the previously installed release is not found, install the latest release of Escrow Buddy
+        else
+            logger "INFO" "Meta file [$lastupdated] not found"
+            logger "INFO" "Unable to determine if update required so updating anyway"
 
             # Install the latest release of Escrow Buddy
             installEscrowBuddy
-        # If the last modified date of the latest release is the same as the last modified date of the previously installed release, do nothing
-        else
-            logger "INFO" "No update between previous [$previouslastmodifieddate] and current [$lastmodified]"
+
         fi
-
-    # If the last modified date of the previously installed release is not found, install the latest release of Escrow Buddy
-    else
-        logger "INFO" "Meta file [$lastupdated] not found"
-        logger "INFO" "Unable to determine if update required so updating anyway"
-
-        # Install the latest release of Escrow Buddy
-        installEscrowBuddy
 
     fi
 
@@ -239,7 +273,7 @@ function installEscrowBuddy() {
 if [ -d "$install_path" ]; then
     # If Escrow Buddy is already installed, check if an update is required
     logger "INFO" "Escrow Buddy already installed, checking for update" 
-    updateEscrowBuddy
+    updateEscrowBuddy $version
 else
     # If Escrow Buddy is not installed, install it
     logger "INFO" "Escrow Buddy not installed, installing" 
