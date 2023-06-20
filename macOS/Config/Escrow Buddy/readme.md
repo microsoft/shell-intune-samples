@@ -39,6 +39,7 @@ To deploy the script below, follow these steps:
     - **Script frequency**: Every 1 week
     - **Max number of times to retry if script fails**: 3 times
     - **Assignments**: All Devices
+        - If you have devices enrolled as Personal on which a FileVault key will not be shown either way, a dynamic group can be used to only target Corporate macOS devices. To target Corporate macOS devices, create a dynamic device group with the following Rule syntax: (device.deviceOSType -eq "MacMDM") and (device.deviceOwnership -eq "Company")
 
 ## Authorization database maintenance
 As stated in the Shell Script part, this maintenance is handled by the script deployed in Intune running on a recurring schedule.
