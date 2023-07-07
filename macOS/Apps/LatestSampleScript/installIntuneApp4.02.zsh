@@ -108,7 +108,7 @@ function installAria2c () {
             echo "$(date) | Aria2 installed"
             hdiutil detach -quiet "$mountpoint"
         fi
-
+    rm -rf "$output"
     fi
 
 
