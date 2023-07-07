@@ -34,7 +34,7 @@ latest_version=$(echo "$latest_release" | cut -c 2-)
 # Get FDE status
 FDE_STATUS=$(fdesetup status)
 # Get FDE profile status
-FDE_PROFILE=$(profiles list | grep filevault.escrow)
+FDE_PROFILE=$(profiles list | grep -e filevault.escrow -e FDERecoveryKeyEscrow)
 # Path to FileVaultPRK
 PRK="/var/db/FileVaultPRK.dat"
 
