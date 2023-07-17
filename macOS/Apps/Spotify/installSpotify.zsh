@@ -106,7 +106,6 @@ function installAria2c () {
         fi
         rm -rf "$output"
     fi
-    rm -rf "$output"
 
 }
 
