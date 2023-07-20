@@ -1,11 +1,29 @@
-#!/bin/bash
+#!/bin/zsh
 #set -x
 
 ############################################################################################
 ##
-## Script to download latest Microsoft Teams app for macOS
+## Script to install the latest [APPNAME]
+## 
+## VER 4.0.0
 ##
-###########################################
+## Change Log
+##
+## 2023-07-17   - Fixed bug in installAria2c function that was causing problems for DMGs
+## 2023-06-23   - Changed from Curl to Aria2 for main package download
+## 2023-02-03   - Changed ZIP and DMG process to include dot_clean after file copy
+##              - Added Apple Silicon architecture detection logic
+## 2022-06-24   - First re-write in ZSH
+## 2022-06-20   - Fixed terminate process function bugs
+## 2022-02-28   - Updated file type detection logic where we can't tell what the file is by filename in downloadApp function
+## 2022-02-23   - Added detection support for bz2 and tbz2
+## 2022-02-11   - Added detection support for mpkg
+## 2022-01-05   - Updated Rosetta detection code
+## 2021-11-19   - Added logic to handle both APP and PKG inside DMG file. New function DMGPKG
+## 2021-12-06   - Added --compressed to curl cli
+##              - Fixed DMGPKG detection
+##
+############################################################################################
 
 ## Copyright (c) 2020 Microsoft Corp. All rights reserved.
 ## Scripts are not supported under any Microsoft standard support program or service. The scripts are provided AS IS without warranty of any kind.
@@ -18,18 +36,82 @@
 ## Feedback: neiljohn@microsoft.com
 
 # User Defined variables
-weburl="https://go.microsoft.com/fwlink/?linkid=869428"   # What is the Azure Blob Storage URL?
-appname="Microsoft Teams"                                               # The name of our App deployment script (also used for Octory monitor)
-app="Microsoft Teams.app"                                               # The actual name of our App once installed
-logandmetadir="/Library/Logs/Microsoft/IntuneScripts/installTeams"      # The location of our logs and last updated data
-processpath="/Applications/Microsoft Teams.app/Contents/MacOS/Teams"    # The process name of the App we are installing
+
+#
+# Note, where you have a universal binary, either put the same URL for both, or set weburl explicitly
+#
+# Pick correct URL for the CPU architecture
+if [[ $(uname -m) == 'arm64' ]]; then
+    # This is Apple Silicon URL
+    weburl="https://go.microsoft.com/fwlink/?linkid=869428" 
+    else
+    # This is x64 URL
+    weburl="https://go.microsoft.com/fwlink/?linkid=869428"   
+fi
+
+appname="Microsoft Teams"                                                      # The name of our App deployment script (also used for Octory monitor)
+app="Microsoft Teams.app"                                                      # The actual name of our App once installed
+logandmetadir="/Library/Logs/Microsoft/IntuneScripts/$appname"          # The location of our logs and last updated data
+processpath="/Applications/$app/Contents/MacOS/Teams"                # The process name of the App we are installing
 terminateprocess="false"                                                # Do we want to terminate the running process? If false we'll wait until its not running
-autoUpdate="true"                                                      # If true, application updates itself and we should not attempt to update
+autoUpdate="true"                                                      # Application updates itself, if already installed we should exit
 
 # Generated variables
 tempdir=$(mktemp -d)
-log="$logandmetadir/$appname.log"                                       # The location of the script log file
-metafile="$logandmetadir/$appname.meta"                                 # The location of our meta file (for updates)
+log="$logandmetadir/$appname.log"                                               # The location of the script log file
+metafile="$logandmetadir/$appname.meta"                                         # The location of our meta file (for updates)
+
+
+function installAria2c () {
+
+    #####################################
+    ## Aria2c installation
+    #####################
+    ARIA2="/usr/local/aria2/bin/aria2c"
+    aria2Url="https://github.com/aria2/aria2/releases/download/release-1.35.0/aria2-1.35.0-osx-darwin.dmg"
+    if [[ -f $ARIA2 ]]; then
+        echo "$(date) | Aria2 already installed, nothing to do"
+    else
+        echo "$(date) | Aria2 missing, lets download and install"
+        filename=$(basename "$aria2Url")
+        output="$tempdir/$filename"
+        curl -f -s --connect-timeout 30 --retry 5 --retry-delay 60 -L -o "$output" "$aria2Url"
+        if [ $? -ne 0 ]; then
+            echo "$(date) | Aria download failed"
+            echo "$(date) | Output: [$output]"
+            echo "$(date) | URL [$aria2Url]"
+        else
+            echo "$(date) | Downloaded aria2"
+        fi
+
+        # Mount aria2 DMG
+        mountpoint="$tempdir/aria2"
+        echo "$(date) | Mounting Aria DMG..."
+        hdiutil attach -quiet -nobrowse -mountpoint "$mountpoint" "$output"
+        if [ $? -ne 0 ]; then
+            echo "$(date) | Aria mount failed"
+            echo "$(date) | Mount: [$mountpoint]"
+            echo "$(date) | Temp File [$output]"
+        else
+            echo "$(date) | Mounted DMG"
+        fi
+        
+        # Install aria2 PKG from inside the DMG
+        sudo installer -pkg "$mountpoint/aria2.pkg" -target /
+        if [ $? -ne 0 ]; then
+            echo "$(date) | Install failed"
+            echo "$(date) | PKG: [$mountpoint/aria2.pkg]"
+        else
+            echo "$(date) | Aria2 installed"
+            hdiutil detach -quiet "$mountpoint"
+        fi
+
+        # Cleaning up...
+        rm -f "$output"
+        unset output filename mountpoint
+    fi
+
+}
 
 # function to delay script if the specified process is running
 waitForProcess () {
@@ -60,8 +142,9 @@ waitForProcess () {
     while ps aux | grep "$processName" | grep -v grep &>/dev/null; do
 
         if [[ $terminate == "true" ]]; then
-            echo "$(date) | + [$appname] running, terminating [$processpath]..."
-            pkill -f "$processName"
+            pid=$(ps -fe | grep "$processName" | grep -v grep | awk '{print $2}')
+            echo "$(date) | + [$appname] running, terminating [$processName] at pid [$pid]..."
+            kill -9 $pid
             return
         fi
 
@@ -162,7 +245,6 @@ fetchLastModifiedDate() {
     ##      $logandmetadir = Directory to read nand write meta data to
     ##      $metafile = Location of meta file (used to store last update time)
     ##      $weburl = URL of download location
-    ##      $tempfile = location of temporary DMG file downloaded
     ##      $lastmodified = Generated by the function as the last-modified http header from the curl request
     ##
     ##  Notes
@@ -213,25 +295,29 @@ function downloadApp () {
     echo "$(date) | Starting downlading of [$appname]"
 
     # wait for other downloads to complete
-    waitForProcess "curl -f"
+    waitForProcess "$ARIA2"
 
     #download the file
     updateOctory installing
-    echo "$(date) | Downloading $appname"
+    echo "$(date) | Downloading $appname [$weburl]"
 
     cd "$tempdir"
-    curl -f -s --connect-timeout 30 --retry 5 --retry-delay 60 -L -J -O "$weburl"
-    if [ $? == 0 ]; then
+    #curl -f -s --connect-timeout 30 --retry 5 --retry-delay 60 --compressed -L -J -O "$weburl"
+    #$ARIA2 -q -x16 -s16 -d "$tempdir" -o "$tempfile" "$weburl" --download-result=hide --summary-interval=0
+    $ARIA2 -q -x16 -s16 -d "$tempdir" -o "$tempfile" "$weburl" --download-result=hide --summary-interval=0
+
+    if [[ $? == 0 ]]; then
 
             # We have downloaded a file, we need to know what the file is called and what type of file it is
-            tempSearchPath="$tempdir/*"
-            for f in $tempSearchPath; do
+            cd "$tempdir"
+            for f in *; do
                 tempfile=$f
+                echo "$(date) | Found downloaded tempfile [$tempfile]"
             done
 
             case $tempfile in
 
-            *.pkg|*.PKG)
+            *.pkg|*.PKG|*.mpkg|*.MPKG)
                 packageType="PKG"
                 ;;
 
@@ -239,33 +325,93 @@ function downloadApp () {
                 packageType="ZIP"
                 ;;
 
+            *.tbz2|*.TBZ2|*.bz2|*.BZ2)
+                packageType="BZ2"
+                ;;
+
             *.dmg|*.DMG)
+                
                 packageType="DMG"
                 ;;
 
             *)
                 # We can't tell what this is by the file name, lets look at the metadata
                 echo "$(date) | Unknown file type [$f], analysing metadata"
-                metadata=$(file "$tempfile")
+                metadata=$(file -z "$tempfile")
+
+                echo "$(date) | [DEBUG ] File metadata [$metadata]"
+
                 if [[ "$metadata" == *"Zip archive data"* ]]; then
-                    packageType="ZIP"
-                    mv "$tempfile" "$tempdir/install.zip"
-                    tempfile="$tempdir/install.zip"
+                packageType="ZIP"
+                mv "$tempfile" "$tempdir/install.zip"
+                tempfile="$tempdir/install.zip"
                 fi
 
                 if [[ "$metadata" == *"xar archive"* ]]; then
-                    packageType="PKG"
-                    mv "$tempfile" "$tempdir/install.pkg"
-                    tempfile="$tempdir/install.pkg"
+                packageType="PKG"
+                mv "$tempfile" "$tempdir/install.pkg"
+                tempfile="$tempdir/install.pkg"
                 fi
 
-                if [[ "$metadata" == *"bzip2 compressed data"* ]] || [[ "$metadata" == *"zlib compressed data"* ]] ; then
-                    packageType="DMG"
-                    mv "$tempfile" "$tempdir/install.dmg"
-                    tempfile="$tempdir/install.dmg"
+                if [[ "$metadata" == *"DOS/MBR boot sector, extended partition table"* ]] || [[ "$metadata" == *"Apple Driver Map"* ]] ; then
+                packageType="DMG"
+                mv "$tempfile" "$tempdir/install.dmg"
+                tempfile="$tempdir/install.dmg"
+                fi
+
+                if [[ "$metadata" == *"POSIX tar archive (bzip2 compressed data"* ]]; then
+                packageType="BZ2"
+                mv "$tempfile" "$tempdir/install.tar.bz2"
+                tempfile="$tempdir/install.tar.bz2"
                 fi
                 ;;
             esac
+
+                
+            if [[ "$packageType" == "DMG" ]]; then
+                # We have what we think is a DMG, but we don't know what is inside it yet, could be an APP or PKG or ZIP
+                # Let's mount it and try to guess what we're dealing with...
+                echo "$(date) | Found DMG, looking inside..."
+
+                # Mount the dmg file...
+                volume="$tempdir/$appname"
+                echo "$(date) | Mounting Image [$volume] [$tempfile]"
+                hdiutil attach -quiet -nobrowse -mountpoint "$volume" "$tempfile"
+                if [[ "$?" = "0" ]]; then
+                    echo "$(date) | Mounted succesfully to [$volume]"
+                else
+                    echo "$(date) | Failed to mount [$tempfile]"
+                    
+                fi
+
+                if  [[ $(ls "$volume" | grep -i .app) ]] && [[ $(ls "$volume" | grep -i .pkg) ]]; then
+
+                    echo "$(date) | Detected both APP and PKG in same DMG, exiting gracefully"
+
+                else
+
+                    if  [[ $(ls "$volume" | grep -i .app) ]]; then 
+                        echo "$(date) | Detected APP, setting PackageType to DMG"
+                        packageType="DMG"
+                    fi 
+
+                    if  [[ $(ls "$volume" | grep -i .pkg) ]]; then 
+                        echo "$(date) | Detected PKG, setting PackageType to DMGPKG"
+                        packageType="DMGPKG"
+                    fi 
+
+                    if  [[ $(ls "$volume" | grep -i .mpkg) ]]; then 
+                        echo "$(date) | Detected PKG, setting PackageType to DMGPKG"
+                        packageType="DMGPKG"
+                    fi 
+
+                fi
+
+                # Unmount the dmg
+                echo "$(date) | Un-mounting [$volume]"
+                hdiutil detach -quiet "$volume"
+            fi
+
 
             if [[ ! $packageType ]]; then
                 echo "Failed to determine temp file type [$metadata]"
@@ -277,8 +423,9 @@ function downloadApp () {
          
     else
     
-        echo "$(date) | Failure to download [$weburl] to [$tempfile]"
+         echo "$(date) | Failure to download [$weburl] to [$tempfile]"
          updateOctory failed
+
          exit 1
     fi
 
@@ -378,38 +525,189 @@ function installPKG () {
 
     echo "$(date) | Installing $appname"
 
-
-    # Update Octory monitor
-    updateOctory installing
-
     # Remove existing files if present
     if [[ -d "/Applications/$app" ]]; then
         rm -rf "/Applications/$app"
     fi
 
-    installer -pkg "$tempfile" -target /Applications
+# Need to write out new Choices XML that includes Audio Driver as required
+cat << CHOICESXML > $tempdir/TeamsChoiceChanges.xml
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<array>
+	<dict>
+		<key>attributeSetting</key>
+		<true/>
+		<key>choiceAttribute</key>
+		<string>visible</string>
+		<key>choiceIdentifier</key>
+		<string>Teams</string>
+	</dict>
+	<dict>
+		<key>attributeSetting</key>
+		<false/>
+		<key>choiceAttribute</key>
+		<string>enabled</string>
+		<key>choiceIdentifier</key>
+		<string>Teams</string>
+	</dict>
+	<dict>
+		<key>attributeSetting</key>
+		<integer>1</integer>
+		<key>choiceAttribute</key>
+		<string>selected</string>
+		<key>choiceIdentifier</key>
+		<string>Teams</string>
+	</dict>
+	<dict>
+		<key>attributeSetting</key>
+		<false/>
+		<key>choiceAttribute</key>
+		<string>visible</string>
+		<key>choiceIdentifier</key>
+		<string>TeamsApp</string>
+	</dict>
+	<dict>
+		<key>attributeSetting</key>
+		<false/>
+		<key>choiceAttribute</key>
+		<string>enabled</string>
+		<key>choiceIdentifier</key>
+		<string>TeamsApp</string>
+	</dict>
+	<dict>
+		<key>attributeSetting</key>
+		<integer>1</integer>
+		<key>choiceAttribute</key>
+		<string>selected</string>
+		<key>choiceIdentifier</key>
+		<string>TeamsApp</string>
+	</dict>
+	<dict>
+		<key>attributeSetting</key>
+		<true/>
+		<key>choiceAttribute</key>
+		<string>visible</string>
+		<key>choiceIdentifier</key>
+		<string>AudioDevice</string>
+	</dict>
+	<dict>
+		<key>attributeSetting</key>
+		<true/>
+		<key>choiceAttribute</key>
+		<string>enabled</string>
+		<key>choiceIdentifier</key>
+		<string>AudioDevice</string>
+	</dict>
+	<dict>
+		<key>attributeSetting</key>
+		<integer>1</integer>
+		<key>choiceAttribute</key>
+		<string>selected</string>
+		<key>choiceIdentifier</key>
+		<string>AudioDevice</string>
+	</dict>
+</array>
+</plist>
+CHOICESXML
+
+    installer -pkg "$tempfile" -target / -applyChoiceChangesXML "$tempdir/TeamsChoiceChanges.xml"
 
     # Checking if the app was installed successfully
     if [ "$?" = "0" ]; then
 
         echo "$(date) | $appname Installed"
-        echo "$(date) | Cleaning Up"
-        rm -rf "$tempdir"
 
         echo "$(date) | Application [$appname] succesfully installed"
         fetchLastModifiedDate update
-        updateOctory installed
-        exit 0
 
     else
 
         echo "$(date) | Failed to install $appname"
         rm -rf "$tempdir"
-        updateOctory failed
         exit 1
     fi
 
 }
+
+## Install DMG Function
+function installDMGPKG () {
+
+    #################################################################################################################
+    #################################################################################################################
+    ##
+    ##  This function takes the following global variables and installs the DMG file into /Applications
+    ##
+    ##  Functions
+    ##
+    ##      isAppRunning (Pauses installation if the process defined in global variable $processpath is running )
+    ##      fetchLastModifiedDate (Called with update flag which causes the function to write the new lastmodified date to the metadata file)
+    ##
+    ##  Variables
+    ##
+    ##      $appname = Description of the App we are installing
+    ##      $tempfile = location of temporary DMG file downloaded
+    ##      $volume = name of volume mount point
+    ##      $app = name of Application directory under /Applications
+    ##
+    ###############################################################
+    ###############################################################
+
+
+    # Check if app is running, if it is we need to wait.
+    waitForProcess "$processpath" "300" "$terminateprocess"
+
+    echo "$(date) | Installing [$appname]"
+    updateOctory installing
+
+    # Mount the dmg file...
+    volume="$tempdir/$appname"
+    echo "$(date) | Mounting Image"
+    hdiutil attach -quiet -nobrowse -mountpoint "$volume" "$tempfile"
+
+    # Remove existing files if present
+    if [[ -d "/Applications/$app" ]]; then
+        echo "$(date) | Removing existing files"
+        rm -rf "/Applications/$app"
+    fi
+
+    for file in "$volume"/*.pkg
+    do
+        echo "$(date) | Starting installer for [$file]"
+        installer -pkg "$file" -target /Applications
+    done
+
+    for file in "$volume"/*.mpkg
+    do
+        echo "$(date) | Starting installer for [$file]"
+        installer -pkg "$file" -target /Applications
+    done
+
+    # Unmount the dmg
+    echo "$(date) | Un-mounting [$volume]"
+    hdiutil detach -quiet "$volume"
+
+    # Checking if the app was installed successfully
+
+    if [[ -a "/Applications/$app" ]]; then
+
+        echo "$(date) | [$appname] Installed"
+        echo "$(date) | Cleaning Up"
+        rm -rf "$tempfile"
+
+        echo "$(date) | Fixing up permissions"
+        sudo chown -R root:wheel "/Applications/$app"
+        echo "$(date) | Application [$appname] succesfully installed"
+        fetchLastModifiedDate update
+    else
+        echo "$(date) | Failed to install [$appname]"
+        rm -rf "$tempdir"
+        exit 1
+    fi
+
+}
+
 
 ## Install DMG Function
 function installDMG () {
@@ -438,14 +736,11 @@ function installDMG () {
     # Check if app is running, if it is we need to wait.
     waitForProcess "$processpath" "300" "$terminateprocess"
 
-
-
     echo "$(date) | Installing [$appname]"
-    updateOctory installing
 
     # Mount the dmg file...
     volume="$tempdir/$appname"
-    echo "$(date) | Mounting Image"
+    echo "$(date) | Mounting Image [$volume] [$tempfile]"
     hdiutil attach -quiet -nobrowse -mountpoint "$volume" "$tempfile"
 
     # Remove existing files if present
@@ -457,6 +752,10 @@ function installDMG () {
     # Sync the application and unmount once complete
     echo "$(date) | Copying app files to /Applications/$app"
     rsync -a "$volume"/*.app/ "/Applications/$app"
+
+    # Make sure permissions are correct
+    echo "$(date) | Fix up permissions"
+    dot_clean "/Applications/$app"
 
     # Unmount the dmg
     echo "$(date) | Un-mounting [$volume]"
@@ -474,12 +773,9 @@ function installDMG () {
         sudo chown -R root:wheel "/Applications/$app"
         echo "$(date) | Application [$appname] succesfully installed"
         fetchLastModifiedDate update
-        updateOctory installed
-        exit 0
     else
         echo "$(date) | Failed to install [$appname]"
         rm -rf "$tempdir"
-        updateOctory failed
         exit 1
     fi
 
@@ -487,6 +783,121 @@ function installDMG () {
 
 ## Install ZIP Function
 function installZIP () {
+
+    #################################################################################################################
+    #################################################################################################################
+    ##
+    ##  This function takes the following global variables and installs the DMG file into /Applications
+    ##
+    ##  Functions
+    ##
+    ##      isAppRunning (Pauses installation if the process defined in global variable $processpath is running )
+    ##      fetchLastModifiedDate (Called with update flag which causes the function to write the new lastmodified date to the metadata file)
+    ##
+    ##  Variables
+    ##
+    ##      $appname = Description of the App we are installing
+    ##      $tempfile = location of temporary DMG file downloaded
+    ##      $volume = name of volume mount point
+    ##      $app = name of Application directory under /Applications
+    ##
+    ###############################################################
+    ###############################################################
+
+
+    # Check if app is running, if it is we need to wait.
+    waitForProcess "$processpath" "300" "$terminateprocess"
+
+    echo "$(date) | Installing $appname"
+    updateOctory installing
+
+    # Change into temp dir
+    cd "$tempdir"
+    if [[ "$?" = "0" ]]; then
+      echo "$(date) | Changed current directory to $tempdir"
+    else
+      echo "$(date) | failed to change to $tempfile"
+      if [[ -d "$tempdir" ]]; then rm -rf $tempdir; fi
+      exit 1
+    fi
+
+    # Unzip files in temp dir
+    unzip -qq -o "$tempfile"
+    if [[ "$?" = "0" ]]; then
+      echo "$(date) | $tempfile unzipped"
+    else
+      echo "$(date) | failed to unzip $tempfile"
+      if [[ -d "$tempdir" ]]; then rm -rf $tempdir; fi
+      updateOctory failed
+      exit 1
+    fi
+
+    # If app is already installed, remove all old files
+    if [[ -a "/Applications/$app" ]]; then
+    
+      echo "$(date) | Removing old installation at /Applications/$app"
+      rm -rf "/Applications/$app"
+    
+    fi
+
+    # Copy over new files
+    rsync -a "$app/" "/Applications/$app"
+    if [ "$?" = "0" ]; then
+      echo "$(date) | $appname moved into /Applications"
+    else
+      echo "$(date) | failed to move $appname to /Applications"
+      if [ -d "$tempdir" ]; then rm -rf $tempdir; fi
+      updateOctory failed
+      exit 1
+    fi
+
+    # Make sure permissions are correct
+    echo "$(date) | Fix up permissions"
+    dot_clean "/Applications/$app"
+
+    if [ "$?" = "0" ]; then
+      echo "$(date) | correctly applied permissions to $appname"
+    else
+      echo "$(date) | failed to apply permissions to $appname"
+      if [ -d "$tempdir" ]; then rm -rf $tempdir; fi
+      updateOctory failed
+      exit 1
+    fi
+
+    # Checking if the app was installed successfully
+    if [ "$?" = "0" ]; then
+        if [[ -a "/Applications/$app" ]]; then
+
+            echo "$(date) | $appname Installed"
+            updateOctory installed
+            echo "$(date) | Cleaning Up"
+            rm -rf "$tempfile"
+
+            # Update metadata
+            fetchLastModifiedDate update
+
+            echo "$(date) | Fixing up permissions"
+            sudo chown -R root:wheel "/Applications/$app"
+            echo "$(date) | Application [$appname] succesfully installed"
+            exitcode 0
+        else
+            echo "$(date) | Failed to install $appname"
+            exit 1
+        fi
+    else
+
+        # Something went wrong here, either the download failed or the install Failed
+        # intune will pick up the exit status and the IT Pro can use that to determine what went wrong.
+        # Intune can also return the log file if requested by the admin
+        
+        echo "$(date) | Failed to install $appname"
+        if [ -d "$tempdir" ]; then rm -rf $tempdir; fi
+        exit 1
+    fi
+}
+
+## Install BZ2 Function
+function installBZ2 () {
 
     #################################################################################################################
     #################################################################################################################
@@ -527,11 +938,11 @@ function installZIP () {
     fi
 
     # Unzip files in temp dir
-    unzip -qq -o "$tempfile"
+    tar -jxf "$tempfile"
     if [ "$?" = "0" ]; then
-      echo "$(date) | $tempfile unzipped"
+      echo "$(date) | $tempfile uncompressed"
     else
-      echo "$(date) | failed to unzip $tempfile"
+      echo "$(date) | failed to uncompress $tempfile"
       if [ -d "$tempdir" ]; then rm -rf $tempdir; fi
       updateOctory failed
       exit 1
@@ -583,7 +994,7 @@ function installZIP () {
             echo "$(date) | Fixing up permissions"
             sudo chown -R root:wheel "/Applications/$app"
             echo "$(date) | Application [$appname] succesfully installed"
-            exit 0
+            exitcode 0
         else
             echo "$(date) | Failed to install $appname"
             exit 1
@@ -645,7 +1056,7 @@ function startLog() {
         mkdir -p "$logandmetadir"
     fi
 
-    exec &> >(tee -a "$log")
+    exec > >(tee -a "$log") 2>&1
     
 }
 
@@ -676,6 +1087,9 @@ echo "# $(date) | Logging install of [$appname] to [$log]"
 echo "############################################################"
 echo ""
 
+# Install Aria2c if we don't already have it
+installAria2c
+
 # Install Rosetta if we need it
 checkForRosetta2
 
@@ -699,6 +1113,19 @@ if [[ $packageType == "ZIP" ]]; then
 fi
 
 # Install PKG file
+if [[ $packageType == "BZ2" ]]; then
+    installBZ2
+fi
+
+# Install PKG file
 if [[ $packageType == "DMG" ]]; then
     installDMG
 fi
+
+# Install DMGPKG file
+if [[ $packageType == "DMGPKG" ]]; then
+    installDMGPKG
+fi
+
+echo "$(date) | Cleaning Up"
+rm -rf "$tempdir"
