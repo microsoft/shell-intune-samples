@@ -45,7 +45,7 @@ fi
 # workaround for Ventura (macOS Ver 13.x) System Settings.app name change
 if [[ -a "/System/Applications/System Settings.app" ]]; then settingsApp="System Settings.app"; else settingsApp="System Preferences.app"; fi
 
-dockapps=(  "/Applications/Launchpad.app"
+dockapps=(  "/System/Applications/Launchpad.app"
             "/Applications/Microsoft Edge.app"
             "/Applications/Microsoft Outlook.app"
             "/Applications/Microsoft Word.app"
@@ -72,6 +72,30 @@ echo "# $(date) | Starting install of $appname"
 echo "############################################################"
 echo ""
 
+# Function to update Swift dialog
+function updateSplashScreen () {
+
+    #################################################################################################################
+    #################################################################################################################
+    ##
+    ##  This function is designed to update the Splash Screen status (if required)
+    ##
+    ###############################################################
+    ###############################################################
+
+
+    # Is Swift Dialog present
+    if [[ -a "/Library/Application Support/Dialog/Dialog.app/Contents/MacOS/Dialog" ]]; then
+
+
+        echo "$(date) | Updating Swift Dialog monitor for [$appname] to [$1]"
+        echo listitem: title: $appname, status: $1, statustext: $2 >> /var/tmp/dialog.log 
+
+        # Supported status: wait, success, fail, error, pending or progress:xx
+
+    fi
+
+}
 
 # function to delay until the user has finished setup assistant.
 waitForDesktop () {
@@ -100,6 +124,8 @@ while [[ $ready -ne 1 ]];do
   done
 
   echo "$(date) |  [$missingappcount] application missing"
+  updateSplashScreen wait "Waiting for $missingappcount apps..."
+  
 
   if [[ $missingappcount -eq 0 ]]; then
     ready=1
@@ -111,6 +137,8 @@ while [[ $ready -ne 1 ]];do
 
 done
 
+updateSplashScreen wait "Installing"
+
 echo "$(date) |  Removing Dock Persistent Apps"
 defaults delete $HOME/Library/Preferences/com.apple.dock persistent-apps
 defaults delete $HOME/Library/Preferences/com.apple.dock persistent-others
@@ -120,6 +148,7 @@ for i in "${dockapps[@]}"; do
   if [[ -a "$i" ]] ; then
     echo "$(date) |  Adding [$i] to Dock"
     defaults write com.apple.dock persistent-apps -array-add "<dict><key>tile-data</key><dict><key>file-data</key><dict><key>_CFURLString</key><string>$i</string><key>_CFURLStringType</key><integer>0</integer></dict></dict></dict>"
+    updateSplashScreen wait "Adding $i to Dock"
   fi
 done
 
@@ -129,7 +158,7 @@ if [[ "$netshares" ]]; then
       label="$(basename $j)"
       echo "$(date) |  Adding [$j][$label] to Dock"
       defaults write com.apple.dock persistent-others -array-add "<dict><key>tile-data</key><dict><key>label</key><string>$label</string><key>url</key><dict><key>_CFURLString</key><string>$j</string><key>_CFURLStringType</key><integer>15</integer></dict></dict><key>tile-type</key><string>url-tile</string></dict>"
-
+      updateSplashScreen wait "Adding $j to Dock"
   done
 fi
 
@@ -137,6 +166,7 @@ echo "$(date) | Adding Downloads Stack"
 consoleuser=$(ls -l /dev/console | awk '{ print $3 }')
 downloadfolder="$HOME/Downloads"
 defaults write com.apple.dock persistent-others -array-add "<dict><key>tile-data</key><dict><key>file-data</key><dict><key>_CFURLString</key><string>$downloadfolder</string><key>_CFURLStringType</key><integer>0</integer></dict><key>file-label</key><string>Downloads</string><key>file-type</key><string>2</string></dict><key>tile-type</key><string>directory-tile</string></dict>"
+
 
 echo "$(date) | Enabling Magnification"
 defaults write com.apple.dock magnification -boolean YES
@@ -158,6 +188,8 @@ killall Dock
 
 echo "$(date) | Writng completion lock to [~/Library/Logs/prepareDock]"
 touch "$HOME/Library/Logs/prepareDock"
+
+updateSplashScreen success Installed
 
 # If this is an ADE enrolled device (DEP) we should launch the Company Portal for the end user to complete registration
 if [ "$startCompanyPortalifADE" = true ]; then
