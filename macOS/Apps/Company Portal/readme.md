@@ -14,7 +14,7 @@ This script has a few scenarios
 ## Quick Run
 
 ```
-sudo /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/microsoft/shell-intune-samples/master/Apps/Company%20Portal/installCompanyPortal.sh)" ; open "/Applications/Company Portal.app"
+sudo /bin/zsh -c "$(curl -L https://aka.ms/installcp)" ; open "/Applications/Company Portal.app"
 ```
 
 ## Script Settings
