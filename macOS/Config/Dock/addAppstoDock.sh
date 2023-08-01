@@ -45,7 +45,8 @@ fi
 # workaround for Ventura (macOS Ver 13.x) System Settings.app name change
 if [[ -a "/System/Applications/System Settings.app" ]]; then settingsApp="System Settings.app"; else settingsApp="System Preferences.app"; fi
 
-dockapps=( "/Applications/Microsoft Edge.app"
+dockapps=(  "/Applications/Launchpad.app"
+            "/Applications/Microsoft Edge.app"
             "/Applications/Microsoft Outlook.app"
             "/Applications/Microsoft Word.app"
             "/Applications/Microsoft Excel.app"
@@ -71,34 +72,6 @@ echo "# $(date) | Starting install of $appname"
 echo "############################################################"
 echo ""
 
-function updateOctory () {
-
-    #################################################################################################################
-    #################################################################################################################
-    ##
-    ##  This function is designed to update Octory status (if required)
-    ##
-    ##
-    ##  Parameters (updateOctory parameter)
-    ##
-    ##      notInstalled
-    ##      installing
-    ##      installed
-    ##
-    ###############################################################
-    ###############################################################
-
-    # Is Octory present
-    if [[ -a "/Library/Application Support/Octory" ]]; then
-
-        # Octory is installed, but is it running?
-        if [[ $(ps aux | grep -i "Octory" | grep -v grep) ]]; then
-            echo "$(date) | Updating Octory monitor for [$appname] to [$1]"
-            /usr/local/bin/octo-notifier monitor "$appname" --state $1
-        fi
-    fi
-
-}
 
 # function to delay until the user has finished setup assistant.
 waitForDesktop () {
@@ -112,13 +85,10 @@ waitForDesktop () {
 
 waitForDesktop
 
-updateOctory installing
-
 echo "$(date) | Looking for required applications..."
 
 while [[ $ready -ne 1 ]];do
 
-  updateOctory installing
   missingappcount=0
 
   for i in "${dockapps[@]}"; do
@@ -188,8 +158,6 @@ killall Dock
 
 echo "$(date) | Writng completion lock to [~/Library/Logs/prepareDock]"
 touch "$HOME/Library/Logs/prepareDock"
-
-updateOctory installed
 
 # If this is an ADE enrolled device (DEP) we should launch the Company Portal for the end user to complete registration
 if [ "$startCompanyPortalifADE" = true ]; then

@@ -97,7 +97,20 @@ echo " $(date) | ModelCode variable set to $ModelCode"
 echo " $(date) | Retrieved serial number: $SerialNum"
 echo " $(date) | Detected country as: $Country"
 echo " $(date) | Building the new name..."
-NewName=$ModelCode-$SerialNum-$Country
+
+NewName=""
+
+if [[ -n "$ModelCode" && ! "$ModelCode" == *"error"* ]]; then
+    NewName+="$ModelCode"
+fi
+
+if [[ -n "$SerialNum" && ! "$SerialNum" == *"error"* ]]; then
+    NewName+="-$SerialNum"
+fi
+
+if [[ -n "$Country" && ! "$Country" == *"error"* ]]; then
+    NewName+="-$Country"
+fi
 
 echo " $(date) | Generated Name: $NewName"
 
