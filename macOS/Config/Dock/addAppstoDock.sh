@@ -32,6 +32,8 @@ log="$HOME/addAppstoDock.log"
 appname="Dock"
 startCompanyPortalifADE="true"
 consoleuser=$(ls -l /dev/console | awk '{ print $3 }')
+secondsToWaitForOtherApps=3600                                                               # How long should we wait for other apps to install before we continue?
+
 
 exec &> >(tee -a "$log")
 
@@ -109,9 +111,16 @@ waitForDesktop () {
 
 waitForDesktop
 
+START=$(date +%s) # define loop start time so we can timeout gracefully
 echo "$(date) | Looking for required applications..."
 
 while [[ $ready -ne 1 ]];do
+
+  # If we've waited for too long, we should just carry on
+  if [[ $(($(date +%s) - $START)) -ge $secondsToWaitForOtherApps ]]; then
+      echo "$(date) | Waited for [$secondsToWaitForOtherApps] seconds, continuing anyway]"
+      break
+  fi
 
   missingappcount=0
 
@@ -125,7 +134,7 @@ while [[ $ready -ne 1 ]];do
 
   echo "$(date) |  [$missingappcount] application missing"
   updateSplashScreen wait "Waiting for $missingappcount apps..."
-  
+
 
   if [[ $missingappcount -eq 0 ]]; then
     ready=1
