@@ -445,7 +445,7 @@ function installPKG () {
         echo "$(date) | Attempting installation (Attempt $attempt)..."
 
         # Run the installer command
-        installer -pkg "$tempfile_" -target /
+        installer -pkg "$tempfile" -target /
 
         # Checking if the app was installed successfully
         if [ "$?" = "0" ]; then
