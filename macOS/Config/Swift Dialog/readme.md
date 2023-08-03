@@ -8,7 +8,7 @@ swiftDialog's purpose is as a tool for Mac Admins to show informative messages v
 
 Source: [bartreardon/swiftDialog: Create user-notifications on macOS with swiftDialog (github.com)](https://github.com/bartreardon/swiftDialog)
 
-![Example](https://github.com/microsoft/shell-intune-samples/raw/master/img/example1.png)
+![Example](https://github.com/microsoft/shell-intune-samples/blob/master/img/Swift%20Dialog/example1.png)
 
 ## Setup
 
@@ -40,7 +40,7 @@ As a quick start, you should change the following:
 3. icon
 4. listitem
 
-![swiftdialog.json](https://github.com/microsoft/shell-intune-samples/raw/master/img/examplejson.png)
+![swiftdialog.json](https://github.com/microsoft/shell-intune-samples/blob/master/img/Swift%20Dialog/examplejson.png)
 
 It's a good idea to have [Swift Dialog](https://github.com/bartreardon/swiftDialog/releases/latest) installed while working on the json file, you can easily test it out by running:
 
@@ -55,7 +55,7 @@ Notes:
 
 The onboarding process will run any scripts that you put in the **scripts** folder. The scripts will run in parallel.
 
-![Example](https://github.com/microsoft/shell-intune-samples/raw/master/img/scripts.png)
+![Example](https://github.com/microsoft/shell-intune-samples/blob/master/img/Swift%20Dialog/scripts.png)
 
 You must have a matching script for each **listitem** defined in your **swiftdialog.json** and also make sure that the scripts writes status updates to the right place for Swift Dialog to process.
 
@@ -65,7 +65,7 @@ If you're using your own scripts, you'll need to ensure that they write status u
 
 In the sample scripts provided, there is a function called updateSplashScreen() that handles this for you
 
-![updateSplashScreen function](https://github.com/microsoft/shell-intune-samples/raw/master/img/updateSplashScreenFunction.png)
+![updateSplashScreen function](https://github.com/microsoft/shell-intune-samples/blob/master/img/Swift%20Dialog/updateSplashScreenFunction.png)
 
 With this function, you can update script processing with the following commands:
 
@@ -85,7 +85,7 @@ Make sure that you test each script inside the scripts folder.
 
 To deploy you need to create an **onboarding\_scripts.zip** file, which should contain everything under the **onboarding\_scripts** folder
 
-![folder structure](https://github.com/microsoft/shell-intune-samples/raw/master/img/folderstructure.png)
+![folder structure](https://github.com/microsoft/shell-intune-samples/blob/master/img/Swift%20Dialog/folderstructure.png)
 
 If you're new to Mac, you can create this zip file by right clicking on the onboarding\_scripts folder and select compress 'onboarding\_scripts'.
 
@@ -93,7 +93,7 @@ You'll also need to host the **onboarding\_scripts.zip** file somewhere. In this
 
 Once you have an internet facing URL for the zip file, edit the **onboardingProcess.zsh** file and replace the **onboardingScriptsURL** path with the url that points to your **onboarding\_scripts.zip** file.
 
-![onboardingScriptsURL](https://github.com/microsoft/shell-intune-samples/raw/master/img/onBoardingScriptsURL.png)
+![onboardingScriptsURL](https://github.com/microsoft/shell-intune-samples/blob/master/img/Swift%20Dialog/onBoardingScriptsURL.png)
 
 Note: if you're editing on Windows make sure to save the onboardingProcess.zsh as **Unix (LF)** format otherwise the script will not run and will receive a permission denied which may be found in the log file on the Mac under: /Library/Application Support/Microsoft/IntuneScripts/Swift Dialog/
 
