@@ -215,9 +215,16 @@ until ps aux | grep /usr/local/bin/dialog | grep -v grep &>/dev/null; do
         exit 1
     fi
     echo -n "."
-    sleep 1
+    sleep 5
 done
 echo "OK"
+
+#####################################
+## Process Onboarding scripts
+#####################
+
+# Lets give Swift Dialog a chance to start
+sleep 10
 
 echo "$(date) | Processing scripts..."
 for script in $tempdir/onboarding_scripts/scripts/*.*; do
