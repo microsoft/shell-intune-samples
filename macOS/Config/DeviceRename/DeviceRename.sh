@@ -79,12 +79,6 @@ else
 fi
 
 
-## What is our public IP
-echo " $(date) | Looking up public IP"
-myip=$(dig +short myip.opendns.com @resolver1.opendns.com)
-Country=$(curl -s https://ipapi.co/$myip/country)
-
-
 profiles status -type enrollment | grep "Enrolled via DEP: Yes"
 if [ "$?" = "0" ]; then
   echo " $(date) | This device is enrolled by ABM"
@@ -101,6 +95,12 @@ else
   echo " $(date) | This device is not enrolled by ABM, device name will not be changed."
   exit 0
 fi
+
+
+## What is our public IP
+echo " $(date) | Looking up public IP"
+myip=$(dig +short myip.opendns.com @resolver1.opendns.com)
+Country=$(curl -s https://ipapi.co/$myip/country)
 
 
 echo " $(date) | Generating four characters code based on retrieved model name $ModelName"
