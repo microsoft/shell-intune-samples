@@ -22,6 +22,10 @@
 appname="DeviceRename"
 logandmetadir="/Library/Logs/Microsoft/Intune/Scripts/$appname"
 log="$logandmetadir/$appname.log"
+CorporatePrefix="CO"
+PersonalPrefix="BYO"
+ABMOnly="false"
+EnforceBYOD="false"
 
 ## Check if the log directory has been created
 if [ -d $logandmetadir ]; then
@@ -31,6 +35,7 @@ else
     ## Creating Metadirectory
     echo "# $(date) | creating log directory - $logandmetadir"
     mkdir -p $logandmetadir
+    firstrun="true"
 fi
 
 # start logging
@@ -73,11 +78,29 @@ else
    exit 1
 fi
 
+
 ## What is our public IP
 echo " $(date) | Looking up public IP"
 myip=$(dig +short myip.opendns.com @resolver1.opendns.com)
 Country=$(curl -s https://ipapi.co/$myip/country)
 
+
+profiles status -type enrollment | grep "Enrolled via DEP: Yes"
+if [ "$?" = "0" ]; then
+  echo " $(date) | This device is enrolled by ABM"
+  OwnerPrefix=$CorporatePrefix
+elif [ "$ABMOnly" = "false" ]; then
+  if [[ "$firstrun" = "true" || "$EnforceBYOD" = "true" ]]; then
+    echo " $(date) | This device is enrolled manually, assuming BYOD scenario for one-time change."
+    OwnerPrefix=$PersonalPrefix
+  else
+    echo " $(date) | This device was enrolled manually. Device name will not be enforced after initial change."
+    exit 0
+  fi
+else
+  echo " $(date) | This device is not enrolled by ABM, device name will not be changed."
+  exit 0
+fi
 
 
 echo " $(date) | Generating four characters code based on retrieved model name $ModelName"
@@ -93,6 +116,7 @@ case $ModelName in
   *) ModelCode=$(echo $ModelName | tr -d ' ' | cut -c1-4);;
 esac
 
+echo " $(date) | OwnerPrefix variable set to $OwnerPrefix"
 echo " $(date) | ModelCode variable set to $ModelCode"
 echo " $(date) | Retrieved serial number: $SerialNum"
 echo " $(date) | Detected country as: $Country"
@@ -100,16 +124,30 @@ echo " $(date) | Building the new name..."
 
 NewName=""
 
+if [[ -n "$OwnerPrefix" ]]; then
+    NewName+="$OwnerPrefix"
+fi
+
 if [[ -n "$ModelCode" && ! "$ModelCode" == *"error"* ]]; then
-    NewName+="$ModelCode"
+    if [[ -n "$NewName" ]]; then
+      NewName+="-$ModelCode"
+    else
+      NewName+="$ModelCode"
+    fi
 fi
 
 if [[ -n "$SerialNum" && ! "$SerialNum" == *"error"* ]]; then
-    NewName+="-$SerialNum"
+    if [[ -n "$NewName" ]]; then
+      NewName+="-$SerialNum"
+    else
+      NewName+="$SerialNum"
+    fi
 fi
 
 if [[ -n "$Country" && ! "$Country" == *"error"* ]]; then
-    NewName+="-$Country"
+    if [[ -n "$NewName" ]]; then
+      NewName+="-$Country"
+    fi
 fi
 
 echo " $(date) | Generated Name: $NewName"
