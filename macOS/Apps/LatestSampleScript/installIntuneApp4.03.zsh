@@ -5,7 +5,7 @@
 ##
 ## Script to install the latest [APPNAME]
 ## 
-## VER 4.0.0
+## VER 4.0.3
 ##
 ## Change Log
 ##
