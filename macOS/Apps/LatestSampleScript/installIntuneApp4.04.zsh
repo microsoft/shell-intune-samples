@@ -9,6 +9,7 @@
 ##
 ## Change Log
 ##
+## 2023-08-07   - Add missing logandmetadir prefix 'install'
 ## 2023-08-07   - Make /Applications target configurable
 ## 2023-08-07   - Added detection support for tgz and tar.gz
 ## 2023-07-17   - Fixed bug in installAria2c function that was causing problems for DMGs
@@ -53,7 +54,7 @@ fi
 
 appname="WhatsApp"                                                      # The name of our App deployment script (also used for Octory monitor)
 app="WhatsApp.app"                                                      # The actual name of our App once installed
-logandmetadir="/Library/Logs/Microsoft/IntuneScripts/$appname"          # The location of our logs and last updated data
+logandmetadir="/Library/Logs/Microsoft/IntuneScripts/install$appname"   # The location of our logs and last updated data
 appdir="/Applications"                                                  # The location directory for the application (usually /Applications)
 processpath="$appdir/$app/Contents/MacOS/WhatsApp"                      # The process name of the App we are installing
 terminateprocess="false"                                                # Do we want to terminate the running process? If false we'll wait until its not running
