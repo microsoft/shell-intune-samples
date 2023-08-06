@@ -20,7 +20,7 @@ The script consists of five steps:
 ```bash
 # Define variables
 appname="DeviceRename"
-logandmetadir="/Library/Logs/Microsoft/Intune/Scripts/$appname"
+logandmetadir="/Library/Logs/Microsoft/IntuneScripts/$appname"
 log="$logandmetadir/$appname.log"
 CorporatePrefix="CO"   # May be adjusted, e.g. your company shortname, or set to empty string
 PersonalPrefix="BYO"   # May be adjusted, or set to empty string
@@ -37,7 +37,7 @@ EnforceBYOD="false"    # Change to "true" if you want to run the script repeated
 
 ### Log file example
 
->**Note:** The log file will output to **/Library/Logs/Microsoft/Intune/Scripts/DeviceRename/DeviceRename.log** by default. Exit status is either 0 or 1. To gather this log with Intune remotely take a look at  [Troubleshoot macOS shell script policies using log collection](https://docs.microsoft.com/en-us/mem/intune/apps/macos-shell-scripts#troubleshoot-macos-shell-script-policies-using-log-collection)
+>**Note:** The log file will output to **/Library/Logs/Microsoft/IntuneScripts/DeviceRename/DeviceRename.log** by default. Exit status is either 0 or 1. To gather this log with Intune remotely take a look at  [Troubleshoot macOS shell script policies using log collection](https://docs.microsoft.com/en-us/mem/intune/apps/macos-shell-scripts#troubleshoot-macos-shell-script-policies-using-log-collection)
 
 ```
 ##############################################################

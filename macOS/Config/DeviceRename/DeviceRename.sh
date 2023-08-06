@@ -20,7 +20,7 @@
 
 ## Define variables
 appname="DeviceRename"
-logandmetadir="/Library/Logs/Microsoft/Intune/Scripts/$appname"
+logandmetadir="/Library/Logs/Microsoft/IntuneScripts/$appname"
 log="$logandmetadir/$appname.log"
 CorporatePrefix="CO"
 PersonalPrefix="BYO"
