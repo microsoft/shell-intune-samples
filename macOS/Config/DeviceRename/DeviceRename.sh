@@ -91,7 +91,7 @@ if [ "$?" = "0" ]; then
   OwnerPrefix=$CorporatePrefix
 elif [ "$ABMOnly" = "false" ]; then
   if [[ "$firstrun" = "true" || "$EnforceBYOD" = "true" ]]; then
-    echo " $(date) | This device is enrolled manually, assuming BYOD scenario for one-time change."
+    echo " $(date) | This device is enrolled manually, assuming BYOD scenario."
     OwnerPrefix=$PersonalPrefix
   else
     echo " $(date) | This device was enrolled manually. Device name will not be enforced after initial change."
