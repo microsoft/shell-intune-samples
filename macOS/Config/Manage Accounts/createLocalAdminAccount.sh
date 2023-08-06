@@ -31,7 +31,7 @@
 adminaccountname="localadmin"       # This is the accountname of the new admin
 adminaccountfullname="Local Admin"  # This is the full name of the new admin user
 scriptname="Create Local Admin Account"
-logandmetadir="/Library/Intune/Scripts/createLocalAdminAccount"
+logandmetadir="/Library/IntuneScripts/createLocalAdminAccount"
 log="$logandmetadir/createLocalAdminAccount.log"
 
 # function to delay until the user has finished setup assistant.
