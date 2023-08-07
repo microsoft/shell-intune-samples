@@ -113,6 +113,7 @@ case $ModelName in
   Mac\ Pro*) ModelCode=PRO;;
   Mac\ mini*) ModelCode=MINI;;
   Mac\ Studio*) ModelCode=MS;;
+  Apple\ Virtual\ Machine*) ModelCode=VM;;
   *) ModelCode=$(echo $ModelName | tr -d ' ' | cut -c1-4);;
 esac
 
