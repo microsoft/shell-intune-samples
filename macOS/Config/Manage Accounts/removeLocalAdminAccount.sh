@@ -27,7 +27,7 @@
 adminaccountname="localadmin"       # This is the accountname of the new admin
 adminaccountfullname="Local Admin"  # This is the full name of the new admin user
 scriptname="Remove Local Admin Account"
-logandmetadir="/Library/Intune/Scripts/removeLocalAdminUser"
+logandmetadir="/Library/IntuneScripts/removeLocalAdminUser"
 log="$logandmetadir/removeLocalAdminUser.log"
 
 ## Check if the log directory has been created and start logging

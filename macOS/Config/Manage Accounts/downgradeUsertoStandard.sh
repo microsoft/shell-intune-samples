@@ -30,7 +30,7 @@ scriptname="Downgrade Admin Users to Standard"
 log="/var/log/downgradeadminusers.log"
 abmcheck=true   # Only downgrade users if this device is ABM managed
 downgrade=true  # If set to false, script will not do anything
-logandmetadir="/Library/Intune/Scripts/downgradeAdminUsers"
+logandmetadir="/Library/IntuneScripts/downgradeAdminUsers"
 log="$logandmetadir/downgradeAdminUsers.log"
 
 ## Check if the log directory has been created and start logging
