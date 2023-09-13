@@ -1,4 +1,4 @@
-# How to setup Photo download :
+# How to setup M365 Profile Photo download and Sync for macOS
 
 This process requires three steps:
 
@@ -6,35 +6,28 @@ This process requires three steps:
 2. Deploy the Office Activation E-mail Policy
 3. Deploy script to download and set profile photo
 
-To see a demo of it working
-
-
+Demo of the script running:
 
 https://github.com/microsoft/shell-intune-samples/assets/27012389/c6e01b0c-c97f-4afc-b268-ea619fb74fd5
-
-
-
 
 ## Step1. Create Azure Application
 
 1. Open Azure Portal (https://portal.azure.com)
 2. Open Azure active directory \> App Registrations \> New Registration
 3. Complete the registration as follows:
-
-1. **Name** : Mac Profile Photo Download
-2. **Supported Account Types** : Accounts in this organizational directory only
-3. Click Register when done
-
-1. Open API Permissions
-  1. Remove **User.Read** permission
-  2. Add New \> Microsoft Graph \> Application permission \> User.Read.All
-  3. Add permission
-2. Overview \> Client Credentials \> Add a certificate or secret
-  1. New client secret
-  2. Description: MacPhotoDownload
-  3. Expires: 3 / 12 / 18 or 24 months
-  4. Add
-  5. Copy the secret VALUE (not ID) you'll need it later and you cannot get at it after the app has been created.
+    - **Name** : Mac Profile Photo Download
+    - **Supported Account Types** : Accounts in this organizational directory only
+    - Click Register when done
+4. Open API Permissions
+    - Remove **User.Read** permission
+    - Add New \> Microsoft Graph \> Application permission \> User.Read.All
+    - Add permission
+5. Overview \> Client Credentials \> Add a certificate or secret
+    - New client secret
+    - Description: MacPhotoDownload
+    - Expires: 3 / 12 / 18 or 24 months
+    - Add
+    - Copy the secret **VALUE** (not ID) you'll need it later and you **cannot get at it after the app has been created**.
 
 Now we have the application, we need the following values from it. Go to [https://portal.azure.com](https://portal.azure.com/) and open AAD. Then select App registrations and open Mac Profile Photo Download.
 
@@ -42,8 +35,7 @@ We need the following from the overview page
 
 - Application (client) ID
 - Directory (tenant) ID
-
-And the secret you made a note of earlier
+- Secret you made a note of in step5
 
 ## Step 2. Deploy Office Activation E-Mail Policy
 
