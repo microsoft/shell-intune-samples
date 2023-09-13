@@ -36,6 +36,7 @@ We need the following from the overview page
 - Application (client) ID
 - Directory (tenant) ID
 - Secret you made a note of in step5
+<img width="571" alt="2023-09-13_10-31-31" src="https://github.com/microsoft/shell-intune-samples/assets/27012389/aad1564c-6e85-4649-9a3f-6cbe5a78a6b0">
 
 ## Step 2. Deploy Office Activation E-Mail Policy
 
