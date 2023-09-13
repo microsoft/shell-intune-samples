@@ -8,7 +8,11 @@ This process requires three steps:
 
 To see a demo of it working
 
-https://github.com/microsoft/shell-intune-samples/raw/master/macOS/Config/M365%20Profile%20Photo%20Sync/M365%20Profile%20Photo%20Sync%20-%20Demo.mp4
+
+
+https://github.com/microsoft/shell-intune-samples/assets/27012389/c6e01b0c-c97f-4afc-b268-ea619fb74fd5
+
+
 
 
 ## Step1. Create Azure Application
