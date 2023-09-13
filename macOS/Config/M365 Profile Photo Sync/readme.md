@@ -53,11 +53,5 @@ The process needs to know the UPN of the end user. The easiest way to achieve th
 To download and set the profile photo, we need to deploy a [script](https://github.com/microsoft/shell-intune-samples/tree/master/macOS/Config/M365%20Profile%20Photo%20Sync) on the client side.
 
 1. Open the script and edit lines 22,23 and 24 with the values that you saved earlier.
-
-![](RackMultipart20230913-1-md8olm_html_f610dac1d893ddf7.png)
-
-1. Once you have the edited script, run it as root on a test machine
-
-![](RackMultipart20230913-1-md8olm_html_dde7d8aaa3d66b95.png)
-
-1. Once you have tested the script works as expected, deploy it [via Intune](https://learn.microsoft.com/en-us/mem/intune/apps/macos-shell-scripts) to run as root. Set schedule to run weekly.
+2. Once you have the edited script, run it as root on a test machine
+3. Once you have tested the script works as expected, deploy it [via Intune](https://learn.microsoft.com/en-us/mem/intune/apps/macos-shell-scripts) to run as root. Set schedule to run weekly.
