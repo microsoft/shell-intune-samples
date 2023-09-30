@@ -253,12 +253,13 @@ function installEscrowBuddy() {
     downloadEscrowBuddy
     logger "INFO" "Installing Escrow Buddy"
     sudo installer -pkg "/tmp/Escrow.Buddy.pkg" -target "/" > /dev/null 2>&1
+    exitcode=$?
 
     # Clean up
     rm -f "/tmp/Escrow.Buddy.pkg"
 
     # Check if the installation was successful
-    if [ $? -eq 0 ]; then
+    if [ $exitcode -eq 0 ]; then
         logger "INFO" "Escrow Buddy installed successfully"
         lastmodified=$(curl -sIL "$download_url" | grep -i "last-modified" | awk '{$1=""; print $0}' | awk '{ sub(/^[ \t]+/, ""); print }' | tr -d '\r')
         logger "INFO" "Writing last update information to [$lastupdated]"
