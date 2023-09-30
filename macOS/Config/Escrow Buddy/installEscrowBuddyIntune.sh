@@ -139,29 +139,6 @@ function downloadEscrowBuddy() {
     fi
 }
 
-# Function to check if the Escrow Buddy authorizationdb entry is configured
-function authorizationdbCheck() {
-    # Check if the Escrow Buddy authorizationdb entry is configured
-    #
-    # Arguments:
-    #   None
-    # Returns:
-    #   None
-    # Variables:
-    #   $DBENTRY: The authorizationdb entry to check for
-
-    # Set the authorizationdb entry to check for
-    DBENTRY="<string>Escrow Buddy:Invoke,privileged</string>"
-
-    # Check if the authorizationdb entry is configured
-    if /usr/bin/security authorizationdb read system.login.console 2>/dev/null | grep -q "$DBENTRY"; then
-        logger "INFO" "authorizationdb entry is configured"
-    else
-        logger "INFO" "authorizationdb entry is not configured, re-installing Escrow Buddy"
-        installEscrowBuddy
-    fi
-}
-
 # Function to update Escrow Buddy if a new version is available
 function updateEscrowBuddy() {
     # Update Escrow Buddy if a new version is available
@@ -281,7 +258,9 @@ else
 fi
 
 # Check if Escrow Buddy authorizationdb entry is configured
-authorizationdbCheck
+"$install_path"/Contents/Resources/AuthDBSetup.sh | while read line; do
+    logger "INFO" "$line"
+done
 
 # Run remediation
 remediate
