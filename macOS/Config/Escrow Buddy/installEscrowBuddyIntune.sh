@@ -19,8 +19,6 @@ install_path="/Library/Security/SecurityAgentPlugins/Escrow Buddy.bundle"
 logandmetadir="/Library/Logs/Microsoft/IntuneScripts/EscrowBuddy"
 # File to store last updatedtime
 lastupdated="$logandmetadir/lastupdated"
-# Get the current date and time
-date=$(date +"%Y-%m-%d %H:%M:%S")
 # Set the API URL for the latest release of Escrow Buddy
 eb_url="https://api.github.com/repos/macadmins/escrow-buddy/releases/latest"
 # Set the path to the installed Escrow Buddy bundle
@@ -41,11 +39,11 @@ PRK="/var/db/FileVaultPRK.dat"
 ## Check if the log directory has been created
 if [ -d $logandmetadir ]; then
 	## Already created
-	echo "[$date] [INFO] Log directory already exists - $logandmetadir"
+	echo "[$(date +"%Y-%m-%d %H:%M:%S")] [INFO] Log directory already exists - $logandmetadir"
 else
 	## Creating Metadirectory
-	echo "[$date] [INFO] creating log directory - $logandmetadir"
-	sudo mkdir -p $logandmetadir
+	echo "[$(date +"%Y-%m-%d %H:%M:%S")] [INFO] creating log directory - $logandmetadir"
+	mkdir -p $logandmetadir
 fi
 
 # Function to log messages to stdout
@@ -60,6 +58,7 @@ function logger() {
     message=$2
 
     # Log the message with the current date and time and the specified log level
+    date=$(date +"%Y-%m-%d %H:%M:%S")
     echo "[$date] [$level] $message"
     echo "[$date] [$level] $message" >> "$logandmetadir/installeb.log"
 }
