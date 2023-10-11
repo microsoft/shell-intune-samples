@@ -19,8 +19,6 @@ install_path="/Library/Security/SecurityAgentPlugins/Escrow Buddy.bundle"
 logandmetadir="/Library/Logs/Microsoft/IntuneScripts/EscrowBuddy"
 # File to store last updatedtime
 lastupdated="$logandmetadir/lastupdated"
-# Get the current date and time
-date=$(date +"%Y-%m-%d %H:%M:%S")
 # Set the API URL for the latest release of Escrow Buddy
 eb_url="https://api.github.com/repos/macadmins/escrow-buddy/releases/latest"
 # Set the path to the installed Escrow Buddy bundle
@@ -41,11 +39,11 @@ PRK="/var/db/FileVaultPRK.dat"
 ## Check if the log directory has been created
 if [ -d $logandmetadir ]; then
 	## Already created
-	echo "[$date] [INFO] Log directory already exists - $logandmetadir"
+	echo "[$(date +"%Y-%m-%d %H:%M:%S")] [INFO] Log directory already exists - $logandmetadir"
 else
 	## Creating Metadirectory
-	echo "[$date] [INFO] creating log directory - $logandmetadir"
-	sudo mkdir -p $logandmetadir
+	echo "[$(date +"%Y-%m-%d %H:%M:%S")] [INFO] creating log directory - $logandmetadir"
+	mkdir -p $logandmetadir
 fi
 
 # Function to log messages to stdout
@@ -60,6 +58,7 @@ function logger() {
     message=$2
 
     # Log the message with the current date and time and the specified log level
+    date=$(date +"%Y-%m-%d %H:%M:%S")
     echo "[$date] [$level] $message"
     echo "[$date] [$level] $message" >> "$logandmetadir/installeb.log"
 }
@@ -136,29 +135,6 @@ function downloadEscrowBuddy() {
     else
         logger "ERROR" "Escrow Buddy $latest_release download failed"
         exit 1
-    fi
-}
-
-# Function to check if the Escrow Buddy authorizationdb entry is configured
-function authorizationdbCheck() {
-    # Check if the Escrow Buddy authorizationdb entry is configured
-    #
-    # Arguments:
-    #   None
-    # Returns:
-    #   None
-    # Variables:
-    #   $DBENTRY: The authorizationdb entry to check for
-
-    # Set the authorizationdb entry to check for
-    DBENTRY="<string>Escrow Buddy:Invoke,privileged</string>"
-
-    # Check if the authorizationdb entry is configured
-    if /usr/bin/security authorizationdb read system.login.console 2>/dev/null | grep -q "$DBENTRY"; then
-        logger "INFO" "authorizationdb entry is configured"
-    else
-        logger "INFO" "authorizationdb entry is not configured, re-installing Escrow Buddy"
-        installEscrowBuddy
     fi
 }
 
@@ -282,7 +258,9 @@ else
 fi
 
 # Check if Escrow Buddy authorizationdb entry is configured
-authorizationdbCheck
+"$install_path"/Contents/Resources/AuthDBSetup.sh | while read line; do
+    logger "INFO" "$line"
+done
 
 # Run remediation
 remediate
