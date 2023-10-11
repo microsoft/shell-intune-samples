@@ -22,6 +22,7 @@ Should you experience any issues, please reach out to [MacAdminsHelp@Microsoft.c
 
 ### Most common problems
 
-1. You didn't use an M365 account (resend request from your M365 account)
-2. Your organisation [blocks external Yammer / Viva Engage](https://learn.microsoft.com/en-us/viva/engage/work-with-external-users/disable-external-messaging#what-each-option-does) (Request that they enable it)
-3. Your M365 account registration in our directory has been disabled (e-Mail [MacAdminsHelp](mailto:MacAdminsHelp@microsof.com) and we'll get it reset)
+1. [Didn't get a response] You didn't use an M365 account (resend request from your M365 account)
+2. [You do not have access] Your organisation [blocks external Yammer / Viva Engage](https://learn.microsoft.com/en-us/viva/engage/work-with-external-users/disable-external-messaging#what-each-option-does) (Request that they enable it)
+3. [Account Locked] Your M365 account registration in our directory has been disabled (e-Mail [MacAdminsHelp](mailto:MacAdminsHelp@microsof.com) and we'll get it reset)
+4. [Conversations Aren't Loading Right Now] You're probably using the wrong network, click on the World icon in Viva Engage (top right) and select the Microsoft network.
