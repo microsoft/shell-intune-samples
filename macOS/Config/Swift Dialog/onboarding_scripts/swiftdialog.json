@@ -1,0 +1,22 @@
+{
+    "title" : "Welcome to CatLab!",
+    "message" : "Please wait while we configure your Mac...",
+    "blurscreen":true,
+    "moveable":false,
+    "ontop":true,
+    "button1text": "Exit (Installations will continue)",
+    "icon" : "/Library/Application Support/Microsoft/IntuneScripts/Swift dialog/icons/catlab.png",
+    "centreicon":false,
+    "iconsize" : "400",
+    "listitem" : [
+      {"title" : "Company Portal", "icon" : "/Library/Application Support/Microsoft/IntuneScripts/Swift dialog/icons/CompanyPortal.png", "status" : "pending", "statustext" : "Pending"},
+      {"title" : "Microsoft Office", "icon" : "/Library/Application Support/Microsoft/IntuneScripts/Swift dialog/icons/office.png", "status" : "pending", "statustext" : "Pending"},
+      {"title" : "Microsoft Edge", "icon" : "/Library/Application Support/Microsoft/IntuneScripts/Swift dialog/icons/Edge.png", "status" : "pending", "statustext" : "Pending"},
+      {"title" : "Microsoft VS Code", "icon" : "/Library/Application Support/Microsoft/IntuneScripts/Swift dialog/icons/vscode.png", "status" : "pending", "statustext" : "Pending"},
+      {"title" : "Microsoft Remote Desktop", "icon" : "/Library/Application Support/Microsoft/IntuneScripts/Swift dialog/icons/RemoteDesktop.png", "status" : "pending", "statustext" : "Pending"},
+      {"title" : "Microsoft Defender", "icon" : "/Library/Application Support/Microsoft/IntuneScripts/Swift dialog/icons/Defender.png", "status" : "pending", "statustext" : "Pending"}
+    ]
+  }
+
+
+

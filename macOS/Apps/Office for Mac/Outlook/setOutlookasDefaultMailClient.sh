@@ -22,7 +22,7 @@
 
 tempdir="/tmp"
 tempfile="/tmp/MailToOutlook.pkg"
-weburl="https://macadmins.software/tools/MailToOutlook_2.0.pkg"
+weburl="https://macadmins.software/tools/MailToOutlook_2.1.pkg"
 appname="MailToOutlook"
 log="/var/log/MailToOutlook.log"
 
