@@ -22,6 +22,9 @@ To use this script, follow these steps:
 1. Download the `1PasswordInstall.sh` script to your local machine.
 2. Open a terminal window and navigate to the directory where the script is saved.
 3. Run the script with root privileges:
+    - chmod +x ./1PasswordInstall.sh
+    - sudo ./1PasswordInstall.sh
+
 
 ### Enpoint Management Deployment
 To use this script, follow these steps:
@@ -52,7 +55,7 @@ If you encounter any issues while running the script, try the following:
 
 ## Disclaimer
 
-This script is provided AS IS without warranty of any kind. The entire risk arising out of the use or performance of the script remains with you. In no event shall the author be liable for any damages whatsoever arising out of the use of or inability to use the script.
+This script is not supported under any Microsoft standard support program or service. The script is provided AS IS without warranty of any kind. Microsoft disclaims all implied warranties including, without limitation, any implied warranties of merchantability or of fitness for a particular purpose. The entire risk arising out of the use or performance of the script and documentation remains with you. In no event shall Microsoft, its authors, or anyone else involved in the creation, production, or delivery of the script be liable for any damages whatsoever (including, without limitation, damages for loss of business profits, business interruption, loss of business information, or other pecuniary loss) arising out of the use of or inability to use the sample script or documentation, even if Microsoft has been advised of the possibility of such damages.
 
 ## Feedback
 
