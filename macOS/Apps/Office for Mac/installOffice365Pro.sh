@@ -347,7 +347,7 @@ function updateCheck() {
                 "/Applications/Microsoft OneNote.app"
                 "/Applications/Microsoft Outlook.app"
                 "/Applications/Microsoft PowerPoint.app"
-                "/Applications/Microsoft Teams.app"
+                "/Applications/Microsoft Teams"*
                 "/Applications/Microsoft Word.app")
 
     for i in "${OfficeApps[@]}"; do
