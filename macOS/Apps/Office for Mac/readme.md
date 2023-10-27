@@ -32,6 +32,6 @@ You can find more information in the [Office for Mac deployment documentation](h
 
 You should set the Preference domain name for this managed preference file to : **com.microsoft.office**
 
-Note: The Office Business Pro suite includes a shim for Defender. If you are not using Defender in your environment, you can prevent this from being installed by using this preference file with InstallDefender to to false. 
+Note: From Oct 2023 the Office Business Pro suite includes a shim for Defender. If you are not using Defender in your environment, you can prevent this from being installed by using this preference file with InstallDefender to to false. This changed was notified via [MC661225](https://admin.microsoft.com/AdminPortal/Home?ref=MessageCenter/:/messages/MC661225).
 
 ![Alt text](image.png)
