@@ -28,13 +28,11 @@ autoUpdate="true"                                                         # If t
 
 waitForTheseApps=(  "/Applications/Microsoft Edge.app"
                     "/Applications/Microsoft Outlook.app"
-                    "/Applications/Gimp.app"
                     "/Applications/Microsoft Word.app"
                     "/Applications/Microsoft Excel.app"
                     "/Applications/Microsoft PowerPoint.app"
                     "/Applications/Microsoft OneNote.app"
                     "/Applications/Microsoft Teams.app"
-                    "/Applications/Visual Studio Code.app"
                     "/Applications/Company Portal.app")
 
 # Generated variables
