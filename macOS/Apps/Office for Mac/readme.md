@@ -24,3 +24,14 @@ This folder contains sample plist files to be deployed via the Intune Preference
 
 ## Outlook
 This folder contains some sample scripts that might be helpful for Outlook controls, such as setting it as the default e-Mail client.
+
+## Install Controls (skip defender shim)
+The Office Business Pro suite allows you to control which applications get installed via an [Intune managed preferences file](https://learn.microsoft.com/en-us/mem/intune/configuration/preference-file-settings-macos). You can start with the example **com.microsoft.office_installcontrols.plist** and modify as required.
+
+You can find more information in the [Office for Mac deployment documentation](https://learn.microsoft.com/en-us/deployoffice/mac/preferences-office#excluding-apps)
+
+You should set the Preference domain name for this managed preference file to : **com.microsoft.office**
+
+Note: The Office Business Pro suite includes a shim for Defender. If you are not using Defender in your environment, you can prevent this from being installed by using this preference file with InstallDefender to to false. 
+
+![Alt text](image.png)
