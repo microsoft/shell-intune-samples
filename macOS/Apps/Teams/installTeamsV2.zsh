@@ -298,9 +298,6 @@ function downloadApp () {
 
     echo "$(date) | Starting downlading of [$appname]"
 
-    # wait for other downloads to complete
-    waitForProcess "$ARIA2"
-
     #download the file
     echo "$(date) | Downloading $appname [$weburl]"
 
