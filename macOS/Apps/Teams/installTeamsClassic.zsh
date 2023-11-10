@@ -266,7 +266,7 @@ fetchLastModifiedDate() {
     fi
 
     # generate the last modified date of the file we need to download
-    lastmodified=$(curl -sIL "$weburl" | grep -i "last-modified" | awk '{$1=""; print $0}' | awk '{ sub(/^[ \t]+/, ""); print }' | tr -d '\r')
+    lastmodified=$(curl -sIL "$weburl" | grep -i "last-modified:" | awk '{$1=""; print $0}' | awk '{ sub(/^[ \t]+/, ""); print }' | tr -d '\r')
 
     if [[ $1 == "update" ]]; then
         echo "$(date) | Writing last modifieddate [$lastmodified] to [$metafile]"
