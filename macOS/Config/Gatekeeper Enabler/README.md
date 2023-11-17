@@ -1,5 +1,5 @@
 # Gatekeeper Enabler
-Even though there is a possibility to enable Gatekeeper via MDM, unfortunately if Mac-user have admin-rights, user can easily override changes via Terminal. As disabling Gatekeeper is definitely NOT RECOMMENDED, we need to have a way to fix this loophole automated way. 
+Even though there is a possibility to force enable Gatekeeper via MDM, unfortunately if Mac-user have admin-rights, user can easily override changes via Terminal. As disabling Gatekeeper is definitely NOT RECOMMENDED, we need to have a way to fix this loophole automated way. 
 
 Therefore, this script has been created which will check the status of Gatekeeper and if it is disabled, it will be enabled back immediately when script runs.
 
