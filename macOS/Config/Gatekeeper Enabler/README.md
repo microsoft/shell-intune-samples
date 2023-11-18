@@ -3,9 +3,6 @@ Even though there is a possibility to force enable Gatekeeper via MDM, unfortuna
 
 Therefore, this script has been created which will check the status of Gatekeeper and if it is disabled, it will be enabled back immediately when script runs.
 
-![Apu Apustaja giving thumbs up](https://i.kym-cdn.com/photos/images/original/001/221/732/902.jpg)
-This script is [Apu Apustaja](https://knowyourmeme.com/memes/apu-apustaja) -approved.
-
 ## Script Settings
 
 - Run script as signed-in user : No
