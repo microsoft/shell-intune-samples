@@ -1,6 +1,6 @@
 # Scripts to rename Mac devices
 
-In this folder, we have garhered two different options to rename Intune-managed Mac-devices as an example.
+In this folder, we have gathered two different options to rename Intune-managed Mac-devices as an example.
 
 ## Option Number 1: Script to rename a Mac device based on model type and serial number (DeviceRename.sh)
 
