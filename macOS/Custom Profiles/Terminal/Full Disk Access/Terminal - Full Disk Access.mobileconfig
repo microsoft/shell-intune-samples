@@ -46,8 +46,8 @@
 				<key>SystemPolicyAllFiles</key>
 				<array>
 					<dict>
-						<key>Allowed</key>
-						<true/>
+						<key>Authorization</key>
+						<string>Allow</string>
 						<key>CodeRequirement</key>
 						<string>identifier "com.apple.Terminal" and anchor apple</string>
 						<key>Identifier</key>
