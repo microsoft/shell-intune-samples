@@ -49,7 +49,7 @@
 						<key>Allowed</key>
 						<true/>
 						<key>CodeRequirement</key>
-						<string>identifier com.apple.Terminal</string>
+						<string>identifier "com.apple.Terminal" and anchor apple</string>
 						<key>Identifier</key>
 						<string>com.apple.Terminal</string>
 						<key>IdentifierType</key>
