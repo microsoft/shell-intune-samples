@@ -11,11 +11,11 @@ This Custom Script is required when implementing following CIS or NIST Recommend
 - Number of times to retry if script fails : 3
 
 ## Pre-requisities
-It is strongly recommended to deploy these policies to managed Mac-devices via Intune before deploying this script.
+It is required to deploy this Custom Profile first to managed Mac-devices via Intune before deploying this script.
 
 | Custom Profile | Hyperlink | More information |
 | -------- | ------- | -------- |
-| Terminal - Full Disk Access.mobileconfig | [Link](https://github.com/microsoft/shell-intune-samples/tree/master/macOS/Custom%20Profiles/Terminal) | This Custom Profile will provide Full Disk Access to Terminal that is required when implementing this custom script to disable remote login.  |
+| Terminal - Full Disk Access.mobileconfig | [Link](https://github.com/microsoft/shell-intune-samples/tree/master/macOS/Custom%20Profiles/Terminal) | This Custom Profile will provide Full Disk Access to Terminal that is required when implementing this custom script to disable remote login. Otherwise, script is unable to disable remote login.  |
 
 ## Log File
 
