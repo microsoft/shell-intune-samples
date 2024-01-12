@@ -4,11 +4,15 @@ This Custom Script is required when implementing following CIS or NIST Recommend
 - **NIST**: Disable Remote Apple Events
 
 ## Pre-requisities
-It is strongly recommended to deploy these policies to managed Mac-devices via Intune before deploying this script.
+It is required to deploy these policies to managed Mac-devices via Intune before deploying this script.
 
 | Platform | Profile type | Setting | Value | More information |
 | -------- | ------- | -------- | ------- | ------- |
 | macOS | Settings catalog | Allow Remote Apple Events Modifications | False | This setting will make sure that users cannot turn on Remote Application Scripting from System Settings. **Note:** This key will disable the ability to modify this sharing setting in the GUI only. They do not modify or disable modification through the binary or the disable the service. Therefore, script is also require to be deployed. |
+
+| Custom Profile | Hyperlink | More information |
+| -------- | ------- | -------- |
+| Terminal - Full Disk Access.mobileconfig | [Link](https://github.com/microsoft/shell-intune-samples/tree/master/macOS/Custom%20Profiles/Terminal) | This Custom Profile will provide Full Disk Access to Terminal that is required when implementing this custom script to disable remote apple events. Otherwise, script is unable to disable remote apple events.  |
 
 ## Script Settings
 
