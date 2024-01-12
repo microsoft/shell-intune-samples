@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>PayloadUUID</key>
+    <string>33110086-8FFF-4DA7-A9FB-E8730FA4C632</string>
+    <key>PayloadType</key>
+    <string>Configuration</string>
+    <key>PayloadOrganization</key>
+    <string>Microsoft Corporation</string>
+    <key>PayloadIdentifier</key>
+    <string>1FCCD9DE-CDF5-4272-988D-4D2F39B16C33</string>
+    <key>PayloadDisplayName</key>
+    <string>Menu Bar - Show Wi-Fi Status</string>
+    <key>PayloadDescription</key>
+    <string>CIS or NIST recommended settings for Wi-Fi status in menu bar</string>
+    <key>PayloadVersion</key>
+    <integer>1</integer>
+    <key>PayloadEnabled</key>
+    <true/>
+    <key>PayloadRemovalDisallowed</key>
+    <true/>
+    <key>PayloadScope</key>
+    <string>System</string>
+    <key>PayloadContent</key>
+    <array>
+		<dict>
+			<key>PayloadUUID</key>
+			<string>BF976A58-D828-4BB8-8024-F382D132D2A8</string>
+			<key>PayloadType</key>
+			<string>com.apple.controlcenter</string>
+			<key>PayloadOrganization</key>
+			<string>Microsoft Corporation</string>
+			<key>PayloadIdentifier</key>
+			<string>com.apple.controlcenter.BD3A0E3C-228F-4F8E-922A-5C0F4D729033</string>
+			<key>PayloadDisplayName</key>
+			<string>CIS or NIST recommended settings for Wi-Fi status in menu bar</string>
+			<key>PayloadDescription</key>
+			<string/>
+			<key>PayloadVersion</key>
+			<integer>1</integer>
+			<key>PayloadEnabled</key>
+			<true/>
+			<key>WiFi</key>
+			<integer>18</integer>
+		</dict>
+	</array>
+</dict>
+</plist>
