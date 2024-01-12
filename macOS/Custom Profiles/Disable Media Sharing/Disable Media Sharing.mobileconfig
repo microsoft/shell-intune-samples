@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>PayloadUUID</key>
+    <string>779B000E-F91D-4C6E-AE56-1A2D70385BDC</string>
+    <key>PayloadType</key>
+    <string>Configuration</string>
+    <key>PayloadOrganization</key>
+    <string>Microsoft Corporation</string>
+    <key>PayloadIdentifier</key>
+    <string>5989EA74-04C6-4116-93BB-EEF82DE44AC6</string>
+    <key>PayloadDisplayName</key>
+    <string>System Settings - Disable Media Sharing</string>
+    <key>PayloadDescription</key>
+    <string>CIS and NIST recommended setting to disable media sharing</string>
+    <key>PayloadVersion</key>
+    <integer>1</integer>
+    <key>PayloadEnabled</key>
+    <true/>
+    <key>PayloadRemovalDisallowed</key>
+    <true/>
+    <key>PayloadScope</key>
+    <string>System</string>
+    <key>PayloadContent</key>
+    <array>
+		<dict>
+			<key>PayloadUUID</key>
+			<string>087E9AB6-57A2-4508-B6D0-E57B2787EFCB</string>
+			<key>PayloadType</key>
+			<string>com.apple.preferences.sharing.SharingPrefsExtension</string>
+			<key>PayloadOrganization</key>
+			<string>Microsoft Corporation</string>
+			<key>PayloadIdentifier</key>
+			<string>com.apple.preferences.sharing.SharingPrefsExtension.4F01469F-E001-4A62-B3F7-4FA818B3DA69</string>
+			<key>PayloadDisplayName</key>
+			<string>CIS and NIST recommended setting to disable media sharing</string>
+			<key>PayloadDescription</key>
+			<string/>
+			<key>PayloadVersion</key>
+			<integer>1</integer>
+			<key>PayloadEnabled</key>
+			<true/>
+			<key>homeSharingUIStatus</key>
+			<integer>0</integer>
+			<key>legacySharingUIStatus</key>
+			<integer>0</integer>
+			<key>mediaSharingUIStatus</key>
+			<integer>0</integer>
+		</dict>
+	</array>
+</dict>
+</plist>
