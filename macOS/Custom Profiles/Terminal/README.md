@@ -1,6 +1,6 @@
 # Custom Profiles for Terminal
 
-This folder contains custom profiles for Terminal that are needed e.g. when implementing best practices of macOS-policies for macOS  14.0 Sonoma documented to [CIS Benchmarks](https://www.cisecurity.org/cis-benchmarks) by CIS (Center for Internet Security).
+This folder contains custom profiles for Terminal that are needed e.g. when implementing best practices of macOS-policies for [CIS Benchmarks](https://www.cisecurity.org/cis-benchmarks) by CIS (Center for Internet Security) or NIST (National Institute of Standards and Technology).
 
 ## Available Custom Profiles
 | Folder | File | Description |
