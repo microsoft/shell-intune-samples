@@ -29,3 +29,5 @@ echo "############################################################"
 echo ""
 
 /usr/local/bin/mdatp scan quick >/dev/null
+
+exit 0
