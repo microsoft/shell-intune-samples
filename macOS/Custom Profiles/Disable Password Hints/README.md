@@ -4,6 +4,6 @@ This Custom Profile is required when implementing following CIS or NIST Recommen
 - **NIST**: Disable Media Sharing
 
 ## Configuration settings for Intune
-- **Custom configuration profile name:** *System Settings - Disable Media Sharing*
+- **Custom configuration profile name:** *Lock Screen - Disable "Show Password Hints*
 - **Deployment channel:** *Device Channel*
 - **Configuration profile name:** *Disable Show Password Hints.mobileconfig*
