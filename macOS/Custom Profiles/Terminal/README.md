@@ -5,5 +5,5 @@ This folder contains custom profiles for Terminal that are needed e.g. when impl
 ## Available Custom Profiles
 | Folder | File | Description |
 | ----------- | ----------- | ----------- |
-| Full Disk Access | Terminal - Full Disk Access.mobileconfig | This Custom Profile is required when when implementing following CIS Bencmark Recommendations for macOS: <ul><li>*Ensure Remote Login Is Disabled (Automated)*</li><li>*Ensure Remote Apple Events Is Disabled (Automated)*</li></ul> |
-| Baseline | Terminal.mobileconfig | This Custom Profile is required when implementing following CIS or NIST Recommendations for macOS:: <ul><li>**CIS:** Ensure Secure Keyboard Entry Terminal.app Is Enabled (Automated)</li><li>**NIST:** Ensure Secure Keyboard Entry Terminal.app Is Enabled</li></ul>|
+| Full Disk Access | Terminal - Full Disk Access.mobileconfig | This Custom Profile is required when implementing following CIS or NIST Recommendations for macOS: <ul><li>**CIS:**Ensure Remote Login Is Disabled (Automated)</li><li>**CIS:**Ensure Remote Apple Events Is Disabled (Automated)</li></ul> |
+| Baseline | Terminal.mobileconfig | This Custom Profile is required when implementing following CIS or NIST Recommendations for macOS: <ul><li>**CIS:** Ensure Secure Keyboard Entry Terminal.app Is Enabled (Automated)</li><li>**NIST:** Ensure Secure Keyboard Entry Terminal.app Is Enabled</li></ul>|
