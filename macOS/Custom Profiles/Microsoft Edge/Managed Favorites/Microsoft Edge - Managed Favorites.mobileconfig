@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>PayloadUUID</key>
+    <string>C21FFE6E-EA46-433E-A84C-98CCD64104F7</string>
+    <key>PayloadType</key>
+    <string>Configuration</string>
+    <key>PayloadOrganization</key>
+    <string>Microsoft Corporation</string>
+    <key>PayloadIdentifier</key>
+    <string>9BD2FFE3-5833-452A-AA24-31E48C4A14F6</string>
+    <key>PayloadDisplayName</key>
+    <string>Microsoft Edge - Managed Favorites</string>
+    <key>PayloadDescription</key>
+    <string>Installs managed gfavorites to Microsoft Edge</string>
+    <key>PayloadVersion</key>
+    <integer>1</integer>
+    <key>PayloadEnabled</key>
+    <true/>
+    <key>PayloadRemovalDisallowed</key>
+    <true/>
+    <key>PayloadScope</key>
+    <string>System</string>
+    <key>PayloadContent</key>
+    <array>
+		<dict>
+			<key>PayloadUUID</key>
+			<string>8FFDD3B8-5035-4E9C-AEF8-EEDB7BF07E4E</string>
+			<key>PayloadType</key>
+			<string>com.microsoft.Edge</string>
+			<key>PayloadOrganization</key>
+			<string>Microsoft Corporation</string>
+			<key>PayloadIdentifier</key>
+			<string>com.microsoft.Edge.8FFDD3B8-5035-4E9C-AEF8-EEDB7BF07E4E</string>
+			<key>PayloadDisplayName</key>
+			<string>Configure favorites</string>
+			<key>PayloadDescription</key>
+			<string/>
+			<key>PayloadVersion</key>
+			<integer>1</integer>
+			<key>PayloadEnabled</key>
+			<true/>
+			<key>ManagedFavorites</key>
+			<array>
+			  <dict>
+				<key>toplevel_name</key>
+				<string>Microsoft</string>
+			  </dict>
+			  <dict>
+				<key>name</key>
+				<string>Azure Portal</string>
+				<key>url</key>
+				<string>https://portal.azure.com/</string>
+			  </dict>
+			  <dict>
+				<key>name</key>
+				<string>Bing</string>
+				<key>url</key>
+				<string>https://bing.com/</string>
+			  </dict>
+			  <dict>
+				<key>name</key>
+				<string>Microsoft</string>
+				<key>url</key>
+				<string>https://microsoft.com/</string>
+			  </dict>
+			  <dict>
+				<key>name</key>
+				<string>Microsoft 365</string>
+				<key>url</key>
+				<string>https://microsoft365.com/</string>
+			  </dict>
+			  <dict>
+				<key>name</key>
+				<string>Microsoft 365 Defender</string>
+				<key>url</key>
+				<string>https://security.microsoft.com/</string>
+			  </dict>
+			  <dict>
+				<key>name</key>
+				<string>Microsoft Intune admin center</string>
+				<key>url</key>
+				<string>https://intune.microsoft.com/</string>
+			  </dict>
+			  <dict>
+				<key>name</key>
+				<string>MSN</string>
+				<key>url</key>
+				<string>https://msn.com/</string>
+			  </dict>
+			</array>
+		</dict>
+	</array>
+</dict>
+</plist>
