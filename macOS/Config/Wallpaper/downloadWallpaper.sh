@@ -19,8 +19,8 @@
 
 # Define variables
 usebingwallpaper=true # Set to true to have script fetch wallpaper from Bing
-wallpaperurl="https://numberwang.blob.core.windows.net/numberwang/macOSWallpaper.jpg"
-wallpaperdir="/Library/Desktop"
+wallpaperurl="https://catlab.blob.core.windows.net/public/win11.jpg?sp=r&st=2023-03-17T20:49:42Z&se=2099-03-18T04:49:42Z&spr=https&sv=2021-12-02&sr=b&sig=ZPpGEOoIoA0lpflLee3G71MT4rtwQ07nAPvrFBOMvUA%3D"
+wallpaperdir="/Users/Shared/"
 wallpaperfile="Wallpaper.jpg"
 log="/var/log/fetchdesktopwallpaper.log"
 

@@ -202,6 +202,8 @@ mv "$tempdir/onboarding_scripts/swiftdialog.json" "$swiftdialogfolder/swiftdialo
 
 # Launching Swift dialog
 echo "$(date) | Starting Swift Dialog installation script"
+xattr -d com.apple.quarantine "$tempdir/onboarding_scripts/1-installSwiftDialog.zsh"
+chmod +x "$tempdir/onboarding_scripts/1-installSwiftDialog.zsh"
 nice -n -5 "$tempdir/onboarding_scripts/1-installSwiftDialog.zsh" & 
 
 START=$(date +%s)
@@ -229,6 +231,7 @@ sleep 10
 echo "$(date) | Processing scripts..."
 for script in $tempdir/onboarding_scripts/scripts/*.*; do
   echo "$(date) | Executing [$script]"
+  xattr -d com.apple.quarantine "$script"
   chmod +x "$script"
   nice -n 10 "$script" &
 done
