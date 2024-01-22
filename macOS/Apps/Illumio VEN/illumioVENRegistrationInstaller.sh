@@ -25,16 +25,15 @@
 ##
 
 # User Defined variables
-appname="IllumioVENRegistrationInstaller"                                                 # The name of our App deployment script (also used for Octory monitor)
-app="Illumio-ven-ctl"                                                                     # The actual name of our App once installed
-logandmetadir="/Library/Logs/Microsoft/IntuneScripts/$appname"                            # The location of our logs and last updated data
-processpath="/opt/Illumio_ven/Illumio-ven-ctl"                                    				# The process name of the App we are installing
-apppath="/opt/Illumio_ven/Illumio-ven-ctl"                                                # The location of the app
-registrationdetectionfile="/opt/Illumio_ven/Registration.txt"        											# Registration detection file to mark device that Finland license is already applied
-abmcheck=true   																								                          # Apply this registration only if this device is ABM managed.
+appname="IllumioVENRegistrationInstaller"                                                           # The name of our App deployment script (also used for Octory monitor)
+app="Illumio-ven-ctl"                                                                               # The actual name of our App once installed
+logandmetadir="/Library/Logs/Microsoft/IntuneScripts/$appname"                                      # The location of our logs and last updated data
+processpath="/opt/Illumio_ven/Illumio-ven-ctl"                                    				          # The process name of the App we are installing
+apppath="/opt/Illumio_ven/Illumio-ven-ctl"                                                          # The location of the app
+abmcheck=true   																								                                    # Apply this registration only if this device is ABM managed.
 activationcode=000000000000000000000000000000000000000000000000000000000000000000000000000000000    # Illumio activation code from pairing script
 managementserver=eu-scp13.illum.io:443                                                              # Management server url from pairing script
-profileid=000000000000000000                                                                        # Profile ID for pairing script
+profileid=000000000000000000                                                                         # Profile ID for pairing script
 
 # Generated variables
 tempdir=$(mktemp -d)
@@ -71,23 +70,11 @@ else
 fi
 }
 
-# Checks if Illumio VEN Registration is already applied. If no, we can proceed. Otherwise, we will close this script
-function checkRegistration() {
-if test -f "$registrationdetectionfile"; then
-    echo "$(date) | Illumio VEN Registration is already installed. Closing script..."
-    exit 0
-else
-    echo "$(date) | Illumio VEN Registration is not applied. Let's apply registration..."
-fi    
-}
-
 # Function that apply Illumio VEN Registration.
 function IllumioVENRegistration () {
 echo  "$(date) | Applying Illumio VEN Registration..."
 rm -fr /opt/illumio_ven_data/tmp && umask 026 && mkdir -p /opt/illumio_ven_data/tmp && curl --tlsv1 "https://$managementserver/api/v25/software/ven/image?pair_script=pair.sh&profile_id=$profileid" -o /opt/illumio_ven_data/tmp/pair.sh && chmod +x /opt/illumio_ven_data/tmp/pair.sh && /opt/illumio_ven_data/tmp/pair.sh --management-server $managementserver --activation-code $activationcode
-echo "$(date) | Illumio VEN Registration applied. Creating Registration detection file..."
-echo "Illumio VEN Registration is already applied to this device." > $registrationdetectionfile
-echo "$(date) | Done. Closing script..."
+echo "$(date) | Illumio VEN Registration applied. Closing script..."
 exit 0
 }
 
@@ -122,9 +109,6 @@ fi
 
 # Checks if Illumio VEN is installed
 checkIllumioVENInstallation
-
-# Checks if Illumio VEN Registration is already applied
-checkRegistration
 
 # Apply Illumio VEN Registration
 IllumioVENRegistration
