@@ -28,7 +28,7 @@
 appname="IllumioVENRegistrationInstaller"                                                           # The name of our App deployment script (also used for Octory monitor)
 app="Illumio-ven-ctl"                                                                               # The actual name of our App once installed
 logandmetadir="/Library/Logs/Microsoft/IntuneScripts/$appname"                                      # The location of our logs and last updated data
-processpath="/opt/Illumio_ven/Illumio-ven-ctl"                                    				    # The process name of the App we are installing
+processpath="/opt/Illumio_ven/Illumio-ven-ctl"                                                      # The process name of the App we are installing
 apppath="/opt/Illumio_ven/Illumio-ven-ctl"                                                          # The location of the app
 abmcheck=true                                                                                       # Apply this registration only if this device is ABM managed.
 activationcode=000000000000000000000000000000000000000000000000000000000000000000000000000000000    # Illumio activation code from pairing script
