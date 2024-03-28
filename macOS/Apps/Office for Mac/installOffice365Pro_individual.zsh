@@ -35,7 +35,15 @@ AppsToInstall=(     "com.microsoft.outlook.standalone.365"
                     "com.microsoft.teams.standalone"
                )
 
-TotalAppsToInstall=${#AppsToInstall[*]}
+declare -A URLS
+
+# Add key-value pairs for each app
+URLS[PowerPoint]="https://go.microsoft.com/fwlink/?linkid=525136"
+URLS[Excel]="https://go.microsoft.com/fwlink/?linkid=525135"
+URLS[Word]="https://go.microsoft.com/fwlink/?linkid=525134"
+URLS[Outlook]="https://go.microsoft.com/fwlink/?linkid=525137"
+
+TotalAppsToInstall=${#URLS[@]}
 
 function startLog() {
 
