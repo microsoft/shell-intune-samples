@@ -5,6 +5,22 @@
 # Output object used for remediation
 $jsonOutput = @{}
 
+# Handle plugin installation 
+try {
+     # Download installer
+    Invoke-WebRequest -Uri https://github.com/microsoft/shell-intune-samples/raw/master/Linux/WSL/IntuneWSLPluginInstaller/IntuneWSLPluginInstaller.msi -OutFile "C:\temp\IntuneWSLPluginInstaller.msi"
+
+    # Install plugin
+    Start-Process -FilePath "msiexec.exe" -ArgumentList "/i C:\temp\IntuneWSLPluginInstaller.msi /quiet"
+
+    # Delete temp file
+    Remove-Item -path "C:\temp\IntuneWSLPluginInstaller.msi" -force
+}  
+catch {
+    $jsonOutput += @{ WSLInstancesComplianceStatus = "Error during plugin installation" }
+    return $jsonOutput | ConvertTo-Json -Compress
+}
+
 # Class used to build compliance check values
 class OSCompliance
 {
