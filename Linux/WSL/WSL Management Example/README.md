@@ -9,7 +9,7 @@ This script can be used to calculate compliance against a windows device based o
 
 This is the powershell script that will run during check-in. It is written to look at the WSL distro data and confirm whether or not the registered distros and versions are in compliance based on the provided approved distros and versions.
 
-Inside the shell script, you can see the following on line 5. This is the allowed distro and min and max versions, (Ubuntu 20.04 to 22.04).
+Inside the shell script, you can see the following on line 45. This is the allowed distro and min and max versions, (Ubuntu 20.04 to 22.04).
 
 ```
 [void]$compliantDistroValues.Add([OSCompliance]::new("Ubuntu", "20.04", "22.04"))
@@ -21,7 +21,7 @@ If we run the script interactively with only Ubuntu 20.04 registered in WSL, we 
 { "WSLInstancesComplianceStatus" = "Not Compliant" }
 ```
 
-You can modify the script to check allow any distros and versions that you would like as well as a last check in time requirment (Lines 23-28).
+You can modify the script to check allow any distros and versions that you would like as well as a last check in time requirment (Lines 43-48).
 
 
 2. WSLDetectionRule.json
