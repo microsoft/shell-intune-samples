@@ -8,7 +8,7 @@ $jsonOutput = @{}
 # Handle plugin installation 
 try {
      # Download installer
-    Invoke-WebRequest -Uri https://github.com/microsoft/shell-intune-samples/raw/master/Linux/WSL/IntuneWSLPluginInstaller/IntuneWSLPluginInstaller.msi -OutFile "C:\temp\IntuneWSLPluginInstaller.msi"
+    Invoke-WebRequest -Uri https://github.com/microsoft/shell-intune-samples/raw/master/Linux/WSL/IntuneWSLPluginInstaller/IntuneWSLPluginInstaller.msi -OutFile ( New-Item -Path "C:\temp\IntuneWSLPluginInstaller.msi" -Force )
 
     # Install plugin
     Start-Process -FilePath "msiexec.exe" -ArgumentList "/i C:\temp\IntuneWSLPluginInstaller.msi /quiet"
