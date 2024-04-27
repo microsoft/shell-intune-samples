@@ -5,7 +5,7 @@
          "Operator":"IsEquals",
          "DataType":"String",
          "Operand":"Compliant",
-         "MoreInfoUrl":"",
+         "MoreInfoUrl":"https://learn.microsoft.com/en-us/windows/wsl/",
          "RemediationStrings":[ 
             { 
                "Language": "en_US",
