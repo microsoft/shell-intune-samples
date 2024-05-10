@@ -7,18 +7,14 @@ $jsonOutput = @{}
 
 # Handle plugin installation 
 try {
-    # Create a temp fild to store installer
-    $file = "C:\temp\IntuneWSLPluginInstaller.msi"
-
     # Download installer
-    Invoke-WebRequest -Uri https://github.com/microsoft/shell-intune-samples/raw/master/Linux/WSL/IntuneWSLPluginInstaller/IntuneWSLPluginInstaller.msi -OutFile "C:\temp\IntuneWSLPluginInstaller.msi"
-
+    Invoke-WebRequest -Uri https://github.com/befari/shell-intune-samples/raw/master/Linux/WSL/IntuneWSLPluginInstaller/IntuneWSLPluginInstaller.msi -OutFile ( New-Item -Path "C:\temp\IntuneWSLPluginInstaller.msi" -Force )
+ 
     # Install plugin
-    #msiexec /i $msiFile.FullName
     Start-Process -FilePath "msiexec.exe" -ArgumentList "/i C:\temp\IntuneWSLPluginInstaller.msi /quiet"
 
     # Delete temp file
-    Remove-Item -path $file -force
+    Remove-Item -path "C:\temp\IntuneWSLPluginInstaller.msi" -force
 }  
 catch {
     $jsonOutput += @{ WSLInstancesComplianceStatus = "Error during plugin installation" }
