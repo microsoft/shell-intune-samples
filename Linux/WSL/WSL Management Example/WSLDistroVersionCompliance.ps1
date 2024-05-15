@@ -5,22 +5,6 @@
 # Output object used for remediation
 $jsonOutput = @{}
 
-# Handle plugin installation 
-try {
-    # Download installer
-    Invoke-WebRequest -Uri https://github.com/befari/shell-intune-samples/raw/master/Linux/WSL/IntuneWSLPluginInstaller/IntuneWSLPluginInstaller.msi -OutFile ( New-Item -Path "C:\temp\IntuneWSLPluginInstaller.msi" -Force )
- 
-    # Install plugin
-    Start-Process -FilePath "msiexec.exe" -ArgumentList "/i C:\temp\IntuneWSLPluginInstaller.msi /quiet"
-
-    # Delete temp file
-    Remove-Item -path "C:\temp\IntuneWSLPluginInstaller.msi" -force
-}  
-catch {
-    $jsonOutput += @{ WSLInstancesComplianceStatus = "Error during plugin installation" }
-    return $jsonOutput | ConvertTo-Json -Compress
-}
-
 # Class used to build compliance check values
 class OSCompliance
 {
@@ -86,7 +70,7 @@ foreach($distroId in $distroIds)
     {
         $min = $compliantDistro.minVersion
         $max = $compliantDistro.maxVersion
-        if ($distroVersion -lt $min -or $disroVersion -gt $max)
+        if ($distroVersion -lt $min -or $distroVersion -gt $max)
         {
             $isCompliant = $false
             break
