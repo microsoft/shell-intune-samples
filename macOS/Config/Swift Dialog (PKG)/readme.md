@@ -15,7 +15,7 @@ Source: [bartreardon/swiftDialog: Create user-notifications on macOS with swiftD
 In this example, we're going to use the Packages App to create a custom PKG that includes all of the resources we need for an oboarding package.
 
 1. Install [Packages App](http://s.sudre.free.fr/Software/files/Packages.dmg) and grant it full disk access
-2. Download and expand SwiftDialog_IntunePKG.zip from this repo.
+2. Download and expand [SwiftDialog_IntunePKG.zip](https://github.com/microsoft/shell-intune-samples/raw/master/macOS/Config/Swift%20Dialog%20(PKG)/SwiftDialog_IntunePKG.zip) from this repo.
 
 The ZIP file contains the following resources.
 
