@@ -18,12 +18,7 @@
 ## Feedback: neiljohn@microsoft.com
 
 # User Defined variables
-processor=$(/usr/sbin/sysctl -n machdep.cpu.brand_string) 
-    if [[ "$processor" == *"Intel"* ]]; then                                # Determine the processor type to select the correct architecture version to download.
-        weburl="https://zoom.us/client/latest/zoomusInstallerFull.pkg"      # What is the Azure Blob Storage URL for intel version?
-    else
-        weburl="https://zoom.us/client/latest/zoomusInstallerFull.pkg?archType=arm64" # What is the Azure Blob Storage URL for arm64 version?     
-    fi               
+weburl="https://zoom.us/client/latest/ZoomInstallerIT.pkg"                  # What is the Azure Blob Storage URL (universal binary)                
 appname="Zoom"                                                              # The name of our App deployment script (also used for Octory monitor)
 app="zoom.us.app"                                                           # The actual name of our App once installed
 logandmetadir="/Library/Logs/Microsoft/IntuneScripts/installZoom"           # The location of our logs and last updated data
