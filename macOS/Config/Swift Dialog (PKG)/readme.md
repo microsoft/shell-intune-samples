@@ -94,8 +94,7 @@ Follow these steps from the Intune console:
 5. Accept default detection rules > **Next**
 6. Assign to initial test group of users > **Next**
 7. **Create**
-8. Make a note of the appid, it's in the Intune Web URL after appid. We'll need this as we move into testing.
-https://intune.microsoft.com/#view/Microsoft_Intune_Apps/SettingsMenu/~/0/appId/**0b6e87b5-2e4b-4350-b551-bfb99d114c83**
+8. Make a note of the appid, it's in the Intune Web URL after appid. We'll need this as we move into testing. https://intune.microsoft.com/#view/Microsoft_Intune_Apps/SettingsMenu/~/0/appId/0b6e87b5-2e4b-4350-b551-bfb99d114c83
 
 
 # Testing
