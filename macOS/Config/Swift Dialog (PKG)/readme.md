@@ -8,7 +8,7 @@ swiftDialog's purpose is as a tool for Mac Admins to show informative messages v
 
 Source: [bartreardon/swiftDialog: Create user-notifications on macOS with swiftDialog (github.com)](https://github.com/bartreardon/swiftDialog)
 
-![Example](https://github.com/microsoft/shell-intune-samples/blob/master/img/Swift%20Dialog/example1.png)
+![Example](https://github.com/microsoft/shell-intune-samples/blob/master/img/Swift%20Dialog%20PKG/SwiftDialogPKG%20-%20Example1.png)
 
 ## Dependencies
 
