@@ -54,7 +54,7 @@ dockapps=(  "/System/Applications/Launchpad.app"
             "/Applications/Microsoft Excel.app"
             "/Applications/Microsoft PowerPoint.app"
             "/Applications/Microsoft OneNote.app"
-            "/Applications/Microsoft Teams.app"
+            "/Applications/Microsoft Teams Classic.app"
             "/Applications/Visual Studio Code.app"
             "/Applications/Company Portal.app"
             "/Library/Application Support/Microsoft/MAU2.0/Microsoft AutoUpdate.app"
@@ -109,6 +109,21 @@ waitForDesktop () {
   echo "$(date) | Dock is here, lets carry on"
 }
 
+# Workaround to be used during phasing in the new Microsoft Teams
+function checkAndSetInstalledMSTeamsPath () {
+  if [[ $(echo "$1" | grep -c "Microsoft Teams") -gt 0 ]];then
+    if [[ -a "/Applications/Microsoft Teams.app" ]];then
+      i="/Applications/Microsoft Teams.app"
+    elif [[ -a "/Applications/Microsoft Teams classic.app" ]];then
+      i="/Applications/Microsoft Teams classic.app"
+    elif [[ -a "/Applications/Microsoft Teams (work or school).app" ]]; then
+      i="/Applications/Microsoft Teams (work or school).app"
+    elif [[ -a "/Applications/Microsoft Teams (work preview).app" ]]; then
+      i="/Applications/Microsoft Teams (work preview).app"
+    fi
+  fi
+}
+
 waitForDesktop
 
 START=$(date +%s) # define loop start time so we can timeout gracefully
@@ -125,6 +140,7 @@ while [[ $ready -ne 1 ]];do
   missingappcount=0
 
   for i in "${dockapps[@]}"; do
+  checkAndSetInstalledMSTeamsPath "$i"
     if [[ -a "$i" ]]; then
       echo "$(date) |  $i is installed"
     else
@@ -154,6 +170,7 @@ defaults delete $HOME/Library/Preferences/com.apple.dock persistent-others
 
 echo "$(date) |  Adding Apps to Dock"
 for i in "${dockapps[@]}"; do
+checkAndSetInstalledMSTeamsPath "$i"
   if [[ -a "$i" ]] ; then
     echo "$(date) |  Adding [$i] to Dock"
     defaults write com.apple.dock persistent-apps -array-add "<dict><key>tile-data</key><dict><key>file-data</key><dict><key>_CFURLString</key><string>$i</string><key>_CFURLStringType</key><integer>0</integer></dict></dict></dict>"

@@ -100,7 +100,7 @@ fi
 ## What is our public IP
 echo " $(date) | Looking up public IP"
 myip=$(dig +short myip.opendns.com @resolver1.opendns.com)
-Country=$(curl -s https://ipapi.co/$myip/country)
+Country=$(curl -s 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/116.0.0.0 Safari/537.36 Edg/116.0.1938.69' https://ipapi.co/$myip/country)
 
 
 echo " $(date) | Generating four characters code based on retrieved model name $ModelName"

@@ -22,7 +22,7 @@
 # User Defined variables
 
 weburl="https://github.com/bartreardon/swiftDialog/releases/download/v2.2/dialog-2.2.0-4535.pkg"
-swiftdialogJson='https://catlab.blob.core.windows.net/swiftdialog/catlab.json?sp=r&st=2023-03-17T11:17:52Z&se=2099-03-17T19:17:52Z&spr=https&sv=2021-12-02&sr=b&sig=9BQYht%2F9eAS%2Bxd4t37T34E3Yfl0NOvuK9BmhjVqmZ40%3D'
+swiftdialogJson='https://catlab.blob.core.windows.net/swiftdialog/catlab.json'
 appname="Swift Dialog"                                                 
 logandmetadir="/Library/Application Support/Microsoft/IntuneScripts/$appname"   # The location of our logs and last updated data
 dialogWidth="1024"                                                               # Width of the dialog box

@@ -18,23 +18,21 @@
 ## Feedback: neiljohn@microsoft.com
 
 # User Defined variables
-weburl="https://go.microsoft.com/fwlink/?linkid=2097502"                   # What is the Azure Blob Storage URL?
-appname="Microsoft Defender"                                           # The name of our App deployment script (also used for Octory monitor)
-app="Microsoft Defender.app"                                           # The actual name of our App once installed
-logandmetadir="/Library/Logs/Microsoft/IntuneScripts/installDefender"      # The location of our logs and last updated data
+weburl="https://aka.ms/MacDefender"                                         # What is the APP Storage URL
+appname="Microsoft Defender"                                                # The name of our App deployment script (also used for Octory monitor)
+app="Microsoft Defender.app"                                                # The actual name of our App once installed
+logandmetadir="/Library/Logs/Microsoft/IntuneScripts/installDefender"       # The location of our logs and last updated data
 processpath="/Applications/Microsoft Defender.app/Contents/MacOS/Microsoft Defender.app/Contents/MacOS/Microsoft Defender"    # The process name of the App we are installing
-terminateprocess="true"                                                    # Do we want to terminate the running process? If false we'll wait until its not running
-autoUpdate="true"                                                         # If true, application updates itself and we should not attempt to update
+terminateprocess="true"                                                     # Do we want to terminate the running process? If false we'll wait until its not running
+autoUpdate="true"                                                           # If true, application updates itself and we should not attempt to update
 
 waitForTheseApps=(  "/Applications/Microsoft Edge.app"
                     "/Applications/Microsoft Outlook.app"
-                    "/Applications/Gimp.app"
                     "/Applications/Microsoft Word.app"
                     "/Applications/Microsoft Excel.app"
                     "/Applications/Microsoft PowerPoint.app"
                     "/Applications/Microsoft OneNote.app"
                     "/Applications/Microsoft Teams.app"
-                    "/Applications/Visual Studio Code.app"
                     "/Applications/Company Portal.app")
 
 # Generated variables

@@ -117,73 +117,21 @@ else
     echo "$(date) | This is not an Apple Silicon Mac. No action needed."
 fi
 
+while [[ $unzipExitCode -ne 0 ]]; do
 
-#####################################
-## Aria2c installation
-#####################
-ARIA2="/usr/local/aria2/bin/aria2c"
-aria2Url="https://github.com/aria2/aria2/releases/download/release-1.35.0/aria2-1.35.0-osx-darwin.dmg"
-if [[ -f $ARIA2 ]]; then
-    echo "$(date) | Aria2 already installed, nothing to do"
-else
-    echo "$(date) | Aria2 missing, lets download and install"
-    filename=$(basename "$aria2Url")
-    output="$tempdir/$filename"
-    curl -f -s --connect-timeout 30 --retry 5 --retry-delay 60 -L -o "$output" "$aria2Url"
-    if [ $? -ne 0 ]; then
-        echo "$(date) | Aria download failed"
-        echo "$(date) | Output: [$output]"
-        echo "$(date) | URL [$aria2Url]"
-        exit 1
-    else
-        echo "$(date) | Downloaded aria2"
-    fi
-
-    # Mount aria2 DMG
-    mountpoint="$tempdir/aria2"
-    echo "$(date) | Mounting Aria DMG..."
-    hdiutil attach -quiet -nobrowse -mountpoint "$mountpoint" "$output"
-    if [ $? -ne 0 ]; then
-        echo "$(date) | Aria mount failed"
-        echo "$(date) | Mount: [$mountpoint]"
-        echo "$(date) | Temp File [$output]"
-        exit 1
-    else
-        echo "$(date) | Mounted DMG"
-    fi
-    
-    # Install aria2 PKG from inside the DMG
-    sudo installer -pkg "$mountpoint/aria2.pkg" -target /
-    if [ $? -ne 0 ]; then
-        echo "$(date) | Install failed"
-        echo "$(date) | PKG: [$mountpoint/aria2.pkg]"
-        exit 1
-    else
-        echo "$(date) | Aria2 installed"
-        hdiutil detach -quiet "$mountpoint"
-    fi
-
-    rm -f "$output"
-
-fi
-
-downloadattempts=0
-ariaExitCode=1
-unzipExitCode=1
-
-# Loop until the count is 5 or the exitCode is 0
-while [[ $ariaExitCode -ne 0  && $unzipExitCode -ne 0 ]]; do
     # Increment count
     downloadattempts=$((downloadattempts + 1))
     echo "$(date) | Attempting to downloading scripts [$downloadattempts]..."
     # Attempt download of onboarding scripts
-    $ARIA2 -x16 -s16 -d "$tempdir" -o "onboarding_scripts.zip" "$onboardingScriptsUrl" --download-result=hide --summary-interval=0
-    ariaExitCode=$?
+    DownloadResult=$(/usr/bin/curl -sL ${onboardingScriptsUrl} -o ${tempdir}/onboarding_scripts.zip  -w "%{http_code}")
 
-    if [[ $ariaExitCode -eq 0 ]]; then
+    if [[ $DownloadResult -eq 200 ]]; then
         echo "$(date) | Unzipping scripts..."
         unzip -qq -o onboarding_scripts.zip
         unzipExitCode=$?
+    else
+    # If the download was not succesfully we will wait here for 2 seconds.
+    sleep 2
     fi
 
     if [[ $downloadattempts -gt 5 ]]; then
@@ -192,6 +140,8 @@ while [[ $ariaExitCode -ne 0  && $unzipExitCode -ne 0 ]]; do
     fi
 
 done
+
+
 
 # Moving icons and json file
 swiftdialogfolder="/Library/Application Support/Microsoft/IntuneScripts/Swift Dialog"
@@ -202,6 +152,8 @@ mv "$tempdir/onboarding_scripts/swiftdialog.json" "$swiftdialogfolder/swiftdialo
 
 # Launching Swift dialog
 echo "$(date) | Starting Swift Dialog installation script"
+xattr -d com.apple.quarantine "$tempdir/onboarding_scripts/1-installSwiftDialog.zsh"
+chmod +x "$tempdir/onboarding_scripts/1-installSwiftDialog.zsh"
 nice -n -5 "$tempdir/onboarding_scripts/1-installSwiftDialog.zsh" & 
 
 START=$(date +%s)
@@ -229,6 +181,7 @@ sleep 10
 echo "$(date) | Processing scripts..."
 for script in $tempdir/onboarding_scripts/scripts/*.*; do
   echo "$(date) | Executing [$script]"
+  xattr -d com.apple.quarantine "$script"
   chmod +x "$script"
   nice -n 10 "$script" &
 done

@@ -18,7 +18,7 @@
 ## Feedback: neiljohn@microsoft.com
 
 # User Defined variables
-weburl="https://zoom.us/client/latest/ZoomInstallerIT.pkg"                  # What is the Azure Blob Storage URL?
+weburl="https://zoom.us/client/latest/ZoomInstallerIT.pkg"                  # What is the Azure Blob Storage URL (universal binary)                
 appname="Zoom"                                                              # The name of our App deployment script (also used for Octory monitor)
 app="zoom.us.app"                                                           # The actual name of our App once installed
 logandmetadir="/Library/Logs/Microsoft/IntuneScripts/installZoom"           # The location of our logs and last updated data

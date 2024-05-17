@@ -70,7 +70,7 @@ max_attempts=20
 for ((attempt=1; attempt<=max_attempts; attempt++)); do
     # Run the curl command and store the output in a variable
     echo "$(date) | Looking up TZ from IPAPI"
-    tz=$(curl -s "https://ipapi.co/$myip/timezone")
+    tz=$(curl -s 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/116.0.0.0 Safari/537.36 Edg/116.0.1938.69' "https://ipapi.co/$myip/timezone")
     updateSplashScreen wait "Looking up TZ..."
 
     # Check if the response contains 'error'

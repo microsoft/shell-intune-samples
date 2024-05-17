@@ -32,7 +32,7 @@
 ## Feedback: neiljohn@microsoft.com
 
 # User Defined variables
-weburl="https://catlab.blob.core.windows.net/apps/GlobalProtect.pkg?sp=r&st=2022-08-25T12:37:30Z&se=2099-08-25T20:37:30Z&spr=https&sv=2021-06-08&sr=b&sig=4HnMlm3dA9dJICxnpadFGNXZE8RuyRDCdXyMb1Xt9G0%3D"      # What is the Azure Blob Storage URL?
+weburl="https://catlab.blob.core.windows.net/apps/GlobalProtect.pkg"      # What is the Azure Blob Storage URL?
 appname="GlobalProtect"                                                                                 # The name of our App deployment script (also used for Octory monitor)
 app="GlobalProtect.app"                                                                                 # The actual name of our App once installed
 logandmetadir="/Library/Logs/Microsoft/IntuneScripts/$appname"                                          # The location of our logs and last updated data

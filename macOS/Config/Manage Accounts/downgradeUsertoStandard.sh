@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/bin/zsh
 #set -x
 
 ############################################################################################
@@ -30,22 +30,31 @@ scriptname="Downgrade Admin Users to Standard"
 log="/var/log/downgradeadminusers.log"
 abmcheck=true   # Only downgrade users if this device is ABM managed
 downgrade=true  # If set to false, script will not do anything
-logandmetadir="/Library/IntuneScripts/downgradeAdminUsers"
+logandmetadir="/Library/Logs/Microsoft/IntuneScripts/downgradeAdminUsers"
 log="$logandmetadir/downgradeAdminUsers.log"
 
-## Check if the log directory has been created and start logging
-if [ -d $logandmetadir ]; then
-    ## Already created
-    echo "# $(date) | Log directory already exists - $logandmetadir"
-else
-    ## Creating Metadirectory
-    echo "# $(date) | creating log directory - $logandmetadir"
-    mkdir -p $logandmetadir
-fi
+function startLog() {
 
-# start logging
+    ###################################################
+    ###################################################
+    ##
+    ##  start logging - Output to log file and STDOUT
+    ##
+    ####################
+    ####################
 
-exec 1>> $log 2>&1
+    if [[ ! -d "$logandmetadir" ]]; then
+        ## Creating Metadirectory
+        echo "$(date) | Creating [$logandmetadir] to store logs"
+        mkdir -p "$logandmetadir"
+    fi
+
+    echo "$(date) | Starting logging to [$log]"
+    exec > >(tee -a "$log") 2>&1
+    
+}
+
+startLog
 
 # Begin Script Body
 
@@ -56,11 +65,11 @@ echo "############################################################"
 echo ""
 
 # Is this a ABM DEP device?
-if [ "$abmcheck" = true ]; then
+if [[ "$abmcheck" = true ]]; then
   downgrade=false
   echo "Checking MDM Profile Type"
   profiles status -type enrollment | grep "Enrolled via DEP: Yes"
-  if [ ! $? == 0 ]; then
+  if [[ ! $? == 0 ]]; then
     echo "This device is not ABM managed"
     exit 0;
   else
@@ -69,10 +78,10 @@ if [ "$abmcheck" = true ]; then
   fi
 fi
 
-if [ $downgrade = true ]; then
+if [[ $downgrade = true ]]; then
   while read useraccount; do
-    if [ "$useraccount" == "localadmin" ]; then
-        echo "Leaving localadmin account as Admin"
+    if [[ "$useraccount" == "admin" ]]; then
+        echo "Leaving admin account as Admin"
     else
         echo "Making $useraccount a normal user"
         #/usr/sbin/dseditgroup -o edit -d $useraccount -t user admin

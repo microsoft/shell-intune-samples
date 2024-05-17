@@ -16,6 +16,9 @@ The following variables exist.
 abmcheck=true   # Only downgrade users if this device is ABM managed
 downgrade=true  # If set to false, script will not do anything
 ```
+
+Note: You will need to remove the # comment at the beginning of line 87, otherwise this script will not downgrade the user. This is to ensure you have read the script and know what it does.
+
 #### Script Settings
 
 - Run script as signed-in user : No

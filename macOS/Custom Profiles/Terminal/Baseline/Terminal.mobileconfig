@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>PayloadUUID</key>
+    <string>F6D04A6F-6CCB-4C2F-BC61-519413206F23</string>
+    <key>PayloadType</key>
+    <string>Configuration</string>
+    <key>PayloadOrganization</key>
+    <string>Microsoft Corporation</string>
+    <key>PayloadIdentifier</key>
+    <string>8B58824B-BC18-4F5D-BCF8-284C5249301C</string>
+    <key>PayloadDisplayName</key>
+    <string>Terminal</string>
+    <key>PayloadDescription</key>
+    <string>CIS recommended settings for Terminal</string>
+    <key>PayloadVersion</key>
+    <integer>1</integer>
+    <key>PayloadEnabled</key>
+    <true/>
+    <key>PayloadRemovalDisallowed</key>
+    <true/>
+    <key>PayloadScope</key>
+    <string>System</string>
+    <key>PayloadContent</key>
+    <array>
+		<dict>
+			<key>PayloadUUID</key>
+			<string>856C3EF4-6B8B-4F57-9237-FAFC7C67E6EF</string>
+			<key>PayloadType</key>
+			<string>com.apple.Terminal</string>
+			<key>PayloadOrganization</key>
+			<string>Microsoft Corporation</string>
+			<key>PayloadIdentifier</key>
+			<string>com.apple.Terminal.98C33AC3-B2A3-45DC-AACF-26EE247C7A33</string>
+			<key>PayloadDisplayName</key>
+			<string>CIS recommended settings for Terminal</string>
+			<key>PayloadDescription</key>
+			<string/>
+			<key>PayloadVersion</key>
+			<integer>1</integer>
+			<key>PayloadEnabled</key>
+			<true/>
+			<key>SecureKeyboardEntry</key>
+			<true/>
+		</dict>
+	</array>
+</dict>
+</plist>

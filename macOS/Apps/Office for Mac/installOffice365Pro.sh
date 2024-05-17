@@ -18,16 +18,17 @@
 ## Feedback: neiljohn@microsoft.com
 
 # User Defined variables
-weburl="https://go.microsoft.com/fwlink/?linkid=2009112"                        # What is the Azure Blob Storage URL?
-#localcopy="http://192.168.68.139/Office/Office365AppsFormacOS.pkg"    # This is your local copy of the OfficeBusinessPro.pkg file. You need to handle this independently, comment out if not required
-appname="Microsoft Office"                                                      # The name of our App deployment script (also used for Octory monitor)
-logandmetadir="/Library/Logs/Microsoft/IntuneScripts/installOffice"             # The location of our logs and last updated data
-terminateprocess="true"                                                         # Do we want to terminate the running process? If false we'll wait until its not running
-autoUpdate="true"                                                               # Application updates itself, if already installed we should exit
+weburl="https://go.microsoft.com/fwlink/?linkid=2009112"                            # What is the Azure Blob Storage URL?
+appname="Microsoft Office"                                                          # The name of our App deployment script (also used for Octory monitor)
+logandmetadir="/Library/Application Support/Microsoft/IntuneScripts/installOffice"  # The location of our logs and last updated data
+terminateprocess="true"                                                             # Do we want to terminate the running process? If false we'll wait until its not running
+autoUpdate="true"                                                                   # Application updates itself, if already installed we should exit
+waitForSplashScreen=true                                                            # Should we hold the script until an onboard splashscreen is running?   
+SplashScreenProcess="Dialog"                                                        # If we do wait for a splash screen, what's the process name? Octory | Dialog
 
 # Generated variables
 tempdir=$(mktemp -d)
-tempfile="$tempdir/$appname.pkg"
+tempfile="$appname.pkg"
 log="$logandmetadir/$appname.log"                                               # The location of the script log file
 metafile="$logandmetadir/$appname.meta"                                         # The location of our meta file (for updates)
 
@@ -282,11 +283,12 @@ function downloadApp () {
     # If local copy is defined, let's try and download it...
     if [ "$localcopy" ]; then
 
-        updateOctory installing
+        #updateSplashScreen installing           # Octory
+        updateSplashScreen wait Downloading     # Swift Dialog
         # Check to see if we can access our local copy of Office
         echo "$(date) | Downloading [$localcopy] to [$tempfile]"
         rm -rf "$tempfile" > /dev/null 2>&1
-        curl -f -s -L -o "$tempfile" "$localcopy"
+        curl -f -s -L -o "$tempdir/$tempfile" "$localcopy"
         if [ $? == 0 ]; then
             echo "$(date) | Local copy of $appname downloaded at $tempfile"
             downloadcomplete="true"
@@ -298,17 +300,16 @@ function downloadApp () {
     # If we failed to download the local copy, or it wasn't defined then try to download from CDN
     if [[ "$downloadcomplete" != "true" ]]; then
 
-        waitForProcess "curl -f"
-        updateOctory installing
+        updateSplashScreen wait Downloading     # Swift Dialog
         rm -rf "$tempfile" > /dev/null 2>&1
         echo "$(date) | Downloading [$weburl] to [$tempfile]"
-        curl -f -s --connect-timeout 60 --retry 10 --retry-delay 30 -L -o "$tempfile" "$weburl"
+        curl -f -s --connect-timeout 60 --retry 10 --retry-delay 30 -L -o "$tempdir/$tempfile" "$weburl"
         if [ $? == 0 ]; then
-            echo "$(date) | Downloaded $weburl to $tempfile"
+            echo "$(date) | Downloaded $weburl to $tempdir/$tempfile"
         else
 
-            echo "$(date) | Failure to download $weburl to $tempfile"
-            updateOctory failed
+            echo "$(date) | Failure to download $weburl to $tempdir/$tempfile"
+            updateSplashScreen fail Download failed     # Swift Dialog
             exit 1
 
         fi
@@ -362,6 +363,7 @@ function updateCheck() {
         # App is installed, if it's updates are handled by MAU we should quietly exit
         if [[ $autoUpdate == "true" ]]; then
             echo "$(date) | [$appname] is already installed and handles updates itself, exiting"
+            updateSplashScreen success Installed         # Swift Dialog
             exit 0;
         fi
 
@@ -377,6 +379,7 @@ function updateCheck() {
                     update="update"
                 else
                     echo "$(date) | No update between previous [$previouslastmodifieddate] and current [$lastmodified]"
+                    updateSplashScreen success Installed         # Swift Dialog
                     echo "$(date) | Exiting, nothing to do"
                     exit 0
                 fi
@@ -419,60 +422,73 @@ function installPKG () {
 
 
     echo "$(date) | Installing [$appname]"
-    updateOctory installing
+    updateSplashScreen wait Installing     # Swift Dialog
 
-    installer -pkg "$tempfile" -target /Applications
+    installer -pkg "$tempdir/$tempfile" -target /Applications
 
     # Checking if the app was installed successfully
     if [ "$?" = "0" ]; then
 
+        # Cleanup
         echo "$(date) | $appname Installed"
         echo "$(date) | Cleaning Up"
         rm -rf "$tempdir"
 
+        # Update metadata in files
         echo "$(date) | Writing last modifieddate $lastmodified to $metafile"
         echo "$lastmodified" > "$metafile"
 
+        # Update Swift Dialog
         echo "$(date) | Application [$appname] succesfully installed"
         fetchLastModifiedDate update
-        updateOctory installed
+        updateSplashScreen success Installed    # Swift Dialog
+
         exit 0
 
     else
 
         echo "$(date) | Failed to install $appname"
         rm -rf "$tempdir"
-        updateOctory failed
+        #updateSplashScreen failed           # Octory
+        updateSplashScreen fail Failed     # Swift Dialog
         exit 1
     fi
 
 }
 
-function updateOctory () {
+function updateSplashScreen () {
 
     #################################################################################################################
     #################################################################################################################
     ##
-    ##  This function is designed to update Octory status (if required)
+    ##  This function is designed to update the Splash Screen status (if required)
     ##
     ##
-    ##  Parameters (updateOctory parameter)
+    ##  Parameters (updateSplashScreen parameter1 parameter2
+    ## 
+    ##  Octory
     ##
-    ##      notInstalled
-    ##      installing
-    ##      installed
+    ##      Param 1 = State
+    ##
+    ##  Swift Dialog
+    ##
+    ##      Param 1 = Status
+    ##      Param 2 = Status Text
     ##
     ###############################################################
     ###############################################################
 
-    # Is Octory present
-    if [[ -a "/Library/Application Support/Octory" ]]; then
 
-        # Octory is installed, but is it running?
-        if [[ $(ps aux | grep -i "Octory" | grep -v grep) ]]; then
-            echo "$(date) | Updating Octory monitor for [$appname] to [$1]"
-            /usr/local/bin/octo-notifier monitor "$appname" --state $1 >/dev/null
-        fi
+    # Is Swift Dialog present
+    if [[ -a "/Library/Application Support/Dialog/Dialog.app/Contents/MacOS/Dialog" ]]; then
+
+
+        echo "$(date) | Updating Swift Dialog monitor for [$appname] to [$1]"
+        echo listitem: title: $appname, status: $1, statustext: $2 >> /var/tmp/dialog.log 
+
+        # Supported status: wait, success, fail, error, pending or progress:xx
+
+
     fi
 
 }

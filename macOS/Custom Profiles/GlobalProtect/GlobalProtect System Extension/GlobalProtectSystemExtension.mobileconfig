@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1">
+<dict>
+	<key>PayloadUUID</key>
+	<string>0D532C66-7A73-426F-BA68-5398DDE05C88</string>
+	<key>PayloadType</key>
+	<string>Configuration</string>
+	<key>PayloadOrganization</key>
+	<string>Palo Alto Networks</string>
+	<key>PayloadIdentifier</key>
+	<string>com.paloaltonetworks.GlobalProtect.client.extension.0D532C66-7A73-426F-BA68-5398DDE05C88</string>
+	<key>PayloadDisplayName</key>
+	<string>GlobalProtect System Extension</string>
+	<key>PayloadDescription</key>
+	<string>Allows GlobalProtect System Extension</string>
+	<key>PayloadVersion</key>
+	<integer>1</integer>
+	<key>PayloadEnabled</key>
+	<true/>
+	<key>PayloadRemovalDisallowed</key>
+	<true/>
+	<key>PayloadScope</key>
+	<string>System</string>
+	<key>PayloadContent</key>
+	<array>
+		<dict>
+			<key>PayloadUUID</key>
+			<string>FB93CC56-60C5-4B14-80DC-FE5878C01DA6</string>
+			<key>PayloadType</key>
+			<string>com.apple.system-extension-policy</string>
+			<key>PayloadOrganization</key>
+			<string></string>
+			<key>PayloadIdentifier</key>
+			<string>com.paloaltonetworks.GlobalProtect.client.extension.FB93CC56-60C5-4B14-80DC-FE5878C01DA6</string>
+			<key>PayloadDisplayName</key>
+			<string>GlobalProtect System Extension</string>
+			<key>PayloadDescription</key>
+			<string/>
+			<key>PayloadVersion</key>
+			<integer>1</integer>
+			<key>PayloadEnabled</key>
+			<true/>
+			<key>AllowUserOverrides</key>
+			<true/>
+			<key>AllowedSystemExtensions</key>
+			<dict>
+				<key>PXPZ95SK77</key>
+				<array>
+					<string>com.paloaltonetworks.GlobalProtect.client.extension</string>
+					<string>com.paloaltonetworks.traps.networkextension</string>
+					<string>com.paloaltonetworks.traps.securityextension</string>
+				</array>
+			</dict>
+		</dict>
+	</array>
+</dict>
+</plist>

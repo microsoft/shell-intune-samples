@@ -1,0 +1,18 @@
+{
+   "Rules":[
+      { 
+         "SettingName":"WSLInstancesComplianceStatus",
+         "Operator":"IsEquals",
+         "DataType":"String",
+         "Operand":"Compliant",
+         "MoreInfoUrl":"https://learn.microsoft.com/en-us/windows/wsl/",
+         "RemediationStrings":[ 
+            { 
+               "Language": "en_US",
+               "Title": "WSL Instance Distros and/or Versions are not in compliance",
+               "Description": "Make sure only allowed distros and versions are registered in WSL"
+            }
+         ]
+      }
+   ]
+}
