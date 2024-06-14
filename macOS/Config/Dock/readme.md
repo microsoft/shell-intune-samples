@@ -9,9 +9,8 @@ This script is an example showing how to use [Intune Shell Scripting](https://do
 This scripts intended usage scenario is to be deployed during the initial app enrolment. It will wait until all of the apps are present before configuring the users dock.
 
 >IMPORTANT
->>This updated script uses [dockutil](https://github.com/kcrawford/dockutil), without this being installed the script will fail. Download the latest version and deploy via [Intune Unmaged PKG](https://learn.microsoft.com/en-us/mem/intune/apps/macos-unmanaged-pkg).
-
->>This updated script no longer runs as the end user, you need to ensure that you deploy it to **run as root**.
+>This updated script uses [dockutil](https://github.com/kcrawford/dockutil), without this being installed the script will fail. Download the latest version and deploy via [Intune Unmaged PKG](https://learn.microsoft.com/en-us/mem/intune/apps/macos-unmanaged-pkg).
+>This updated script no longer runs as the end user, you need to ensure that you deploy it to **run as root**.
 
 The script searches for Apps listed in the DockItems array and once they are all present it adds them to the Dock in the order they appear in the list. Edit the list as appropriate for your use.
 
