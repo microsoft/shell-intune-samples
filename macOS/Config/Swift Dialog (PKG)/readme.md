@@ -1,4 +1,4 @@
-# Deploying an Onboarding Splash Screen with Swift Dialog and Intune via custom PKG
+# Deploying an Onboarding Splash Screen with swiftDialog and Intune via custom PKG
 
 ## Overview
 
