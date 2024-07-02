@@ -1,4 +1,4 @@
-﻿##
+##
 ## Compliance script used to calculate compliance against WSL distros based on Distro and Distro Version
 ##
 
@@ -27,60 +27,67 @@ $compliantDistroValues = [System.Collections.ArrayList]@()
 # Require last check in time to be within a certain number of days e.g.60 days
 $compliantLastCheckInTimeout = 60
 
-# Pull list of user ids from registry
-$userIds = Get-ChildItem -Path 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Intune\WSLManagement' | Select-Object Name
-
-# Put together a list of all the distros across users
-$distroIds = [System.Collections.ArrayList]@()
-foreach ($id in $userIds)
-{
-    $id.Name = $id.Name.Replace('HKEY_LOCAL_MACHINE', 'HKLM:')
-    $usersDistroIds = Get-ChildItem -Path $id.Name | Select-Object Name
-
-    foreach($usersDistroId in $usersDistroIds)
-    {
-        [void]$distroIds.Add($usersDistroId.Name)
-    }
-}
-
-# Create compliant last check in date
-$compliantDate = Get-Date 
-$compliantDate = $compliantDate.AddDays($compliantLastCheckInTimeout * -1).ToUniversalTime()
-
-# Check compliance of all distros 
 $isCompliant = $true
-foreach($distroId in $distroIds) 
-{
-    $name = $distroId.Replace('HKEY_LOCAL_MACHINE', 'HKLM:')
-    $distro = Get-ItemPropertyValue -Path $name -Name Distro
-    $distroVersion = Get-ItemPropertyValue -Path $name -Name Version
-    $lastCheckin = Get-ItemPropertyValue -Path $name -Name LastCheckinTime
+try {
+    # Pull list of user ids from registry
+    $userIds = Get-ChildItem -Path 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Intune\WSLManagement' | Select-Object Name
 
-    # Convert and check last check in time
-    $lastCheckin = Get-Date -Date $lastCheckin
-    if ($lastCheckin -lt $compliantDate)
+    # Put together a list of all the distros across users
+    $distroIds = [System.Collections.ArrayList]@()
+    foreach ($id in $userIds)
     {
-        $isCompliant = $false
-        break
+        $id.Name = $id.Name.Replace('HKEY_LOCAL_MACHINE', 'HKLM:')
+        $usersDistroIds = Get-ChildItem -Path $id.Name | Select-Object Name
+
+        foreach($usersDistroId in $usersDistroIds)
+        {
+            [void]$distroIds.Add($usersDistroId.Name)
+        }
     }
 
-    # Check that disto and version meet compliance requirements
-    $compliantDistro = $compliantDistroValues.where({$_.distro.ToLower() -eq $distro.ToLower()})
-    if ($compliantDistro -ne $null)
+    # Create compliant last check in date
+    $compliantDate = Get-Date 
+    $compliantDate = $compliantDate.AddDays($compliantLastCheckInTimeout * -1).ToUniversalTime()
+
+    # Check compliance of all distros 
+    foreach($distroId in $distroIds) 
     {
-        $min = $compliantDistro.minVersion
-        $max = $compliantDistro.maxVersion
-        if ($distroVersion -lt $min -or $distroVersion -gt $max)
+        $name = $distroId.Replace('HKEY_LOCAL_MACHINE', 'HKLM:')
+        $distro = Get-ItemPropertyValue -Path $name -Name Distro
+        $distroVersion = Get-ItemPropertyValue -Path $name -Name Version
+        $lastCheckin = Get-ItemPropertyValue -Path $name -Name LastCheckinTime
+
+        # Convert and check last check in time
+        $lastCheckin = Get-Date -Date $lastCheckin
+        if ($lastCheckin -lt $compliantDate)
+        {
+            $isCompliant = $false
+            break
+        }
+
+        # Check that disto and version meet compliance requirements
+        $compliantDistro = $compliantDistroValues.where({$_.distro.ToLower() -eq $distro.ToLower()})
+        if ($compliantDistro -ne $null)
+        {
+            $min = $compliantDistro.minVersion
+            $max = $compliantDistro.maxVersion
+            if ($distroVersion -lt $min -or $distroVersion -gt $max)
+            {
+                $isCompliant = $false
+                break
+            }
+        }
+        else
         {
             $isCompliant = $false
             break
         }
     }
-    else
-    {
-        $isCompliant = $false
-        break
-    }
+}
+catch {
+    # Default to compliant if there are any issues reading registry keys
+    $jsonOutput += @{ WSLInstancesComplianceStatus = "Compliant" }
+    return $jsonOutput | ConvertTo-Json -Compress
 }
 
 if ($isCompliant)
