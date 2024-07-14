@@ -1,5 +1,5 @@
 <key>AcknowledgedDataCollectionPolicy</key>
-<string>RequiredAndOptionalData</string>
+<string>RequiredDataOnly</string>
 <key>ChannelName</key>
 <string>Current</string>
 <key>UpdateCache</key>
