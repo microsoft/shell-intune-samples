@@ -4,7 +4,37 @@ Use these scripts to help remediate issues when Intune is missing a Bootstrap To
  
 ## Scenario
  
-There are two scripts provided: `fixBootstrapToken.sh` and `fixBootstrapToken_interactive.sh`.
+There are three scripts provided: `fixBootstrapToken.sh`, `fixBootstrapToken_interactive.sh` and `checkMacBootstrapStatus.sh1`
+
+### checkMacBootstrapStatus.sh1
+
+This is a PowerShell script that helps identify Managed Macs within your environment that have been impacted and require remediation.
+
+To install and start PowerShell on Mac
+1.	Install [PowerShell for Mac](https://github.com/PowerShell/PowerShell/releases)
+2.	From a Mac terminal, type pwsh to start PowerShell
+
+Once you have PowerShell running on either Mac or Windows:
+3.	install-module Microsoft.Graph -Scope CurrentUser
+4.	import-module Microsoft.Graph.Authentication
+5.	import-module Microsoft.Graph.Beta.DeviceManagement
+
+```
+PS /Users/neiljohnson> ./returnEscrowFailures.ps1
+Welcome to Microsoft Graph!
+
+Connected via delegated access using 14d82eec-204b-4c2f-b7e8-296a70dab67e
+Readme: https://aka.ms/graph/sdk/powershell
+SDK Docs: https://aka.ms/graph/sdk/powershell/docs
+API Docs: https://aka.ms/graph/docs
+
+NOTE: You can use the -NoWelcome parameter to suppress this message.
+
+10 userless mac devices
+8 userless mac devices escrowed
+2 userless mac devices missing bootstrap tokens
+exported to notEscrowedMac.csv
+```
 
 ### fixBootStrapToken.sh usage
 
