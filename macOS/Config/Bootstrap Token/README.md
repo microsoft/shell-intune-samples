@@ -20,7 +20,7 @@ Once you have PowerShell running on either Mac or Windows:
 
 
 ```
-PS /Users/neiljohnson> ./returnEscrowFailures.ps1
+PS /Users/neiljohnson> ./checkMacBootstrapStatus.ps1
 Welcome to Microsoft Graph!
 
 Connected via delegated access using 14d82eec-204b-4c2f-b7e8-296a70dab67e
