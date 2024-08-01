@@ -37,7 +37,7 @@ function print_status {
 }
 
 # Check if the boostrap token was ever escrowed. If not, stop early as success.
-if echo "profiles validate -type bootstraptoken" | grep -q "Bootstrap Token escrowed to server: NO"; then
+if echo "profiles status -type bootstraptoken" | grep -q "Bootstrap Token escrowed to server: NO"; then
     exit 0
 fi
 
