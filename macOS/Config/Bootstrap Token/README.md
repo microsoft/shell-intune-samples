@@ -15,9 +15,9 @@ To install and start PowerShell on Mac
 2.	From a Mac terminal, type pwsh to start PowerShell
 
 Once you have PowerShell running on either Mac or Windows:
-3.	install-module Microsoft.Graph -Scope CurrentUser
-4.	import-module Microsoft.Graph.Authentication
-5.	import-module Microsoft.Graph.Beta.DeviceManagement
+3.	install-module Microsoft.Graph.Authentication -Scope CurrentUser
+4.	install-module Microsoft.Graph.Beta.DeviceManagement -Scope CurrentUser
+
 
 ```
 PS /Users/neiljohnson> ./returnEscrowFailures.ps1
