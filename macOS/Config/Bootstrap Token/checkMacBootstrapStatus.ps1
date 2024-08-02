@@ -20,9 +20,9 @@ If($macDevices) {
     }
  
  
-    $escrowedMac=$macDevicesWithNoUser | where-object {$_.bootstrapTokenEscrowed -eq $true}
+    $escrowedMac=$results | where-object {$_.bootstrapTokenEscrowed -eq $true}
     write-host "$($escrowedMac.count) userless mac devices escrowed"
-    $notEscrowedMac=$macDevicesWithNoUser | where-object {$_.bootstrapTokenEscrowed -eq $false}
+    $notEscrowedMac=$results | where-object {$_.bootstrapTokenEscrowed -eq $false}
     write-host "$($notEscrowedMac.count) userless mac devices missing bootstrap tokens"
  
     $notEscrowedMac | export-csv notEscrowedMac.csv -NoTypeInformation
