@@ -6,7 +6,7 @@ Use these scripts to help remediate issues when Intune is missing a Bootstrap To
  
 There are three scripts provided: `fixBootstrapToken.sh`, `fixBootstrapToken_interactive.sh` and `checkMacBootstrapStatus.sh1`
 
-### checkMacBootstrapStatus.sh1
+### checkMacBootstrapStatus.ps1
 
 This is a PowerShell script that helps identify Managed Macs within your environment that have been impacted and require remediation.
 
