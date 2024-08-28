@@ -281,7 +281,7 @@
 					<key>BadgesEnabled</key>
 					<true/>
 					<key>BundleIdentifier</key>
-					<string>com.microsoft.OneDrive</string>
+					<string>com.microsoft.OneDrive-mac</string>
 					<key>CriticalAlertEnabled</key>
 					<false/>
 					<key>NotificationsEnabled</key>
@@ -336,6 +336,24 @@
 					<true/>
 					<key>BundleIdentifier</key>
 					<string>com.microsoft.wdav.tray</string>
+					<key>CriticalAlertEnabled</key>
+					<true/>
+					<key>NotificationsEnabled</key>
+					<true/>
+					<key>ShowInCarPlay</key>
+					<true/>
+					<key>ShowInLockScreen</key>
+					<true/>
+					<key>ShowInNotificationCenter</key>
+					<true/>
+					<key>SoundsEnabled</key>
+					<true/>
+				</dict>
+				<dict>
+					<key>BadgesEnabled</key>
+					<true/>
+					<key>BundleIdentifier</key>
+					<string>com.microsoft.teams2</string>
 					<key>CriticalAlertEnabled</key>
 					<true/>
 					<key>NotificationsEnabled</key>
