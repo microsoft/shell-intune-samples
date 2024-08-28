@@ -6,9 +6,9 @@
 #              The script checks if the log directory has been created and creates it if necessary. 
 #              It also defines several functions for downloading and updating Escrow Buddy, as well as checking if the Escrow Buddy authorizationdb entry is configured. 
 #              The logger function is used to log messages to stdout and a log file.
-# Version: 1.0.0
+# Version: 1.0.2
 # Author: Tobias Almén
-# Date: 2023-06-16
+# Date: 2024-06-14
 
 # Manual version override
 version="" # Only configure this if you want to control the version of Escrow Buddy that is installed, otherwise leave it blank. Example: version="1.0.0"
@@ -32,7 +32,7 @@ latest_version=$(echo "$latest_release" | cut -c 2-)
 # Get FDE status
 FDE_STATUS=$(fdesetup status)
 # Get FDE profile status
-FDE_PROFILE=$(profiles list | grep -e filevault.escrow -e FDERecoveryKeyEscrow)
+FDE_PROFILE="/Library/Managed Preferences/com.apple.security.FDERecoveryKeyEscrow.plist"
 # Path to FileVaultPRK
 PRK="/var/db/FileVaultPRK.dat"
 
@@ -72,7 +72,7 @@ function remediate() {
     #   None
     # Variables:
     #   $FDE_STATUS: The status of FileVault
-    #   $FDE_PROFILE: FDE profile status
+    #   $FDE_PROFILE: FDE profile path
     #   $PRK: The path to the FileVaultPRK
 
     # If FileVault is not enabled, exit
@@ -80,10 +80,10 @@ function remediate() {
         exit 0
     fi
 
-    # If the escrow plist exists, check if the escrow location is set to Intune
-    if [ "$FDE_PROFILE" ]; then
+    # If the escrow plist exists, check for the recovery key file
+    if [ -f "$FDE_PROFILE" ]; then
         # If the key has been escrowed, exit
-        if [ -a "$PRK" ]; then
+        if [ -f "$PRK" ]; then
             logger "INFO" "Key has been escrowed"
         # If the key has not been escrowed, set GenerateNewKey to true
         else
@@ -92,7 +92,7 @@ function remediate() {
         fi
     # If the escrow plist does not exist, do nothing
     else
-        logger "INFO" "No File Vault profile has been applied"
+        logger "INFO" "No FileVault profile has been applied"
     fi
 }
 
