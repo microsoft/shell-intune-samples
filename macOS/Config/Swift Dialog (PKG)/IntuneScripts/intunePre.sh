@@ -18,7 +18,7 @@ exec > >(tee -a "$logDir/preinstall.log") 2>&1
 if [ -e "/Library/Application Support/Dialog" ]; then
     echo "$(date) | PRE | Removing previous installation"
     rm -rf "/Library/Application Support/Dialog"
-    rm -rf "/Library/Application Support/SwiftDialogResourcs"
+    rm -rf "/Library/Application Support/SwiftDialogResources"
     rm -rf "/usr/local/bin/dialog"
 fi
 
