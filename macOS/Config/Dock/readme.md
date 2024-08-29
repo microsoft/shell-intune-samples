@@ -2,6 +2,9 @@
 
 This script is an example showing how to use [Intune Shell Scripting](https://docs.microsoft.com/en-us/mem/intune/apps/macos-shell-scripts) and [Unmanaged PKG](https://learn.microsoft.com/en-us/mem/intune/apps/macos-unmanaged-pkg)to modify the macOS dock.
 
+> **🚨 HUGE THANKS to [Tobias Almen](https://almenscorner.io)! 🚨**  
+> Tobias was absolutely instrumental in getting this to work reliably via the Intune Script agent. Without his help, I’d probably still be banging my head against the wall. Check out his blog [Almen's Intune Corner](https://almenscorner.io)—seriously, he's awesome!
+
 # Script Usage Guide
 
 This script is designed to wait for specific applications to be installed on a Mac before configuring the Mac Dock with those applications. The script includes options to use either `dockutil` or direct manipulation of the Dock's plist file for configuring the Dock. Below is a detailed guide on how to use the script and explanations of the available options.
@@ -64,6 +67,8 @@ This script modifies the Mac Dock by adding a predefined list of applications, a
    ```bash
    useDockUtil=true
    waitForApps=true
+
+# Deployment
 
 ## Deployment as required script
 
