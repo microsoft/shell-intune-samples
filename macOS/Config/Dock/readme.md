@@ -71,3 +71,8 @@ If you don't want to configure the Dock initially, you can make it available via
 
 1. **Upload dock.pkg to Intune**: This is a totally empty PKG that creates a receipt name of com.intune.dock. Documentation to do this is at [Intune Unmanaged PKG](https://learn.microsoft.com/en-us/mem/intune/apps/macos-unmanaged-pkg). When you assign the package, ensure that you do it as **available**.
 2. **Paste dock5.sh contents as Post Install Script**: For this flow, ensure that **waitForApps** is set to false.
+
+<video width="600" controls>
+  <source src="https://github.com/microsoft/shell-intune-samples/blob/master/macOS/Config/Dock/Config%20Dock%20via%20Company%20Portal.mp4" type="video/mp4">
+  Your browser does not support the video tag.
+</video>
