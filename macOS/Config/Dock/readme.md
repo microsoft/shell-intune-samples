@@ -65,6 +65,13 @@ This script modifies the Mac Dock by adding a predefined list of applications, a
    useDockUtil=true
    waitForApps=true
 
+## Deployment as required script
+
+If you want to configure the Dock automatically, you can deploy `dock5.sh` via a required shell script. Deploying via [Intune Shell Scripting](https://docs.microsoft.com/en-us/mem/intune/apps/macos-shell-scripts) allows you to assign the script to specific users or groups.
+
+1. **Upload dock5.sh to Intune**: Follow the instructions for [Intune Shell Scripting](https://docs.microsoft.com/en-us/mem/intune/apps/macos-shell-scripts). For this scenario, you should probably ensure that **waitForApps** is set to true so that the script waits for app installation to complete.
+2. **Client Side Logs**: Once assigned, the script will run at next check-in and write to the log file located at `/Library/Logs/Microsoft/IntuneScripts/addAppstoDock/addAppstoDock.log`.
+
 ## Deployment as Self Service via Company Portal
 
 If you don't want to configure the Dock initially, you can make it available via Company Portal. To do this we need to make use of [Intune Unmanaged PKG](https://learn.microsoft.com/en-us/mem/intune/apps/macos-unmanaged-pkg) and [Intune PKG Post Install Script](https://learn.microsoft.com/en-us/mem/intune/apps/macos-unmanaged-pkg#step-2--program).
@@ -74,8 +81,4 @@ If you don't want to configure the Dock initially, you can make it available via
 
 https://github.com/user-attachments/assets/c565611d-a798-4b64-847f-04f69955b04d
 
-## Deployment as required script
 
-If you do want to configure the Dock automatically, you can deploy `dock5.sh` via a required shell script. Deploying via [Intune Shell Scripting](https://docs.microsoft.com/en-us/mem/intune/apps/macos-shell-scripts) allows you to assign the script to specific users or groups. 
-
-1. **Upload dock5.sh to Intune**: Follow the instructions for [Intune Shell Scripting](https://docs.microsoft.com/en-us/mem/intune/apps/macos-shell-scripts). For this scenario, you should probably ensure that **waitForApps** is set to true so that the script waits for app installation to complete.
