@@ -34,7 +34,7 @@ uid=$(id -u "${currentUser}")
 userHome=$(dscl . -read /users/${currentUser} NFSHomeDirectory | cut -d " " -f 2)
 
 # Logging folder and files
-logFolder="${userHome}/Desktop"
+logFolder="/Library/Logs/Microsoft/IntuneScripts/addAppstoDock"
 log=${logFolder}/addAppstoDock.log
 mkdir -p "$logFolder"
 exec &> >(tee -a "$log")
