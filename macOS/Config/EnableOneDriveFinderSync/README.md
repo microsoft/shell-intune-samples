@@ -20,7 +20,7 @@ The extension ID of the OneDrive client is different for the standalone version 
 
 ## Log File
 
-The log file will output to **$HOME/Library/Logs/Microsoft/IntuneScripts/EnableOneDriveFinderSync.log** by default. Exit status is either 0 or 1. To gather this log with Intune remotely take a look at [Troubleshoot macOS shell script policies using log collection](https://docs.microsoft.com/en-us/mem/intune/apps/macos-shell-scripts#troubleshoot-macos-shell-script-policies-using-log-collection).
+The log file will output to **~/Library/Logs/Microsoft/IntuneScripts/EnableOneDriveFinderSync/EnableOneDriveFinderSync.log** by default. Exit status is either 0 or 1. To gather this log with Intune remotely take a look at [Troubleshoot macOS shell script policies using log collection](https://docs.microsoft.com/en-us/mem/intune/apps/macos-shell-scripts#troubleshoot-macos-shell-script-policies-using-log-collection).
 ```
 ##############################################################
 # Fri Jan  8 14:21:01 AEST 2021 | Starting config of EnableOneDriveFinderSync
