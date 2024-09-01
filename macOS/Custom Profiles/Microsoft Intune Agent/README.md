@@ -1,4 +1,4 @@
-# Microsoft Intune Agent - System Events Access"
+# Microsoft Intune Agent - System Events Access
 This Custom Profile allows System Events Access for Microsoft Intune Agent that is needed for script deployments (e.g AppleScript) so users is not getting confusing prompts regarding to allowing system events access when deploying scripts via Intune.
 
 ## Configuration settings for Intune
