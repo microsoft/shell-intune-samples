@@ -5,7 +5,7 @@ This Custom Script is required when implementing following CIS or NIST Recommend
 
 ## Script Settings
 
-- Run script as signed-in user : Yes
+- Run script as signed-in user : No
 - Hide script notifications on devices : Yes
 - Script frequency : Not configured
 - Number of times to retry if script fails : 3
