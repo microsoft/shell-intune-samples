@@ -18,7 +18,7 @@
 
 # Define variables
 appname="DisableBluetoothSharing"
-logandmetadir="/Library/Logs/Microsoft/IntuneScripts/$appname"
+logandmetadir="$HOME/Library/Logs/Microsoft/IntuneScripts/$appname"
 log="$logandmetadir/$appname.log"
 
 # Check if the log directory has been created
