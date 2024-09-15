@@ -39,7 +39,7 @@ echo "$(date) | Checking if creation of '.DS_Store' -files have been disabled on
 if [[ "$statusnetworkshares" == "0" ]]; then
     echo  "$(date) | Creation of '.DS_Store' -files have been enabled on network shares for user $USER. Disabling it..."
     defaults write com.apple.desktopservices DSDontWriteNetworkStores -bool TRUE
-    echo  "$(date) | Creation of '.DS_Store' -files have been disabled on network shares for user $USER. Let's continue..."
+    echo  "$(date) | Creation of '.DS_Store' -files have been disabled on network shares for user $USER. Any changes made will take effect the next time you log in to your Mac-device. Let's continue..."
 else
     echo "$(date) | Creation of '.DS_Store' -files have been already disabled on network shares for user $USER. Let's continue..."
 fi
@@ -54,7 +54,7 @@ if [[ "$statusremovabledrives" == "0" ]]; then
     echo  "$(date) | Creation of '.DS_Store' -files have been disabled on removable drives for user $USER. All done! Any changes made will take effect the next time you log in to your Mac-device. Closing script..."
     exit 0
 else
-    echo "$(date) | Creation of '.DS_Store' -files have been already disabled on removable drives for user $USER. All done! Any changes made will take effect the next time you log in to your Mac-device. Closing script..."
+    echo "$(date) | Creation of '.DS_Store' -files have been already disabled on removable drives for user $USER. All done! Closing script..."
     exit 0
 fi
 }
