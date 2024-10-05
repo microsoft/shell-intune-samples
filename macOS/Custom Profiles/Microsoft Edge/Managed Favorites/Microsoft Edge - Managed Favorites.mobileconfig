@@ -13,7 +13,7 @@
     <key>PayloadDisplayName</key>
     <string>Microsoft Edge - Managed Favorites</string>
     <key>PayloadDescription</key>
-    <string>Installs managed gfavorites to Microsoft Edge</string>
+    <string>Installs managed favorites to Microsoft Edge</string>
     <key>PayloadVersion</key>
     <integer>1</integer>
     <key>PayloadEnabled</key>
