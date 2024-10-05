@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>PayloadUUID</key>
+    <string>3D6DD62C-0827-4009-A816-F5E29DB535EB</string>
+    <key>PayloadType</key>
+    <string>Configuration</string>
+    <key>PayloadOrganization</key>
+    <string>Microsoft Corporation</string>
+    <key>PayloadIdentifier</key>
+    <string>A8B2F881-D7F9-42C5-BAFF-81E6B834824C</string>
+    <key>PayloadDisplayName</key>
+    <string>Microsoft 365 Apps - Enable All Macros</string>
+    <key>PayloadDescription</key>
+    <string>Allows all macros for Microsoft 365 Apps due to valid business justification</string>
+    <key>PayloadVersion</key>
+    <integer>1</integer>
+    <key>PayloadEnabled</key>
+    <true/>
+    <key>PayloadRemovalDisallowed</key>
+    <true/>
+    <key>PayloadScope</key>
+    <string>System</string>
+    <key>PayloadContent</key>
+    <array>
+		<dict>
+			<key>PayloadUUID</key>
+			<string>156E6FD2-0B7F-4440-ACAA-5B8F46C0B9AF</string>
+			<key>PayloadType</key>
+			<string>com.microsoft.office</string>
+			<key>PayloadOrganization</key>
+			<string>Microsoft Corporation</string>
+			<key>PayloadIdentifier</key>
+			<string>com.microsoft.office.E743DBBB-51DE-47FD-8E71-6A06D4A76F63</string>
+			<key>PayloadDisplayName</key>
+			<string>Enable all macros</string>
+			<key>PayloadDescription</key>
+			<string/>
+			<key>PayloadVersion</key>
+			<integer>1</integer>
+			<key>PayloadEnabled</key>
+			<true/>
+			<key>VisualBasicMacroExecutionState</key>
+			<string>EnabledWithoutWarnings</string>
+		</dict>
+	  </array>
+</dict>
+</plist>

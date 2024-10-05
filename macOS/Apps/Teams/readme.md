@@ -1,23 +1,21 @@
-# Microsoft Teams Installation Script
+# Microsoft Teams
 
-This script is an example to show how to use [Intune Shell Scripting](https://docs.microsoft.com/en-us/mem/intune/apps/macos-shell-scripts) to install applications. In this case the script will download the Teams pkg file from the Microsoft download servers and then install it onto the Mac.
+Here are some example scripts showing how to use [Intune Shell Scripting](https://docs.microsoft.com/en-us/mem/intune/apps/macos-shell-scripts) to install or uninstall an application. In this folder, we provide some scripts for Citrix Workspace.
 
-There are two versions of the Teams Clients and you'll find a sample script for each.
+## Install Microsoft Teams (installTeamsClassic.zsh, installTeamsV2.zsh)
 
-- Microsoft Teams Classic
-- Microsoft Teams (for work and scool)
+These scripts installs Microsoft Teams. There are two versions of the Teams Clients and you'll find a sample script for each.
+
+- Microsoft Teams classic
+- Microsoft Teams
 
 More information about [The new Microsoft Teams desktop client](https://learn.microsoft.com/en-us/microsoftteams/new-teams-desktop-admin).
 
-## Audio Driver
+### Audio Driver for Microsoft Teams classic
 
-To share system audio in a teams call, you also need to install the Teams Audio Driver. This is included with the standard package but on older packages didn't used to be installed since it interrupted any audio that was playing. Both of the sample packages shared here will force the Audio Driver to automatically install to prevent standard desktop users not being able to install it later.
+To share system audio in a teams classic call, you also need to install the Teams Audio Driver. This is included with the standard package but on older packages didn't used to be installed since it interrupted any audio that was playing. Both of the sample packages shared here will force the Audio Driver to automatically install to prevent standard desktop users not being able to install it later.
 
-## Scenario
-
-This script is intended for customers who need to deploy Teams via the Intune Scripting Agent.
-
-## Quick Run
+### Quick Run
 
 Classic
 ```
@@ -30,14 +28,14 @@ sudo /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/microsoft/shel
 ```
 
 
-## Script Settings
+### Script Settings (installTeamsClassic.zsh, installTeamsV2.zsh)
 
 - Run script as signed-in user : No
 - Hide script notifications on devices : Not configured
 - Script frequency : Not configured
 - Number of times to retry if script fails : 3
 
-## Log File
+### Log File (installTeamsClassic.zsh, installTeamsV2.zsh)
 
 The log file will output to ***/Library/Logs/Microsoft/IntuneScripts/Microsoft Teams*** by default. Exit status is either 0 or 1. To gather this log with Intune remotely take a look at  [Troubleshoot macOS shell script policies using log collection](https://docs.microsoft.com/en-us/mem/intune/apps/macos-shell-scripts#troubleshoot-macos-shell-script-policies-using-log-collection)
 
@@ -73,4 +71,34 @@ Fri 10 Nov 2023 05:12:12 PST | Microsoft Teams Installed
 Fri 10 Nov 2023 05:12:12 PST | Cleaning Up
 Fri 10 Nov 2023 05:12:12 PST | Application [Microsoft Teams] succesfully installed
 Fri 10 Nov 2023 05:12:12 PST | Writing last modifieddate [Wed, 08 Nov 2023 16:08:39 GMT] to [/Library/Logs/Microsoft/IntuneScripts/Microsoft Teams/Microsoft Teams.meta]
+```
+ 
+## Uninstall Microsoft Teams classic (uninstallTeamsClassic.zsh)
+
+This script uninstalls Microsoft Teams classic.
+
+### Quick Run
+
+```
+sudo /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/microsoft/shell-intune-samples/master/macOS/Apps/Teams/uninstallTeamsClassic.zsh)"
+```
+
+### Script Settings (uninstallTeamsClassic.zsh)
+
+- Run script as signed-in user : No
+- Hide script notifications on devices : Yes
+- Script frequency : Not configured (**Note:** If users have and uses admin rights on their day-to-day tasks, you should consider to run this more frequently such as "Every 1 day")
+- Number of times to retry if script fails : 3
+
+### Log File (uninstallMicrosoftTeamsClassic.zsh)
+
+The log file will output to ***/Library/Logs/Microsoft/IntuneScripts/UninstallMicrosoftTeamsClassic/UninstallMicrosoftTeamsClassic.log*** by default. Exit status is either 0 or 1. To gather this log with Intune remotely take a look at  [Troubleshoot macOS shell script policies using log collection](https://docs.microsoft.com/en-us/mem/intune/apps/macos-shell-scripts#troubleshoot-macos-shell-script-policies-using-log-collection)
+
+```
+##############################################################
+# Sun Sep  1 17:58:17 EEST 2024 | Starting running of script UninstallMicrosoftTeamsClassic
+############################################################
+
+Sun Sep  1 17:58:17 EEST 2024 | Uninstalling Microsoft Teams classic...
+Sun Sep  1 17:58:19 EEST 2024 | Microsoft Teams classic has been uninstalled. Closing script...
 ```

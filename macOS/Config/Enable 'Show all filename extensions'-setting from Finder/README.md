@@ -12,7 +12,7 @@ This Custom Script is required when implementing following CIS or NIST Recommend
 
 ## Log File
 
-The log file will output to ***/Library/Logs/Microsoft/IntuneScripts/ShowAllFilenameExtensions.log*** by default. Exit status is either 0 or 1. To gather this log with Intune remotely take a look at  [Troubleshoot macOS shell script policies using log collection](https://docs.microsoft.com/en-us/mem/intune/apps/macos-shell-scripts#troubleshoot-macos-shell-script-policies-using-log-collection)
+The log file will output to ***~/Library/Logs/Microsoft/IntuneScripts/ShowAllFilenameExtensions/ShowAllFilenameExtensions.log*** by default. Exit status is either 0 or 1. To gather this log with Intune remotely take a look at  [Troubleshoot macOS shell script policies using log collection](https://docs.microsoft.com/en-us/mem/intune/apps/macos-shell-scripts#troubleshoot-macos-shell-script-policies-using-log-collection)
 
 **Note:** Please notice that on actual log, variable *$USER* is replaced with actual username of the user where script will be run.
 

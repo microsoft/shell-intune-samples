@@ -1,12 +1,13 @@
-#!/bin/zsh
+#!/bin/bash
 #set -x
+
 ############################################################################################
 ##
-## Script to disable Bluetooth Sharing
+## Extension Attribute script to return the version of an installed App
 ##
 ############################################################################################
 
-## Copyright (c) 2023 Microsoft Corp. All rights reserved.
+## Copyright (c) 2024 Microsoft Corp. All rights reserved.
 ## Scripts are not supported under any Microsoft standard support program or service. The scripts are provided AS IS without warranty of any kind.
 ## Microsoft disclaims all implied warranties including, without limitation, any implied warranties of merchantability or of fitness for a
 ## particular purpose. The entire risk arising out of the use or performance of the scripts and documentation remains with you. In no event shall
@@ -16,36 +17,18 @@
 ## of such damages.
 ## Feedback: neiljohn@microsoft.com
 
-# Define variables
-appname="DisableBluetoothSharing"
-logandmetadir="$HOME/Library/Logs/Microsoft/IntuneScripts/$appname"
-log="$logandmetadir/$appname.log"
+# User Defined variables
+app="Figma.app"
 
-# Check if the log directory has been created
-if [ -d $logandmetadir ]; then
-    # Already created
-    echo "$(date) | Log directory already exists - $logandmetadir"
+
+# Fixed Variables
+attribute="CFBundleShortVersionString"
+InfoPlistPath="/Applications/$app/Contents/Info.plist"
+
+# Attempt to read CFBundleStringShortVersionString and return it
+if [[ -f "$InfoPlistPath" ]]; then
+ver=$(plutil -p "$InfoPlistPath" | grep "$attribute" | awk -F'"' '{ print $4 }')
+    echo $ver
 else
-    # Creating Metadirectory
-    echo "$(date) | creating log directory - $logandmetadir"
-    mkdir -p $logandmetadir
+    echo "Not installed"
 fi
-
-# Disables Bluetooth Sharing
-DisableBluetoothSharing() {
-/usr/bin/defaults -currentHost write com.apple.Bluetooth PrefKeyServicesEnabled -bool false
-echo "$(date) | Bluetooth Sharing is disabled or already disabled from user $USER. Closing script..."
-}
-
-# Start logging
-exec &> >(tee -a "$log")
-
-# Begin Script Body
-echo ""
-echo "##############################################################"
-echo "# $(date) | Starting running of script $appname"
-echo "############################################################"
-echo ""
-
-# Run function
-DisableBluetoothSharing

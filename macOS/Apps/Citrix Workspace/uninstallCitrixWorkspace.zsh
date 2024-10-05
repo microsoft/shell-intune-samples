@@ -2,11 +2,11 @@
 #set -x
 ############################################################################################
 ##
-## Script to ensure "Show all filename extensions" -setting is enabled
+## Script to uninstall Citrix Workspace
 ##
 ############################################################################################
 
-## Copyright (c) 2023 Microsoft Corp. All rights reserved.
+## Copyright (c) 2024 Microsoft Corp. All rights reserved.
 ## Scripts are not supported under any Microsoft standard support program or service. The scripts are provided AS IS without warranty of any kind.
 ## Microsoft disclaims all implied warranties including, without limitation, any implied warranties of merchantability or of fitness for a
 ## particular purpose. The entire risk arising out of the use or performance of the scripts and documentation remains with you. In no event shall
@@ -17,9 +17,12 @@
 ## Feedback: neiljohn@microsoft.com
 
 # Define variables
-appname="ShowAllFilenameExtensions"
-logandmetadir="$HOME/Library/Logs/Microsoft/IntuneScripts/$appname"
-log="$logandmetadir/$appname.log"
+appname="UninstallCitrixWorkspace"                                                                                                     # The name of our uninstallation script
+logandmetadir="/Library/Logs/Microsoft/IntuneScripts/$appname"                                                                         # The location of our logs and last updated data 
+uninstall="/Library/Application Support/Citrix Receiver/Uninstall Citrix Workspace.app/Contents/MacOS/Uninstall Citrix Workspace"      # Location of the executable file that uninstalls Citrix Workspace
+uninstallationdir="/Library/Application Support/Citrix Receiver"                                                                       # Uninstallation directory of the Citrix Workspace
+app="/Applications/Citrix Workspace.app"                                                                                               # Location of Citrix Workspace
+log="$logandmetadir/$appname.log"                                                                                                      # The location of the script log file
 
 # Check if the log directory has been created
 if [ -d $logandmetadir ]; then
@@ -31,10 +34,21 @@ else
     mkdir -p $logandmetadir
 fi
 
-# Enables "Show all filename extensions" -setting from Finder from current user
-ShowAllFilenameExtensions() {
-defaults write NSGlobalDomain "AppleShowAllExtensions" -bool "true" && killall Finder
-echo "$(date) | 'Show all filename extensions' -setting is now enabled or it is already enabled from Finder for user $USER. Closing script..."
+# Uninstall Citrix Workspace
+UninstallCitrixWorkspace() {
+echo "$(date) | Uninstalling Citrix Workspace..."
+$uninstall --nogui
+sleep 60
+rm -rf $uninstallationdir
+sleep 2
+echo "$(date) | Citrix Workspace has been uninstalled. Closing script..."
+exit 0
+}
+
+# Inform if there is no Citrix Workspace installations
+NoCitrixWorkspaceInstallations() {
+echo "$(date) | There is no Citrix Workspace installation on this device. Closing script..."
+exit 0
 }
 
 # Start logging
@@ -48,4 +62,7 @@ echo "############################################################"
 echo ""
 
 # Run function
-ShowAllFilenameExtensions
+if test -d $app
+    then UninstallCitrixWorkspace
+else NoCitrixWorkspaceInstallations
+fi
