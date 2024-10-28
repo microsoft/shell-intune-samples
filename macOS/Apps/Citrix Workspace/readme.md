@@ -1,22 +1,20 @@
-# Citrix Desktop for Mac Installation Script
+# Citrix Workspace
+Here are some example scripts showing how to use [Intune Shell Scripting](https://docs.microsoft.com/en-us/mem/intune/apps/macos-shell-scripts) to install or uninstall an application. In this folder, we provide some scripts for Citrix Workspace.
 
-This script is an example showing how to use [Intune Shell Scripting](https://docs.microsoft.com/en-us/mem/intune/apps/macos-shell-scripts) to install an application. In this instance the script downloads the Citrix Desktop files, uncompresses them and installs into the /Applications directory.
+## Install Citrix Workspace (installCitrixWorkspace.sh)
 
-## Scenario
-
-This scripts intended usage scenario is to deploy the gitHub Desktop app to Mac devices that need to use it.
-
-
-## Script Settings
+This script installs Citrix Workspace.
+ 
+### Script Settings (installCitrixWorkspace.sh)
 
 - Run script as signed-in user : No
 - Hide script notifications on devices : Not configured
 - Script frequency : Not configured
 - Number of times to retry if script fails : 3
 
-## Log File
+### Log File (installCitrixWorkspace.sh)
 
-The log file will output to **/Library/Logs/Microsoft/IntuneScripts/installGitHubDesktop/GitHub Desktop.log** by default. Exit status is either 0 or 1. To gather this log with Intune remotely take a look at [Troubleshoot macOS shell script policies using log collection](https://docs.microsoft.com/en-us/mem/intune/apps/macos-shell-scripts#troubleshoot-macos-shell-script-policies-using-log-collection).
+The log file will output to **/Library/Logs/Microsoft/IntuneScripts/Citrix Workspace/Citrix Workspace.log** by default. Exit status is either 0 or 1. To gather this log with Intune remotely take a look at [Troubleshoot macOS shell script policies using log collection](https://docs.microsoft.com/en-us/mem/intune/apps/macos-shell-scripts#troubleshoot-macos-shell-script-policies-using-log-collection).
 
 ```
 ##############################################################
@@ -46,4 +44,28 @@ Mon 28 Feb 2022 15:10:41 GMT | No instances of [/Applications/Citrix Workspace.a
 Mon 28 Feb 2022 15:10:41 GMT | Installing [Citrix Workspace]
 Mon 28 Feb 2022 15:10:41 GMT | Mounting Image
 Mon 28 Feb 2022 15:10:41 GMT | Starting installer for [/var/folders/zz/zyxvpxvq6csfxvn_n0000000000000/T/tmp.ig7jobi1/Citrix Workspace/Install Citrix Workspace.pkg]
+```
+
+## Uninstall Citrix Workspace (uninstallCitrixWorkspace.zsh)
+
+This script uninstalls Citrix Workspace.
+ 
+### Script Settings (uninstallCitrixWorkspace.zsh)
+
+- Run script as signed-in user : No
+- Hide script notifications on devices : Yes
+- Script frequency : Not configured (**Note:** If users have and uses admin rights on their day-to-day tasks, you should consider to run this more frequently such as "Every 1 day")
+- Number of times to retry if script fails : 3
+
+### Log File (uninstallCitrixWorkspace.zsh)
+
+The log file will output to **/Library/Logs/Microsoft/IntuneScripts/UninstallCitrixWorkspace/UninstallCitrixWorkspace.log** by default. Exit status is either 0 or 1. To gather this log with Intune remotely take a look at [Troubleshoot macOS shell script policies using log collection](https://docs.microsoft.com/en-us/mem/intune/apps/macos-shell-scripts#troubleshoot-macos-shell-script-policies-using-log-collection).
+
+```
+##############################################################
+# Sun Sep  1 17:32:57 EEST 2024 | Starting running of script UninstallCitrixWorkspace
+############################################################
+
+Sun Sep  1 17:32:57 EEST 2024 | Uninstalling Citrix Workspace...
+Sun Sep  1 17:34:04 EEST 2024 | Citrix Workspace has been uninstalled. Closing script...
 ```

@@ -2,11 +2,11 @@
 #set -x
 ############################################################################################
 ##
-## Script to ensure "Show all filename extensions" -setting is enabled
+## Script to uninstall Microsoft Teams classic
 ##
 ############################################################################################
 
-## Copyright (c) 2023 Microsoft Corp. All rights reserved.
+## Copyright (c) 2024 Microsoft Corp. All rights reserved.
 ## Scripts are not supported under any Microsoft standard support program or service. The scripts are provided AS IS without warranty of any kind.
 ## Microsoft disclaims all implied warranties including, without limitation, any implied warranties of merchantability or of fitness for a
 ## particular purpose. The entire risk arising out of the use or performance of the scripts and documentation remains with you. In no event shall
@@ -17,9 +17,10 @@
 ## Feedback: neiljohn@microsoft.com
 
 # Define variables
-appname="ShowAllFilenameExtensions"
-logandmetadir="$HOME/Library/Logs/Microsoft/IntuneScripts/$appname"
-log="$logandmetadir/$appname.log"
+appname="UninstallMicrosoftTeamsClassic"                                    # The name of our uninstallation script
+logandmetadir="/Library/Logs/Microsoft/IntuneScripts/$appname"              # The location of our logs and last updated data
+app="/Applications/Microsoft Teams classic.app"                             # Location of Microsoft Teams classic
+log="$logandmetadir/$appname.log"                                           # The location of the script log file
 
 # Check if the log directory has been created
 if [ -d $logandmetadir ]; then
@@ -31,10 +32,19 @@ else
     mkdir -p $logandmetadir
 fi
 
-# Enables "Show all filename extensions" -setting from Finder from current user
-ShowAllFilenameExtensions() {
-defaults write NSGlobalDomain "AppleShowAllExtensions" -bool "true" && killall Finder
-echo "$(date) | 'Show all filename extensions' -setting is now enabled or it is already enabled from Finder for user $USER. Closing script..."
+# Uninstall Microsoft Teams classic
+UninstallMicrosoftTeamsClassic() {
+echo "$(date) | Uninstalling Microsoft Teams classic..."
+rm -rf $app
+sleep 2
+echo "$(date) | Microsoft Teams classic has been uninstalled. Closing script..."
+exit 0
+}
+
+# Inform if there is no Microsoft Teams classic installation
+NoMicrosoftTeamsClassicInstallations() {
+echo "$(date) | There is no Microsoft Teams classic installation on this device. Closing script..."
+exit 0
 }
 
 # Start logging
@@ -48,4 +58,7 @@ echo "############################################################"
 echo ""
 
 # Run function
-ShowAllFilenameExtensions
+if test -d $app
+    then UninstallMicrosoftTeamsClassic
+else NoMicrosoftTeamsClassicInstallations
+fi
