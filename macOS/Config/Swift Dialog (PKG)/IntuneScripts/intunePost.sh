@@ -10,21 +10,39 @@
 
 # Define any variables we need here:
 logDir="/Library/Application Support/Microsoft/IntuneScripts/Swift Dialog"
+DIALOG_BIN="/usr/local/bin/dialog"
+PKG_PATH="/var/tmp/dialog-2.5.2-4777.pkg"
 
 # Start Logging
 mkdir -p "$logDir"
 exec > >(tee -a "$logDir/postinstall.log") 2>&1
 
 # Check if we've run before
-if [[ -f "$logDir/onboardingComplete" ]]; then
-  echo "$(date) | POST | We've already completed onboarding, let's exit quietly"
-  exit 1
-fi
+#if [[ -f "$logDir/onboardingComplete" ]]; then
+#  echo "$(date) | POST | We've already completed onboarding, let's exit quietly"
+#  exit 1
+#fi
 
-# Check that SwiftDialog is installed
-if [[ ! -f "/usr/local/bin/dialog" ]]; then
-  echo "$(date) | POST | Swift Dialog is not installed [/usr/local/bin/dialog]. Exiting"
-  exit 0
+# Check if SwiftDialog is installed
+if [[ ! -f "$DIALOG_BIN" ]]; then
+  echo "$(date) | POST | Swift Dialog is not installed [$DIALOG_BIN]. Installing now..."
+
+  # Install SwiftDialog from the .pkg file
+  if [[ -f "$PKG_PATH" ]]; then
+    sudo installer -pkg "$PKG_PATH" -target /
+    
+    if [[ $? -eq 0 ]]; then
+      echo "$(date) | POST | Swift Dialog has been installed successfully."
+    else
+      echo "$(date) | ERROR | Swift Dialog installation failed."
+      exit 1
+    fi
+  else
+    echo "$(date) | ERROR | Package file not found at $PKG_PATH. Exiting."
+    exit 1
+  fi
+else
+  echo "$(date) | POST | Swift Dialog is already installed."
 fi
 
 # Wait for Desktop

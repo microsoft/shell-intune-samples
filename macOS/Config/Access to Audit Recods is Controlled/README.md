@@ -1,4 +1,4 @@
-# Access to Audit Recods is Controlled
+# Access to Audit Records is Controlled
 This Custom Script is required when implementing following CIS or NIST Recommendations for macOS: 
 - **CIS**: Ensure Access to Audit Records Is Controlled (Automated)
 - **NIST**: 
