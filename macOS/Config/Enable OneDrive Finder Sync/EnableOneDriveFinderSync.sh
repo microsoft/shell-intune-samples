@@ -1,18 +1,12 @@
 #!/bin/bash
 #set -x
-
 ############################################################################################
 ##
 ## Script to enable the Finder Extension for OneDrive
 ##
 ############################################################################################
-#
-# NOTE
-# Script must run in user credentials
-#
-############################################################################################
 
-## Copyright (c) 2020 Microsoft Corp. All rights reserved.
+## Copyright (c) 2024 Microsoft Corp. All rights reserved.
 ## Scripts are not supported under any Microsoft standard support program or service. The scripts are provided AS IS without warranty of any kind.
 ## Microsoft disclaims all implied warranties including, without limitation, any implied warranties of merchantability or of fitness for a
 ## particular purpose. The entire risk arising out of the use or performance of the scripts and documentation remains with you. In no event shall
@@ -20,40 +14,43 @@
 ## (including, without limitation, damages for loss of business profits, business interruption, loss of business information, or other pecuniary
 ## loss) arising out of the use of or inability to use the sample scripts or documentation, even if Microsoft has been advised of the possibility
 ## of such damages.
-## Feedback: scbree@microsoft.com
+## Feedback: neiljohn@microsoft.com
 
-Application="/Applications/OneDrive.app"
-logandmetadir="/tmp/EnableOneDriveFinderSync"
-log="$logandmetadir/Script-EnableOneDriveFinderSync.log"
+appname="EnableOneDriveFinderSync"
+logandmetadir="$HOME/Library/Logs/Microsoft/IntuneScripts/$appname"
+log="$logandmetadir/$appname.log"
+application="/Applications/OneDrive.app"
 
 
-## Check if the log directory has been created
+# Check if the log directory has been created
 if [ -d $logandmetadir ]; then
-    ## Already created
-    echo "# $(date) | Log directory already exists - $logandmetadir"
+    # Already created
+    echo "$(date) | Log directory already exists - $logandmetadir"
 else
-    ## Creating Metadirectory
-    echo "# $(date) | creating log directory - $logandmetadir"
+    # Creating Metadirectory
+    echo "$(date) | creating log directory - $logandmetadir"
     mkdir -p $logandmetadir
 fi
 
 
-exec 1>> $log 2>&1
+# Start logging
+exec &> >(tee -a "$log")
 
+# Begin Script Body
 echo ""
 echo "##############################################################"
-echo "# $(date) | Starting config of $Application"
+echo "# $(date) | Starting running of script $appname"
 echo "############################################################"
 echo ""
 
 echo "$(date) | OneDrive config: Looking for required applications... "
 
-#wait for OneDrive to be installed
+# Wait for OneDrive to be installed
 while [[ $ready -ne 1 ]];do
 
-    if [[ -a "$Application" ]]; then
+    if [[ -a "$application" ]]; then
         ready=1
-        echo "$(date) | $Application found!"
+        echo "$(date) | $application found!"
     else
         echo "$(date) | OneDrive config: $i not installed yet"  
         echo "$(date) | OneDrive config: Waiting for 60 seconds" 
@@ -62,27 +59,27 @@ while [[ $ready -ne 1 ]];do
 
 done
 
-## Get Extension Name (differs between standalone and VPP version)
+# Get Extension Name (differs between standalone and VPP version)
 echo "$(date) | Finding installed OneDrive type (VPP or standalone)" 
 if pluginkit -m | grep "com.microsoft.OneDrive-mac.FinderSync"; then
     echo "$(date) | OneDrive installed via VPP. Extension name is com.microsoft.OneDrive-mac.FinderSync" 
-    ExtensionName="com.microsoft.OneDrive-mac.FinderSync"
+    extensionname="com.microsoft.OneDrive-mac.FinderSync"
 fi
 
 if pluginkit -m | grep "com.microsoft.OneDrive.FinderSync"; then
     echo "$(date) | OneDrive installed standalone. Extension name is com.microsoft.OneDrive.FinderSync" 
-    ExtensionName="com.microsoft.OneDrive.FinderSync"
+    extensionname="com.microsoft.OneDrive.FinderSync"
 fi
 
-## check if the extension is already enabled and enable it
+# Check if the extension is already enabled and enable it
 echo "$(date) | Checking extension status" 
-if pluginkit -m | grep "+    $ExtensionName"; then
+if pluginkit -m | grep "+    $extensionname"; then
     echo "$(date) | OneDrive FinderSync already enabled" 
 else
     echo "$(date) | OneDrive config: Enabling FinderSync" 
-    echo "$(date) | running pluginkit -e use -i $ExtensionName"
+    echo "$(date) | running pluginkit -e use -i $extensionname"
 
-    pluginkit -e use -i $ExtensionName
+    pluginkit -e use -i $extensionname
 
     echo "$(date) | Script finished"
 fi
