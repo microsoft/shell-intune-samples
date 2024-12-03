@@ -11,7 +11,7 @@ This profile grants the following
 To the following bundleID's
 
 - com.microsoft.CompanyPortal (Intune Company Portal)
-- com.microsoft.wdav (Microsoft Defednder)
+- com.microsoft.wdav (Microsoft Defender)
 - com.microsoft.intuneMDMAgent (Intune Script Agent)
 - com.microsoft.intuneMDMAgent.daemon (Intune Script Agent)
 - com.microsoft.Outlook (Microsoft Outlook)
