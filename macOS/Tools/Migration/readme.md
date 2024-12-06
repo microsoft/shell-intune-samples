@@ -106,6 +106,12 @@ The script uses `swiftDialog` for its UI and relies on core macOS commands to pe
 For issues or feedback, please contact:
 - **Neil Johnson**: neiljohn@microsoft.com
 
+
+
+https://github.com/user-attachments/assets/9f788360-61be-4c9f-93c3-9e4018d45194
+
+
+
 ---
 
 ## Disclaimer
