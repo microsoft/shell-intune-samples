@@ -137,7 +137,7 @@
 					<key>BadgesEnabled</key>
 					<true/>
 					<key>BundleIdentifier</key>
-					<string>com.microsoft.autoupdate2	</string>
+					<string>com.microsoft.autoupdate2</string>
 					<key>CriticalAlertEnabled</key>
 					<true/>
 					<key>NotificationsEnabled</key>
@@ -209,7 +209,7 @@
 					<key>BadgesEnabled</key>
 					<true/>
 					<key>BundleIdentifier</key>
-					<string>com.microsoft.Word	</string>
+					<string>com.microsoft.Word</string>
 					<key>CriticalAlertEnabled</key>
 					<false/>
 					<key>NotificationsEnabled</key>
@@ -227,7 +227,7 @@
 					<key>BadgesEnabled</key>
 					<true/>
 					<key>BundleIdentifier</key>
-					<string>com.microsoft.Excel	</string>
+					<string>com.microsoft.Excel</string>
 					<key>CriticalAlertEnabled</key>
 					<false/>
 					<key>NotificationsEnabled</key>
@@ -245,7 +245,7 @@
 					<key>BadgesEnabled</key>
 					<true/>
 					<key>BundleIdentifier</key>
-					<string>com.microsoft.Powerpoint	</string>
+					<string>com.microsoft.Powerpoint</string>
 					<key>CriticalAlertEnabled</key>
 					<false/>
 					<key>NotificationsEnabled</key>
