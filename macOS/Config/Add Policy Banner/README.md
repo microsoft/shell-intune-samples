@@ -16,7 +16,12 @@ The log file will output to ***/Library/Logs/Microsoft/IntuneScripts/PolicyBanne
 
 ```
 ##############################################################
-# Fri Nov 29 09:11:27 EET 2024 | Starting running of script PolicyBanner
+# Mon Jan  6 15:20:04 CST 2025 | Starting running of script PolicyBanner
 ############################################################
+ 
+Mon Jan  6 15:20:04 CST 2025 | Creating the Policy Banner file stating:
+This is the Policy Banner for the Mac. By logging in you agree to the terms and conditions of the UEMCATLABS. If you do not agree, please log out now.
+Mon Jan  6 15:20:09 CST 2025 | Policy Banner file created successfully
+Mon Jan  6 15:20:09 CST 2025 | Permissions set on Policy Banner file
 
 ```
