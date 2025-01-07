@@ -21,6 +21,7 @@ https://github.com/microsoft/shell-intune-samples/assets/27012389/c6e01b0c-c97f-
 4. Open API Permissions
     - Remove **User.Read** permission
     - Add New \> Microsoft Graph \> Application permission \> User.Read.All
+    - Add New \> Microsoft Graph \> Application permission \> ProfilePhoto.Read.All
     - Add permission
 5. Overview \> Client Credentials \> Add a certificate or secret
     - New client secret
