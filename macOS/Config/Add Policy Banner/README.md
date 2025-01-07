@@ -1,7 +1,7 @@
 # Add Policy Banner
 This script is used to push a policy banner for your macOS devices. A policy banner is a banner that displays at the login window that requires you to acknowledge it before proceeding.
 
-![image](https://github.com/user-attachments/assets/7350976e-80a1-44fd-ba3c-bb99525174d1)
+<img src="https://github.com/user-attachments/assets/7350976e-80a1-44fd-ba3c-bb99525174d1" alt="image" width="400"/>
 
 
 ## Script Settings
