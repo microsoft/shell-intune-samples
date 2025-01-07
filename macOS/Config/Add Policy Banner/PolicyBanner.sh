@@ -24,13 +24,13 @@ log="$logandmetadir/$appname.log"
 PolicyBannerFile="/Library/Security/PolicyBanner.txt"
 
 # Check if the log directory has been created
-if [ -d $logandmetadir ]; then
+if [ -d "$logandmetadir" ]; then
     # Already created
     echo "$(date) | Log directory already exists - $logandmetadir"
 else
     # Creating Metadirectory
     echo "$(date) | creating log directory - $logandmetadir"
-    mkdir -p $logandmetadir
+    mkdir -p "$logandmetadir"
 fi
 
 # Start logging
@@ -44,7 +44,7 @@ echo "############################################################"
 echo ""
 
 # remove the file if it exists
-rm -f $PolicyBannerFile  
+rm -f "$PolicyBannerFile"  
 
 # create the file with the banner text
 echo "$(date) | Creating the Policy Banner file stating:"
@@ -52,12 +52,12 @@ echo "This is the Policy Banner for the Mac. By logging in you agree to the term
 sleep 5s
 
 # Check if file was created successfully
-if [ -f $PolicyBannerFile ]; then
+if [ -f "$PolicyBannerFile" ]; then
     # creation succeeded
     echo "$(date) | Policy Banner file created successfully"
 
     # set the permissions on the file
-    chmod o+r /Library/Security/PolicyBanner.txt
+    chmod o+r "$PolicyBannerFile"
     echo "$(date) | Permissions set on Policy Banner file"
   
 else
