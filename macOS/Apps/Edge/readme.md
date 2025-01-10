@@ -5,7 +5,7 @@ This script is an example to show how to use [Intune Shell Scripting](https://do
 ## Quick Run
 
 ```
-sudo /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/microsoft/shell-intune-samples/master/Apps/Edge/installEdge.sh)" ; open "/Applications/Microsoft Edge.app"
+sudo /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/microsoft/shell-intune-samples/master/macOS/Apps/Edge/installEdge.sh)" ; open "/Applications/Microsoft Edge.app"
 ```
 
 ## Script Settings
