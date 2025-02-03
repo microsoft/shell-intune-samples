@@ -31,6 +31,10 @@
 #   for the user to complete migration. The onboarding process should be configured in Intune separately.
 #########################################################################################################
 
+# Replace these with your Jamf Pro details
+JAMF_PRO_URL="https://your-jamf-pro-url"
+USERNAME="your_username"
+PASSWORD="your_password"
 
 # Function to check if the device is managed by Jamf
 check_if_managed() {
@@ -81,7 +85,7 @@ waiting_for_intune() {
     --width 750 \
     --height 450 \
     --icon /Applications/Company\ Portal.app/Contents/Resources/AppIcon.icns \
-    --no-buttons
+    --no-buttons \
     --progress &
   
   # Capture the dialog process ID to close it later if needed
@@ -123,7 +127,7 @@ prompt_migration() {
     echo "User is ready to start the migration."
     return 0  # Proceed with migration
   else
-    echo "User chose not to migrate at this time."\
+    echo "User chose not to migrate at this time."
     exit 1  # Exit the script
   fi
 }
@@ -225,64 +229,91 @@ renew_profiles() {
   echo "Profiles renewed."
 }
 
+# Function to get the serial number of the current Mac
+get_serial_number() {
+  system_profiler SPHardwareDataType | awk '/Serial Number/ {print $4}'
+}
+
+# Function to obtain an authentication token
+get_auth_token() {
+  auth_token=$(curl -su "$USERNAME:$PASSWORD" -X POST "$JAMF_PRO_URL/api/v1/auth/token" | jq -r '.token')
+  echo "$auth_token"
+}
+
+# Function to get the computer_id from Jamf Pro based on serial number
+get_computer_id() {
+  local serial_number="$1"
+  local auth_token="$2"
+  
+  computer_id=$(curl -s -X GET \
+    -H "Authorization: Bearer $auth_token" \
+    "$JAMF_PRO_URL/api/v1/computers-inventory?filter=hardware.serialNumber==$serial_number" | jq -r '.results[0].id')
+  echo "$computer_id"
+}
+
+# Function to unmanage (remove MDM profile) from the Mac via the API
+unmanage_device() {
+  local computer_id="$1"
+  local auth_token="$2"
+  
+  response=$(curl -s -X POST \
+    -H "Authorization: Bearer $auth_token" \
+    "$JAMF_PRO_URL/api/v1/computer-inventory/$computer_id/remove-mdm-profile")
+  
+  if echo "$response" | jq -e '.commandUuid' >/dev/null; then
+    echo "Device successfully unmanaged (MDM profile removed). Command UUID: $(echo "$response" | jq -r '.commandUuid')"
+  else
+    echo "Failed to unmanage device: $response"
+  fi
+}
+
 ############################################################
 ##
 ## Main Script Execution Begins Here
 ##
 #########################################
 
-# Flag to track ADE enrollment
-ADE_ENROLLED=false
-
-# Check if the device is managed
+# 1. Check if device is Jamf-managed
 check_if_managed
 
-# Install swiftDialog if needed
+# 2. Install swiftDialog if needed
 install_swiftDialog
 
-#Launch initial migration prompt
-prompt_migration
+# 3. Prompt user to migrate
+prompt_migration  # If they exit here, we do nothing and exit
 
-#Launch actual migration dialog
+# 4. Now that user has agreed, fetch Jamf API details
+serial_number=$(get_serial_number)
+auth_token=$(get_auth_token)
+computer_id=$(get_computer_id "$serial_number" "$auth_token")
+
+# 5. If computer_id is found, unmanage and remove Jamf
+if [ -n "$computer_id" ]; then
+    unmanage_device "$computer_id" "$auth_token"
+    remove_jamf_framework
+else
+    echo "Computer ID not found for Serial Number: $serial_number"
+    exit 1
+fi
+
+# 6. Start migration dialog
 start_progress_dialog
 
-# Call the function to check and install Company Portal if needed
-check_and_install_company_portal
-
-# Check ADE enrollment before unmanaging the device
+# 7. Check if ADE enrolled
 check_ade_enrollment
 
-#unmanage_device "$computer_id" "$auth_token"
-remove_jamf_framework
-
-update_progress 90 "Device removed from Jamf, now starting Intune Migration"
-sleep 2
-
-# Close Dialog and any remaining jamf processes
-killall Dialog
-killall jamf
-
-# If the device was ADE enrolled, renew profiles
+# 8. If ADE enrolled, show message + renew profiles; else prompt for CP sign-in
 if [ "$ADE_ENROLLED" = true ]; then
-
-    # Show end user dialog about ADE enrollment process
     ade_enrollment_message
-
-    # Renew profiles to trigger Intune setup
     renew_profiles
-
-    # Show waiting for Intune dialog, this will remain open until Intune setup is complete and the onboarding script runs
     sleep 5
     waiting_for_intune
 else
-
-    # Show sign-in message for Company Portal
     cp_sign_in_message
-
-    # Launch Company Portal
     launch_company_portal
 fi
 
-
-# Kill any remaining Dialog processes
-killall Dialog
+# 9. Cleanup + exit
+killall Dialog 2>/dev/null || true
+killall jamf 2>/dev/null || true
+exit 0
