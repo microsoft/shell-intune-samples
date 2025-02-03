@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>PayloadUUID</key>
+    <string>5FC2FCC2-5AE4-477D-9392-A3E6F5239666</string>
+    <key>PayloadType</key>
+    <string>Configuration</string>
+    <key>PayloadOrganization</key>
+    <string>Microsoft Corporation</string>
+    <key>PayloadIdentifier</key>
+    <string>D8BA25A2-3EA1-41F3-B2D6-D5B153628FCD</string>
+    <key>PayloadDisplayName</key>
+    <string>Microsoft Edge - Prevent users from proceeding from the HTTPS warning page</string>
+    <key>PayloadDescription</key>
+    <string>Prevent users from proceeding from the HTTPS warning page on Microsoft Edge</string>
+    <key>PayloadVersion</key>
+    <integer>1</integer>
+    <key>PayloadEnabled</key>
+    <true/>
+    <key>PayloadRemovalDisallowed</key>
+    <true/>
+    <key>PayloadScope</key>
+    <string>System</string>
+    <key>PayloadContent</key>
+    <array>
+		<dict>
+			<key>PayloadUUID</key>
+			<string>67CEAF15-CA99-4F4B-872C-5F75FF6B8CDA</string>
+			<key>PayloadType</key>
+			<string>com.microsoft.Edge</string>
+			<key>PayloadOrganization</key>
+			<string>Microsoft Corporation</string>
+			<key>PayloadIdentifier</key>
+			<string>com.microsoft.Edge.67CEAF15-CA99-4F4B-872C-5F75FF6B8CDA</string>
+			<key>PayloadDisplayName</key>
+			<string>Prevent users from proceeding from the HTTPS warning page</string>
+			<key>PayloadDescription</key>
+			<string/>
+			<key>PayloadVersion</key>
+			<integer>1</integer>
+			<key>PayloadEnabled</key>
+			<true/>
+			<key>SSLErrorOverrideAllowed</key>
+			<false/>
+		</dict>
+	</array>
+</dict>
+</plist>
