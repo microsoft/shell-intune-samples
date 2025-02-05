@@ -37,6 +37,9 @@ https://github.com/user-attachments/assets/9f788360-61be-4c9f-93c3-9e4018d45194
 3. **Internet Connectivity**  
    - Required to download the Microsoft Intune Company Portal and any other dependencies.
 
+4. **Intune Enrollment Experience**
+   - In the demo video 1m 21s where the screen shows 'Status: Waiting for Intune', this is where this script has finished performing actions. At this stage we are waiting for the Intune enrollment actions to begin. This is on YOU to configure and deploy. If you just deploy this script it will wait on this screen forever. In the demo video the Intune onboarding experience is provided by the [swiftDialog onboarding sample](https://github.com/microsoft/shell-intune-samples/tree/master/macOS/Config/Swift%20Dialog%20(PKG)).
+
 ---
 
 ## Features

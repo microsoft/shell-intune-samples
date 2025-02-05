@@ -32,9 +32,10 @@
 #########################################################################################################
 
 # Replace these with your Jamf Pro details
-JAMF_PRO_URL="https://your-jamf-pro-url"
-USERNAME="your_username"
-PASSWORD="your_password"
+JAMF_PRO_URL="https://intunedemo.jamfcloud.com"
+USERNAME="migration_account"            # This should be a Jamf Pro user with the Jamf Pro Server Action 'Send Computer Unmanage Command' enabled
+PASSWORD="migration_account_password"   # Password for the above user
+LOG="/Library/Logs/Microsoft/IntuneScripts/intuneMigration/intuneMigration.log"
 
 # Function to check if the device is managed by Jamf
 check_if_managed() {
@@ -46,16 +47,50 @@ check_if_managed() {
   fi
 }
 
+function startLog() {
+
+    ###################################################
+    ###################################################
+    ##
+    ##  Start logging - Output to log file and STDOUT
+    ##
+    ####################
+    ####################
+
+    LOG_DIR=$(dirname "$LOG")  # Extract the directory path from the LOG file path
+
+    if [[ ! -d "$LOG_DIR" ]]; then
+        ## Creating log directory
+        echo "$(date) | Creating directory [$LOG_DIR] to store logs"
+        mkdir -p "$LOG_DIR"
+    fi
+
+    exec > >(tee -a "$LOG") 2>&1
+}
+
 # Function to check and install swiftDialog if not present
 install_swiftDialog() {
   if [ ! -f "/usr/local/bin/dialog" ]; then
     echo "swiftDialog not found. Installing swiftDialog..."
     curl -L -o /tmp/dialog.pkg "https://github.com/swiftDialog/swiftDialog/releases/download/v2.5.2/dialog-2.5.2-4777.pkg"
-    sudo installer -pkg /tmp/dialog.pkg -target /
-    rm /tmp/dialog.pkg
+    sudo installer -pkg /tmp/cp.pkg -target /
+    rm /tmp/cp.pkg
     echo "swiftDialog installed successfully."
   else
     echo "swiftDialog is already installed."
+  fi
+}
+
+# Function to check and install Company Portal if not present
+install_cp() {
+  if [ ! -f "/Applications/Company Portal.app" ]; then
+    echo "Company Portal not found. Installing Company Portal..."
+    curl -L -o /tmp/cp.pkg "https://go.microsoft.com/fwlink?linkid=853070"
+    sudo installer -pkg /tmp/dialog.pkg -target /
+    rm /tmp/dialog.pkg
+    echo "Company Portal installed successfully."
+  else
+    echo "Company Portal is already installed."
   fi
 }
 
@@ -215,7 +250,7 @@ check_and_install_company_portal() {
 
 launch_company_portal() {
   # Open the Company Portal app
-  open -a "Company Portal"
+  open -a "/Applications/Company Portal.app"
   
   # Bring Company Portal to the front
   osascript <<EOF
@@ -273,11 +308,15 @@ unmanage_device() {
 ##
 #########################################
 
+# Start Logging before we do anything else...
+startLog
+
 # 1. Check if device is Jamf-managed
 check_if_managed
 
-# 2. Install swiftDialog if needed
+# 2. Install dependencies if needed
 install_swiftDialog
+install_cp
 
 # 3. Prompt user to migrate
 prompt_migration  # If they exit here, we do nothing and exit
