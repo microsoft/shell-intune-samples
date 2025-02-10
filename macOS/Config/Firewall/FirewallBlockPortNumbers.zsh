@@ -18,7 +18,7 @@
 
 # Define variables
 appname="FirewallBlockPortNumbers"                                                                          # The name of our script
-logandmetadir="$HOME/Library/Logs/Microsoft/IntuneScripts/$appname"                                         # The location of our logs and last updated data
+logandmetadir="/Library/Logs/Microsoft/IntuneScripts/$appname"                                              # The location of our logs and last updated data
 log="$logandmetadir/$appname.log"                                                                           # The location of the script log file
 abmcheck=true                                                                                               # Run this script if this device is NOT ABM manage
 port135_tcp=true                                                                                            # Blocks Port Number 135 TCP used by Microsoft RPC, which can be exploited for remote code execution.
