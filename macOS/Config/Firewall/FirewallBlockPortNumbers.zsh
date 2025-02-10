@@ -20,7 +20,7 @@
 appname="FirewallBlockPortNumbers"                                                                          # The name of our script
 logandmetadir="$HOME/Library/Logs/Microsoft/IntuneScripts/$appname"                                         # The location of our logs and last updated data
 log="$logandmetadir/$appname.log"                                                                           # The location of the script log file
-abmcheck=true                                                                                               # Install this application if this device is ABM manage
+abmcheck=true                                                                                               # Run this script if this device is NOT ABM manage
 port135_tcp=true                                                                                            # Blocks Port Number 135 TCP used by Microsoft RPC, which can be exploited for remote code execution.
 port135_udp=true                                                                                            # Blocks Port Number 135 UDP used by Microsoft RPC, which can be exploited for remote code execution.
 port137_139_tcp=true                                                                                        # Blocks Port Numbers 137-139 TCP used by NetBIOS, which can be a vector for various attacks.
@@ -44,11 +44,15 @@ else
     mkdir -p $logandmetadir
 fi
 
-# Backup existing pf.conf to cp.conf.backup
+# Backup original pf.conf to cp.conf.backup
 backup() {
-    echo "$(date) | Backing up firewall configurations..."
-    cp -f /etc/pf.conf /etc/pf.conf.backup
-    echo "$(date) | Done."
+    if [ -f /etc/pf.conf.backup ]; then
+        echo "$(date) | Backup file already exists. No new backup created."
+    else
+        echo "$(date) | Backing up firewall configurations..."
+        cp -f /etc/pf.conf /etc/pf.conf.backup
+        echo "$(date) | Done."
+    fi
 }
 
 # Function for blocking Port Number 135 TCP
@@ -344,7 +348,7 @@ echo "############################################################"
 echo ""
 
 # Is this a ABM DEP device?
-if [ "$abmcheck" = false ]; then
+if [ "$abmcheck" = true]; then
   echo "$(date) | Checking MDM Profile Type"
   profiles status -type enrollment | grep "Enrolled via DEP: Yes"
   if [ ! $? == 0 ]; then
