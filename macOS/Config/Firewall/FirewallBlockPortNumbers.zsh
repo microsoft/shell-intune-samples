@@ -46,9 +46,9 @@ fi
 
 # Backup existing pf.conf to cp.conf.backup
 backup() {
-    echo "Backing up firewall configurations..."
+    echo "$(date) | Backing up firewall configurations..."
     cp -f /etc/pf.conf /etc/pf.conf.backup
-    echo "Done."
+    echo "$(date) | Done."
 }
 
 # Function for blocking Port Number 135 TCP
@@ -59,18 +59,18 @@ port135_tcp() {
 
     # Check if the rule already exists in /etc/pf.conf
     if grep -q "$RULE" /etc/pf.conf; then
-        echo "Port $PORT/$PROTO is already disabled."
+        echo "$(date) | Port $PORT/$PROTO is already disabled."
     else
-        echo "Disabling port $PORT/$PROTO permanently..."
+        echo "$(date) | Disabling port $PORT/$PROTO permanently..."
 
         # Append the rule to /etc/pf.conf
         echo "$RULE" | tee -a /etc/pf.conf > /dev/null
 
         # Reload pf rules
-        pfctl -f /etc/pf.conf
-        pfctl -e
+        pfctl -f /etc/pf.conf >/dev/null 2>&1
+        pfctl -E >/dev/null 2>&1
 
-        echo "Port $PORT/$PROTO has been disabled permanently."
+        echo "$(date) | Port $PORT/$PROTO has been disabled permanently."
     fi
 }
 
@@ -82,19 +82,65 @@ port135_udp() {
 
     # Check if the rule already exists in /etc/pf.conf
     if grep -q "$RULE" /etc/pf.conf; then
-        echo "Port $PORT/$PROTO is already disabled."
+        echo "$(date) | Port $PORT/$PROTO is already disabled."
     else
-        echo "Disabling port $PORT/$PROTO permanently..."
+        echo "$(date) | Disabling port $PORT/$PROTO permanently..."
 
         # Append the rule to /etc/pf.conf
         echo "$RULE" | tee -a /etc/pf.conf > /dev/null
 
         # Reload pf rules
-        pfctl -f /etc/pf.conf
-        pfctl -e
+        pfctl -f /etc/pf.conf >/dev/null 2>&1
+        pfctl -E >/dev/null 2>&1
 
-        echo "Port $PORT/$PROTO has been disabled permanently."
+        echo "$(date) | Port $PORT/$PROTO has been disabled permanently."
     fi
+}
+
+# Function for blocking Port Numbers 137-139 TCP
+port137-139_tcp() {
+    PORTS=(137 138 139)
+    PROTO="tcp"
+    
+    # Check if the ports are already disabled
+    for PORT in "${PORTS[@]}"; do
+        RULE="block in proto $PROTO from any to any port $PORT"
+        if grep -q "$RULE" $PF_CONF; then
+            echo "$(date) | Port $PORT/$PROTO is already disabled in pf.conf."
+        else
+            echo "$(date) | Disabling port $PORT/$PROTO in pf.conf..."
+            echo "$RULE" | sudo tee -a $PF_CONF > /dev/null
+        fi
+    done
+
+    # Reload pf rules
+    pfctl -f $PF_CONF >/dev/null 2>&1
+    pfctl -E >/dev/null 2>&1
+
+    echo "$(date) | Ports ${PORTS[*]}/$PROTO have been disabled permanently in pf.conf."
+}
+
+# Function for blocking Port Numbers 137-139 UDP
+port137-139_udp() {
+    PORTS=(137 138 139)
+    PROTO="udp"
+    
+    # Check if the ports are already disabled
+    for PORT in "${PORTS[@]}"; do
+        RULE="block in proto $PROTO from any to any port $PORT"
+        if grep -q "$RULE" $PF_CONF; then
+            echo "$(date) | Port $PORT/$PROTO is already disabled in pf.conf."
+        else
+            echo "$(date) | Disabling port $PORT/$PROTO in pf.conf..."
+            echo "$RULE" | sudo tee -a $PF_CONF > /dev/null
+        fi
+    done
+
+    # Reload pf rules
+    pfctl -f $PF_CONF >/dev/null 2>&1
+    pfctl -E >/dev/null 2>&1
+
+    echo "$(date) | Ports ${PORTS[*]}/$PROTO have been disabled permanently in pf.conf."
 }
 
 # Start logging
@@ -134,4 +180,18 @@ if [ "$port135_udp" = true ]; then
     port135_udp
 else
     echo "$(date) | Skipping disabling Port Number 135 UDP..."
+fi
+
+# Disable Port Number 137-139 TCP
+if [ "$port137-139_tcp" = true ]; then
+    port137-139_tcp
+else
+    echo "$(date) | Skipping disabling Port Numbers 137-139 TCP..."
+fi
+
+# Disable Port Number 137-139 UDP
+if [ "$port137-139_udp" = true ]; then
+    port137-139_udp
+else
+    echo "$(date) | Skipping disabling Port Number 137-139 UDP..."
 fi
