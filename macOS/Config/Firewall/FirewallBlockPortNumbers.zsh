@@ -2,7 +2,7 @@
 #set -x
 ############################################################################################
 ##
-## Script to block sselected port numbers from macOS Firewall
+## Script to block selected port numbers from macOS Firewall
 ##
 ############################################################################################
 
