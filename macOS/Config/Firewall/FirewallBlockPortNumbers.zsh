@@ -347,18 +347,17 @@ echo "# $(date) | Starting running of script $appname"
 echo "############################################################"
 echo ""
 
-# Is this a ABM DEP device?
-if [ "$abmcheck" = true]; then
+# Is this an ABM DEP device?
+if [ "$abmcheck" = true ]; then
   echo "$(date) | Checking MDM Profile Type"
   profiles status -type enrollment | grep "Enrolled via DEP: Yes"
-  if [ ! $? == 0 ]; then
-    echo "$(date) | This device is not ABM managed. This means that device is BYOD-device. This script needs to be run. Let's continue... "
+  if [ $? -ne 0 ]; then
+    echo "$(date) | This device is not ABM managed. This means that the device is a BYOD device. This script needs to be run. Let's continue..."
   else
     echo "$(date) | Device is ABM Managed. No need to run this script. Closing script..."
-    exit 0;
+    exit 0
   fi
 fi
-
 # Backup cp.conf
 backup
 
