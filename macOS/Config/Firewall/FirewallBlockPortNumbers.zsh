@@ -101,6 +101,7 @@ port135_udp() {
 port137_139_tcp() {
     PORTS=(137 138 139)
     PROTO="tcp"
+    PF_CONF="/etc/pf.conf"
     
     # Check if the ports are already disabled
     for PORT in "${PORTS[@]}"; do
@@ -124,12 +125,13 @@ port137_139_tcp() {
 port137_139_udp() {
     PORTS=(137 138 139)
     PROTO="udp"
+    PF_CONF="/etc/pf.conf"
     
     # Check if the ports are already disabled
     for PORT in "${PORTS[@]}"; do
         RULE="block in proto $PROTO from any to any port $PORT"
         if grep -q "$RULE" $PF_CONF; then
-            echo "$(date) | Port $PORT/$PROTO is already disabled in pf.conf."
+            echo "$(date) | Port $PORT1/$PROTO is already disabled in pf.conf."
         else
             echo "$(date) | Disabling port $PORT/$PROTO in pf.conf..."
             echo "$RULE" | sudo tee -a $PF_CONF > /dev/null
@@ -184,14 +186,14 @@ fi
 
 # Disable Port Number 137-139 TCP
 if [ "$port137_139_tcp" = true ]; then
-    port137-139_tcp
+    port137_139_tcp
 else
     echo "$(date) | Skipping disabling Port Numbers 137-139 TCP..."
 fi
 
 # Disable Port Number 137-139 UDP
 if [ "$port137_139_udp" = true ]; then
-    port137-139_udp
+    port137_139_udp
 else
     echo "$(date) | Skipping disabling Port Number 137-139 UDP..."
 fi
