@@ -23,8 +23,8 @@ log="$logandmetadir/$appname.log"                                               
 abmcheck=true                                                                                               # Install this application if this device is ABM manage
 port135_tcp=true                                                                                            # Blocks Port Number 135 TCP used by Microsoft RPC, which can be exploited for remote code execution.
 port135_udp=true                                                                                            # Blocks Port Number 135 UDP used by Microsoft RPC, which can be exploited for remote code execution.
-port137-139_tcp=true                                                                                        # Blocks Port Numbers 137-139 TCP used by NetBIOS, which can be a vector for various attacks.
-port137-139_udp=true                                                                                        # Blocks Port Numbers 137-139 UDP used by NetBIOS, which can be a vector for various attacks.
+port137_139_tcp=true                                                                                        # Blocks Port Numbers 137-139 TCP used by NetBIOS, which can be a vector for various attacks.
+port137_139_udp=true                                                                                        # Blocks Port Numbers 137-139 UDP used by NetBIOS, which can be a vector for various attacks.
 port445_tcp=true                                                                                            # Blocks Port Number 445 TCP used by Microsoft-DS (Active Directory, Windows shares), which is often targeted by malware.
 port1433-1434_tcp=true                                                                                      # Blocks Port Numbers 1433-1434 TCP used by Microsoft SQL Server, which can be exploited if not properly secured.
 port1433-1434_udp=true                                                                                      # Blocks Port Numbers 1433-1434 UDP used by Microsoft SQL Server, which can be exploited if not properly secured.
@@ -98,7 +98,7 @@ port135_udp() {
 }
 
 # Function for blocking Port Numbers 137-139 TCP
-port137-139_tcp() {
+port137_139_tcp() {
     PORTS=(137 138 139)
     PROTO="tcp"
     
@@ -121,7 +121,7 @@ port137-139_tcp() {
 }
 
 # Function for blocking Port Numbers 137-139 UDP
-port137-139_udp() {
+port137_139_udp() {
     PORTS=(137 138 139)
     PROTO="udp"
     
@@ -183,14 +183,14 @@ else
 fi
 
 # Disable Port Number 137-139 TCP
-if [ "$port137-139_tcp" = true ]; then
+if [ "$port137_139_tcp" = true ]; then
     port137-139_tcp
 else
     echo "$(date) | Skipping disabling Port Numbers 137-139 TCP..."
 fi
 
 # Disable Port Number 137-139 UDP
-if [ "$port137-139_udp" = true ]; then
+if [ "$port137_139_udp" = true ]; then
     port137-139_udp
 else
     echo "$(date) | Skipping disabling Port Number 137-139 UDP..."
