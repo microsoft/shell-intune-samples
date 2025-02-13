@@ -87,8 +87,8 @@ install_cp() {
   if [ ! -f "/Applications/Company Portal.app" ]; then
     echo "Company Portal not found. Installing Company Portal..."
     curl -L -o /tmp/cp.pkg "https://go.microsoft.com/fwlink?linkid=853070"
-    sudo installer -pkg /tmp/dialog.pkg -target /
-    rm /tmp/dialog.pkg
+    sudo installer -pkg /tmp/cp.pkg -target /
+    rm /tmp/cp.pkg
     echo "Company Portal installed successfully."
   else
     echo "Company Portal is already installed."
