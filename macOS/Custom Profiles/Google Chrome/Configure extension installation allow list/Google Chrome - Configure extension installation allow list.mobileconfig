@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>PayloadUUID</key>
+    <string>E0F41507-5958-456B-A435-9C622A4A6BBA</string> <!-- Update this value-->
+    <key>PayloadType</key>
+    <string>Configuration</string>
+    <key>PayloadOrganization</key>
+    <string>Google LLC</string>
+    <key>PayloadIdentifier</key>
+    <string>32363550-F2A6-43B0-98C1-783CEA9DBB17</string> <!-- Update this value-->
+    <key>PayloadDisplayName</key>
+    <string>Google Chrome - Configure extension installation allow list</string>
+    <key>PayloadDescription</key>
+    <string>Configure extension installation allow list on Google Chrome</string>
+    <key>PayloadVersion</key>
+    <integer>1</integer>
+    <key>PayloadEnabled</key>
+    <true/>
+    <key>PayloadRemovalDisallowed</key>
+    <true/>
+    <key>PayloadScope</key>
+    <string>System</string>
+    <key>PayloadContent</key>
+    <array>
+		<dict>
+			<key>PayloadUUID</key>
+			<string>80629E09-0DD1-4525-84FC-DA72A1D6CD00</string> <!-- Update this value-->
+			<key>PayloadType</key>
+			<string>com.google.Chrome</string>
+			<key>PayloadOrganization</key>
+			<string>Google LLC</string>
+			<key>PayloadIdentifier</key>
+			<string>com.google.Chrome.80629E09-0DD1-4525-84FC-DA72A1D6CD00</string> <!-- Update this value-->
+			<key>PayloadDisplayName</key>
+			<string>Configure extension installation allow list</string>
+			<key>PayloadDescription</key>
+			<string/>
+			<key>PayloadVersion</key>
+			<integer>1</integer>
+			<key>PayloadEnabled</key>
+			<true/>
+			<key>ExtensionInstallAllowlist</key>
+			<array>
+        <string>extension_id1</string>
+        <string>extension_id2</string>
+      </array>
+		</dict>
+	</array>
+</dict>
+</plist>
