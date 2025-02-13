@@ -234,21 +234,6 @@ check_ade_enrollment() {
   fi
 }
 
-# Function to check and install the Intune Company Portal app if not present
-check_and_install_company_portal() {
-  if [ ! -d "/Applications/Company Portal.app" ]; then
-    echo "Checking and installing Company Portal if required..."
-    update_progress 100 "Installing Microsoft Intune Company Portal"
-    echo "Company Portal app not found. Installing Company Portal..."
-    curl -L -o /tmp/CompanyPortal.pkg "https://go.microsoft.com/fwlink/?linkid=853070"
-    sudo installer -pkg /tmp/CompanyPortal.pkg -target /
-    rm /tmp/CompanyPortal.pkg
-    echo "Company Portal installed successfully."
-  else
-    echo "Company Portal app is already installed."
-  fi
-}
-
 launch_company_portal() {
   # Open the Company Portal app
   open -a "/Applications/Company Portal.app"
