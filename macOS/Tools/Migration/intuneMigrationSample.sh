@@ -32,10 +32,11 @@
 #########################################################################################################
 
 # Replace these with your Jamf Pro details
-JAMF_PRO_URL="https://intunedemo.jamfcloud.com"
-USERNAME="migration_account"            # This should be a Jamf Pro user with the Jamf Pro Server Action 'Send Computer Unmanage Command' enabled
-PASSWORD="migration_account_password"   # Password for the above user
+JAMF_PRO_URL="https://yourenvironment.jamfcloud.com"  # URL of your Jamf Pro server
+USERNAME="migration_account"                          # This should be a Jamf Pro user with the Jamf Pro Server Action 'Send Computer Unmanage Command' enabled and Jamf Pro Server Objects 'Computers' Read.
+PASSWORD="migration_account_password"                 # Password for the above user
 LOG="/Library/Logs/Microsoft/IntuneScripts/intuneMigration/intuneMigration.log"
+JAMF_API_VERSION="new"     # Set to "classic" for (JSSResource) or new for (api) to use the classic or new API
 
 # Function to check if the device is managed by Jamf
 check_if_managed() {
@@ -286,20 +287,87 @@ get_computer_id() {
   echo "$computer_id"
 }
 
-# Function to unmanage (remove MDM profile) from the Mac via the API
-unmanage_device() {
-  local computer_id="$1"
-  local auth_token="$2"
-  
-  response=$(curl -s -X POST \
-    -H "Authorization: Bearer $auth_token" \
-    "$JAMF_PRO_URL/api/v1/computer-inventory/$computer_id/remove-mdm-profile")
-  
-  if echo "$response" | jq -e '.commandUuid' >/dev/null; then
-    echo "Device successfully unmanaged (MDM profile removed). Command UUID: $(echo "$response" | jq -r '.commandUuid')"
-  else
-    echo "Failed to unmanage device: $response"
-  fi
+# Function to unmanage from Jamf Pro using new API
+unmanage_device_jamf_new() {
+    echo "DEBUG: Unmanaging device with computer ID: $computer_id" >&2
+    echo "$JAMF_PRO_URL/api/v1/computer-inventory/$computer_id/remove-mdm-profile"
+    local computer_id="$1"
+    local auth_token="$2"
+
+    echo "DEBUG: Unmanaging device with computer ID: $computer_id" >&2
+    echo "$JAMF_PRO_URL/api/v1/computer-inventory/$computer_id/remove-mdm-profile"
+
+    local response
+    response=$(curl -s -X POST \
+      -H "Authorization: Bearer $auth_token" \
+      "$JAMF_PRO_URL/api/v1/computer-inventory/$computer_id/remove-mdm-profile")
+      
+    echo "DEBUG: unmanage_device response: $response" >&2
+
+    if echo "$response" | jq -e '.commandUuid' >/dev/null; then
+        echo "Device successfully unmanaged (MDM profile removed). Command UUID: $(echo "$response" | jq -r '.commandUuid')"
+    else
+        echo "Failed to unmanage device: $response" >&2
+        exit 1
+    fi
+}
+
+# Function to unmanage from Jamf Pro using classic API
+unmanage_device_jamf_classic() {
+  echo "DEBUG: Unmanaging device with computer ID: $computer_id" >&2
+  echo "$JAMF_PRO_URL/JSSResource/computercommands/command/UnmanageDevice/id/$computer_id"
+    local computer_id="$1"
+    local auth_token="$2"
+ 
+    local response
+ 
+    # Classic API
+    response=$(curl -s -X POST \
+      -H "Authorization: Bearer $auth_token" \
+      "$JAMF_PRO_URL/JSSResource/computercommands/command/UnmanageDevice/id/$computer_id")
+ 
+    echo "DEBUG: unmanage_device response: $response" >&2
+ 
+    # Parse the XML response using xmllint to extract the command UUID.
+    local command_uuid
+    command_uuid=$(echo "$response" | xmllint --xpath 'string(//command_uuid)' - 2>/dev/null)
+ 
+    if [[ -n "$command_uuid" ]]; then
+        echo "Device successfully unmanaged (MDM profile removed). Command UUID: $command_uuid"
+    else
+        echo "Failed to unmanage device: $response" >&2
+        exit 1
+    fi
+}
+
+# Function to wait until management profile is removed...
+wait_for_management_profile_removal() {
+  echo "Waiting for MDM management profile removal..."
+  local timeout=300
+  local interval=5
+  local elapsed=0
+
+  while true; do
+    # Capture the enrollment profiles output.
+    local output
+    output=$(profiles show type -enrollment 2>/dev/null)
+
+    # Check if there are no enrollment profiles or if the MDM payload is missing.
+    if echo "$output" | grep -q "There are no configuration profiles installed" || \
+       ! echo "$output" | grep -q "com.apple.mdm"; then
+      echo "MDM management profile successfully removed."
+      break
+    else
+      echo "MDM management profile still present. Retrying in ${interval} seconds..."
+    fi
+
+    sleep "${interval}"
+    elapsed=$((elapsed + interval))
+    if [ $elapsed -ge $timeout ]; then
+      echo "Timeout waiting for management profile removal." >&2
+      exit 1
+    fi
+  done
 }
 
 ############################################################
@@ -321,22 +389,40 @@ install_cp
 # 3. Prompt user to migrate
 prompt_migration  # If they exit here, we do nothing and exit
 
+# 6. Start migration dialog
+start_progress_dialog
+
 # 4. Now that user has agreed, fetch Jamf API details
 serial_number=$(get_serial_number)
+echo "Serial Number: $serial_number"
 auth_token=$(get_auth_token)
+echo "Auth Token: $auth_token"
 computer_id=$(get_computer_id "$serial_number" "$auth_token")
+echo "Computer ID: $computer_id"
 
 # 5. If computer_id is found, unmanage and remove Jamf
 if [ -n "$computer_id" ]; then
-    unmanage_device "$computer_id" "$auth_token"
-    remove_jamf_framework
+# Call unmanage function based on API version using case statement
+  case $JAMF_API_VERSION in
+      classic)
+          unmanage_device_jamf_classic "$computer_id" "$auth_token"
+          
+          ;;
+      new)
+          unmanage_device_jamf_new "$computer_id" "$auth_token"
+          ;;
+      *)
+          echo "Error: Invalid JAMF_API_VERSION specified. Must be 'classic' or 'new'" >&2
+          exit 1
+          ;;
+  esac
 else
     echo "Computer ID not found for Serial Number: $serial_number"
     exit 1
 fi
 
-# 6. Start migration dialog
-start_progress_dialog
+# Wait for management profile to be removed
+wait_for_management_profile_removal
 
 # 7. Check if ADE enrolled
 check_ade_enrollment
