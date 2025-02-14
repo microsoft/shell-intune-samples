@@ -272,17 +272,22 @@ get_computer_id() {
   echo "$computer_id"
 }
 
-# Function to unmanage from Jamf Pro using new API
+# Function to unmanage a device from Jamf Pro using the new API,
+# then trigger a device check-in
 unmanage_device_jamf_new() {
-    echo "DEBUG: Unmanaging device with computer ID: $computer_id" >&2
-    echo "$JAMF_PRO_URL/api/v1/computer-inventory/$computer_id/remove-mdm-profile"
+    # Validate input parameters
+    if [[ -z "$1" || -z "$2" ]]; then
+        echo "Usage: unmanage_device_jamf_new <computer_id> <auth_token>" >&2
+        exit 1
+    fi
+
     local computer_id="$1"
     local auth_token="$2"
+    local response
 
     echo "DEBUG: Unmanaging device with computer ID: $computer_id" >&2
-    echo "$JAMF_PRO_URL/api/v1/computer-inventory/$computer_id/remove-mdm-profile"
 
-    local response
+    # Send the remove MDM profile command
     response=$(curl -s -X POST \
       -H "Authorization: Bearer $auth_token" \
       "$JAMF_PRO_URL/api/v1/computer-inventory/$computer_id/remove-mdm-profile")
@@ -290,45 +295,55 @@ unmanage_device_jamf_new() {
     echo "DEBUG: unmanage_device response: $response" >&2
 
     if echo "$response" | jq -e '.commandUuid' >/dev/null; then
-        echo "Device successfully unmanaged (MDM profile removed). Command UUID: $(echo "$response" | jq -r '.commandUuid')"
+        local unmanage_command_uuid
+        unmanage_command_uuid=$(echo "$response" | jq -r '.commandUuid')
+        echo "Device successfully unmanaged (MDM profile removed). Command UUID: $unmanage_command_uuid"
     else
         echo "Failed to unmanage device: $response" >&2
         exit 1
     fi
+
 }
 
-# Function to unmanage from Jamf Pro using classic API
+# Function to unmanage a device from Jamf Pro using the classic API,
+# then trigger a device check-in
 unmanage_device_jamf_classic() {
-  echo "DEBUG: Unmanaging device with computer ID: $computer_id" >&2
-  echo "$JAMF_PRO_URL/JSSResource/computercommands/command/UnmanageDevice/id/$computer_id"
+    # Validate input parameters
+    if [[ -z "$1" || -z "$2" ]]; then
+        echo "Usage: unmanage_device_jamf_classic <computer_id> <auth_token>" >&2
+        exit 1
+    fi
+
     local computer_id="$1"
     local auth_token="$2"
- 
     local response
- 
-    # Classic API
+
+    echo "DEBUG: Unmanaging device with computer ID: $computer_id" >&2
+
+    # Send the UnmanageDevice command
     response=$(curl -s -X POST \
       -H "Authorization: Bearer $auth_token" \
       "$JAMF_PRO_URL/JSSResource/computercommands/command/UnmanageDevice/id/$computer_id")
- 
-    echo "DEBUG: unmanage_device response: $response" >&2
- 
-    # Parse the XML response using xmllint to extract the command UUID.
+
+    echo "DEBUG: Unmanage response: $response" >&2
+
+    # Parse the XML response to extract the command UUID
     local command_uuid
     command_uuid=$(echo "$response" | xmllint --xpath 'string(//command_uuid)' - 2>/dev/null)
- 
+
     if [[ -n "$command_uuid" ]]; then
         echo "Device successfully unmanaged (MDM profile removed). Command UUID: $command_uuid"
     else
         echo "Failed to unmanage device: $response" >&2
         exit 1
     fi
+
 }
 
 # Function to wait until management profile is removed...
 wait_for_management_profile_removal() {
   echo "Waiting for MDM management profile removal..."
-  local timeout=300
+  local timeout=1800
   local interval=5
   local elapsed=0
 
