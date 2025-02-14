@@ -74,8 +74,8 @@ install_swiftDialog() {
   if [ ! -f "/usr/local/bin/dialog" ]; then
     echo "swiftDialog not found. Installing swiftDialog..."
     curl -L -o /tmp/dialog.pkg "https://github.com/swiftDialog/swiftDialog/releases/download/v2.5.2/dialog-2.5.2-4777.pkg"
-    sudo installer -pkg /tmp/cp.pkg -target /
-    rm /tmp/cp.pkg
+    sudo installer -pkg /tmp/dialog.pkg -target /
+    rm /tmp/dialog.pkg
     echo "swiftDialog installed successfully."
   else
     echo "swiftDialog is already installed."
