@@ -24,29 +24,29 @@
     <string>System</string>
     <key>PayloadContent</key>
     <array>
-		<dict>
-			<key>PayloadUUID</key>
-			<string>1B667470-6A86-4932-8401-CDE7C148C06C</string>
-			<key>PayloadType</key>
-			<string>com.google.Chrome</string>
-			<key>PayloadOrganization</key>
-			<string>Google LLC</string>
-			<key>PayloadIdentifier</key>
-			<string>com.google.Chrome.1B667470-6A86-4932-8401-CDE7C148C06C</string>
-			<key>PayloadDisplayName</key>
-			<string>Configure extension installation allow list</string>
-			<key>PayloadDescription</key>
-			<string/>
-			<key>PayloadVersion</key>
-			<integer>1</integer>
-			<key>PayloadEnabled</key>
-			<true/>
-			<key>ExtensionInstallAllowlist</key>
-			<array>
+      <dict>
+      <key>PayloadUUID</key>
+      <string>1B667470-6A86-4932-8401-CDE7C148C06C</string>
+      <key>PayloadType</key>
+      <string>com.google.Chrome</string>
+      <key>PayloadOrganization</key>
+      <string>Google LLC</string>
+      <key>PayloadIdentifier</key>
+      <string>com.google.Chrome.1B667470-6A86-4932-8401-CDE7C148C06C</string>
+      <key>PayloadDisplayName</key>
+      <string>Configure extension installation allow list</string>
+      <key>PayloadDescription</key>
+      <string/>
+      <key>PayloadVersion</key>
+      <integer>1</integer>
+      <key>PayloadEnabled</key>
+      <true/>
+      <key>ExtensionInstallAllowlist</key>
+      <array>
         <string>extension_id1</string>
         <string>extension_id2</string>
       </array>
-		</dict>
-	</array>
+    </dict>
+  </array>
 </dict>
 </plist>
