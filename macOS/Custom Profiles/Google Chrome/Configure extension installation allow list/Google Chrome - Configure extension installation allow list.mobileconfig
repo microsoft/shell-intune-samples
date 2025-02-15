@@ -3,13 +3,13 @@
 <plist version="1.0">
 <dict>
     <key>PayloadUUID</key>
-    <string>E0F41507-5958-456B-A435-9C622A4A6BBA</string> <!-- Update this value-->
+    <string>8338452B-04E8-42D9-929D-0FB91F9DC578</string>
     <key>PayloadType</key>
     <string>Configuration</string>
     <key>PayloadOrganization</key>
     <string>Google LLC</string>
     <key>PayloadIdentifier</key>
-    <string>32363550-F2A6-43B0-98C1-783CEA9DBB17</string> <!-- Update this value-->
+    <string>0C7BDDB3-34CE-45EE-BD1B-83350E8F42E8</string>
     <key>PayloadDisplayName</key>
     <string>Google Chrome - Configure extension installation allow list</string>
     <key>PayloadDescription</key>
@@ -26,13 +26,13 @@
     <array>
 		<dict>
 			<key>PayloadUUID</key>
-			<string>80629E09-0DD1-4525-84FC-DA72A1D6CD00</string> <!-- Update this value-->
+			<string>1B667470-6A86-4932-8401-CDE7C148C06C</string>
 			<key>PayloadType</key>
 			<string>com.google.Chrome</string>
 			<key>PayloadOrganization</key>
 			<string>Google LLC</string>
 			<key>PayloadIdentifier</key>
-			<string>com.google.Chrome.80629E09-0DD1-4525-84FC-DA72A1D6CD00</string> <!-- Update this value-->
+			<string>com.google.Chrome.1B667470-6A86-4932-8401-CDE7C148C06C</string>
 			<key>PayloadDisplayName</key>
 			<string>Configure extension installation allow list</string>
 			<key>PayloadDescription</key>
