@@ -32,10 +32,11 @@
 #########################################################################################################
 
 # Replace these with your Jamf Pro details
-JAMF_PRO_URL="https://intunedemo.jamfcloud.com"
-USERNAME="migration_account"            # This should be a Jamf Pro user with the Jamf Pro Server Action 'Send Computer Unmanage Command' enabled
-PASSWORD="migration_account_password"   # Password for the above user
+JAMF_PRO_URL="https://yourenvironment.jamfcloud.com"  # URL of your Jamf Pro server
+USERNAME="migration_account"                          # This should be a Jamf Pro user with the Jamf Pro Server Action 'Send Computer Unmanage Command' enabled and Jamf Pro Server Objects 'Computers' Read.
+PASSWORD="migration_account_password"                 # Password for the above user
 LOG="/Library/Logs/Microsoft/IntuneScripts/intuneMigration/intuneMigration.log"
+JAMF_API_VERSION="new"     # Set to "classic" for (JSSResource) or new for (api) to use the classic or new API
 
 # Function to check if the device is managed by Jamf
 check_if_managed() {
@@ -73,8 +74,8 @@ install_swiftDialog() {
   if [ ! -f "/usr/local/bin/dialog" ]; then
     echo "swiftDialog not found. Installing swiftDialog..."
     curl -L -o /tmp/dialog.pkg "https://github.com/swiftDialog/swiftDialog/releases/download/v2.5.2/dialog-2.5.2-4777.pkg"
-    sudo installer -pkg /tmp/cp.pkg -target /
-    rm /tmp/cp.pkg
+    sudo installer -pkg /tmp/dialog.pkg -target /
+    rm /tmp/dialog.pkg
     echo "swiftDialog installed successfully."
   else
     echo "swiftDialog is already installed."
@@ -86,8 +87,8 @@ install_cp() {
   if [ ! -f "/Applications/Company Portal.app" ]; then
     echo "Company Portal not found. Installing Company Portal..."
     curl -L -o /tmp/cp.pkg "https://go.microsoft.com/fwlink?linkid=853070"
-    sudo installer -pkg /tmp/dialog.pkg -target /
-    rm /tmp/dialog.pkg
+    sudo installer -pkg /tmp/cp.pkg -target /
+    rm /tmp/cp.pkg
     echo "Company Portal installed successfully."
   else
     echo "Company Portal is already installed."
@@ -233,21 +234,6 @@ check_ade_enrollment() {
   fi
 }
 
-# Function to check and install the Intune Company Portal app if not present
-check_and_install_company_portal() {
-  if [ ! -d "/Applications/Company Portal.app" ]; then
-    echo "Checking and installing Company Portal if required..."
-    update_progress 100 "Installing Microsoft Intune Company Portal"
-    echo "Company Portal app not found. Installing Company Portal..."
-    curl -L -o /tmp/CompanyPortal.pkg "https://go.microsoft.com/fwlink/?linkid=853070"
-    sudo installer -pkg /tmp/CompanyPortal.pkg -target /
-    rm /tmp/CompanyPortal.pkg
-    echo "Company Portal installed successfully."
-  else
-    echo "Company Portal app is already installed."
-  fi
-}
-
 launch_company_portal() {
   # Open the Company Portal app
   open -a "/Applications/Company Portal.app"
@@ -286,20 +272,102 @@ get_computer_id() {
   echo "$computer_id"
 }
 
-# Function to unmanage (remove MDM profile) from the Mac via the API
-unmanage_device() {
-  local computer_id="$1"
-  local auth_token="$2"
-  
-  response=$(curl -s -X POST \
-    -H "Authorization: Bearer $auth_token" \
-    "$JAMF_PRO_URL/api/v1/computer-inventory/$computer_id/remove-mdm-profile")
-  
-  if echo "$response" | jq -e '.commandUuid' >/dev/null; then
-    echo "Device successfully unmanaged (MDM profile removed). Command UUID: $(echo "$response" | jq -r '.commandUuid')"
-  else
-    echo "Failed to unmanage device: $response"
-  fi
+# Function to unmanage a device from Jamf Pro using the new API,
+# then trigger a device check-in
+unmanage_device_jamf_new() {
+    # Validate input parameters
+    if [[ -z "$1" || -z "$2" ]]; then
+        echo "Usage: unmanage_device_jamf_new <computer_id> <auth_token>" >&2
+        exit 1
+    fi
+
+    local computer_id="$1"
+    local auth_token="$2"
+    local response
+
+    echo "DEBUG: Unmanaging device with computer ID: $computer_id" >&2
+
+    # Send the remove MDM profile command
+    response=$(curl -s -X POST \
+      -H "Authorization: Bearer $auth_token" \
+      "$JAMF_PRO_URL/api/v1/computer-inventory/$computer_id/remove-mdm-profile")
+      
+    echo "DEBUG: unmanage_device response: $response" >&2
+
+    if echo "$response" | jq -e '.commandUuid' >/dev/null; then
+        local unmanage_command_uuid
+        unmanage_command_uuid=$(echo "$response" | jq -r '.commandUuid')
+        echo "Device successfully unmanaged (MDM profile removed). Command UUID: $unmanage_command_uuid"
+    else
+        echo "Failed to unmanage device: $response" >&2
+        exit 1
+    fi
+
+}
+
+# Function to unmanage a device from Jamf Pro using the classic API,
+# then trigger a device check-in
+unmanage_device_jamf_classic() {
+    # Validate input parameters
+    if [[ -z "$1" || -z "$2" ]]; then
+        echo "Usage: unmanage_device_jamf_classic <computer_id> <auth_token>" >&2
+        exit 1
+    fi
+
+    local computer_id="$1"
+    local auth_token="$2"
+    local response
+
+    echo "DEBUG: Unmanaging device with computer ID: $computer_id" >&2
+
+    # Send the UnmanageDevice command
+    response=$(curl -s -X POST \
+      -H "Authorization: Bearer $auth_token" \
+      "$JAMF_PRO_URL/JSSResource/computercommands/command/UnmanageDevice/id/$computer_id")
+
+    echo "DEBUG: Unmanage response: $response" >&2
+
+    # Parse the XML response to extract the command UUID
+    local command_uuid
+    command_uuid=$(echo "$response" | xmllint --xpath 'string(//command_uuid)' - 2>/dev/null)
+
+    if [[ -n "$command_uuid" ]]; then
+        echo "Device successfully unmanaged (MDM profile removed). Command UUID: $command_uuid"
+    else
+        echo "Failed to unmanage device: $response" >&2
+        exit 1
+    fi
+
+}
+
+# Function to wait until management profile is removed...
+wait_for_management_profile_removal() {
+  echo "Waiting for MDM management profile removal..."
+  local timeout=1800
+  local interval=5
+  local elapsed=0
+
+  while true; do
+    # Capture the enrollment profiles output.
+    local output
+    output=$(profiles show type -enrollment 2>/dev/null)
+
+    # Check if there are no enrollment profiles or if the MDM payload is missing.
+    if echo "$output" | grep -q "There are no configuration profiles installed" || \
+       ! echo "$output" | grep -q "com.apple.mdm"; then
+      echo "MDM management profile successfully removed."
+      break
+    else
+      echo "MDM management profile still present. Retrying in ${interval} seconds..."
+    fi
+
+    sleep "${interval}"
+    elapsed=$((elapsed + interval))
+    if [ $elapsed -ge $timeout ]; then
+      echo "Timeout waiting for management profile removal." >&2
+      exit 1
+    fi
+  done
 }
 
 ############################################################
@@ -321,22 +389,40 @@ install_cp
 # 3. Prompt user to migrate
 prompt_migration  # If they exit here, we do nothing and exit
 
+# 6. Start migration dialog
+start_progress_dialog
+
 # 4. Now that user has agreed, fetch Jamf API details
 serial_number=$(get_serial_number)
+echo "Serial Number: $serial_number"
 auth_token=$(get_auth_token)
+echo "Auth Token: $auth_token"
 computer_id=$(get_computer_id "$serial_number" "$auth_token")
+echo "Computer ID: $computer_id"
 
 # 5. If computer_id is found, unmanage and remove Jamf
 if [ -n "$computer_id" ]; then
-    unmanage_device "$computer_id" "$auth_token"
-    remove_jamf_framework
+# Call unmanage function based on API version using case statement
+  case $JAMF_API_VERSION in
+      classic)
+          unmanage_device_jamf_classic "$computer_id" "$auth_token"
+          
+          ;;
+      new)
+          unmanage_device_jamf_new "$computer_id" "$auth_token"
+          ;;
+      *)
+          echo "Error: Invalid JAMF_API_VERSION specified. Must be 'classic' or 'new'" >&2
+          exit 1
+          ;;
+  esac
 else
     echo "Computer ID not found for Serial Number: $serial_number"
     exit 1
 fi
 
-# 6. Start migration dialog
-start_progress_dialog
+# Wait for management profile to be removed
+wait_for_management_profile_removal
 
 # 7. Check if ADE enrolled
 check_ade_enrollment
