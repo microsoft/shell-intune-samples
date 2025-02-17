@@ -379,20 +379,23 @@ wait_for_management_profile_removal() {
 # Start Logging before we do anything else...
 startLog
 
-# 1. Check if device is Jamf-managed
+# Check if device is Jamf-managed
 check_if_managed
 
-# 2. Install dependencies if needed
+# Check if ADE enrolled and set state so we can use it later
+check_ade_enrollment
+
+# Install dependencies if needed
 install_swiftDialog
 install_cp
 
-# 3. Prompt user to migrate
+# Prompt user to migrate
 prompt_migration  # If they exit here, we do nothing and exit
 
-# 6. Start migration dialog
+# Start migration dialog
 start_progress_dialog
 
-# 4. Now that user has agreed, fetch Jamf API details
+# Now that user has agreed, fetch Jamf API details
 serial_number=$(get_serial_number)
 echo "Serial Number: $serial_number"
 auth_token=$(get_auth_token)
@@ -400,7 +403,7 @@ echo "Auth Token: $auth_token"
 computer_id=$(get_computer_id "$serial_number" "$auth_token")
 echo "Computer ID: $computer_id"
 
-# 5. If computer_id is found, unmanage and remove Jamf
+# If computer_id is found, unmanage and remove Jamf
 if [ -n "$computer_id" ]; then
 # Call unmanage function based on API version using case statement
   case $JAMF_API_VERSION in
@@ -424,10 +427,7 @@ fi
 # Wait for management profile to be removed
 wait_for_management_profile_removal
 
-# 7. Check if ADE enrolled
-check_ade_enrollment
-
-# 8. If ADE enrolled, show message + renew profiles; else prompt for CP sign-in
+# If ADE enrolled, show message + renew profiles; else prompt for CP sign-in
 if [ "$ADE_ENROLLED" = true ]; then
     ade_enrollment_message
     renew_profiles
@@ -438,7 +438,7 @@ else
     launch_company_portal
 fi
 
-# 9. Cleanup + exit
+# Cleanup + exit
 killall Dialog 2>/dev/null || true
 killall jamf 2>/dev/null || true
 exit 0
