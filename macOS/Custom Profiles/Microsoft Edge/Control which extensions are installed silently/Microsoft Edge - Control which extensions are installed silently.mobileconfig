@@ -24,7 +24,7 @@
     <string>System</string>
     <key>PayloadContent</key>
     <array>
-      <dict>
+    <dict>
       <key>PayloadUUID</key>
       <string>0ECB22EA-31E3-439E-A840-BFB9D7D4CB34</string>
       <key>PayloadType</key>
