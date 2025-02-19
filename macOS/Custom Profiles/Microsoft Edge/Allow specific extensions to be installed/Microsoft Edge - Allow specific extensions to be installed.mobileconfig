@@ -30,7 +30,7 @@
       <key>PayloadType</key>
       <string>com.microsoft.Edge</string>
       <key>PayloadOrganization</key>
-      <string>Google LLC</string>
+      <string>Microsoft Corporation</string>
       <key>PayloadIdentifier</key>
       <string>com.microsoft.Edge.6C84B9EB-9808-4156-AC42-6C10A5D8F4B3</string>
       <key>PayloadDisplayName</key>
