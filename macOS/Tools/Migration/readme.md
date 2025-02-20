@@ -4,8 +4,7 @@ This script facilitates the migration of macOS devices from Jamf to Microsoft In
 
 ---
 
-https://github.com/user-attachments/assets/7df67281-de0b-4e6e-987b-b1ce870524e0
-
+https://github.com/user-attachments/assets/5669bd8d-7642-4321-bc46-cd38b97e28a6
 
 ## General Usage
 
