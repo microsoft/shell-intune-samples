@@ -298,6 +298,11 @@ unmanage_device_jamf_new() {
         local unmanage_command_uuid
         unmanage_command_uuid=$(echo "$response" | jq -r '.commandUuid')
         echo "Device successfully unmanaged (MDM profile removed). Command UUID: $unmanage_command_uuid"
+
+        # Remove the Jamf framework
+        echo "Removing the Jamf framework..."
+        remove_jamf_framework
+
     else
         echo "Failed to unmanage device: $response" >&2
         exit 1
@@ -333,6 +338,10 @@ unmanage_device_jamf_classic() {
 
     if [[ -n "$command_uuid" ]]; then
         echo "Device successfully unmanaged (MDM profile removed). Command UUID: $command_uuid"
+
+        # Remove the Jamf framework
+        echo "Removing the Jamf framework..."
+        remove_jamf_framework
     else
         echo "Failed to unmanage device: $response" >&2
         exit 1
