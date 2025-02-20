@@ -172,7 +172,6 @@ prompt_migration() {
 start_progress_dialog() {
   COMMAND_FILE="/tmp/dialog_command"
   echo "Initializing migration..." > "$COMMAND_FILE"
-  
   /usr/local/bin/dialog \
     --bannertitle "Device Migration in Progress" \
     --icon /Applications/Company\ Portal.app/Contents/Resources/AppIcon.icns \
@@ -447,7 +446,5 @@ else
     launch_company_portal
 fi
 
-# Cleanup + exit
-killall Dialog 2>/dev/null || true
-killall jamf 2>/dev/null || true
+
 exit 0
