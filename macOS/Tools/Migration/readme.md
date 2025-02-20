@@ -4,7 +4,7 @@ This script facilitates the migration of macOS devices from Jamf to Microsoft In
 
 ---
 
-https://github.com/user-attachments/assets/9f788360-61be-4c9f-93c3-9e4018d45194
+https://github.com/microsoft/shell-intune-samples/raw/refs/heads/master/macOS/Tools/Migration/intuneMigrationDemo.mp4
 
 ## General Usage
 
