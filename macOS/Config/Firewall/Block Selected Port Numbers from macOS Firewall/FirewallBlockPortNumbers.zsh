@@ -20,7 +20,6 @@
 appname="FirewallBlockPortNumbers"                                                                          # The name of our script
 logandmetadir="/Library/Logs/Microsoft/IntuneScripts/$appname"                                              # The location of our logs and last updated data
 log="$logandmetadir/$appname.log"                                                                           # The location of the script log file
-abmcheck=true                                                                                               # Run this script if this device is NOT ABM manage
 port135_tcp=true                                                                                            # Blocks Port Number 135 TCP used by Microsoft RPC, which can be exploited for remote code execution.
 port135_udp=true                                                                                            # Blocks Port Number 135 UDP used by Microsoft RPC, which can be exploited for remote code execution.
 port137_139_tcp=true                                                                                        # Blocks Port Numbers 137-139 TCP used by NetBIOS, which can be a vector for various attacks.
@@ -347,17 +346,6 @@ echo "# $(date) | Starting running of script $appname"
 echo "############################################################"
 echo ""
 
-# Is this an ABM DEP device?
-if [ "$abmcheck" = true ]; then
-  echo "$(date) | Checking MDM Profile Type"
-  profiles status -type enrollment | grep "Enrolled via DEP: Yes"
-  if [ $? -ne 0 ]; then
-    echo "$(date) | This device is not ABM managed. This means that the device is a BYOD device. This script needs to be run. Let's continue..."
-  else
-    echo "$(date) | Device is ABM Managed. No need to run this script. Closing script..."
-    exit 0
-  fi
-fi
 # Backup cp.conf
 backup
 
@@ -444,3 +432,7 @@ if [ "$port23_tcp" = true ]; then
 else
     echo "$(date) | Skipping disabling Port Number 23 TCP..."
 fi
+
+# Closing script
+echo "$(date) | Done. Closing script...
+exit 0
