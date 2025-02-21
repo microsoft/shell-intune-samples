@@ -16,8 +16,6 @@ This custom script blocks following port numbers from macOS Firewall:
 | 20-21 (UDP) | FTP | Blocks Port Numbers 20-21 UDP used by FTP, which can be insecure if not properly configured. |
 | 23 (TCP) | Telnet | Blocks Port Numbers 23 TCP used by Telnet, which transmits data in plaintext and is insecure. |
 
-**Note:** This script have been developed only for BYOD-devices (devices that are not Apple Business Manager -managed). If you want to deploy this to Apple Business Manager -managed devices, please test the script and do necessary changes. If you organization is using e.g. Illumio VEN, you don't need to deploy this script, use Illumio VEN instead.
-
 ## Script workflow diagram
 
 Here is the workflow of the script (click to enlarge the image):
@@ -41,8 +39,6 @@ The log file will output to ***/Library/Logs/Microsoft/IntuneScripts/FirewallBlo
 # Sun Feb 16 23:16:14 PST 2025 | Starting running of script FirewallBlockPortNumbers
 ############################################################
 
-Sun Feb 16 23:16:14 PST 2025 | Checking MDM Profile Type
-Sun Feb 16 23:16:15 PST 2025 | This device is not ABM managed. This means that the device is a BYOD device. This script needs to be run. Let's continue...
 Sun Feb 16 23:16:15 PST 2025 | Backing up firewall configurations...
 Sun Feb 16 23:16:15 PST 2025 | Done.
 Sun Feb 16 23:16:15 PST 2025 | Disabling port 135/tcp permanently...
@@ -77,4 +73,5 @@ Sun Feb 16 23:16:16 PST 2025 | Disabling port 21/udp in pf.conf...
 Sun Feb 16 23:16:16 PST 2025 | Ports 20 21/udp have been disabled permanently in pf.conf.
 Sun Feb 16 23:16:16 PST 2025 | Disabling port 23/tcp permanently...
 Sun Feb 16 23:16:16 PST 2025 | Port 23/tcp has been disabled permanently.
+Sun Feb 16 23:16:16 PST 2025 | Done. Closing script...
 ```
