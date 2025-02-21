@@ -6,7 +6,7 @@ This custom script blocks following port numbers from macOS Firewall:
 | 135 (TCP) | Remote Procedure Call (RPC) Endpoint Mapper service | Blocks Port Number 135 TCP used by Microsoft RPC, which can be exploited for remote code execution. |
 | 135 (UDP) | Remote Procedure Call (RPC) Endpoint Mapper service | Blocks Port Number 135 UDP used by Microsoft RPC, which can be exploited for remote code execution. |
 | 137-139 (TCP) | NetBIOS| Blocks Port Numbers 137-139 TCP used by NetBIOS, which can be a vector for various attacks. |
-| 137-139 (UDP) | netBIOS | Blocks Port Numbers 137-139 UDP used by NetBIOS, which can be a vector for various attacks. |
+| 137-139 (UDP) | NetBIOS | Blocks Port Numbers 137-139 UDP used by NetBIOS, which can be a vector for various attacks. |
 | 445 (TCP) | Microsoft-DS (Active Directory, Windows shares)| Blocks Port Number 445 TCP used by Microsoft-DS (Active Directory, Windows shares), which is often targeted by malware. |
 | 1433-1434 (TCP) | Microsoft SQL Server | Blocks Port Numbers 1433-1434 TCP used by Microsoft SQL Server, which can be exploited if not properly secured. |
 | 1433-1434 (UDP) | Microsoft SQL Server | Blocks Port Numbers 1433-1434 UDP used by Microsoft SQL Server, which can be exploited if not properly secured. |
