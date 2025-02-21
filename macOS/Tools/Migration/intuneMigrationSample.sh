@@ -172,7 +172,6 @@ prompt_migration() {
 start_progress_dialog() {
   COMMAND_FILE="/tmp/dialog_command"
   echo "Initializing migration..." > "$COMMAND_FILE"
-  
   /usr/local/bin/dialog \
     --bannertitle "Device Migration in Progress" \
     --icon /Applications/Company\ Portal.app/Contents/Resources/AppIcon.icns \
@@ -298,6 +297,11 @@ unmanage_device_jamf_new() {
         local unmanage_command_uuid
         unmanage_command_uuid=$(echo "$response" | jq -r '.commandUuid')
         echo "Device successfully unmanaged (MDM profile removed). Command UUID: $unmanage_command_uuid"
+
+        # Remove the Jamf framework
+        echo "Removing the Jamf framework..."
+        remove_jamf_framework
+
     else
         echo "Failed to unmanage device: $response" >&2
         exit 1
@@ -333,6 +337,10 @@ unmanage_device_jamf_classic() {
 
     if [[ -n "$command_uuid" ]]; then
         echo "Device successfully unmanaged (MDM profile removed). Command UUID: $command_uuid"
+
+        # Remove the Jamf framework
+        echo "Removing the Jamf framework..."
+        remove_jamf_framework
     else
         echo "Failed to unmanage device: $response" >&2
         exit 1
@@ -438,7 +446,5 @@ else
     launch_company_portal
 fi
 
-# Cleanup + exit
-killall Dialog 2>/dev/null || true
-killall jamf 2>/dev/null || true
+
 exit 0
