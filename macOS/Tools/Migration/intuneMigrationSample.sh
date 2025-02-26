@@ -69,6 +69,49 @@ function startLog() {
     exec > >(tee -a "$LOG") 2>&1
 }
 
+# Function to check if jq is installed, and if not, install it
+check_and_install_jq() {
+  if ! command -v jq &> /dev/null; then
+    echo "jq not found. Installing jq..."
+
+    # If Homebrew is available, use it
+    if command -v brew &> /dev/null; then
+      echo "Homebrew detected. Installing jq with brew..."
+      brew install jq
+    else
+      # If brew is not installed, attempt a direct download
+      echo "Homebrew not detected. Downloading jq binary from GitHub..."
+      JQ_TEMP_DIR="/tmp/jq_install"
+      mkdir -p "$JQ_TEMP_DIR"
+      
+      # For Apple Silicon / Intel detection:
+      ARCH=$(uname -m)
+        if [[ $ARCH == "arm64" ]]; then
+        JQ_URL="https://github.com/jqlang/jq/releases/download/jq-1.7.1/jq-macos-arm64"
+        else
+        JQ_URL="https://github.com/stedolan/jq/releases/latest/download/jq-osx-amd64"
+        fi
+
+      curl -L "$JQ_URL" -o "$JQ_TEMP_DIR/jq"
+      
+      # Move the downloaded binary to /usr/local/bin (or /usr/local/bin could be replaced with /usr/bin/local on older systems)
+      chmod +x "$JQ_TEMP_DIR/jq"
+      sudo mv "$JQ_TEMP_DIR/jq" /usr/local/bin/jq
+      rm -rf "$JQ_TEMP_DIR"
+    fi
+
+    # Verify installation
+    if command -v jq &> /dev/null; then
+      echo "jq was successfully installed."
+    else
+      echo "Failed to install jq. Please install it manually."
+      exit 1
+    fi
+  else
+    echo "jq is already installed."
+  fi
+}
+
 # Function to check and install swiftDialog if not present
 install_swiftDialog() {
   if [ ! -f "/usr/local/bin/dialog" ]; then
@@ -84,7 +127,7 @@ install_swiftDialog() {
 
 # Function to check and install Company Portal if not present
 install_cp() {
-  if [ ! -f "/Applications/Company Portal.app" ]; then
+  if [ ! -d "/Applications/Company Portal.app" ]; then
     echo "Company Portal not found. Installing Company Portal..."
     curl -L -o /tmp/cp.pkg "https://go.microsoft.com/fwlink?linkid=853070"
     sudo installer -pkg /tmp/cp.pkg -target /
@@ -394,8 +437,9 @@ check_if_managed
 check_ade_enrollment
 
 # Install dependencies if needed
-install_swiftDialog
 install_cp
+install_swiftDialog
+check_and_install_jq
 
 # Prompt user to migrate
 prompt_migration  # If they exit here, we do nothing and exit
