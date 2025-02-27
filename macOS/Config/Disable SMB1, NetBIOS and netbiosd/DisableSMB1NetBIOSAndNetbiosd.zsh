@@ -37,18 +37,18 @@ DisableSMB1NetBIOSAndNetbiosd() {
 echo  "$(date) | Disabling SMB1 and NetBIOS..."
 ## Check if "/etc/nsmb.conf" existed
 if [ -f "$file" ]; then
-    echo "$file exists. Let's proceed..."
+    echo "$(date) | $file exists. Let's proceed..."
 else
     ## Creates /etc/nsmb.conf if not existed
-    echo "$file does not exist. Creating file..."
-    echo "[default]" | tee -a $file
+    echo "$(date) | $file does not exist. Creating file..."
+    echo "[default]" | tee -a $file > /dev/null
     ## Lock negotiation to SMB2/3 only
     ## 7 == 0111  SMB 1/2/3 should be enabled
     ## 6 == 0110  SMB 2/3 should be enabled
     ## 4 == 0100  SMB 3 should be enabled
-    echo "protocol_vers_map=6" | tee -a $file
+    echo "protocol_vers_map=6" | tee -a $file > /dev/null
     ## No SMB1, so we disable NetBIOS
-    echo "port445=no_netbios" | tee -a /etc/nsmb.conf
+    echo "port445=no_netbios" | tee -a /etc/nsmb.conf > /dev/null
 fi
 
 ## Disable netbiosd name registration
