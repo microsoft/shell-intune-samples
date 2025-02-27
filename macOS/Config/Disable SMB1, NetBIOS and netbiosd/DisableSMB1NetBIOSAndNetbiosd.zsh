@@ -56,8 +56,8 @@ echo  "$(date) | Disabling SMB1 and NetBIOS..."
 echo "port445=no_netbios" | tee -a /etc/nsmb.conf
 
 ## Disable netbiosd name registration
-launchctl disable system/netbiosd 2>/dev/null
-launchctl unload -w /System/Library/LaunchDaemons/com.apple.netbiosd.plist 2>/dev/null
+launchctl disable system/netbiosd 2> /dev/null
+launchctl unload -w /System/Library/LaunchDaemons/com.apple.netbiosd.plist 2> /dev/null
 echo  "$(date) | SMB1, NetBIOS and netbiosd is disabled or already disabled. Closing script..." 
 }
 
