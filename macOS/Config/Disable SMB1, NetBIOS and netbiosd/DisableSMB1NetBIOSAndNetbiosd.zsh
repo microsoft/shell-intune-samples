@@ -56,6 +56,7 @@ if [ -f "$file" ]; then
         echo "protocol_vers_map=6" | tee -a "$file" > /dev/null
     fi
     # Check if port445 is set to no_netbios or missing
+    ## No SMB1, so we disable NetBIOS
         if grep -q "^port445=" "$file"; then
             current_value2=$(grep -E "^port445=" "$file" | cut -d'=' -f2)
             if [ "$current_value2" != "no_netbios" ]; then
