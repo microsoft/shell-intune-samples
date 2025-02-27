@@ -84,7 +84,7 @@ fi
 ## Disable netbiosd name registration
 launchctl disable system/netbiosd 2> /dev/null
 launchctl unload -w /System/Library/LaunchDaemons/com.apple.netbiosd.plist 2> /dev/null
-echo  "$(date) | SMB1, NetBIOS and netbiosd is disabled or already disabled. Closing script..." 
+echo  "$(date) | SMB1, NetBIOS and netbiosd is now disabled or already disabled. Closing script..." 
 }
 
 # Start logging
