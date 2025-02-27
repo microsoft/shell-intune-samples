@@ -44,9 +44,9 @@ if [ -f "$file" ]; then
     ## 6 == 0110  SMB 2/3 should be enabled
     ## 4 == 0100  SMB 3 should be enabled
     if grep -q "^protocol_vers_map=" "$file"; then
-        current_value=$(grep -E "^protocol_vers_map=" "$file" | cut -d'=' -f2)
-        if [ "$current_value" != "6" ]; then
-            echo "$(date) | protocol_vers_map is set to $current_value. Changing it to 6..."
+        current_value1=$(grep -E "^protocol_vers_map=" "$file" | cut -d'=' -f2)
+        if [ "$current_value1" != "6" ]; then
+            echo "$(date) | protocol_vers_map is set to $current_value1. Changing it to 6..."
             sed -i '' 's/^protocol_vers_map=.*/protocol_vers_map=6/' "$file"
         else
             echo "$(date) | protocol_vers_map is already set to 6."
@@ -55,6 +55,19 @@ if [ -f "$file" ]; then
         echo "$(date) | protocol_vers_map is missing. Adding it..."
         echo "protocol_vers_map=6" | tee -a "$file" > /dev/null
     fi
+    # Check if port445 is set to no_netbios or missing
+        if grep -q "^port445=" "$file"; then
+            current_value2=$(grep -E "^port445=" "$file" | cut -d'=' -f2)
+            if [ "$current_value2" != "no_netbios" ]; then
+                echo "$(date) | port445 is set to $current_value2. Changing it to no_netbios..."
+                sed -i '' 's/^port445=.*/port445=no_netbios/' "$file"
+            else
+                echo "$(date) | port445 is already set to no_netbios."
+            fi
+        else
+            echo "$(date) | port445 is missing. Adding it..."
+            echo "port445=no_netbios" | tee -a "$file" > /dev/null
+        fi
 else
     ## Creates /etc/nsmb.conf if not existed
     echo "$(date) | $file does not exist. Creating file..."
