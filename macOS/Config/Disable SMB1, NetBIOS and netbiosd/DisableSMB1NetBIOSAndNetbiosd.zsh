@@ -35,22 +35,23 @@ fi
 DisableSMB1NetBIOSAndNetbiosd() {
 echo  "$(date) | Disabling SMB1 and NetBIOS..." 
 ## Check if protocol_vers_map is defined and correct it if necessary
-if grep -q "protocol_vers_map=6" /etc/nsmb.conf; then
-    echo "$(date) | protocol_vers_map=6 is already defined in /etc/nsmb.conf. No changes needed."
-else
-    if grep -q "protocol_vers_map=" /etc/nsmb.conf; then
-        echo "$(date) | protocol_vers_map is defined with a different value. Correcting it to protocol_vers_map=6."
-        sed -i '' 's/protocol_vers_map=.*/protocol_vers_map=6/' /etc/nsmb.conf
+    if grep -q "protocol_vers_map=6" /etc/nsmb.conf; then
+        echo "$(date) | protocol_vers_map=6 is already defined in /etc/nsmb.conf. No changes needed."
     else
-        ## Creates /etc/nsmb.conf if not existed
-        echo "[default]" | tee -a /etc/nsmb.conf
+        if grep -q "protocol_vers_map=" /etc/nsmb.conf; then
+            echo "$(date) | protocol_vers_map is defined with a different value. Correcting it to protocol_vers_map=6."
+            sed -i '' 's/protocol_vers_map=.*/protocol_vers_map=6/' /etc/nsmb.conf
+        else
+            ## Creates /etc/nsmb.conf if not existed
+            echo "[default]" | tee -a /etc/nsmb.conf
 
-        ## Lock negotiation to SMB2/3 only
-        ## 7 == 0111  SMB 1/2/3 should be enabled
-        ## 6 == 0110  SMB 2/3 should be enabled
-        ## 4 == 0100  SMB 3 should be enabled
-        echo "protocol_vers_map=6" | tee -a /etc/nsmb.conf
-
+            ## Lock negotiation to SMB2/3 only
+            ## 7 == 0111  SMB 1/2/3 should be enabled
+            ## 6 == 0110  SMB 2/3 should be enabled
+            ## 4 == 0100  SMB 3 should be enabled
+            echo "protocol_vers_map=6" | tee -a /etc/nsmb.conf
+        fi
+    fi
 ## No SMB1, so we disable NetBIOS
 echo "port445=no_netbios" | tee -a /etc/nsmb.conf
 
