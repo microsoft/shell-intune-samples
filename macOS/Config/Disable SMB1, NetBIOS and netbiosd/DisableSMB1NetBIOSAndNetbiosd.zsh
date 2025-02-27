@@ -20,7 +20,7 @@
 appname="DisableSMB1NetBIOSAndNetbiosd"                                 # The name of our script
 logandmetadir="/Library/Logs/Microsoft/IntuneScripts/$appname"          # The location of our logs and last updated data
 log="$logandmetadir/$appname.log"                                       # The location of the script log file
-file="/etc/nsmb.conf"
+file="/etc/nsmb.conf"                                                   # File, that we are processing on this script
 
 # Check if the log directory has been created
 if [ -d $logandmetadir ]; then
