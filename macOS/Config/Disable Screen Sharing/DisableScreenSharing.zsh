@@ -33,8 +33,8 @@ fi
 
 # Disables Screen Sharing
 DisableScreenSharing() {
-/bin/launchctl disable system/com.apple.screensharing
-/bin/launchctl bootout system/com.apple.screensharing
+/bin/launchctl disable system/com.apple.screensharing 2> /dev/null
+/bin/launchctl bootout system/com.apple.screensharing 2> /dev/null
 echo "$(date) | Screen Sharing via VNC is now disabled or already disabled. Closing script..."
 }
 
