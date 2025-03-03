@@ -110,9 +110,9 @@ port137_139_tcp() {
     for PORT in "${PORTS[@]}"; do
         RULE="block in proto $PROTO from any to any port $PORT"
         if grep -q "$RULE" $PF_CONF; then
-            echo "$(date) | Port $PORT/$PROTO is already disabled in pf.conf."
+            echo "$(date) | Port $PORT/$PROTO is already disabled."
         else
-            echo "$(date) | Disabling port $PORT/$PROTO in pf.conf..."
+            echo "$(date) | Disabling port $PORT/$PROTO permanently..."
             echo "$RULE" | sudo tee -a $PF_CONF > /dev/null
         fi
     done
@@ -121,7 +121,7 @@ port137_139_tcp() {
     pfctl -f $PF_CONF >/dev/null 2>&1
     pfctl -E >/dev/null 2>&1
 
-    echo "$(date) | Ports ${PORTS[*]}/$PROTO have been disabled permanently in pf.conf."
+    echo "$(date) | Ports ${PORTS[*]}/$PROTO have been disabled permanently."
 }
 
 # Function for blocking Port Numbers 137-139 UDP
@@ -134,9 +134,9 @@ port137_139_udp() {
     for PORT in "${PORTS[@]}"; do
         RULE="block in proto $PROTO from any to any port $PORT"
         if grep -q "$RULE" $PF_CONF; then
-            echo "$(date) | Port $PORT1/$PROTO is already disabled in pf.conf."
+            echo "$(date) | Port $PORT1/$PROTO is already disabled."
         else
-            echo "$(date) | Disabling port $PORT/$PROTO in pf.conf..."
+            echo "$(date) | Disabling port $PORT/$PROTO permanently..."
             echo "$RULE" | sudo tee -a $PF_CONF > /dev/null
         fi
     done
@@ -145,7 +145,7 @@ port137_139_udp() {
     pfctl -f $PF_CONF >/dev/null 2>&1
     pfctl -E >/dev/null 2>&1
 
-    echo "$(date) | Ports ${PORTS[*]}/$PROTO have been disabled permanently in pf.conf."
+    echo "$(date) | Ports ${PORTS[*]}/$PROTO have been disabled permanently."
 }
 
 # Function for blocking Port Number 445 TCP
@@ -181,9 +181,9 @@ port1433_1434_tcp() {
     for PORT in "${PORTS[@]}"; do
         RULE="block in proto $PROTO from any to any port $PORT"
         if grep -q "$RULE" $PF_CONF; then
-            echo "$(date) | Port $PORT/$PROTO is already disabled in pf.conf."
+            echo "$(date) | Port $PORT/$PROTO is already disabled."
         else
-            echo "$(date) | Disabling port $PORT/$PROTO in pf.conf..."
+            echo "$(date) | Disabling port $PORT/$PROTO permanently..."
             echo "$RULE" | sudo tee -a $PF_CONF > /dev/null
         fi
     done
@@ -192,7 +192,7 @@ port1433_1434_tcp() {
     pfctl -f $PF_CONF >/dev/null 2>&1
     pfctl -E >/dev/null 2>&1
 
-    echo "$(date) | Ports ${PORTS[*]}/$PROTO have been disabled permanently in pf.conf."
+    echo "$(date) | Ports ${PORTS[*]}/$PROTO have been disabled permanently."
 }
 
 # Function for blocking Port Numbers 1433-1434 UDP
@@ -205,9 +205,9 @@ port1433_1434_udp() {
     for PORT in "${PORTS[@]}"; do
         RULE="block in proto $PROTO from any to any port $PORT"
         if grep -q "$RULE" $PF_CONF; then
-            echo "$(date) | Port $PORT1/$PROTO is already disabled in pf.conf."
+            echo "$(date) | Port $PORT1/$PROTO is already disabled."
         else
-            echo "$(date) | Disabling port $PORT/$PROTO in pf.conf..."
+            echo "$(date) | Disabling port $PORT/$PROTO permanently..."
             echo "$RULE" | sudo tee -a $PF_CONF > /dev/null
         fi
     done
@@ -216,7 +216,7 @@ port1433_1434_udp() {
     pfctl -f $PF_CONF >/dev/null 2>&1
     pfctl -E >/dev/null 2>&1
 
-    echo "$(date) | Ports ${PORTS[*]}/$PROTO have been disabled permanently in pf.conf."
+    echo "$(date) | Ports ${PORTS[*]}/$PROTO have been disabled permanently."
 }
 
 # Function for blocking Port Number 3389 TCP
@@ -275,9 +275,9 @@ port20_21_tcp() {
     for PORT in "${PORTS[@]}"; do
         RULE="block in proto $PROTO from any to any port $PORT"
         if grep -q "$RULE" $PF_CONF; then
-            echo "$(date) | Port $PORT/$PROTO is already disabled in pf.conf."
+            echo "$(date) | Port $PORT/$PROTO is already disabled."
         else
-            echo "$(date) | Disabling port $PORT/$PROTO in pf.conf..."
+            echo "$(date) | Disabling port $PORT/$PROTO permanently..."
             echo "$RULE" | sudo tee -a $PF_CONF > /dev/null
         fi
     done
@@ -286,7 +286,7 @@ port20_21_tcp() {
     pfctl -f $PF_CONF >/dev/null 2>&1
     pfctl -E >/dev/null 2>&1
 
-    echo "$(date) | Ports ${PORTS[*]}/$PROTO have been disabled permanently in pf.conf."
+    echo "$(date) | Ports ${PORTS[*]}/$PROTO have been disabled permanently."
 }
 
 # Function for blocking Port Numbers 20-21 UDP
@@ -299,9 +299,9 @@ port20_21_udp() {
     for PORT in "${PORTS[@]}"; do
         RULE="block in proto $PROTO from any to any port $PORT"
         if grep -q "$RULE" $PF_CONF; then
-            echo "$(date) | Port $PORT1/$PROTO is already disabled in pf.conf."
+            echo "$(date) | Port $PORT1/$PROTO is already disabled."
         else
-            echo "$(date) | Disabling port $PORT/$PROTO in pf.conf..."
+            echo "$(date) | Disabling port $PORT/$PROTO permanently..."
             echo "$RULE" | sudo tee -a $PF_CONF > /dev/null
         fi
     done
@@ -310,7 +310,7 @@ port20_21_udp() {
     pfctl -f $PF_CONF >/dev/null 2>&1
     pfctl -E >/dev/null 2>&1
 
-    echo "$(date) | Ports ${PORTS[*]}/$PROTO have been disabled permanently in pf.conf."
+    echo "$(date) | Ports ${PORTS[*]}/$PROTO have been disabled permanently."
 }
 
 # Function for blocking Port Number 23 TCP
