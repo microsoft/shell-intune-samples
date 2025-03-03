@@ -434,5 +434,5 @@ else
 fi
 
 # Closing script
-echo "$(date) | Done. Closing script...
+echo "$(date) | Done. Closing script..."
 exit 0
