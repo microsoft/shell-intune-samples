@@ -17,5 +17,11 @@
 ## of such damages.
 ## Feedback: neiljohn@microsoft.com
 
-batteryCondition=$(system_profiler SPPowerDataType | grep "Condition:" | sed 's/.*Condition: //')
-echo $batteryCondition
+# Check if system profiler output contains battery information
+if system_profiler SPPowerDataType | grep -q "Battery Information"; then
+    # Extract and print battery condition
+    condition=$(system_profiler SPPowerDataType | awk -F': ' '/Condition:/ {print $2}')
+    echo "${condition:-Unknown}"
+else
+    echo "No Battery"
+fi
