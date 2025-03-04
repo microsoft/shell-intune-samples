@@ -59,18 +59,19 @@ port135_tcp() {
     PORT=135
     PROTO="tcp"
     RULE="block in proto $PROTO from any to any port $PORT"
+    PF_CONF="/etc/pf.conf"
 
     # Check if the rule already exists in /etc/pf.conf
-    if grep -q "$RULE" /etc/pf.conf; then
+    if grep -q "$RULE" $PF_CONF; then
         echo "$(date) | Port $PORT/$PROTO is already disabled."
     else
         echo "$(date) | Disabling port $PORT/$PROTO permanently..."
 
         # Append the rule to /etc/pf.conf
-        echo "$RULE" | tee -a /etc/pf.conf > /dev/null
+        echo "$RULE" | tee -a $PF_CONF > /dev/null
 
         # Reload pf rules
-        pfctl -f /etc/pf.conf >/dev/null 2>&1
+        pfctl -f $PF_CONF >/dev/null 2>&1
         pfctl -E >/dev/null 2>&1
 
         echo "$(date) | Port $PORT/$PROTO has been disabled permanently."
@@ -82,18 +83,19 @@ port135_udp() {
     PORT=135
     PROTO="udp"
     RULE="block in proto $PROTO from any to any port $PORT"
+    PF_CONF="/etc/pf.conf"
 
     # Check if the rule already exists in /etc/pf.conf
-    if grep -q "$RULE" /etc/pf.conf; then
+    if grep -q "$RULE" $PF_CONF; then
         echo "$(date) | Port $PORT/$PROTO is already disabled."
     else
         echo "$(date) | Disabling port $PORT/$PROTO permanently..."
 
         # Append the rule to /etc/pf.conf
-        echo "$RULE" | tee -a /etc/pf.conf > /dev/null
+        echo "$RULE" | tee -a $PF_CONF > /dev/null
 
         # Reload pf rules
-        pfctl -f /etc/pf.conf >/dev/null 2>&1
+        pfctl -f $PF_CONF >/dev/null 2>&1
         pfctl -E >/dev/null 2>&1
 
         echo "$(date) | Port $PORT/$PROTO has been disabled permanently."
@@ -113,15 +115,17 @@ port137_139_tcp() {
             echo "$(date) | Port $PORT/$PROTO is already disabled."
         else
             echo "$(date) | Disabling port $PORT/$PROTO permanently..."
+
+            # Append the rule to /etc/pf.conf
             echo "$RULE" | sudo tee -a $PF_CONF > /dev/null
+            
+            # Reload pf rules
+            pfctl -f $PF_CONF >/dev/null 2>&1
+            pfctl -E >/dev/null 2>&1
+
+            echo "$(date) | Port ${PORT[*]}/$PROTO have been disabled permanently."
         fi
     done
-
-    # Reload pf rules
-    pfctl -f $PF_CONF >/dev/null 2>&1
-    pfctl -E >/dev/null 2>&1
-
-    echo "$(date) | Ports ${PORTS[*]}/$PROTO have been disabled permanently."
 }
 
 # Function for blocking Port Numbers 137-139 UDP
@@ -134,18 +138,20 @@ port137_139_udp() {
     for PORT in "${PORTS[@]}"; do
         RULE="block in proto $PROTO from any to any port $PORT"
         if grep -q "$RULE" $PF_CONF; then
-            echo "$(date) | Port $PORT1/$PROTO is already disabled."
+            echo "$(date) | Port $PORT/$PROTO is already disabled."
         else
-            echo "$(date) | Disabling port $PORT/$PROTO permanently..."
-            echo "$RULE" | sudo tee -a $PF_CONF > /dev/null
+           echo "$(date) | Disabling port $PORT/$PROTO permanently..."
+
+           # Append the rule to /etc/pf.conf
+           echo "$RULE" | sudo tee -a $PF_CONF > /dev/null
+
+           # Reload pf rules
+           pfctl -f $PF_CONF >/dev/null 2>&1
+           pfctl -E >/dev/null 2>&1
+
+           echo "$(date) | Port ${PORT[*]}/$PROTO have been disabled permanently."
         fi
     done
-
-    # Reload pf rules
-    pfctl -f $PF_CONF >/dev/null 2>&1
-    pfctl -E >/dev/null 2>&1
-
-    echo "$(date) | Ports ${PORTS[*]}/$PROTO have been disabled permanently."
 }
 
 # Function for blocking Port Number 445 TCP
@@ -153,18 +159,19 @@ port445_tcp() {
     PORT=445
     PROTO="tcp"
     RULE="block in proto $PROTO from any to any port $PORT"
+    PF_CONF="/etc/pf.conf"
 
     # Check if the rule already exists in /etc/pf.conf
-    if grep -q "$RULE" /etc/pf.conf; then
+    if grep -q "$RULE" $PF_CONF; then
         echo "$(date) | Port $PORT/$PROTO is already disabled."
     else
         echo "$(date) | Disabling port $PORT/$PROTO permanently..."
 
         # Append the rule to /etc/pf.conf
-        echo "$RULE" | tee -a /etc/pf.conf > /dev/null
+        echo "$RULE" | tee -a $PF_CONF > /dev/null
 
         # Reload pf rules
-        pfctl -f /etc/pf.conf >/dev/null 2>&1
+        pfctl -f $PF_CONF >/dev/null 2>&1
         pfctl -E >/dev/null 2>&1
 
         echo "$(date) | Port $PORT/$PROTO has been disabled permanently."
@@ -183,16 +190,18 @@ port1433_1434_tcp() {
         if grep -q "$RULE" $PF_CONF; then
             echo "$(date) | Port $PORT/$PROTO is already disabled."
         else
-            echo "$(date) | Disabling port $PORT/$PROTO permanently..."
-            echo "$RULE" | sudo tee -a $PF_CONF > /dev/null
+           echo "$(date) | Disabling port $PORT/$PROTO permanently..."
+
+           # Append the rule to /etc/pf.conf
+           echo "$RULE" | sudo tee -a $PF_CONF > /dev/null
+
+           # Reload pf rules
+           pfctl -f $PF_CONF >/dev/null 2>&1
+           pfctl -E >/dev/null 2>&1
+
+           echo "$(date) | Port ${PORT[*]}/$PROTO have been disabled permanently."
         fi
     done
-
-    # Reload pf rules
-    pfctl -f $PF_CONF >/dev/null 2>&1
-    pfctl -E >/dev/null 2>&1
-
-    echo "$(date) | Ports ${PORTS[*]}/$PROTO have been disabled permanently."
 }
 
 # Function for blocking Port Numbers 1433-1434 UDP
@@ -205,18 +214,20 @@ port1433_1434_udp() {
     for PORT in "${PORTS[@]}"; do
         RULE="block in proto $PROTO from any to any port $PORT"
         if grep -q "$RULE" $PF_CONF; then
-            echo "$(date) | Port $PORT1/$PROTO is already disabled."
+            echo "$(date) | Port $PORT/$PROTO is already disabled."
         else
-            echo "$(date) | Disabling port $PORT/$PROTO permanently..."
-            echo "$RULE" | sudo tee -a $PF_CONF > /dev/null
+           echo "$(date) | Disabling port $PORT/$PROTO permanently..."
+
+           # Append the rule to /etc/pf.conf
+           echo "$RULE" | sudo tee -a $PF_CONF > /dev/null
+
+           # Reload pf rules
+           pfctl -f $PF_CONF >/dev/null 2>&1
+           pfctl -E >/dev/null 2>&1
+
+           echo "$(date) | Port ${PORT[*]}/$PROTO have been disabled permanently."
         fi
     done
-
-    # Reload pf rules
-    pfctl -f $PF_CONF >/dev/null 2>&1
-    pfctl -E >/dev/null 2>&1
-
-    echo "$(date) | Ports ${PORTS[*]}/$PROTO have been disabled permanently."
 }
 
 # Function for blocking Port Number 3389 TCP
@@ -224,18 +235,19 @@ port3389_tcp() {
     PORT=3389
     PROTO="tcp"
     RULE="block in proto $PROTO from any to any port $PORT"
+    PF_CONF="/etc/pf.conf"
 
     # Check if the rule already exists in /etc/pf.conf
-    if grep -q "$RULE" /etc/pf.conf; then
+    if grep -q "$RULE" $PF_CONF; then
         echo "$(date) | Port $PORT/$PROTO is already disabled."
     else
         echo "$(date) | Disabling port $PORT/$PROTO permanently..."
 
         # Append the rule to /etc/pf.conf
-        echo "$RULE" | tee -a /etc/pf.conf > /dev/null
+        echo "$RULE" | tee -a $PF_CONF > /dev/null
 
         # Reload pf rules
-        pfctl -f /etc/pf.conf >/dev/null 2>&1
+        pfctl -f $PF_CONF >/dev/null 2>&1
         pfctl -E >/dev/null 2>&1
 
         echo "$(date) | Port $PORT/$PROTO has been disabled permanently."
@@ -247,18 +259,19 @@ port1900_udp() {
     PORT=1900
     PROTO="udp"
     RULE="block in proto $PROTO from any to any port $PORT"
+    PF_CONF="/etc/pf.conf"
 
     # Check if the rule already exists in /etc/pf.conf
-    if grep -q "$RULE" /etc/pf.conf; then
+    if grep -q "$RULE" $PF_CONF; then
         echo "$(date) | Port $PORT/$PROTO is already disabled."
     else
         echo "$(date) | Disabling port $PORT/$PROTO permanently..."
 
         # Append the rule to /etc/pf.conf
-        echo "$RULE" | tee -a /etc/pf.conf > /dev/null
+        echo "$RULE" | tee -a $PF_CONF > /dev/null
 
         # Reload pf rules
-        pfctl -f /etc/pf.conf >/dev/null 2>&1
+        pfctl -f $PF_CONF >/dev/null 2>&1
         pfctl -E >/dev/null 2>&1
 
         echo "$(date) | Port $PORT/$PROTO has been disabled permanently."
@@ -278,15 +291,17 @@ port20_21_tcp() {
             echo "$(date) | Port $PORT/$PROTO is already disabled."
         else
             echo "$(date) | Disabling port $PORT/$PROTO permanently..."
+
+            # Append the rule to /etc/pf.conf
             echo "$RULE" | sudo tee -a $PF_CONF > /dev/null
+           
+            # Reload pf rules
+            pfctl -f $PF_CONF >/dev/null 2>&1
+            pfctl -E >/dev/null 2>&1
+
+            echo "$(date) | Port ${PORT[*]}/$PROTO have been disabled permanently."
         fi
     done
-
-    # Reload pf rules
-    pfctl -f $PF_CONF >/dev/null 2>&1
-    pfctl -E >/dev/null 2>&1
-
-    echo "$(date) | Ports ${PORTS[*]}/$PROTO have been disabled permanently."
 }
 
 # Function for blocking Port Numbers 20-21 UDP
@@ -299,18 +314,20 @@ port20_21_udp() {
     for PORT in "${PORTS[@]}"; do
         RULE="block in proto $PROTO from any to any port $PORT"
         if grep -q "$RULE" $PF_CONF; then
-            echo "$(date) | Port $PORT1/$PROTO is already disabled."
+            echo "$(date) | Port $PORT/$PROTO is already disabled."
         else
             echo "$(date) | Disabling port $PORT/$PROTO permanently..."
+
+            # Append the rule to /etc/pf.conf
             echo "$RULE" | sudo tee -a $PF_CONF > /dev/null
+
+            # Reload pf rules
+            pfctl -f $PF_CONF >/dev/null 2>&1
+            pfctl -E >/dev/null 2>&1
+
+            echo "$(date) | Port ${PORT[*]}/$PROTO have been disabled permanently."
         fi
     done
-
-    # Reload pf rules
-    pfctl -f $PF_CONF >/dev/null 2>&1
-    pfctl -E >/dev/null 2>&1
-
-    echo "$(date) | Ports ${PORTS[*]}/$PROTO have been disabled permanently."
 }
 
 # Function for blocking Port Number 23 TCP
@@ -318,18 +335,19 @@ port23_tcp() {
     PORT=23
     PROTO="tcp"
     RULE="block in proto $PROTO from any to any port $PORT"
+    PF_CONF="/etc/pf.conf"
 
     # Check if the rule already exists in /etc/pf.conf
-    if grep -q "$RULE" /etc/pf.conf; then
+    if grep -q "$RULE" $PF_CONF; then
         echo "$(date) | Port $PORT/$PROTO is already disabled."
     else
         echo "$(date) | Disabling port $PORT/$PROTO permanently..."
 
         # Append the rule to /etc/pf.conf
-        echo "$RULE" | tee -a /etc/pf.conf > /dev/null
+        echo "$RULE" | tee -a $PF_CONF > /dev/null
 
         # Reload pf rules
-        pfctl -f /etc/pf.conf >/dev/null 2>&1
+        pfctl -f $PF_CONF >/dev/null 2>&1
         pfctl -E >/dev/null 2>&1
 
         echo "$(date) | Port $PORT/$PROTO has been disabled permanently."
