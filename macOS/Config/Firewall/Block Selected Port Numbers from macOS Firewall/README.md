@@ -23,9 +23,7 @@ This custom script blocks following port numbers from macOS Firewall:
 > More information of Port Numbers used by Apple software products can be found [here](https://support.apple.com/en-us/103229) and [here](https://chadstechnoworks.com/wptech/os/mac_os_x_default_port_list.html)
 
 ## Prerequisities
-**It is strongly recommended to deployed following script and policies to make sure that these services, that are using one of these port numbers, are not enabled and trying to calling to these blocked port numbers for nothing.
-
-**It also strongly recommended to deploy this policy below to managed Mac-devices via Intune before disabling screen sharing.**
+**It is strongly recommended to deployed following script and policies to make sure that these services, that are using one of these port numbers, are not enabled and trying to calling to these blocked port numbers for nothing.**
 
 | Port Numbers| Port | Link | More information
 | -------- | ------- | -------- | -------- |
