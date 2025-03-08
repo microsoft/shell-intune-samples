@@ -22,6 +22,16 @@ This custom script blocks following port numbers from macOS Firewall:
 > [!NOTE]  
 > More information of Port Numbers used by Apple software products can be found [here](https://support.apple.com/en-us/103229) and [here](https://chadstechnoworks.com/wptech/os/mac_os_x_default_port_list.html)
 
+## Prerequisities
+**It is strongly recommended to deployed following script and policies to make sure that these services, that are using one of these port numbers, are not enabled and trying to calling to these blocked port numbers for nothing.
+
+**It also strongly recommended to deploy this policy below to managed Mac-devices via Intune before disabling screen sharing.**
+
+| Port Numbers| Port | Link | More information
+| -------- | ------- | -------- | -------- |
+| 137-139 (TCP & UDP) | NetBIOS and Windows Internet Naming Service (WINS) | [Disable SMB 1, NetBIOS and netbiosd](https://github.com/microsoft/shell-intune-samples/tree/master/macOS/Config/Disable%20SMB%201%2C%20NetBIOS%20and%20netbiosd) | Disables NetBIOS and WINS |
+| 1900 (UDP) | Bonjour | [Disable Bonjour Advertising Services](https://github.com/microsoft/shell-intune-samples/tree/master/macOS/Config/Disable%20Bonjour%20Advertising%20Services) | Disables Bonjour Advertising Services |
+
 
 ## Script workflow diagram
 
