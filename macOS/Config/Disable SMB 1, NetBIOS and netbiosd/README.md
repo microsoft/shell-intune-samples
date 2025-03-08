@@ -1,5 +1,5 @@
 # Disable SMB 1, NetBIOS and netbiosd
-According to [Apple](https://support.apple.com/en-us/102050), When making outbound connections to servers, SMB 1 and NetBIOS are enabled by default in macOS to improve compatibility with third-party products. macOS will attempt to use the later versions of SMB, as well as DNS and port 445, with failover to port 139 and SMB 1 as needed. You can disable SMB 1 or NetBIOS to prevent this failover.
+According to [Apple](https://support.apple.com/en-us/102050):<br> <em>"When making outbound connections to servers, SMB 1 and NetBIOS are enabled by default in macOS to improve compatibility with third-party products. macOS will attempt to use the later versions of SMB, as well as DNS and port 445, with failover to port 139 and SMB 1 as needed. You can disable SMB 1 or NetBIOS to prevent this failover."</em>
 
 This Custom Script will do this. It disables following automated manner:
 - SMB 1
