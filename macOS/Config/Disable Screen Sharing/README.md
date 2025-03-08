@@ -3,7 +3,7 @@ This Custom Script is required when implementing following CIS or NIST Recommend
 - **CIS**: Ensure Screen Sharing Is Disabled (Automated)
 - **NIST**: Disable Screen Sharing and Apple Remote Desktop
 
-## Pre-requisities
+## Prerequisities
 **It is strongly recommended to deployed [this script](https://github.com/microsoft/shell-intune-samples/tree/master/macOS/Config/Disable%20Remote%20Login), that will disable Apple Remote Desktop (ADR) before disabling screen sharing.**
 
 **It also strongly recommended to deploy this policy below to managed Mac-devices via Intune before disabling screen sharing.**
