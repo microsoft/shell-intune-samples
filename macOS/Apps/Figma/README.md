@@ -28,7 +28,8 @@ Sat Mar  8 14:56:01 EET 2025 | Figma has been uninstalled. Closing script...
 This custom script uninstalls Figma Agent if Figma is no longer installed from Intune-managed Mac-device.
 
 > [!IMPORTANT]  
-> - Uninstalling Figma Agent does not uninstall Figma. Hence, you also need to deploy uninstallation script that will uninstall Figma. Figma is usually installed alonside Figma Agent. 
+> - Uninstalling Figma Agent does not uninstall Figma. Hence, you also need to deploy uninstallation script that will uninstall Figma. Figma is usually installed alonside Figma Agent.
+> - Make sure, that you have also first deployed this [configuration profile](https://github.com/microsoft/shell-intune-samples/tree/master/macOS/Custom%20Profiles/Microsoft%20Intune%20Agent) so users is not getting confusing prompts regarding to allowing system events access when deploying uninstallation script of Figma Agent via Intune. **It is strongly recommended to deploy this configuration profile first to Intune-managed Mac-devices before deploying uninstallation script of Figma Agent (and Figma of course).** 
 
 ### Script Settings
 - Run script as signed-in user : Yes
