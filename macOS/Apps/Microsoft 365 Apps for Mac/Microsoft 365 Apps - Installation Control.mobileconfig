@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>PayloadUUID</key>
+    <string>E2532C34-93BE-4455-A87B-703F149E9B94</string>
+    <key>PayloadType</key>
+    <string>Configuration</string>
+    <key>PayloadOrganization</key>
+    <string>Microsoft Corporation</string>
+    <key>PayloadIdentifier</key>
+    <string>F7AFAF0A-6C93-4628-9884-4DA4A283F97D</string>
+    <key>PayloadDisplayName</key>
+    <string>Microsoft 365 Apps - Installation Control</string>
+    <key>PayloadDescription</key>
+    <string>Installation control of Microsoft 365 Apps</string>
+    <key>PayloadVersion</key>
+    <integer>1</integer>
+    <key>PayloadEnabled</key>
+    <true/>
+    <key>PayloadRemovalDisallowed</key>
+    <true/>
+    <key>PayloadScope</key>
+    <string>System</string>
+    <key>PayloadContent</key>
+    <array>
+		<dict>
+			<key>PayloadUUID</key>
+			<string>C50CE432-89E5-483C-846B-A87F0342A177</string>
+			<key>PayloadType</key>
+			<string>com.microsoft.office</string>
+			<key>PayloadOrganization</key>
+			<string>Microsoft Corporation</string>
+			<key>PayloadIdentifier</key>
+			<string>com.microsoft.office.C50CE432-89E5-483C-846B-A87F0342A177</string>
+			<key>PayloadDisplayName</key>
+			<string>Microsoft 365 Apps - Installation Control</string>
+			<key>PayloadDescription</key>
+    		<string>Installation control of Microsoft 365 Apps</string>
+			<key>PayloadVersion</key>
+			<integer>1</integer>
+			<key>PayloadEnabled</key>
+			<true/>
+			<key>InstallExcel</key>
+			<true/>
+			<key>InstallOneDrive</key>
+			<true/>
+			<key>InstallOneNote</key>
+			<true/>
+			<key>InstallOutlook</key>
+			<true/>
+			<key>InstallPowerPoint</key>
+			<true/>
+			<key>InstallTeams</key>
+			<true/>
+			<key>InstallWord</key>
+			<true/>
+			<key>InstallDefender</key>
+			<false/>
+			<key>InstallAutoUpdate</key>
+			<true/>
+		</dict>
+	</array>
+</dict>
+</plist>

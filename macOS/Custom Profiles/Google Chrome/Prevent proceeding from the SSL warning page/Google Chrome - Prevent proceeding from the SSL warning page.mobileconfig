@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>PayloadUUID</key>
+    <string>1101027E-31BD-4CE6-9274-07AA74B4F406</string>
+    <key>PayloadType</key>
+    <string>Configuration</string>
+    <key>PayloadOrganization</key>
+    <string>Google LLC</string>
+    <key>PayloadIdentifier</key>
+    <string>0C8551DD-D9E6-4E8E-989C-103467F2E2BD</string>
+    <key>PayloadDisplayName</key>
+    <string>Google Chrome - Prevent proceeding from the SSL warning page/string>
+    <key>PayloadDescription</key>
+    <string>Prevent proceeding from the SSL warning page on Google Chrome</string>
+    <key>PayloadVersion</key>
+    <integer>1</integer>
+    <key>PayloadEnabled</key>
+    <true/>
+    <key>PayloadRemovalDisallowed</key>
+    <true/>
+    <key>PayloadScope</key>
+    <string>System</string>
+    <key>PayloadContent</key>
+    <array>
+		<dict>
+			<key>PayloadUUID</key>
+			<string>CA08CBA9-C534-4AF9-AC4E-BDB6964D4B28</string>
+			<key>PayloadType</key>
+			<string>com.google.Chrome</string>
+			<key>PayloadOrganization</key>
+			<string>Google LLC</string>
+			<key>PayloadIdentifier</key>
+			<string>com.google.Chrome.CA08CBA9-C534-4AF9-AC4E-BDB6964D4B28</string>
+			<key>PayloadDisplayName</key>
+			<string>Prevent proceeding from the SSL warning page</string>
+			<key>PayloadDescription</key>
+			<string/>
+			<key>PayloadVersion</key>
+			<integer>1</integer>
+			<key>PayloadEnabled</key>
+			<true/>
+			<key>SSLErrorOverrideAllowed</key>
+			<false/>
+		</dict>
+	</array>
+</dict>
+</plist>
