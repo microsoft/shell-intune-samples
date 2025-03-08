@@ -4,7 +4,7 @@ This Custom Script is required when implementing following CIS or NIST Recommend
 - **NIST**: Disable Bonjour Multicast
 
 ## Pre-requisities
-**It is strongly recommended to deployed [this script](https://github.com/microsoft/shell-intune-samples/tree/master/macOS/Config/Disable%20File%20Sharing), that will disable file sharing before disabling Bonjour Advertiding Service.**
+**It is strongly recommended to deployed [this script](https://github.com/microsoft/shell-intune-samples/tree/master/macOS/Config/Disable%20File%20Sharing), that will disable file sharing before disabling Bonjour Advertising Service.**
 
 **It also strongly recommended to deploy these policies below to managed Mac-devices via Intune before disabling Bonjour Advertising Services.**
 
