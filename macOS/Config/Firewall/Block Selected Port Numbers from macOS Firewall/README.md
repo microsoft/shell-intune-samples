@@ -5,16 +5,23 @@ This custom script blocks following port numbers from macOS Firewall:
 | -------- | ------- | -------- |
 | 135 (TCP) | Remote Procedure Call (RPC) Endpoint Mapper service | Blocks Port Number 135 TCP used by Microsoft RPC, which can be exploited for remote code execution. |
 | 135 (UDP) | Remote Procedure Call (RPC) Endpoint Mapper service | Blocks Port Number 135 UDP used by Microsoft RPC, which can be exploited for remote code execution. |
-| 137-139 (TCP) | NetBIOS| Blocks Port Numbers 137-139 TCP used by NetBIOS, which can be a vector for various attacks. |
-| 137-139 (UDP) | NetBIOS | Blocks Port Numbers 137-139 UDP used by NetBIOS, which can be a vector for various attacks. |
-| 445 (TCP) | Microsoft-DS (Active Directory, Windows shares)| Blocks Port Number 445 TCP used by Microsoft-DS (Active Directory, Windows shares), which is often targeted by malware. |
+| 137-139 (TCP) | NetBIOS and Windows Internet Naming Service (WINS)| Blocks Port Numbers 137-139 TCP used by NetBIOS and WINS, which can be a vector for various attacks. |
+| 137-139 (UDP) | NetBIOS and Windows Internet Naming Service (WINS) | Blocks Port Numbers 137-139 UDP used by NetBIOS and WINS, which can be a vector for various attacks. |
+| 445 (TCP) | Microsoft SMB Domain Server / Microsoft-DS (Active Directory, Windows shares)| Blocks Port Number 445 TCP used by Microsoft SMB Domain Server / Microsoft-DS (Active Directory, Windows shares), which is often targeted by malware. |
 | 1433-1434 (TCP) | Microsoft SQL Server | Blocks Port Numbers 1433-1434 TCP used by Microsoft SQL Server, which can be exploited if not properly secured. |
 | 1433-1434 (UDP) | Microsoft SQL Server | Blocks Port Numbers 1433-1434 UDP used by Microsoft SQL Server, which can be exploited if not properly secured. |
 | 3389 (TCP) | Remote Desktop Protocol (RDP) | Blocks Port Number 3389 TCP used by Remote Desktop Protocol (RDP), which is common target for brute force attacks. |
-| 1900 (UDP) | Universal Plud and Play (UPnP)| Blocks Port Number 1900 UDP used by Universal Plud and Play (UPnP), which can be exploited for network discovery and attacks. |
+| 1900 (UDP) | SSDP, Universal Plud and Play (UPnP), Bonjour| Blocks Port Number 1900 UDP used by SSDP, Universal Plud and Play (UPnP) and Bonjour, which can be exploited for network discovery and attacks. |
 | 20-21 (TCP) | FTP | Blocks Port Numbers 20-21 TCP used by FTP, which can be insecure if not properly configured. |
 | 20-21 (UDP) | FTP | Blocks Port Numbers 20-21 UDP used by FTP, which can be insecure if not properly configured. |
 | 23 (TCP) | Telnet | Blocks Port Numbers 23 TCP used by Telnet, which transmits data in plaintext and is insecure. |
+
+> [!IMPORTANT]  
+> Please note that there is a possibility that your Managed Mac-device may not use some of these port numbers or services above. Some of the services may also heavily related only to Windows-environment e.g. Remote Procedure Call (RPC) Endpoint Mapper service or Microsoft SQL Server. This script have been created in order to block these port numbers that are, in general, and usually used for malicious purposes.
+
+> [!NOTE]  
+> More information of Port Numbers used by Apple software products can be found [here](https://support.apple.com/en-us/103229) and [here](https://chadstechnoworks.com/wptech/os/mac_os_x_default_port_list.html)
+
 
 ## Script workflow diagram
 
