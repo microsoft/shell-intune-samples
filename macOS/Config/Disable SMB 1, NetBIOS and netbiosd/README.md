@@ -1,13 +1,16 @@
 # Disable SMB 1, NetBIOS and netbiosd
-According to [Apple](https://support.apple.com/en-us/102050):<br> <em>"When making outbound connections to servers, SMB 1 and NetBIOS are enabled by default in macOS to improve compatibility with third-party products. macOS will attempt to use the later versions of SMB, as well as DNS and port 445, with failover to port 139 and SMB 1 as needed. You can disable SMB 1 or NetBIOS to prevent this failover."</em>
+According to [Apple&ast;](https://support.apple.com/en-us/102050):<br> <em>"When making outbound connections to servers, SMB 1 and NetBIOS are enabled by default in macOS to improve compatibility with third-party products. macOS will attempt to use the later versions of SMB, as well as DNS and port 445, with failover to port 139 and SMB 1 as needed. You can disable SMB 1 or NetBIOS to prevent this failover."</em>
 
-This Custom Script will do this. It disables following automated manner:
+<em>&ast;This quoted chapter is from Apple's website 8 March 2025.</em>
+
+This Custom Script will do this. It disables following protocols in automated manner:
 - SMB 1
 - NetBIOS
 - netbiosd
 
 > [!IMPORTANT]  
 > **Using SMB 1 (Also known as SMBv1) is no longer secure and hence, it is strongly recommeded to disable it completely! Check more information [here](https://techcommunity.microsoft.com/blog/filecab/stop-using-smb1/425858) and [here](https://techcommunity.microsoft.com/blog/filecab/smb-is-dead-long-live-smb/1185401).**
+
 ## Pre-requisities
 It is recommended to deploy this policy to managed Mac-devices via Intune before deploying this script if you want to permanenly block mounting network drives.
 
