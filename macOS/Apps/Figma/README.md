@@ -4,7 +4,7 @@ This folder contains custom scripts for Figma for mass deployment via Intune.
 ## Uninstall Figma
 This custom script uninstalls Figma from Intune-managed Mac-device.
 
-> [!NOTE]  
+> [!IMPORTANT]  
 > Uninstalling Figma does not uninstall Figma Agent. Hence, you also need to deploy uninstallation script that will uninstall Figma Agent. Figma Agent is usually installed alonside Figma. 
 
 ### Script Settings
