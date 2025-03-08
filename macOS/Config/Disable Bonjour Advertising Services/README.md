@@ -6,7 +6,7 @@ This Custom Script is required when implementing following CIS or NIST Recommend
 ## Pre-requisities
 **It is strongly recommended to deployed [this script](https://github.com/microsoft/shell-intune-samples/tree/master/macOS/Config/Disable%20File%20Sharing), that will disable file sharing before disabling Bonjour Advertiding Service.**
 
-**It also strongly recommended to deploy thiese policies below to managed Mac-devices via Intune before disabling Bonjour Advertising Services.**
+**It also strongly recommended to deploy these policies below to managed Mac-devices via Intune before disabling Bonjour Advertising Services.**
 
 | Platform | Profile type | Setting | Value | More information |
 | -------- | ------- | -------- | ------- | ------- |
