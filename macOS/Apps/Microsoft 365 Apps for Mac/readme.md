@@ -33,18 +33,18 @@ From Oct 2023 Microsoft 365 Apps for Mac includes a shim for Defender. If you ar
 
 ![Alt text](image-1.png)
 
-## Using Microsoft 365 Apps PLIST or Configuration Profile to **avoid** installing the Defender Shim
+## Using Microsoft 365 Apps PLIST-file (Option 1) or Configuration Profile (Option 2) to **avoid** installing the Defender Shim
 
-The Microsoft 365 Apps for Mac allows you to control which applications get installed via an [Intune managed preferences file (also known as PLIST-file)](https://learn.microsoft.com/en-us/mem/intune/configuration/preference-file-settings-macos) or using Configuration Profile from this site. For PLIST-file, you can start with the example **com.microsoft.office_installcontrols.plist** and modify as required.
+The Microsoft 365 Apps for Mac allows you to control which applications get installed via either a [PLIST-file (Option 1)](https://learn.microsoft.com/en-us/mem/intune/configuration/preference-file-settings-macos) or using Configuration Profile (Option 2) from this site. For PLIST-file, you can start with the example **com.microsoft.office_installcontrols.plist** and modify as required.
 
-You can find more information in the [Office for Mac deployment documentation](https://learn.microsoft.com/en-us/deployoffice/mac/preferences-office#excluding-apps)
+You can find more information in the [Office for Mac deployment documentation](https://learn.microsoft.com/en-us/deployoffice/mac/preferences-office#excluding-apps).
 
 You should set the Preference domain name for this managed PLIST-file to : **com.microsoft.office**
 
 ![Alt text](image.png)
 
 > [!NOTE]  
-> We also provide configuration profile alternative that is also easy to modify and deploy. Configuration profile already contains needed preference domain.
+> We also provide configuration profile alternative that is also easy to modify and deploy. Configuration profile already contains needed preference domain. Using configuration profile provides possibility to deploy multiple configuration profiles to same preference without having possible risk of conflict of settings deployment.
 
 ## Detection and Removal Script [detectDefenderShim.zsh]
 
