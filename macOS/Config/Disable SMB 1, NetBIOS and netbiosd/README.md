@@ -7,8 +7,7 @@ This Custom Script will do this. It disables following automated manner:
 - netbiosd
 
 > [!IMPORTANT]  
-> **Using SMB 1 (Also known as SMBv1) is no longer secure and hence, it is strongly recommeded to disable it completely! Check more information [here](https://techcommunity.microsoft.com/blog/filecab/stop-using-smb1/425858).
-and [here](https://techcommunity.microsoft.com/blog/filecab/smb-is-dead-long-live-smb/1185401).**
+> **Using SMB 1 (Also known as SMBv1) is no longer secure and hence, it is strongly recommeded to disable it completely! Check more information [here](https://techcommunity.microsoft.com/blog/filecab/stop-using-smb1/425858) and [here](https://techcommunity.microsoft.com/blog/filecab/smb-is-dead-long-live-smb/1185401).**
 ## Pre-requisities
 It is recommended to deploy this policy to managed Mac-devices via Intune before deploying this script if you want to permanenly block mounting network drives.
 
