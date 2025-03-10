@@ -7,6 +7,6 @@ These settings can be deployed alongside the existing enrollment profile configu
 
 As of March 2025, the following skip keys are missing as options in Intune for macOS:
  - Welcome
- - SoftwareUpdate
+ - SoftwareUpdate (introduced in macOS 15.4)
 
 A sample plist is available in this folder that skips those two screens and can be deployed as a [preference file in Intune](https://learn.microsoft.com/mem/intune-service/configuration/preference-file-settings-macos) with the **com.apple.SetupAssistant.managed** preference domain.
