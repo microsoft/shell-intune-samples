@@ -1,0 +1,5 @@
+<key>SkipSetupItems</key>
+<array>
+	<string>Welcome</string>
+	<string>SoftwareUpdate</string>
+</array>
