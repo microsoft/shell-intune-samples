@@ -30,7 +30,7 @@
 			<key>PayloadType</key>
 			<string>com.apple.TCC.configuration-profile-policy</string>
 			<key>PayloadOrganization</key>
-			<string>KPMG</string>
+			<string>Qualys, Inc.</string>
 			<key>PayloadIdentifier</key>
 			<string>com.apple.TCC.configuration-profile-policy.1D131539-787D-4ED2-B219-D58209577AB3</string>
 			<key>PayloadDisplayName</key>
