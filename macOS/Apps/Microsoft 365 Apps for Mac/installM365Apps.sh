@@ -3,11 +3,11 @@
 
 ############################################################################################
 ##
-## Script to install the latest Office 365 Pro
+## Script to install the latest Microsoft 365 Apps for Mac
 ##
 ############################################################################################
 
-## Copyright (c) 2020 Microsoft Corp. All rights reserved.
+## Copyright (c) 2025 Microsoft Corp. All rights reserved.
 ## Scripts are not supported under any Microsoft standard support program or service. The scripts are provided AS IS without warranty of any kind.
 ## Microsoft disclaims all implied warranties including, without limitation, any implied warranties of merchantability or of fitness for a
 ## particular purpose. The entire risk arising out of the use or performance of the scripts and documentation remains with you. In no event shall
@@ -18,13 +18,13 @@
 ## Feedback: neiljohn@microsoft.com
 
 # User Defined variables
-weburl="https://go.microsoft.com/fwlink/?linkid=2009112"                            # What is the Azure Blob Storage URL?
-appname="Microsoft Office"                                                          # The name of our App deployment script (also used for Octory monitor)
-logandmetadir="/Library/Application Support/Microsoft/IntuneScripts/installOffice"  # The location of our logs and last updated data
-terminateprocess="true"                                                             # Do we want to terminate the running process? If false we'll wait until its not running
-autoUpdate="true"                                                                   # Application updates itself, if already installed we should exit
-waitForSplashScreen=true                                                            # Should we hold the script until an onboard splashscreen is running?   
-SplashScreenProcess="Dialog"                                                        # If we do wait for a splash screen, what's the process name? Octory | Dialog
+weburl="https://go.microsoft.com/fwlink/?linkid=525133"                                 # What is the URL of the installer where it will be downloaded?
+appname="Microsoft 365 Apps for Mac"                                                    # The name of our App deployment script (also used for Octory monitor)
+logandmetadir="/Library/Logs/Microsoft/IntuneScripts/$appname"                          # The location of our logs and last updated data
+terminateprocess="true"                                                                 # Do we want to terminate the running process? If false we'll wait until its not running
+autoUpdate="true"                                                                       # Application updates itself, if already installed we should exit
+waitForSplashScreen=true                                                                # Should we hold the script until an onboard splashscreen is running?   
+SplashScreenProcess="Dialog"                                                            # If we do wait for a splash screen, what's the process name? Octory | Dialog
 
 # Generated variables
 tempdir=$(mktemp -d)
@@ -77,79 +77,6 @@ waitForProcess () {
 
     echo "$(date) | No instances of [$processName] found, safe to proceed"
 
-}
-
-# Function to change the download URL to an older version if the current version isn't supported on this Mac
-function OfficeURLCheck() {
-
-    # Download location for latest version of Office for Mac 2019
-    weburl="https://go.microsoft.com/fwlink/?linkid=2009112" 
-
-    echo "$(date) | Checking that the version of Office we have will work on this Mac"
-    os_ver=$(sw_vers -productVersion)
-
-    case $os_ver in
-
-    10.10.*)
-        echo "$(date) |  + macOS 10.10 Yosemite detected, setting install to Office 2016 v16.16"
-        weburl="https://officecdn-microsoft-com.akamaized.net/pr/C1297A47-86C4-4C1F-97FA-950631F94777/MacAutoupdate/Microsoft_Office_16.16.20091400_Installer.pkg"
-        unset localcopy # Note, enter your own localcopy URL if you have one here
-        ;;
-
-    10.11.*)
-        echo "$(date) |  + macOS 10.11 El Capitan detected, setting install to Office 2016 v16.16"
-        weburl="https://officecdn-microsoft-com.akamaized.net/pr/C1297A47-86C4-4C1F-97FA-950631F94777/MacAutoupdate/Microsoft_Office_16.16.20091400_Installer.pkg"
-        unset localcopy # Note, enter your own localcopy URL if you have one here
-        ;;
-
-    10.12.*)
-        echo "$(date) |  + macOS 10.12 Sierra detected, setting install to Office 2016 v16.30"
-        weburl="https://officecdn-microsoft-com.akamaized.net/pr/C1297A47-86C4-4C1F-97FA-950631F94777/MacAutoupdate/Microsoft_Office_16.30.19101301_Installer.pkg"
-        unset localcopy # Note, enter your own localcopy URL if you have one here
-        ;;
-
-    10.13.*)
-        echo "$(date) |  + macOS 10.13 High Sierra detected, setting install to Office 2019 v16.43"
-        weburl="https://officecdn-microsoft-com.akamaized.net/pr/C1297A47-86C4-4C1F-97FA-950631F94777/MacAutoupdate/Microsoft_Office_16.43.20110804_Installer.pkg"
-        unset localcopy # Note, enter your own localcopy URL if you have one here
-        ;;
-
-    10.14.*)
-        echo "$(date) |  + macOS 10.14 Mojave detected, setting install to Office 2019 v16.54"
-        weburl="https://officecdnmac.microsoft.com/pr/C1297A47-86C4-4C1F-97FA-950631F94777/MacAutoupdate/Microsoft_Office_16.54.21101001_BusinessPro_Installer.pkg"
-        unset localcopy # Note, enter your own localcopy URL if you have one here
-        ;;
-
-    10.15.*)
-        
-        echo "$(date) |  + macOS 10.15 Catalina detected, setting install to Office 2019 v16.66"
-        weburl="https://officecdnmac.microsoft.com/pr/C1297A47-86C4-4C1F-97FA-950631F94777/MacAutoupdate/Microsoft_Office_16.66.22101101_BusinessPro_Installer.pkg"
-        unset localcopy # Note, enter your own localcopy URL if you have one here
-        ;;
-
-    11.*)
-        echo "$(date) |  + macOS 11.x Big Sur detected, installing latest available version"
-        ;;
-
-    12.*)
-        echo "$(date) |  + macOS 12.x Monteray detected, installing latest available version"
-        ;;
-
-    13.*)
-        echo "$(date) |  + macOS 13.x Ventura detected, installing latest available version"
-        ;;
-    14.*)
-        echo "$(date) |  + macOS 14.x Big Sur detected, installing latest available version"
-        ;;
-    15.*)
-        echo "$(date) |  + macOS 15.x Sequioa detected, installing latest available version"
-        ;;
-        
-
-    *)
-        echo "$(date) |  + Unknown OS $os_ver"
-        ;;
-    esac
 }
 
 # function to check if we need Rosetta 2
@@ -282,10 +209,7 @@ function downloadApp () {
     ###############################################################
     ###############################################################
 
-    echo "$(date) | Starting downlading of [$appname]"
-
-    # Check download location to see if we can handle the latest version of Office
-    OfficeURLCheck
+    echo "$(date) | Starting downloading of [$appname]"
 
     # If local copy is defined, let's try and download it...
     if [ "$localcopy" ]; then
@@ -355,7 +279,6 @@ function updateCheck() {
                 "/Applications/Microsoft OneNote.app"
                 "/Applications/Microsoft Outlook.app"
                 "/Applications/Microsoft PowerPoint.app"
-                "/Applications/Microsoft Teams.app"
                 "/Applications/Microsoft Word.app")
 
     for i in "${OfficeApps[@]}"; do
@@ -561,4 +484,3 @@ downloadApp
 
 # Install PKG file
 installPKG
-

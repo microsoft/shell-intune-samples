@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>PayloadUUID</key>
+    <string>A708AC01-B696-4A05-85DF-53443C7D4872</string>
+    <key>PayloadType</key>
+    <string>Configuration</string>
+    <key>PayloadOrganization</key>
+    <string>think-cell Operations GmbH</string>
+    <key>PayloadIdentifier</key>
+    <string>5AB7EAC2-776F-445C-AF4F-CEED29CE0660</string>
+    <key>PayloadDisplayName</key>
+    <string>think-cell - Managed Settings</string>
+    <key>PayloadDescription</key>
+    <string>Installs managed settings to think-cell</string>
+    <key>PayloadVersion</key>
+    <integer>1</integer>
+    <key>PayloadEnabled</key>
+    <true/>
+    <key>PayloadRemovalDisallowed</key>
+    <true/>
+    <key>PayloadScope</key>
+    <string>System</string>
+    <key>PayloadContent</key>
+    <array>
+		<dict>
+			<key>PayloadUUID</key>
+			<string>D4200B5C-84DA-4563-8E10-4DD63BFD2F6B</string>
+			<key>PayloadType</key>
+			<string>com.microsoft.office</string>
+			<key>PayloadOrganization</key>
+			<string>think-cell Operations GmbH</string>
+			<key>PayloadIdentifier</key>
+			<string>com.microsoft.office.D4200B5C-84DA-4563-8E10-4DD63BFD2F6B</string>
+			<key>PayloadDisplayName</key>
+			<string>Installs managed settings to think-cell</string>
+			<key>PayloadDescription</key>
+			<string/>
+			<key>PayloadVersion</key>
+			<integer>1</integer>
+			<key>PayloadEnabled</key>
+			<true/>
+			<key>com.think-cell.settings.updates</key>
+			<dict>
+				<key>enabled</key>
+				<true/>
+			</dict>
+			<key>com.think-cell.settings.defaultstyle</key>
+			<string>/Library/Application Support/Microsoft/think-cell/styles/Corporate style.xml</string>
+			<key>com.think-cell.settings.reports</key>
+			<dict>
+				<key>enabled</key>
+				<false/>
+			</dict>
+			<key>com.think-cell.settings.support</key>
+			<dict>
+				<key>email</key>
+				<string>helpdesk@example.com</string>
+			</dict>
+			<key>com.think-cell.settings.nofirststart</key>
+			<true/>
+			<key>com.think-cell.settings.products</key>
+			<integer>3</integer>
+		</dict>
+	</array>
+</dict>
+</plist>
