@@ -27,25 +27,60 @@
 # -------------------------------------------------------------------------------------------------------
 # Dependencies:
 # - ADE: Device must be assigned to Intune before beginning the migration process
-# - This script just handles the removal of Jamf and either starting setup assistant or Company Portal
+# - This script just handles the removal of Jamf/Intune and either starting setup assistant or Company Portal
 #   for the user to complete migration. The onboarding process should be configured in Intune separately.
+# -------------------------------------------------------------------------------------------------------
 #########################################################################################################
 
-# Replace these with your Jamf Pro details
-JAMF_PRO_URL="https://yourenvironment.jamfcloud.com"  # URL of your Jamf Pro server
-USERNAME="migration_account"                          # This should be a Jamf Pro user with the Jamf Pro Server Action 'Send Computer Unmanage Command' enabled and Jamf Pro Server Objects 'Computers' Read.
-PASSWORD="migration_account_password"                 # Password for the above user
+# Set the maximum deferral count for the migration prompt, set to 0 to disable deferrals
+# If the deferral count is reached, the Exit button will be disabled
+max_deferral_count=0
+deferral_count_file="/Library/Preferences/com.microsoft.intune_migration.deferral_count.plist"
+# Set if device is being migrated from another Intune tenant
+intune_migration=true
+# Set if Swift Dialog should be uninstalled after migration
+uninstall_swiftdialog=false
+# Reset office for the user, uses OfficeReset.com
+reset_office=false
+# Messages for the migration prompt and progress dialog
+migration_message_intune="Your device is scheduled to be migrated from **current Microsoft Intune tenant** to another **Microsoft Intune tenant**"
+migration_message_jamf="Your device is scheduled to be migrated from **Jamf** to **Microsoft Intune**"
+progress_message_intune="Your device is being migrated from one Microsoft Intune tenant to another"
+progress_message_jamf="Your device is being migrated from Jamf to Microsoft Intune"
+
+# URL of your Jamf Pro server
+JAMF_PRO_URL="https://yourenvironment.jamfcloud.com"
+# This should be a Jamf Pro user with the Jamf Pro Server Action 'Send Computer Unmanage Command' enabled and Jamf Pro Server Objects 'Computers' Read.
+USERNAME="migration_account"
+# Password for the above user
+PASSWORD="migration_account_password"
 LOG="/Library/Logs/Microsoft/IntuneScripts/intuneMigration/intuneMigration.log"
-JAMF_API_VERSION="new"     # Set to "classic" for (JSSResource) or new for (api) to use the classic or new API
+# Set to "classic" for (JSSResource) or new for (api) to use the classic or new API
+JAMF_API_VERSION="new"
+
+# Create deferred count file if it doesn't exist
+if [ ! -f "$deferral_count_file" ]; then
+  echo "Creating deferral count file..."
+  sudo defaults write "$deferral_count_file" deferral_count -int 0
+fi
 
 # Function to check if the device is managed by Jamf
 check_if_managed() {
-  if profiles -P | grep -q "com.jamfsoftware"; then
-    echo "Device is managed by Jamf."
-  else
-    echo "Device is not managed by Jamf. Exiting script."
-    exit 0
-  fi
+    if [ "$intune_migration" = true ]; then
+        if profiles -P | grep -q "Microsoft.Profiles.MDM"; then
+            echo "Checking if the device is managed by Intune..."
+        else
+            echo "Device is not managed by Intune. Exiting script."
+            exit 0
+        fi
+    elif [ "$intune_migration" = false ]; then
+        if profiles -P | grep -q "com.jamfsoftware"; then
+            echo "Device is managed by Jamf."
+        else
+            echo "Device is not managed by Jamf. Exiting script."
+            exit 0
+        fi
+    fi
 }
 
 function startLog() {
@@ -67,6 +102,28 @@ function startLog() {
     fi
 
     exec > >(tee -a "$LOG") 2>&1
+}
+
+# Function to check and install swiftDialog if not present
+install_swiftDialog() {
+  if [ ! -f "/usr/local/bin/dialog" ]; then
+    echo "swiftDialog not found. Installing swiftDialog..."
+    curl -L -o /tmp/dialog.pkg "https://github.com/swiftDialog/swiftDialog/releases/download/v2.5.2/dialog-2.5.2-4777.pkg"
+    sudo installer -pkg /tmp/dialog.pkg -target /
+    rm /tmp/dialog.pkg
+    echo "swiftDialog installed successfully."
+  else
+    echo "swiftDialog is already installed."
+  fi
+}
+
+uninstall_swiftDialog() {
+  if [ "$uninstall_swiftdialog" = true ]; then
+    echo "Uninstalling swiftDialog..."
+    sudo rm -f /usr/local/bin/dialog
+    sudo rm -r "/Library/Application Support/Dialog/"
+    sudo pkgutil --forget au.csiro.dialogcli
+  fi
 }
 
 # Function to check if jq is installed, and if not, install it
@@ -112,29 +169,14 @@ check_and_install_jq() {
   fi
 }
 
-# Function to check and install swiftDialog if not present
-install_swiftDialog() {
-  if [ ! -f "/usr/local/bin/dialog" ]; then
-    echo "swiftDialog not found. Installing swiftDialog..."
-    curl -L -o /tmp/dialog.pkg "https://github.com/swiftDialog/swiftDialog/releases/download/v2.5.2/dialog-2.5.2-4777.pkg"
-    sudo installer -pkg /tmp/dialog.pkg -target /
-    rm /tmp/dialog.pkg
-    echo "swiftDialog installed successfully."
-  else
-    echo "swiftDialog is already installed."
-  fi
-}
 
-# Function to check and install Company Portal if not present
-install_cp() {
-  if [ ! -d "/Applications/Company Portal.app" ]; then
-    echo "Company Portal not found. Installing Company Portal..."
-    curl -L -o /tmp/cp.pkg "https://go.microsoft.com/fwlink?linkid=853070"
-    sudo installer -pkg /tmp/cp.pkg -target /
-    rm /tmp/cp.pkg
-    echo "Company Portal installed successfully."
-  else
-    echo "Company Portal is already installed."
+office_reset() {
+  if [ "$reset_office" = true ]; then
+    echo "Resetting Office..."
+    update_progress 90 "Resetting Office..."
+      curl -L -o /tmp/OfficeReset.pkg "https://office-reset.com/download/Microsoft_Office_Factory_Reset_1.9.1.pkg"
+      sudo installer -pkg /tmp/OfficeReset.pkg -target /
+      rm /tmp/OfficeReset.pkg
   fi
 }
 
@@ -164,7 +206,7 @@ waiting_for_intune() {
     --width 750 \
     --height 450 \
     --icon /Applications/Company\ Portal.app/Contents/Resources/AppIcon.icns \
-    --no-buttons \
+    --no-buttons
     --progress &
   
   # Capture the dialog process ID to close it later if needed
@@ -188,12 +230,26 @@ ade_enrollment_message() {
 # Function to prompt the user to start the migration
 prompt_migration() {
 
+    if [ "$intune_migration" = true ]; then
+        message=$migration_message_intune
+    else
+        message=$migration_message_jamf
+    fi
+
+    if [ $max_deferral_count -gt 0 ]; then
+        button2text="Defer"
+        deferral_message="\n\nYou can defer this migration up to **$max_deferral_count** times. After that, the Defer button will be disabled. \n\nYou have **$((max_deferral_count - DEFERRAL_COUNT))** deferral(s) remaining."
+    else
+        deferral_message=""
+        button2text="Exit"
+    fi
+
   # Display the dialog with improved message text
   /usr/local/bin/dialog \
     --bannertitle "Prepare for Device Migration" \
-    --message "Your device is scheduled to be migrated from **Jamf** to **Microsoft Intune**.\n\nThis process will take approximately **20 minutes**, during which you will **not be able to use your Mac**." \
+    --message "${message}.\n\nThis process will take approximately **20 minutes**, during which you will **not be able to use your Mac**.${deferral_message}" \
     --button1text "Migrate" \
-    --button2text "Exit" \
+    $( [[ $((DEFERRAL_COUNT)) -lt $((max_deferral_count)) || $((max_deferral_count)) -eq 0 ]] && echo "--button2text $button2text" ) \
     --blurscreen \
     --bannerimage colour=blue \
     --titlefont shadow=1 \
@@ -203,11 +259,10 @@ prompt_migration() {
 
   # Check which button was clicked based on the exit code
   if [[ "$?" -eq 0 ]]; then
-    echo "User is ready to start the migration."
-    return 0  # Proceed with migration
+    echo "User chose to migrate the device."
+    USER_READY=true
   else
-    echo "User chose not to migrate at this time."
-    exit 1  # Exit the script
+    USER_READY=false
   fi
 }
 
@@ -215,12 +270,19 @@ prompt_migration() {
 start_progress_dialog() {
   COMMAND_FILE="/tmp/dialog_command"
   echo "Initializing migration..." > "$COMMAND_FILE"
+
+  if [ "$intune_migration" = true ]; then
+    message=$progress_message_intune
+  else
+    message=$progress_message_jamf
+  fi
+  
   /usr/local/bin/dialog \
     --bannertitle "Device Migration in Progress" \
     --icon /Applications/Company\ Portal.app/Contents/Resources/AppIcon.icns \
     --bannerimage colour=blue \
     --titlefont shadow=1 \
-    --message "Your device is being migrated from Jamf to Microsoft Intune. Please do not power off or disconnect your device during this process." \
+    --message "${message}. Please do not power off or disconnect your device during this process." \
     --blurscreen \
     --force \
     --no-buttons \
@@ -243,6 +305,30 @@ update_progress() {
   
   # Add a small delay to ensure swiftDialog processes each update properly
   sleep 1
+}
+
+# Function to clean Company Portal app if needed
+clean_company_portal() {
+  sudo killall "Company Portal"
+
+  currentuser=`stat -f "%Su" /dev/console`
+  rm -rf /Users/"$currentuser"/Library/Saved\ Application\ State/com.microsoft.CompanyPortalMac.savedState
+  rm -rf /Users/"$currentuser"/Library/Application\ Support/com.microsoft.CompanyPortalMac
+  rm -rf /Users/"$currentuser"/Library/Application\ Support/com.microsoft.CompanyPortalMac.usercontext.info
+  su "$currentuser" -c "security delete-generic-password -l 'com.microsoft.adalcache'"
+  su "$currentuser" -c "security delete-generic-password -l 'enterpriseregistration.windows.net'"
+  su "$currentuser" -c "security delete-generic-password -l 'https://device.login.microsoftonline.com'"
+  su "$currentuser" -c "security delete-generic-password -l 'https://device.login.microsoftonline.com/' "
+  su "$currentuser" -c "security delete-generic-password -l 'https://enterpriseregistration.windows.net' "
+  su "$currentuser" -c "security delete-generic-password -l 'https://enterpriseregistration.windows.net/' "
+}
+
+# Function to unmanage the device from Intune
+remove_intune_management() {
+  update_progress 50 "Removing Intune management..."
+  echo "Removing Intune management..."
+  sudo profiles -R -p "Microsoft.Profiles.MDM"
+  echo "Intune management removed."
 }
 
 # Function to completely remove Jamf framework
@@ -276,6 +362,19 @@ check_ade_enrollment() {
   fi
 }
 
+# Function to check and install the Intune Company Portal app if not present
+install_cp() {
+  if [ ! -d "/Applications/Company Portal.app" ]; then
+    echo "Company Portal not found. Installing Company Portal..."
+    curl -L -o /tmp/cp.pkg "https://go.microsoft.com/fwlink?linkid=853070"
+    sudo installer -pkg /tmp/cp.pkg -target /
+    rm /tmp/cp.pkg
+    echo "Company Portal installed successfully."
+  else
+    echo "Company Portal is already installed."
+  fi
+}
+
 launch_company_portal() {
   # Open the Company Portal app
   open -a "/Applications/Company Portal.app"
@@ -290,11 +389,6 @@ EOF
 renew_profiles() {
   sudo profiles renew -type enrollment
   echo "Profiles renewed."
-}
-
-# Function to get the serial number of the current Mac
-get_serial_number() {
-  system_profiler SPHardwareDataType | awk '/Serial Number/ {print $4}'
 }
 
 # Function to obtain an authentication token
@@ -314,8 +408,11 @@ get_computer_id() {
   echo "$computer_id"
 }
 
-# Function to unmanage a device from Jamf Pro using the new API,
-# then trigger a device check-in
+# Function to get the serial number of the current Mac
+get_serial_number() {
+  system_profiler SPHardwareDataType | awk '/Serial Number/ {print $4}'
+}
+
 unmanage_device_jamf_new() {
     # Validate input parameters
     if [[ -z "$1" || -z "$2" ]]; then
@@ -352,8 +449,6 @@ unmanage_device_jamf_new() {
 
 }
 
-# Function to unmanage a device from Jamf Pro using the classic API,
-# then trigger a device check-in
 unmanage_device_jamf_classic() {
     # Validate input parameters
     if [[ -z "$1" || -z "$2" ]]; then
@@ -391,7 +486,6 @@ unmanage_device_jamf_classic() {
 
 }
 
-# Function to wait until management profile is removed...
 wait_for_management_profile_removal() {
   echo "Waiting for MDM management profile removal..."
   local timeout=1800
@@ -430,65 +524,127 @@ wait_for_management_profile_removal() {
 # Start Logging before we do anything else...
 startLog
 
-# Check if device is Jamf-managed
+# Flag to track ADE enrollment
+ADE_ENROLLED=false
+
+# Flag to track user readiness
+USER_READY=false
+
+# Check if the device is managed
 check_if_managed
 
-# Check if ADE enrolled and set state so we can use it later
-check_ade_enrollment
-
+# Install swiftDialog if needed
 # Install dependencies if needed
 install_cp
 install_swiftDialog
 check_and_install_jq
 
-# Prompt user to migrate
-prompt_migration  # If they exit here, we do nothing and exit
+#Launch initial migration prompt
+DEFERRAL_COUNT=$(defaults read "$deferral_count_file" deferral_count)
 
-# Start migration dialog
-start_progress_dialog
+prompt_migration
 
-# Now that user has agreed, fetch Jamf API details
-serial_number=$(get_serial_number)
-echo "Serial Number: $serial_number"
-auth_token=$(get_auth_token)
-echo "Auth Token: $auth_token"
-computer_id=$(get_computer_id "$serial_number" "$auth_token")
-echo "Computer ID: $computer_id"
+DEFERRAL_COUNT=$((DEFERRAL_COUNT + 1))
 
-# If computer_id is found, unmanage and remove Jamf
-if [ -n "$computer_id" ]; then
-# Call unmanage function based on API version using case statement
-  case $JAMF_API_VERSION in
-      classic)
-          unmanage_device_jamf_classic "$computer_id" "$auth_token"
-          
-          ;;
-      new)
-          unmanage_device_jamf_new "$computer_id" "$auth_token"
-          ;;
-      *)
-          echo "Error: Invalid JAMF_API_VERSION specified. Must be 'classic' or 'new'" >&2
-          exit 1
-          ;;
-  esac
-else
-    echo "Computer ID not found for Serial Number: $serial_number"
-    exit 1
+# Exit script if user chose not to migrate
+if [ "$USER_READY" = false ]; then
+  echo "User chose to exit the migration process. Exiting script."
+    # Inrement deferral count
+    if [ $max_deferral_count -eq 0 ]; then
+      echo "Deferral count is disabled. Exiting script."
+      exit 0
+    fi
+
+    sudo defaults write "$deferral_count_file" deferral_count -int "$DEFERRAL_COUNT"
+    echo "Deferral count not reached: $DEFERRAL_COUNT"
+    exit 0
 fi
 
-# Wait for management profile to be removed
-wait_for_management_profile_removal
+#Launch actual migration dialog
+start_progress_dialog
 
-# If ADE enrolled, show message + renew profiles; else prompt for CP sign-in
+# Call the function to reset office
+office_reset
+
+# Check ADE enrollment before unmanaging the device
+check_ade_enrollment
+
+if [ "$intune_migration" = false ]; then
+  # Now that user has agreed, fetch Jamf API details
+  serial_number=$(get_serial_number)
+  echo "Serial Number: $serial_number"
+  auth_token=$(get_auth_token)
+  echo "Auth Token: $auth_token"
+  computer_id=$(get_computer_id "$serial_number" "$auth_token")
+  echo "Computer ID: $computer_id"
+
+  # If computer_id is found, unmanage and remove Jamf
+  if [ -n "$computer_id" ]; then
+  # Call unmanage function based on API version using case statement
+    case $JAMF_API_VERSION in
+        classic)
+            unmanage_device_jamf_classic "$computer_id" "$auth_token"
+            
+            ;;
+        new)
+            unmanage_device_jamf_new "$computer_id" "$auth_token"
+            ;;
+        *)
+            echo "Error: Invalid JAMF_API_VERSION specified. Must be 'classic' or 'new'" >&2
+            exit 1
+            ;;
+    esac
+  else
+      echo "Computer ID not found for Serial Number: $serial_number"
+      exit 1
+  fi
+
+  # Wait for management profile to be removed
+  wait_for_management_profile_removal
+else 
+  remove_intune_management
+fi
+
+if [ "$intune_migration" = true ]; then
+  update_progress 90 "Device removed from Intune, now starting Intune Migration"
+  sleep 2
+else
+  update_progress 90 "Device removed from Jamf, now starting Intune Migration"
+  sleep 2
+fi
+
+# Close Dialog and any remaining jamf processes
+killall Dialog
+if [ "$intune_migration" = false ]; then
+  killall jamf
+fi
+
+# If the device was ADE enrolled, renew profiles
 if [ "$ADE_ENROLLED" = true ]; then
+
+    # Show end user dialog about ADE enrollment process
     ade_enrollment_message
+
+    # Renew profiles to trigger Intune setup
     renew_profiles
+
+    # Show waiting for Intune dialog, this will remain open until Intune setup is complete and the onboarding script runs
     sleep 5
     waiting_for_intune
 else
+
+    # Show sign-in message for Company Portal
     cp_sign_in_message
+
+    # Launch Company Portal
     launch_company_portal
 fi
 
+# Kill any remaining Dialog processes
+killall Dialog
 
-exit 0
+# Uninstall swiftDialog
+uninstall_swiftDialog
+
+# Clean up the deferral count file
+sudo rm -f "$deferral_count_file"
