@@ -37,7 +37,7 @@
 max_deferral_count=0
 deferral_count_file="/Library/Preferences/com.microsoft.intune_migration.deferral_count.plist"
 # Set if device is being migrated from another Intune tenant
-intune_migration=true
+intune_migration=false
 # Set if Swift Dialog should be uninstalled after migration
 uninstall_swiftdialog=false
 # Reset office for the user, uses OfficeReset.com
