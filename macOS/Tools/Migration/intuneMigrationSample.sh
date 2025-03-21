@@ -32,6 +32,8 @@
 # -------------------------------------------------------------------------------------------------------
 #########################################################################################################
 
+#region Configuration
+
 # Set the maximum deferral count for the migration prompt, set to 0 to disable deferrals
 # If the deferral count is reached, the Exit button will be disabled
 max_deferral_count=0
@@ -42,6 +44,15 @@ intune_migration=false
 uninstall_swiftdialog=false
 # Reset office for the user, uses OfficeReset.com
 reset_office=false
+
+# Set to false if you do not want to blur the screen during dialog display
+blur_screen=true
+blur_screen_string="--blurscreen"
+# Set the font options for the dialog title
+title_font_options="shadow=0,name=SFProDisplay-Regular"
+# Banner colour
+banner_colour="blue"
+
 # Messages for the migration prompt and progress dialog
 migration_message_intune="Your device is scheduled to be migrated from **current Microsoft Intune tenant** to another **Microsoft Intune tenant**"
 migration_message_jamf="Your device is scheduled to be migrated from **Jamf** to **Microsoft Intune**"
@@ -58,11 +69,117 @@ LOG="/Library/Logs/Microsoft/IntuneScripts/intuneMigration/intuneMigration.log"
 # Set to "classic" for (JSSResource) or new for (api) to use the classic or new API
 JAMF_API_VERSION="new"
 
+# Graph API details
+# Set the GRAPH_ENDPOINT to the appropriate Intune API endpoint
+GRAPH_ENDPOINT="https://graph.microsoft.com/v1.0/deviceManagement/managedDevices"
+# Set the client ID, client secret, and tenant ID for the Graph API
+CLIENT_ID=""
+CLIENT_SECRET=""
+TENANT_ID=""
+
+#endregion
+
 # Create deferred count file if it doesn't exist
 if [ ! -f "$deferral_count_file" ]; then
   echo "Creating deferral count file..."
   sudo defaults write "$deferral_count_file" deferral_count -int 0
 fi
+
+if [ $blur_screen = false ]; then
+  blur_screen_string=""
+fi
+
+#region Dialogs
+
+# Function to display message to sign in to Company Portal
+cp_sign_in_message() {
+  /usr/local/bin/dialog \
+    --bannertitle "Action Required: Sign in to Company Portal" \
+    --message "To complete your device setup, you must sign in to the Company Portal app using your **Entra (Microsoft)** credentials.\n\nFailure to sign in to Company Portal will result in the loss of access to corporate resources such as **e-Mail** and **other essential services**.\n\nWhen you close this dialog, Company Portal will be open your screen, click **Sign-in** and complete the process to avoid service disruptions." \
+    --button1text "Got it" \
+    $blur_screen_string \
+    --bannerimage colour=$banner_colour \
+    --titlefont "$title_font_options" \
+    --width 750 \
+    --height 450 \
+    --icon /Applications/Company\ Portal.app/Contents/Resources/AppIcon.icns
+}
+
+# Function to display "Waiting for Intune" message with spinner
+waiting_for_intune() {
+  /usr/local/bin/dialog \
+    --bannertitle "Status: Waiting for Intune" \
+    --message "Your device setup is in progress.\n\nWe're currently waiting for Intune to complete the necessary setup. This may take a few minutes.\n\nPlease keep this window open until setup is complete." \
+    $blur_screen_string \
+    --bannerimage colour=$banner_colour \
+    --titlefont "$title_font_options" \
+    --progress \
+    --width 750 \
+    --height 450 \
+    --icon /Applications/Company\ Portal.app/Contents/Resources/AppIcon.icns \
+    --no-buttons
+    --progress &
+  
+  # Capture the dialog process ID to close it later if needed
+  DIALOG_PID=$!
+}
+
+# Function to display message for ADE enrollment
+ade_enrollment_message() {
+  /usr/local/bin/dialog \
+    --bannertitle "Action Required: Complete Device Enrollment" \
+    --message "Your device is **ADE-enrolled** and requires additional setup to complete enrollment into **Intune**.\n\nPlease follow the setup assistant screens to sign in with your **Entra (Microsoft)** credentials. This process is necessary to gain access to corporate resources, including **e-Mail** and other essential services.\n\nWhen you close this dialog, the setup assistant will open. Follow the prompts to complete the enrollment process." \
+    --button1text "Got it" \
+    $blur_screen_string \
+    --bannerimage colour=$banner_colour \
+    --titlefont "$title_font_options" \
+    --width 750 \
+    --height 450 \
+    --icon /Applications/Company\ Portal.app/Contents/Resources/AppIcon.icns
+}
+
+# Function to prompt the user to start the migration
+prompt_migration() {
+
+    if [ "$intune_migration" = true ]; then
+        message=$migration_message_intune
+    else
+        message=$migration_message_jamf
+    fi
+
+    if [ $max_deferral_count -gt 0 ]; then
+        button2text="Defer"
+        deferral_message="\n\nYou can defer this migration up to **$max_deferral_count** times. After that, the Defer button will be disabled. \n\nYou have **$((max_deferral_count - DEFERRAL_COUNT))** deferral(s) remaining."
+    else
+        deferral_message=""
+        button2text="Exit"
+    fi
+
+  # Display the dialog with improved message text
+  /usr/local/bin/dialog \
+    --bannertitle "Prepare for Device Migration" \
+    --message "${message}.\n\nThis process will take approximately **20 minutes**, during which you will **not be able to use your Mac**.${deferral_message}" \
+    --button1text "Migrate" \
+    $( [[ $((DEFERRAL_COUNT)) -lt $((max_deferral_count)) || $((max_deferral_count)) -eq 0 ]] && echo "--button2text $button2text" ) \
+    $blur_screen_string \
+    --bannerimage colour=$banner_colour \
+    --titlefont "$title_font_options" \
+    --width 750 \
+    --height 450 \
+    --icon /Applications/Company\ Portal.app/Contents/Resources/AppIcon.icns
+
+  # Check which button was clicked based on the exit code
+  if [[ "$?" -eq 0 ]]; then
+    echo "User chose to migrate the device."
+    USER_READY=true
+  else
+    USER_READY=false
+  fi
+}
+
+#endregion
+
+#region Helper Functions
 
 # Function to check if the device is managed by Jamf
 check_if_managed() {
@@ -126,6 +243,41 @@ uninstall_swiftDialog() {
   fi
 }
 
+uninstall_sidecar() {
+  echo "Uninstalling Sidecar..."
+  sidecar_app_path="/Library/Intune"
+  sidecar_ld_name="com.microsoft.intuneMDMAgent.daemon"
+  sidecar_la_name="com.microsoft.intuneMDMAgent"
+  sidecar_db_path="/Library/Application Support/Microsoft/Intune/SideCar"
+  sidecar_launchagent_path="/Library/LaunchAgents/$sidecar_la_name.plist"
+  sidecar_launchdaemon_path="/Library/LaunchDaemons/$sidecar_ld_name.plist"
+  console_user=$(/usr/bin/stat -f "%Su" /dev/console)
+  console_user_uid=$(/usr/bin/id -u "$console_user")
+
+  if [ -d "$sidecar_app_path" ]; then
+    rm -rf "$sidecar_app_path"
+  fi
+
+  if [ -d "$sidecar_db_path" ]; then
+    rm -rf "$sidecar_db_path"
+  fi
+
+  if [ -f "$sidecar_launchagent_path" ]; then
+    /bin/launchctl asuser "${console_user_uid}" /bin/launchctl unload -w  "$sidecar_launchagent_path"
+    rm -f "$sidecar_launchagent_path"
+  fi
+
+  if [ -f "$sidecar_launchdaemon_path" ]; then
+    # is it loaded?
+    if launchctl print "system/${sidecar_ld_name}" &> /dev/null ; then
+      /bin/launchctl unload "$sidecar_launchdaemon_path"
+    fi
+    rm -f "$sidecar_launchdaemon_path"
+  fi
+
+  killall "IntuneMdmAgent"
+}
+
 # Function to check if jq is installed, and if not, install it
 check_and_install_jq() {
   if ! command -v jq &> /dev/null; then
@@ -169,100 +321,26 @@ check_and_install_jq() {
   fi
 }
 
+# Function to update the dialog progress bar and text via the command file
+update_progress() {
+  local progress_value="$1"
+  local progress_text="$2"
+  
+  # Write the progress value and text separately to the command file
+  echo "progress: $progress_value" > "$COMMAND_FILE"
+  echo "progresstext: $progress_text" >> "$COMMAND_FILE"
+  
+  # Add a small delay to ensure swiftDialog processes each update properly
+  sleep 1
+}
 
 office_reset() {
   if [ "$reset_office" = true ]; then
+    update_progress 30 "Resetting Office..."
     echo "Resetting Office..."
-    update_progress 90 "Resetting Office..."
-      curl -L -o /tmp/OfficeReset.pkg "https://office-reset.com/download/Microsoft_Office_Factory_Reset_1.9.1.pkg"
-      sudo installer -pkg /tmp/OfficeReset.pkg -target /
-      rm /tmp/OfficeReset.pkg
-  fi
-}
-
-# Function to display message to sign in to Company Portal
-cp_sign_in_message() {
-  /usr/local/bin/dialog \
-    --bannertitle "Action Required: Sign in to Company Portal" \
-    --message "To complete your device setup, you must sign in to the Company Portal app using your **Entra (Microsoft)** credentials.\n\nFailure to sign in to Company Portal will result in the loss of access to corporate resources such as **e-Mail** and **other essential services**.\n\nWhen you close this dialog, Company Portal will be open your screen, click **Sign-in** and complete the process to avoid service disruptions." \
-    --button1text "Got it" \
-    --blurscreen \
-    --bannerimage colour=blue \
-    --titlefont shadow=1 \
-    --width 750 \
-    --height 450 \
-    --icon /Applications/Company\ Portal.app/Contents/Resources/AppIcon.icns
-}
-
-# Function to display "Waiting for Intune" message with spinner
-waiting_for_intune() {
-  /usr/local/bin/dialog \
-    --bannertitle "Status: Waiting for Intune" \
-    --message "Your device setup is in progress.\n\nWe're currently waiting for Intune to complete the necessary setup. This may take a few minutes.\n\nPlease keep this window open until setup is complete." \
-    --blurscreen \
-    --bannerimage colour=blue \
-    --titlefont shadow=1 \
-    --progress \
-    --width 750 \
-    --height 450 \
-    --icon /Applications/Company\ Portal.app/Contents/Resources/AppIcon.icns \
-    --no-buttons
-    --progress &
-  
-  # Capture the dialog process ID to close it later if needed
-  DIALOG_PID=$!
-}
-
-# Function to display message for ADE enrollment
-ade_enrollment_message() {
-  /usr/local/bin/dialog \
-    --bannertitle "Action Required: Complete Device Enrollment" \
-    --message "Your device is **ADE-enrolled** and requires additional setup to complete enrollment into **Intune**.\n\nPlease follow the setup assistant screens to sign in with your **Entra (Microsoft)** credentials. This process is necessary to gain access to corporate resources, including **e-Mail** and other essential services.\n\nWhen you close this dialog, the setup assistant will open. Follow the prompts to complete the enrollment process." \
-    --button1text "Got it" \
-    --blurscreen \
-    --bannerimage colour=blue \
-    --titlefont shadow=1 \
-    --width 750 \
-    --height 450 \
-    --icon /Applications/Company\ Portal.app/Contents/Resources/AppIcon.icns
-}
-
-# Function to prompt the user to start the migration
-prompt_migration() {
-
-    if [ "$intune_migration" = true ]; then
-        message=$migration_message_intune
-    else
-        message=$migration_message_jamf
-    fi
-
-    if [ $max_deferral_count -gt 0 ]; then
-        button2text="Defer"
-        deferral_message="\n\nYou can defer this migration up to **$max_deferral_count** times. After that, the Defer button will be disabled. \n\nYou have **$((max_deferral_count - DEFERRAL_COUNT))** deferral(s) remaining."
-    else
-        deferral_message=""
-        button2text="Exit"
-    fi
-
-  # Display the dialog with improved message text
-  /usr/local/bin/dialog \
-    --bannertitle "Prepare for Device Migration" \
-    --message "${message}.\n\nThis process will take approximately **20 minutes**, during which you will **not be able to use your Mac**.${deferral_message}" \
-    --button1text "Migrate" \
-    $( [[ $((DEFERRAL_COUNT)) -lt $((max_deferral_count)) || $((max_deferral_count)) -eq 0 ]] && echo "--button2text $button2text" ) \
-    --blurscreen \
-    --bannerimage colour=blue \
-    --titlefont shadow=1 \
-    --width 750 \
-    --height 450 \
-    --icon /Applications/Company\ Portal.app/Contents/Resources/AppIcon.icns
-
-  # Check which button was clicked based on the exit code
-  if [[ "$?" -eq 0 ]]; then
-    echo "User chose to migrate the device."
-    USER_READY=true
-  else
-    USER_READY=false
+    curl -L -o /tmp/OfficeReset.pkg "https://office-reset.com/download/Microsoft_Office_Factory_Reset_1.9.1.pkg"
+    sudo installer -pkg /tmp/OfficeReset.pkg -target /
+    rm /tmp/OfficeReset.pkg
   fi
 }
 
@@ -280,10 +358,10 @@ start_progress_dialog() {
   /usr/local/bin/dialog \
     --bannertitle "Device Migration in Progress" \
     --icon /Applications/Company\ Portal.app/Contents/Resources/AppIcon.icns \
-    --bannerimage colour=blue \
-    --titlefont shadow=1 \
+    --bannerimage colour=$banner_colour \
+    --titlefont "$title_font_options" \
     --message "${message}. Please do not power off or disconnect your device during this process." \
-    --blurscreen \
+    $blur_screen_string \
     --force \
     --no-buttons \
     --progress \
@@ -292,19 +370,6 @@ start_progress_dialog() {
     --commandfile "$COMMAND_FILE" &
   
   DIALOG_PID=$!
-}
-
-# Function to update the dialog progress bar and text via the command file
-update_progress() {
-  local progress_value="$1"
-  local progress_text="$2"
-  
-  # Write the progress value and text separately to the command file
-  echo "progress: $progress_value" > "$COMMAND_FILE"
-  echo "progresstext: $progress_text" >> "$COMMAND_FILE"
-  
-  # Add a small delay to ensure swiftDialog processes each update properly
-  sleep 1
 }
 
 # Function to clean Company Portal app if needed
@@ -323,14 +388,6 @@ clean_company_portal() {
   su "$currentuser" -c "security delete-generic-password -l 'https://enterpriseregistration.windows.net/' "
 }
 
-# Function to unmanage the device from Intune
-remove_intune_management() {
-  update_progress 50 "Removing Intune management..."
-  echo "Removing Intune management..."
-  sudo profiles -R -p "Microsoft.Profiles.MDM"
-  echo "Intune management removed."
-}
-
 # Function to completely remove Jamf framework
 remove_jamf_framework() {
   update_progress 50 "Removing Jamf framework..."
@@ -346,27 +403,11 @@ remove_jamf_framework() {
   fi
 }
 
-# Function to check if the device is ADE enrolled
-check_ade_enrollment() {
-  echo "Checking if the device is ADE enrolled..."
-
-  # Run profiles status to check for DEP enrollment
-  ade_status=$(profiles status -type enrollment 2>/dev/null | grep -i "Enrolled via DEP: Yes")
-
-  if [ -n "$ade_status" ]; then
-    echo "Device is ADE enrolled."
-    ADE_ENROLLED=true
-  else
-    echo "Device is not ADE enrolled."
-    ADE_ENROLLED=false
-  fi
-}
-
 # Function to check and install the Intune Company Portal app if not present
 install_cp() {
   if [ ! -d "/Applications/Company Portal.app" ]; then
     echo "Company Portal not found. Installing Company Portal..."
-    curl -L -o /tmp/cp.pkg "https://go.microsoft.com/fwlink?linkid=853070"
+    curl -L -C - -o /tmp/cp.pkg "https://go.microsoft.com/fwlink?linkid=853070"
     sudo installer -pkg /tmp/cp.pkg -target /
     rm /tmp/cp.pkg
     echo "Company Portal installed successfully."
@@ -385,17 +426,14 @@ launch_company_portal() {
 EOF
 }
 
-# Function to renew profiles if the device is ADE enrolled
-renew_profiles() {
-  sudo profiles renew -type enrollment
-  echo "Profiles renewed."
+# Function to get the serial number of the current Mac
+get_serial_number() {
+  system_profiler SPHardwareDataType | awk '/Serial Number/ {print $4}'
 }
 
-# Function to obtain an authentication token
-get_auth_token() {
-  auth_token=$(curl -su "$USERNAME:$PASSWORD" -X POST "$JAMF_PRO_URL/api/v1/auth/token" | jq -r '.token')
-  echo "$auth_token"
-}
+#endregion
+
+#region Jamf API Functions
 
 # Function to get the computer_id from Jamf Pro based on serial number
 get_computer_id() {
@@ -408,9 +446,10 @@ get_computer_id() {
   echo "$computer_id"
 }
 
-# Function to get the serial number of the current Mac
-get_serial_number() {
-  system_profiler SPHardwareDataType | awk '/Serial Number/ {print $4}'
+# Function to obtain an authentication token
+get_auth_token() {
+  auth_token=$(curl -su "$USERNAME:$PASSWORD" -X POST "$JAMF_PRO_URL/api/v1/auth/token" | jq -r '.token')
+  echo "$auth_token"
 }
 
 unmanage_device_jamf_new() {
@@ -486,11 +525,123 @@ unmanage_device_jamf_classic() {
 
 }
 
+#endregion
+
+#region Intune API Functions
+
+get_graph_auth_token() {
+    local response
+
+    echo "DEBUG: Getting access token..." >&2
+
+    response=$(curl -s -X POST \
+        -d "client_id=$CLIENT_ID" \
+        -d "scope=https://graph.microsoft.com/.default" \
+        -d "client_secret=$CLIENT_SECRET" \
+        -d "grant_type=client_credentials" \
+        "https://login.microsoftonline.com/$TENANT_ID/oauth2/v2.0/token")
+        
+    if echo "$response" | jq -e '.error' >/dev/null; then
+        echo "Failed to get access token: $response" >&2
+        exit 1
+    else
+        echo "$response" | jq -r '.access_token'
+    fi
+}
+
+get_intune_device_id() {
+    local serial_number="$1"
+    local access_token="$2"  # Access token should be passed as an argument
+    local response
+
+    echo "DEBUG: Getting device ID..." >&2
+
+    # Ensure the access token is set
+    if [ -z "$access_token" ]; then
+        echo "Error: Access token is missing!" >&2
+        exit 1
+    fi
+
+    # Ensure GRAPH_ENDPOINT is set
+    if [ -z "$GRAPH_ENDPOINT" ]; then
+        echo "Error: GRAPH_ENDPOINT is not set!" >&2
+        exit 1
+    fi
+
+    # Correct Authorization header and properly format the filter query
+    response=$(curl -s -X GET \
+        -H "Authorization: Bearer $access_token" \
+        -H "Content-Type: application/json" \
+        "$GRAPH_ENDPOINT?\$filter=serialNumber%20eq%20'$serial_number'")
+
+    if echo "$response" | jq -e '.error' >/dev/null; then
+        echo "Failed to get device ID: $response" >&2
+        exit 1
+    else
+        # verify we only have one device
+        if [ $(echo "$response" | jq -r '.value | length') -ne 1 ]; then
+            echo "Error: Multiple devices found for serial number: $serial_number" >&2
+            exit 1
+        fi
+        echo "$response" | jq -r '.value[0].id'
+    fi
+}
+
+unmanage_device_from_intune() {
+    local device_id="$1"
+    local access_token="$2"
+    local response
+
+    echo "DEBUG: Unmanaging device..." >&2
+
+    update_progress 50 "Removing Intune management..."
+
+    # Ensure required parameters are provided
+    if [ -z "$device_id" ] || [ -z "$access_token" ]; then
+        echo "Error: Missing device ID or access token!" >&2
+        exit 1
+    fi
+
+    # Send the unmanage device command
+    response=$(curl -s -X DELETE \
+        -H "Authorization: Bearer $access_token" \
+        "$GRAPH_ENDPOINT/$device_id")
+
+    if echo "$response" | jq -e '.error' >/dev/null; then
+        echo "Failed to unmanage device: $response" >&2
+        exit 1
+    else
+        echo "Device successfully unmanaged."
+    fi
+}
+
+#endregion
+
+#region MDM Profile Removal
+
+# Function to check if the device is ADE enrolled
+check_ade_enrollment() {
+  echo "Checking if the device is ADE enrolled..."
+
+  # Run profiles status to check for DEP enrollment
+  ade_status=$(profiles status -type enrollment 2>/dev/null | grep -i "Enrolled via DEP: Yes")
+
+  if [ -n "$ade_status" ]; then
+    echo "Device is ADE enrolled."
+    ADE_ENROLLED=true
+  else
+    echo "Device is not ADE enrolled."
+    ADE_ENROLLED=false
+  fi
+}
+
 wait_for_management_profile_removal() {
   echo "Waiting for MDM management profile removal..."
   local timeout=1800
   local interval=5
   local elapsed=0
+
+  update_progress 70 "Waiting for MDM management profile removal..."
 
   while true; do
     # Capture the enrollment profiles output.
@@ -515,11 +666,29 @@ wait_for_management_profile_removal() {
   done
 }
 
+# Function to renew profiles if the device is ADE enrolled
+renew_profiles() {
+  sudo profiles renew -type enrollment
+  echo "Profiles renewed."
+}
+
+# Function to unmanage the device from Intune
+remove_intune_management() {
+  update_progress 50 "Removing Intune management..."
+  echo "Removing Intune management..."
+  sudo profiles -R -p "Microsoft.Profiles.MDM"
+  echo "Intune management removed."
+}
+
+#endregion
+
 ############################################################
 ##
 ## Main Script Execution Begins Here
 ##
 #########################################
+
+#region Main Script Execution
 
 # Start Logging before we do anything else...
 startLog
@@ -601,11 +770,36 @@ if [ "$intune_migration" = false ]; then
 
   # Wait for management profile to be removed
   wait_for_management_profile_removal
-else 
-  remove_intune_management
+else
+  if [ $ADE_ENROLLED = true ]; then
+    if [ -z "$CLIENT_ID" ] || [ -z "$CLIENT_SECRET" ] || [ -z "$TENANT_ID" ]; then
+      echo "GRAPH API details are missing!" >&2
+      exit 1
+    else
+      serial_number=$(get_serial_number)
+      echo "Serial Number: $serial_number"
+      # Get the device ID from Intune
+      access_token=$(get_graph_auth_token)
+      device_id=$(get_intune_device_id "$serial_number" "$access_token")
+      echo "Device ID: $device_id"
+
+      # Unmanage the device from Intune
+      unmanage_device_from_intune "$device_id" "$access_token"
+
+      # Clean up the Company Portal app
+      clean_company_portal
+
+      # Wait for management profile to be removed
+      wait_for_management_profile_removal
+    fi
+  else
+    remove_intune_management
+    clean_company_portal
+  fi
 fi
 
 if [ "$intune_migration" = true ]; then
+  uninstall_sidecar
   update_progress 90 "Device removed from Intune, now starting Intune Migration"
   sleep 2
 else
@@ -640,11 +834,10 @@ else
     launch_company_portal
 fi
 
-# Kill any remaining Dialog processes
-killall Dialog
-
 # Uninstall swiftDialog
 uninstall_swiftDialog
 
 # Clean up the deferral count file
 sudo rm -f "$deferral_count_file"
+
+#endregion
