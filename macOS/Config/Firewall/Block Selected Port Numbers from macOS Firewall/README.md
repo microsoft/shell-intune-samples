@@ -11,7 +11,7 @@ This custom script blocks following port numbers from macOS Firewall:
 | 1433-1434 (TCP) | Microsoft SQL Server | Blocks Port Numbers 1433-1434 TCP used by Microsoft SQL Server, which can be exploited if not properly secured. |
 | 1433-1434 (UDP) | Microsoft SQL Server | Blocks Port Numbers 1433-1434 UDP used by Microsoft SQL Server, which can be exploited if not properly secured. |
 | 3389 (TCP) | Remote Desktop Protocol (RDP) | Blocks Port Number 3389 TCP used by Remote Desktop Protocol (RDP), which is common target for brute force attacks. |
-| 1900 (UDP) | SSDP, Universal Plug and Play (UPnP), Bonjour| Blocks Port Number 1900 UDP used by SSDP, Universal Plud and Play (UPnP) and Bonjour, which can be exploited for network discovery and attacks. |
+| 1900 (UDP) | SSDP, Universal Plug and Play (UPnP), Bonjour| Blocks Port Number 1900 UDP used by SSDP, Universal Plug and Play (UPnP) and Bonjour, which can be exploited for network discovery and attacks. |
 | 20-21 (TCP) | FTP | Blocks Port Numbers 20-21 TCP used by FTP, which can be insecure if not properly configured. |
 | 20-21 (UDP) | FTP | Blocks Port Numbers 20-21 UDP used by FTP, which can be insecure if not properly configured. |
 | 23 (TCP) | Telnet | Blocks Port Numbers 23 TCP used by Telnet, which transmits data in plaintext and is insecure. |
