@@ -36,7 +36,7 @@ fi
 # Disable creation of ".DS_Store" -files on network shares
 DisableDS_StoreFilesOnNetworkShares() {
 echo "$(date) | Checking if creation of '.DS_Store' -files have been disabled on network shares for user $USER..."
-if [[ "$statusnetworkshares" != "0" ]]; then
+if [[ "$statusnetworkshares" != "1" ]]; then
     echo  "$(date) | Creation of '.DS_Store' -files have been enabled on network shares for user $USER. Disabling it..."
     defaults write com.apple.desktopservices DSDontWriteNetworkStores -bool TRUE
     echo  "$(date) | Creation of '.DS_Store' -files have been disabled on network shares for user $USER. This change will take effect the next time when you log in to your Mac-device. Let's continue..."
@@ -48,7 +48,7 @@ fi
 # Disable creation of ".DS_Store" -files on removable drives
 DisableDS_StoreFilesOnRemovableDrives() {
 echo "$(date) | Checking if creation of '.DS_Store' -files have been disabled on removable drives for user $USER..."
-if [[ "$statusremovabledrives" != "0" ]]; then
+if [[ "$statusremovabledrives" != "1" ]]; then
     echo  "$(date) | Creation of '.DS_Store' -files have been enabled on removable drives for user $USER. Disabling it..."
     defaults write com.apple.desktopservices DSDontWriteUSBStores -bool TRUE
     echo  "$(date) | Creation of '.DS_Store' -files have been disabled on removable drives for user $USER. This change will take effect the next time when you log in to your Mac-device. All done! Closing script..."
