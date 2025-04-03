@@ -50,7 +50,7 @@ The log file outputs to ***/Library/Logs/Microsoft/IntuneScripts/GoogleChrome***
 To gather this log with Intune remotely, see [Troubleshoot macOS shell script policies using log collection](https://docs.microsoft.com/en-us/mem/intune/apps/macos-shell-scripts#troubleshoot-macos-shell-script-policies-using-log-collection)
 
 ### Example Log Output:
-'''
+```
 ##############################################################
 #                                                            #
 #           Google Chrome Installation Script                #
@@ -81,4 +81,4 @@ Thu Apr  3 09:53:00 BST 2025 | Installation of Google Chrome completed successfu
 ##############################################################
 # Thu Apr  3 09:53:00 BST 2025 | Google Chrome installation completed
 ##############################################################
-'''
+```
