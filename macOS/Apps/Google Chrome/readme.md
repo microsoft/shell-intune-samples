@@ -36,6 +36,17 @@ The script uses several key variables that can be customized if needed:
 
 The included `Microsoft Single Sign On for Chrome.mobileconfig` file is necessary to support Platform Single Sign-On with Chrome. This configuration profile installs the Microsoft Single Sign-On extension for Chrome (ID: ppnbnpeolgkicgegkbkbjmhlideopiji), which allows users to seamlessly sign into Microsoft services and Azure AD-connected applications.
 
+### Deploying the Single Sign-On Extension Configuration Profile with Intune
+
+To deploy the mobileconfig file using Microsoft Intune:
+
+1. In the Intune admin center, navigate to **Devices > macOS > Configuration profiles**
+2. Create a new profile with platform **macOS** and profile type **Custom**
+3. Upload the `Microsoft Single Sign On for Chrome.mobileconfig` file
+4. Assign the profile to your intended device groups
+
+For detailed instructions, see [Use custom settings for macOS devices in Microsoft Intune](https://learn.microsoft.com/en-us/mem/intune/configuration/custom-settings-macos)
+
 ## Script Settings
 
 - Run script as signed-in user : No
