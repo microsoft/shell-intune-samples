@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>PayloadContent</key>
+	<array>
+		<dict>
+			<key>ExtensionInstallForcelist</key>
+			<array>
+				<string>ppnbnpeolgkicgegkbkbjmhlideopiji</string>
+			</array>
+			<key>PayloadDisplayName</key>
+			<string>Google Chrome</string>
+			<key>PayloadIdentifier</key>
+			<string>com.microsoft.intune.chrome-extension.E15B3E43-94F8-421A-A5A1-8BE21EB2F33F</string>
+			<key>PayloadType</key>
+			<string>com.google.Chrome</string>
+			<key>PayloadUUID</key>
+			<string>E15B3E43-94F8-421A-A5A1-8BE21EB2F33F</string>
+			<key>PayloadVersion</key>
+			<integer>1</integer>
+		</dict>
+	</array>
+	<key>PayloadDisplayName</key>
+	<string>Microsoft Single Sign-On for Chrome</string>
+	<key>PayloadIdentifier</key>
+	<string>com.microsoft.intune.sso-chrome.F523490A-1025-4960-B016-91CCB1B86383</string>
+	<key>PayloadType</key>
+	<string>Configuration</string>
+	<key>PayloadUUID</key>
+	<string>F523490A-1025-4960-B016-91CCB1B86383</string>
+	<key>PayloadVersion</key>
+	<integer>1</integer>
+</dict>
+</plist>
