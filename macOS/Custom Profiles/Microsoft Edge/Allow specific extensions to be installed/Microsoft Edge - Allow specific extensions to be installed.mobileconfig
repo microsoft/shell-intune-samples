@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>PayloadUUID</key>
+    <string>F63369A2-16CA-458C-AFEB-EB3C3DB11F5C</string>
+    <key>PayloadType</key>
+    <string>Configuration</string>
+    <key>PayloadOrganization</key>
+    <string>Microsoft Corporation</string>
+    <key>PayloadIdentifier</key>
+    <string>C371DE9A-27C5-4BEA-96F6-7CA86CCFD6FB</string>
+    <key>PayloadDisplayName</key>
+    <string>Microsoft Edge - Allow specific extensions to be installed</string>
+    <key>PayloadDescription</key>
+    <string>Allow specific extensions to be installed on Microsoft Edge</string>
+    <key>PayloadVersion</key>
+    <integer>1</integer>
+    <key>PayloadEnabled</key>
+    <true/>
+    <key>PayloadRemovalDisallowed</key>
+    <true/>
+    <key>PayloadScope</key>
+    <string>System</string>
+    <key>PayloadContent</key>
+    <array>
+      <dict>
+      <key>PayloadUUID</key>
+      <string>6C84B9EB-9808-4156-AC42-6C10A5D8F4B3</string>
+      <key>PayloadType</key>
+      <string>com.microsoft.Edge</string>
+      <key>PayloadOrganization</key>
+      <string>Microsoft Corporation</string>
+      <key>PayloadIdentifier</key>
+      <string>com.microsoft.Edge.6C84B9EB-9808-4156-AC42-6C10A5D8F4B3</string>
+      <key>PayloadDisplayName</key>
+      <string>Allow specific extensions to be installed</string>
+      <key>PayloadDescription</key>
+      <string/>
+      <key>PayloadVersion</key>
+      <integer>1</integer>
+      <key>PayloadEnabled</key>
+      <true/>
+      <key>ExtensionInstallAllowlist</key>
+      <array>
+        <string>extension_id1</string>
+        <string>extension_id2</string>
+      </array>
+    </dict>
+  </array>
+</dict>
+</plist>

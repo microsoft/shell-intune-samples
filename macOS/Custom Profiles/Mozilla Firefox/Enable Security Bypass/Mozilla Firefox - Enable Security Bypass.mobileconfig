@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>PayloadUUID</key>
+    <string>56520143-F07E-424E-9018-FF165FBE36FE</string>
+    <key>PayloadType</key>
+    <string>Configuration</string>
+    <key>PayloadOrganization</key>
+    <string>Mozilla</string>
+    <key>PayloadIdentifier</key>
+    <string>479E8797-FBCF-4723-920B-971EAA6B767B</string>
+    <key>PayloadDisplayName</key>
+    <string>Mozilla Firefox - Enable Security Bypass</string>
+    <key>PayloadDescription</key>
+    <string>Enable the user from bypassing security in certain cases</string>
+    <key>PayloadVersion</key>
+    <integer>1</integer>
+    <key>PayloadEnabled</key>
+    <true/>
+    <key>PayloadRemovalDisallowed</key>
+    <true/>
+    <key>PayloadScope</key>
+    <string>System</string>
+    <key>PayloadContent</key>
+    <array>
+		<dict>
+			<key>PayloadUUID</key>
+			<string>70F13815-4BD3-4528-8204-5554CDCB784B</string>
+			<key>PayloadType</key>
+			<string>org.mozilla.firefox</string>
+			<key>PayloadOrganization</key>
+			<string>Mozilla</string>
+			<key>PayloadIdentifier</key>
+			<string>org.mozilla.firefox.70F13815-4BD3-4528-8204-5554CDCB784B</string>
+			<key>PayloadDisplayName</key>
+			<string>Enable Security Bypass</string>
+			<key>PayloadDescription</key>
+			<string/>
+			<key>PayloadVersion</key>
+			<integer>1</integer>
+			<key>PayloadEnabled</key>
+			<true/>
+			<key>DisableSecurityBypass</key>
+  			<dict>
+    			<key>InvalidCertificate</key>
+    			<false/>
+    			<key>SafeBrowsing</key>
+    			<false/>
+  			</dict>
+		</dict>
+	</array>
+</dict>
+</plist>
