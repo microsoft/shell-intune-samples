@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>PayloadUUID</key>
+    <string>7AC74729-FE44-44A9-9139-5A89DBA9A397</string>
+    <key>PayloadType</key>
+    <string>Configuration</string>
+    <key>PayloadOrganization</key>
+    <string>Google LLC</string>
+    <key>PayloadIdentifier</key>
+    <string>229C0E6C-77AE-4A6F-818B-3606F2C09E48</string>
+    <key>PayloadDisplayName</key>
+    <string>Google Chrome - Configure the list of force-installed apps and extensions</string>
+    <key>PayloadDescription</key>
+    <string>Configure the list of force-installed apps and extensions on Google Chrome</string>
+    <key>PayloadVersion</key>
+    <integer>1</integer>
+    <key>PayloadEnabled</key>
+    <true/>
+    <key>PayloadRemovalDisallowed</key>
+    <true/>
+    <key>PayloadScope</key>
+    <string>System</string>
+    <key>PayloadContent</key>
+    <array>
+    <dict>
+      <key>PayloadUUID</key>
+      <string>283B50D2-977F-41C2-82A5-23C0659001B6</string>
+      <key>PayloadType</key>
+      <string>com.google.Chrome</string>
+      <key>PayloadOrganization</key>
+      <string>Google LLC</string>
+      <key>PayloadIdentifier</key>
+      <string>com.google.Chrome.283B50D2-977F-41C2-82A5-23C0659001B6</string>
+      <key>PayloadDisplayName</key>
+      <string>Configure the list of force-installed apps and extensions</string>
+      <key>PayloadDescription</key>
+      <string/>
+      <key>PayloadVersion</key>
+      <integer>1</integer>
+      <key>PayloadEnabled</key>
+      <true/>
+      <key>ExtensionInstallForcelist</key>
+      <array>
+        <string>extension_id1;extension_update_url1</string>
+        <string>extension_id2;extension_update_url2</string>
+      </array>
+    </dict>
+  </array>
+</dict>
+</plist>

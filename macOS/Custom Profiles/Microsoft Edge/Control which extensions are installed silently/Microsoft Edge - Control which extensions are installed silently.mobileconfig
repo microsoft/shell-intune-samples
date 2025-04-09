@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>PayloadUUID</key>
+    <string>4200331E-6A5C-48F4-9DE4-5C74DEB86C12</string>
+    <key>PayloadType</key>
+    <string>Configuration</string>
+    <key>PayloadOrganization</key>
+    <string>Microsoft Corporation</string>
+    <key>PayloadIdentifier</key>
+    <string>44714A53-B34E-4FA3-BE6C-3BF1B4A6EAF2</string>
+    <key>PayloadDisplayName</key>
+    <string>Microsoft Edge - Control which extensions are installed silently</string>
+    <key>PayloadDescription</key>
+    <string>Control which extensions are installed silently on Microsoft Edge</string>
+    <key>PayloadVersion</key>
+    <integer>1</integer>
+    <key>PayloadEnabled</key>
+    <true/>
+    <key>PayloadRemovalDisallowed</key>
+    <true/>
+    <key>PayloadScope</key>
+    <string>System</string>
+    <key>PayloadContent</key>
+    <array>
+    <dict>
+      <key>PayloadUUID</key>
+      <string>0ECB22EA-31E3-439E-A840-BFB9D7D4CB34</string>
+      <key>PayloadType</key>
+      <string>com.microsoft.Edge</string>
+      <key>PayloadOrganization</key>
+      <string>Microsoft Corporation</string>
+      <key>PayloadIdentifier</key>
+      <string>com.microsoft.Edge.0ECB22EA-31E3-439E-A840-BFB9D7D4CB34</string>
+      <key>PayloadDisplayName</key>
+      <string>Control which extensions are installed silently</string>
+      <key>PayloadDescription</key>
+      <string/>
+      <key>PayloadVersion</key>
+      <integer>1</integer>
+      <key>PayloadEnabled</key>
+      <true/>
+      <key>ExtensionInstallForcelist</key>
+      <array>
+        <string>extension_id1;extension_update_url1</string>
+        <string>extension_id2;extension_update_url2</string>
+      </array>
+      <key>ExtensionSettings</key>
+      <dict>
+        <key>extension_id1</key>
+        <dict>
+        <key>toolbar_state</key>
+          <string>force_shown</string>
+        </dict>
+        <key>extension_id2</key>
+        <dict>
+        <key>toolbar_state</key>
+          <string>default_hidden</string>
+        </dict>
+      </dict>
+    </dict>
+  </array>
+</dict>
+</plist>

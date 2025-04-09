@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>PayloadUUID</key>
+    <string>A01BFFEB-6CBB-4367-9364-F99E6639B97A</string>
+    <key>PayloadType</key>
+    <string>Configuration</string>
+    <key>PayloadOrganization</key>
+    <string>Google LLC</string>
+    <key>PayloadIdentifier</key>
+    <string>55B6FEA5-1C18-4761-9835-DA04087B30D9</string>
+    <key>PayloadDisplayName</key>
+    <string>Google Chrome - Managed Bookmarks</string>
+    <key>PayloadDescription</key>
+    <string>Installs managed bookmarks to Google Chrome</string>
+    <key>PayloadVersion</key>
+    <integer>1</integer>
+    <key>PayloadEnabled</key>
+    <true/>
+    <key>PayloadRemovalDisallowed</key>
+    <true/>
+    <key>PayloadScope</key>
+    <string>System</string>
+    <key>PayloadContent</key>
+    <array>
+		<dict>
+			<key>PayloadUUID</key>
+			<string>CAF0F655-B323-4C80-9DD4-A23ED91FCCBB</string>
+			<key>PayloadType</key>
+			<string>com.google.Chrome</string>
+			<key>PayloadOrganization</key>
+			<string>Google LLC</string>
+			<key>PayloadIdentifier</key>
+			<string>com.google.Chrome.CAF0F655-B323-4C80-9DD4-A23ED91FCCBB</string>
+			<key>PayloadDisplayName</key>
+			<string>Configure bookmarks</string>
+			<key>PayloadDescription</key>
+			<string/>
+			<key>PayloadVersion</key>
+			<integer>1</integer>
+			<key>PayloadEnabled</key>
+			<true/>
+			<key>ManagedFavorites</key>
+			<array>
+			  <dict>
+				<key>toplevel_name</key>
+				<string>Microsoft</string>
+			  </dict>
+			  <dict>
+				<key>name</key>
+				<string>Azure Portal</string>
+				<key>url</key>
+				<string>https://portal.azure.com/</string>
+			  </dict>
+			  <dict>
+				<key>name</key>
+				<string>Bing</string>
+				<key>url</key>
+				<string>https://bing.com/</string>
+			  </dict>
+			  <dict>
+				<key>name</key>
+				<string>Microsoft</string>
+				<key>url</key>
+				<string>https://microsoft.com/</string>
+			  </dict>
+			  <dict>
+				<key>name</key>
+				<string>Microsoft 365</string>
+				<key>url</key>
+				<string>https://microsoft365.com/</string>
+			  </dict>
+			  <dict>
+				<key>name</key>
+				<string>Microsoft 365 Defender</string>
+				<key>url</key>
+				<string>https://security.microsoft.com/</string>
+			  </dict>
+			  <dict>
+				<key>name</key>
+				<string>Microsoft Intune admin center</string>
+				<key>url</key>
+				<string>https://intune.microsoft.com/</string>
+			  </dict>
+			  <dict>
+				<key>name</key>
+				<string>MSN</string>
+				<key>url</key>
+				<string>https://msn.com/</string>
+			  </dict>
+			</array>
+		</dict>
+	</array>
+</dict>
+</plist>
