@@ -23,11 +23,14 @@
 ## of such damages.
 ## Feedback: ckunze@microsoft.com
 
-AppName="placeholder"
+echo "Enter the name of the application you want to package (without spaces):"
+read AppName
+echo "Enter the version of the application (e.g., 1.0):"
+read Version
 
 mkdir -p /tmp/empty
 
 pkgbuild --identifier "com.yourcompany.$AppName" \
-         --version "1.0" \
+         --version $Version \
          --root /tmp/empty \
          $AppName.pkg
