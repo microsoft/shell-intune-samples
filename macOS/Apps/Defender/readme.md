@@ -20,7 +20,7 @@ waitForTheseApps=(  "/Applications/Microsoft Edge.app"
 ## Quick Run
 
 ```
-sudo /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/microsoft/shell-intune-samples/master/Apps/Defender/installDefender.sh)" 
+sudo /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/microsoft/shell-intune-samples/refs/heads/master/macOS/Apps/Defender/installDefender.sh)" 
 ```
 
 ## Script Settings
