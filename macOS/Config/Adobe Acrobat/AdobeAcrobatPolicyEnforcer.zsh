@@ -17,7 +17,7 @@
 ## Feedback: neiljohn@microsoft.com
 
 # Define variables
-appname="AdobeAcrobatPolicies"                                # The name of our script
+appname="AdobeAcrobatPolicies"                                                 # The name of our script
 plist="$HOME/Library/Preferences/com.adobe.Acrobat.Pro.plist"                  # Location of plist-file, that we will create or modify
 plistbuddy="/usr/libexec/PlistBuddy"                                           # Location of plistbuddy, that we will use
 logandmetadir="$HOME/Library/Logs/Microsoft/IntuneScripts/$appname"            # The location of our logs and last updated data
