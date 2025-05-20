@@ -144,4 +144,4 @@ acrobat_create_value "DC:TrustManager:bTrustOSTrustedSites" bool true
 # End of script
 echo ""
 echo "$(/bin/date) | Script $appname completed."
-echo "############################################################"
+echo "##############################################################"

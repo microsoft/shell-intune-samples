@@ -232,4 +232,4 @@ ngl_enforce_value "AuthInfo:login_domain" string "example.com" "$ngl_plist"
 # End of script
 echo ""
 echo "$(/bin/date) | Script $appname completed."
-echo "############################################################"
+echo "##############################################################"
