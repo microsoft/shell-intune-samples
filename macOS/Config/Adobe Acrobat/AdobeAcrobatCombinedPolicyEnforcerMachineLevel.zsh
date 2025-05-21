@@ -2,7 +2,7 @@
 #set -x
 ############################################################################################
 ##
-## Combined script to set FeatureLockDown and NGL policies for Adobe Acrobat on macOS
+## Combined script to set and enforce FeatureLockDown and NGL policies for Adobe Acrobat on macOS (Machine Level)
 ##
 ############################################################################################
 
@@ -17,7 +17,7 @@
 ## Feedback: neiljohn@microsoft.com
 
 # Define variables
-appname="AdobeAcrobatCombinedPolicyEnforcer"                                               # The name of our script
+appname="AdobeAcrobatCombinedPolicyEnforcerMachineLevel"                                   # The name of our script
 acrobat_plist="/Library/Preferences/com.adobe.Acrobat.Pro.plist"                           # Location of plist of Adobe Acrobat FeatureLockDown policies
 ngl_plist="/Library/Preferences/com.adobe.NGL.AuthInfo.plist"                              # Location of plist of Adobe NGL policy for login_domain
 plistbuddy="/usr/libexec/PlistBuddy"                                                       # Location of plistbuddy, that we will use
@@ -38,8 +38,33 @@ if [ ! -x "$plistbuddy" ]; then
     exit 1
 fi
 
+# Acrobat: Ensure parent directory exists
+acrobat_ensure_directory_exists() {
+  local dir_path
+  dir_path="$(dirname "$acrobat_plist")"
+  if [ ! -d "$dir_path" ]; then
+    echo "$(/bin/date) | Creating directory: $dir_path"
+    mkdir -p "$dir_path"
+  else
+    echo "$(/bin/date) | Directory already exists: $dir_path"
+  fi
+}
+
+# NGL: Ensure parent directory exists
+ngl_ensure_directory_exists() {
+  local dir_path
+  dir_path="$(dirname "$ngl_plist")"
+  if [ ! -d "$dir_path" ]; then
+    echo "$(/bin/date) | Creating directory: $dir_path"
+    mkdir -p "$dir_path"
+  else
+    echo "$(/bin/date) | Directory already exists: $dir_path"
+  fi
+}
+
 # Ensure Adobe Acrobat FeatureLockDown plist exist
 acrobat_create_plist() {
+  acrobat_ensure_directory_exists
   if [[ ! -f "$acrobat_plist" ]]; then
     echo "$(/bin/date) | [CREATE] Creating empty plist at $acrobat_plist"
     $plistbuddy -c "Clear" "$acrobat_plist" > /dev/null 2>&1
@@ -48,6 +73,7 @@ acrobat_create_plist() {
 
 # Ensure Adobe NGL plist for login_domain exist
 ngl_create_plist() {
+ ngl_ensure_directory_exists
   if [[ ! -f "$ngl_plist" ]]; then
     echo "$(/bin/date) | [CREATE] Creating empty plist at $ngl_plist"
     $plistbuddy -c "Clear" "$ngl_plist" > /dev/null 2>&1
@@ -94,17 +120,17 @@ acrobat_enforce_value() {
 
   acrobat_ensure_parents_exist "$key_path" "$acrobat_plist"
 
-  if $plistbuddy -c "Print $key_path" "$acrobat_plist" &>/dev/null; then
-    local current="$($plistbuddy -c "Print $key_path" "$acrobat_plist")"
+  if $plistbuddy -c "Print '$key_path'" "$acrobat_plist" &>/dev/null; then
+    local current="$($plistbuddy -c "Print '$key_path'" "$acrobat_plist")"
     if [[ "$current" != "$expected" ]]; then
       echo "$(/bin/date) | [UPDATE] $key_path: $current -> $expected"
-      $plistbuddy -c "Set $key_path $expected" "$acrobat_plist"
+      $plistbuddy -c "Set '$key_path' $expected" "$acrobat_plist"
     else
       echo "$(/bin/date) | [OK] $key_path is already set to $expected"
     fi
   else
     echo "$(/bin/date) | [ADD] $key_path = $expected"
-    $plistbuddy -c "Add $key_path $type $expected" "$acrobat_plist"
+    $plistbuddy -c "Add '$key_path' $type $expected" "$acrobat_plist"
   fi
 }
 
@@ -116,20 +142,19 @@ ngl_enforce_value() {
 
   ngl_ensure_parents_exist "$key_path" "$ngl_plist"
 
-  if $plistbuddy -c "Print $key_path" "$ngl_plist" &>/dev/null; then
-    local current="$($plistbuddy -c "Print $key_path" "$ngl_plist")"
+  if $plistbuddy -c "Print '$key_path'" "$ngl_plist" &>/dev/null; then
+    local current="$($plistbuddy -c "Print '$key_path'" "$ngl_plist")"
     if [[ "$current" != "$expected" ]]; then
       echo "$(/bin/date) | [UPDATE] $key_path: $current -> $expected"
-      $plistbuddy -c "Set $key_path $expected" "$ngl_plist"
+      $plistbuddy -c "Set '$key_path' $expected" "$ngl_plist"
     else
       echo "$(/bin/date) | [OK] $key_path is already set to $expected"
     fi
   else
     echo "$(/bin/date) | [ADD] $key_path = $expected"
-    $plistbuddy -c "Add $key_path $type $expected" "$ngl_plist"
+    $plistbuddy -c "Add '$key_path' $type $expected" "$ngl_plist"
   fi
 }
-
 
 # Acrobat: Delete key if it exists
 acrobat_delete_key() {
@@ -172,7 +197,7 @@ echo "$(/bin/date) | Applying Adobe Acrobat FeatureLockDown policies..."
 acrobat_create_plist
 
 # [ADD/UPDATE] FeatureLockdown - Root
-acrobat_enforce_value "DC:FeatureLockdown:bProtectedMode" bool true "$acrobat_plist"
+acrobat_enforce_value "DC:FeatureLockdown:bProtectedMode" bool false "$acrobat_plist"
 acrobat_enforce_value "DC:FeatureLockdown:bToggleShareFeedback" bool false "$acrobat_plist"
 acrobat_enforce_value "DC:FeatureLockdown:bToggleFTE" bool true "$acrobat_plist"
 acrobat_enforce_value "DC:FeatureLockdown:bWhatsNewExp" bool false "$acrobat_plist"
@@ -185,8 +210,15 @@ acrobat_enforce_value "DC:FeatureLockdown:bMIPCheckPolicyOnDocSave" bool true "$
 acrobat_enforce_value "DC:FeatureLockdown:bEnableAV2Enterprise" bool false "$acrobat_plist"
 acrobat_enforce_value "DC:FeatureLockdown:bUpdater" bool true "$acrobat_plist"
 acrobat_enforce_value "DC:FeatureLockdown:bAcroSuppressUpsell" bool true "$acrobat_plist"
+
+# [ADD/UPDATE] FeatureLockdown - cWebmailProfiles
+acrobat_enforce_value "DC:FeatureLockdown:cWebmailProfiles:bDisableWebmail" bool true "$acrobat_plist"
+
+# [ADD/UPDATE] FeatureLockdown - cSharePoint
 acrobat_enforce_value "DC:FeatureLockdown:cSharePoint:bDisableSharePointFeatures" bool false "$acrobat_plist"
-acrobat_enforce_value "DC:FeatureLockdown:cWebmailProfiles:bDisableWebmail" bool false "$acrobat_plist"
+
+# [ADD/UPDATE] FeatureLockdown - cWelcomeScreen
+acrobat_enforce_value "DC:FeatureLockdown:cWelcomeScreen:bShowWelcomeScreen" bool true "$acrobat_plist"
 
 # [ADD/UPDATE] FeatureLockdown - cIPM
 acrobat_enforce_value "DC:FeatureLockdown:cIPM:bShowMsgAtLaunch" bool false "$acrobat_plist"
@@ -224,7 +256,7 @@ echo "$(/bin/date) | Applying NGL AuthInfo policy for login_domain..."
 ngl_create_plist
 
 # [ADD/UPDATE] AuthInfo - login_domain
-ngl_enforce_value "AuthInfo:login_domain" string "example.com" "$ngl_plist"
+ngl_enforce_value "AuthInfo:login_domain" string "$domain" "$ngl_plist"
 
 # [DELETE] AuthInfo - login_domain (Example commented)
 # ngl_delete_key "AuthInfo:login_domain"

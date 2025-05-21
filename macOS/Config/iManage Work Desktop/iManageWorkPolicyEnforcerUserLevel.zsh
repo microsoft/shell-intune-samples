@@ -2,7 +2,7 @@
 #set -x
 ############################################################################################
 ##
-## Script to set policies for Adobe Acrobat
+## Script to set and enforce policies to iManage Work Desktop (User Level)
 ##
 ############################################################################################
 
@@ -17,11 +17,11 @@
 ## Feedback: neiljohn@microsoft.com
 
 # Define variables
-appname="AdobeAcrobatPolicies"                                                 # The name of our script
-plist="$HOME/Library/Preferences/com.adobe.Acrobat.Pro.plist"                  # Location of plist-file, that we will create or modify
-plistbuddy="/usr/libexec/PlistBuddy"                                           # Location of plistbuddy, that we will use
-logandmetadir="$HOME/Library/Logs/Microsoft/IntuneScripts/$appname"            # The location of our logs and last updated data
-log="$logandmetadir/$appname.log"                                              # The location of the script log file
+appname="iManageWorkPolicyEnforcerUserLevel"                                               # The name of our script
+plist="$HOME/Application Support/iManage/Configuration/com.imanage.configuration.plist"    # Location of plist-file, that we will create or modify
+plistbuddy="/usr/libexec/PlistBuddy"                                                       # Location of plistbuddy, that we will use
+logandmetadir="$HOME/Library/Logs/Microsoft/IntuneScripts/$appname"                        # The location of our logs and last updated data
+log="$logandmetadir/$appname.log"                                                          # The location of the script log file
 
 # Check if the log directory has been created
 if [ -d "$logandmetadir" ]; then
@@ -37,8 +37,21 @@ if [ ! -x "$plistbuddy" ]; then
     exit 1
 fi
 
-# Ensure Adobe Acrobat plist exist
+# Ensure parent directory exists
+ensure_directory_exists() {
+  local dir_path
+  dir_path="$(dirname "$plist")"
+  if [ ! -d "$dir_path" ]; then
+    echo "$(/bin/date) | Creating directory: $dir_path"
+    mkdir -p "$dir_path"
+  else
+    echo "$(/bin/date) | Directory already exists: $dir_path"
+  fi
+}
+
+# Ensure plist exist
 create_plist() {
+  ensure_directory_exists
   if [[ ! -f "$plist" ]]; then
     echo "$(/bin/date) | [CREATE] Creating empty plist at $plist"
     $plistbuddy -c "Clear" "$plist" > /dev/null 2>&1
@@ -62,29 +75,29 @@ ensure_parents_exist() {
 }
 
 # Enforce key value
-acrobat_create_value() {
+enforce_value() {
   local key_path="$1"
   local type="$2"
   local expected="$3"
 
   ensure_parents_exist "$key_path" "$plist"
 
-  if $plistbuddy -c "Print $key_path" "$plist" &>/dev/null; then
-    local current="$($plistbuddy -c "Print $key_path" "$plist")"
+  if $plistbuddy -c "Print '$key_path'" "$plist" &>/dev/null; then
+    local current="$($plistbuddy -c "Print '$key_path'" "$plist")"
     if [[ "$current" != "$expected" ]]; then
       echo "$(/bin/date) | [UPDATE] $key_path: $current -> $expected"
-      $plistbuddy -c "Set $key_path $expected" "$plist"
+      $plistbuddy -c "Set '$key_path' $expected" "$plist"
     else
       echo "$(/bin/date) | [OK] $key_path is already set to $expected"
     fi
   else
     echo "$(/bin/date) | [ADD] $key_path = $expected"
-    $plistbuddy -c "Add $key_path $type $expected" "$plist"
+    $plistbuddy -c "Add '$key_path' $type $expected" "$plist"
   fi
 }
 
 # Delete key if it exists
-acrobat_delete_key() {
+delete_key() {
   local key_path="$1"
   if $plistbuddy -c "Print $key_path" "$plist" &>/dev/null; then
     echo "$(/bin/date) | [DELETE] Removing key: $key_path"
@@ -106,40 +119,23 @@ echo ""
 
 # Run functions
 
-# Apply Adobe Acrobat policies
-echo "$(/bin/date) | Applying Adobe Acrobat policies..."
+# Apply iManage Work Desktop policies
+echo "$(/bin/date) | Applying iManage Work Desktop policies on Root-level..."
 
 # [CREATE] Create plist if not existed
 create_plist
 
-# [ADD/UPDATE] Access - Root
-acrobat_create_value "DC:Access:bShowKeyboardSelectionCursor" bool true
+# [ADD/UPDATE] ServerURL - Root
+enforce_value "MDM Payload" bool true "$plist"
 
-# [ADD/UPDATE] UnifiedShare - Root
-acrobat_create_value "DC:UnifiedShare:bLastAttachLinkMode" bool true
+# [ADD/UPDATE] Email Client Configuration - Root
+enforce_value "Email Client Configuration" integer 1 "$plist"
 
-# [ADD/UPDATE] FormsPrefs - cRuntimeBGIdleColor
-acrobat_create_value "DC:FormsPrefs:cRuntimeBGIdleColor:bRuntimeHighlight" bool true
+# [ADD/UPDATE] CheckIn Default - Root
+enforce_value "CheckIn Default" integer 2 "$plist"
 
-# [ADD/UPDATE] Originals - Root
-acrobat_create_value "DC:Originals:bDisplayAboutDialog" bool true
-acrobat_create_value "DC:Originals:bAllowOpenFile" bool true
-
-# [ADD/UPDATE] JSPrefs - Root
-acrobat_create_value "DC:JSPrefs:bEnableJS" bool true
-
-# [ADD/UPDATE] Security - cDigSig - cCustomDownload
-acrobat_create_value "DC:Security:cDigSig:cCustomDownload:bAskBeforeInstalling" bool true
-
-# [ADD/UPDATE] Security - cDigSig - cAdobeDownload
-acrobat_create_value "DC:Security:cDigSig:cAdobeDownload:bLoadSettingsFromURL" bool true
-
-# [ADD/UPDATE] TrustManager - Root
-acrobat_create_value "DC:TrustManager:bTrustCertifiedDocuments" bool true
-acrobat_create_value "DC:TrustManager:bTrustOSTrustedSites" bool true
-
-# [DELETE] Access - Root (Example commented)
-# acrobat_delete_key "DC:Access:bShowKeyboardSelectionCursor"
+# [DELETE] ServerURL - Root (Example commented)
+# delete_key "ServerURL"
 
 # End of script
 echo ""
