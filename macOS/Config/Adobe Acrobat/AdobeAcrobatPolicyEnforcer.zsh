@@ -2,7 +2,7 @@
 #set -x
 ############################################################################################
 ##
-## Script to set policies for Adobe Acrobat
+## Script to set policies for Adobe Acrobat, that are not locked down
 ##
 ############################################################################################
 
@@ -119,24 +119,23 @@ acrobat_create_value "DC:Access:bShowKeyboardSelectionCursor" bool true
 acrobat_create_value "DC:UnifiedShare:bLastAttachLinkMode" bool true
 
 # [ADD/UPDATE] FormsPrefs - cRuntimeBGIdleColor
-acrobat_create_value "DC:FormsPrefs:cRuntimeBGIdleColor:bRuntimeHighlight" bool true
+acrobat_create_value "DC:FormsPrefs:cRuntimeBGIdleColor:bRuntimeHighlight" bool false
 
 # [ADD/UPDATE] Originals - Root
-acrobat_create_value "DC:Originals:bDisplayAboutDialog" bool true
 acrobat_create_value "DC:Originals:bAllowOpenFile" bool true
 
 # [ADD/UPDATE] JSPrefs - Root
 acrobat_create_value "DC:JSPrefs:bEnableJS" bool true
 
-# [ADD/UPDATE] Security - cDigSig - cCustomDownload
-acrobat_create_value "DC:Security:cDigSig:cCustomDownload:bAskBeforeInstalling" bool true
+# [ADD/UPDATE] Security - cDigSig - cCustomDownload (Example commented)
+# acrobat_create_value "DC:Security:cDigSig:cCustomDownload:bAskBeforeInstalling" bool true
 
-# [ADD/UPDATE] Security - cDigSig - cAdobeDownload
-acrobat_create_value "DC:Security:cDigSig:cAdobeDownload:bLoadSettingsFromURL" bool true
+# [ADD/UPDATE] Security - cDigSig - cAdobeDownload (Example commented)
+# acrobat_create_value "DC:Security:cDigSig:cAdobeDownload:bLoadSettingsFromURL" bool true
 
-# [ADD/UPDATE] TrustManager - Root
+# [ADD/UPDATE] TrustManager - Root (Example commented)
 acrobat_create_value "DC:TrustManager:bTrustCertifiedDocuments" bool true
-acrobat_create_value "DC:TrustManager:bTrustOSTrustedSites" bool true
+# acrobat_create_value "DC:TrustManager:bTrustOSTrustedSites" bool true
 
 # [DELETE] Access - Root (Example commented)
 # acrobat_delete_key "DC:Access:bShowKeyboardSelectionCursor"
