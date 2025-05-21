@@ -2,7 +2,7 @@
 #set -x
 ############################################################################################
 ##
-## Script to set and enforce policies to Adobe Acrobat (User Level)
+## Script to set and enforce policies to Adobe Acrobat on macOS (User Level)
 ##
 ############################################################################################
 
@@ -23,7 +23,7 @@ plistbuddy="/usr/libexec/PlistBuddy"                                           #
 logandmetadir="$HOME/Library/Logs/Microsoft/IntuneScripts/$appname"            # The location of our logs and last updated data
 log="$logandmetadir/$appname.log"                                              # The location of the script log file
 
-# Check if the log directory has been created
+# Create log directory if it doesn't exist
 if [ -d "$logandmetadir" ]; then
     echo "$(/bin/date) | Log directory already exists - $logandmetadir"
 else

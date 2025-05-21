@@ -2,7 +2,7 @@
 #set -x
 ############################################################################################
 ##
-## Script to set and enforce policies to iManage Work Desktop (User Level)
+## Script to set and enforce policies to iManage Work Desktop on macOS (User Level)
 ##
 ############################################################################################
 
@@ -17,13 +17,13 @@
 ## Feedback: neiljohn@microsoft.com
 
 # Define variables
-appname="iManageWorkPolicyEnforcerUserLevel"                                               # The name of our script
-plist="$HOME/Application Support/iManage/Configuration/com.imanage.configuration.plist"    # Location of plist-file, that we will create or modify
-plistbuddy="/usr/libexec/PlistBuddy"                                                       # Location of plistbuddy, that we will use
-logandmetadir="$HOME/Library/Logs/Microsoft/IntuneScripts/$appname"                        # The location of our logs and last updated data
-log="$logandmetadir/$appname.log"                                                          # The location of the script log file
+appname="iManageWorkPolicyEnforcerUserLevel"                                                       # The name of our script
+plist="$HOME/Library/Application Support/iManage/Configuration/com.imanage.configuration.plist"    # Location of plist-file, that we will create or modify
+plistbuddy="/usr/libexec/PlistBuddy"                                                               # Location of plistbuddy, that we will use
+logandmetadir="$HOME/Library/Logs/Microsoft/IntuneScripts/$appname"                                # The location of our logs and last updated data
+log="$logandmetadir/$appname.log"                                                                  # The location of the script log file
 
-# Check if the log directory has been created
+# Create log directory if it doesn't exist
 if [ -d "$logandmetadir" ]; then
     echo "$(/bin/date) | Log directory already exists - $logandmetadir"
 else
@@ -125,17 +125,14 @@ echo "$(/bin/date) | Applying iManage Work Desktop policies on Root-level..."
 # [CREATE] Create plist if not existed
 create_plist
 
-# [ADD/UPDATE] ServerURL - Root
+# [ADD/UPDATE] MDM Payload - Root
 enforce_value "MDM Payload" bool true "$plist"
 
-# [ADD/UPDATE] Email Client Configuration - Root
-enforce_value "Email Client Configuration" integer 1 "$plist"
+# [ADD/UPDATE] Disable AutoUpdates - Root
+enforce_value "Disable AutoUpdates" bool false "$plist"
 
-# [ADD/UPDATE] CheckIn Default - Root
-enforce_value "CheckIn Default" integer 2 "$plist"
-
-# [DELETE] ServerURL - Root (Example commented)
-# delete_key "ServerURL"
+# [DELETE] MDM Payload - Root (Example commented)
+# delete_key "MDM Payload"
 
 # End of script
 echo ""
