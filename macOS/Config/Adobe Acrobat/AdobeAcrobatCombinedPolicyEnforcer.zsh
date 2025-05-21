@@ -21,6 +21,7 @@ appname="AdobeAcrobatCombinedPolicyEnforcer"                                    
 acrobat_plist="/Library/Preferences/com.adobe.Acrobat.Pro.plist"                           # Location of plist of Adobe Acrobat FeatureLockDown policies
 ngl_plist="/Library/Preferences/com.adobe.NGL.AuthInfo.plist"                              # Location of plist of Adobe NGL policy for login_domain
 plistbuddy="/usr/libexec/PlistBuddy"                                                       # Location of plistbuddy, that we will use
+domain="example.com"                                                                       # Domain of Adobe NGL policy for login_domain
 logandmetadir="/Library/Logs/Microsoft/IntuneScripts/$appname"                             # The location of our logs and last updated data
 log="$logandmetadir/$appname.log"                                                          # The location of the script log file
 
@@ -172,7 +173,7 @@ echo "$(/bin/date) | Applying Adobe Acrobat FeatureLockDown policies..."
 acrobat_create_plist
 
 # [ADD/UPDATE] FeatureLockdown - Root
-acrobat_enforce_value "DC:FeatureLockdown:bProtectedMode" bool true "$acrobat_plist"
+acrobat_enforce_value "DC:FeatureLockdown:bProtectedMode" bool false "$acrobat_plist"
 acrobat_enforce_value "DC:FeatureLockdown:bToggleShareFeedback" bool false "$acrobat_plist"
 acrobat_enforce_value "DC:FeatureLockdown:bToggleFTE" bool true "$acrobat_plist"
 acrobat_enforce_value "DC:FeatureLockdown:bWhatsNewExp" bool false "$acrobat_plist"
@@ -185,8 +186,15 @@ acrobat_enforce_value "DC:FeatureLockdown:bMIPCheckPolicyOnDocSave" bool true "$
 acrobat_enforce_value "DC:FeatureLockdown:bEnableAV2Enterprise" bool false "$acrobat_plist"
 acrobat_enforce_value "DC:FeatureLockdown:bUpdater" bool true "$acrobat_plist"
 acrobat_enforce_value "DC:FeatureLockdown:bAcroSuppressUpsell" bool true "$acrobat_plist"
+
+# [ADD/UPDATE] FeatureLockdown - cWebmailProfiles
+acrobat_enforce_value "DC:FeatureLockdown:cWebmailProfiles:bDisableWebmail" bool true "$acrobat_plist"
+
+# [ADD/UPDATE] FeatureLockdown - cSharePoint
 acrobat_enforce_value "DC:FeatureLockdown:cSharePoint:bDisableSharePointFeatures" bool false "$acrobat_plist"
-acrobat_enforce_value "DC:FeatureLockdown:cWebmailProfiles:bDisableWebmail" bool false "$acrobat_plist"
+
+# [ADD/UPDATE] FeatureLockdown - cWelcomeScreen
+acrobat_enforce_value "DC:FeatureLockdown:cWelcomeScreen:bShowWelcomeScreen" bool true "$acrobat_plist"
 
 # [ADD/UPDATE] FeatureLockdown - cIPM
 acrobat_enforce_value "DC:FeatureLockdown:cIPM:bShowMsgAtLaunch" bool false "$acrobat_plist"
@@ -224,7 +232,7 @@ echo "$(/bin/date) | Applying NGL AuthInfo policy for login_domain..."
 ngl_create_plist
 
 # [ADD/UPDATE] AuthInfo - login_domain
-ngl_enforce_value "AuthInfo:login_domain" string "example.com" "$ngl_plist"
+ngl_enforce_value "AuthInfo:login_domain" string "$domain" "$ngl_plist"
 
 # [DELETE] AuthInfo - login_domain (Example commented)
 # ngl_delete_key "AuthInfo:login_domain"
