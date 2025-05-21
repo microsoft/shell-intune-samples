@@ -21,6 +21,7 @@ appname="AdobeAcrobatCombinedPolicyEnforcerMachineLevel"                        
 acrobat_plist="/Library/Preferences/com.adobe.Acrobat.Pro.plist"                           # Location of plist of Adobe Acrobat FeatureLockDown policies
 ngl_plist="/Library/Preferences/com.adobe.NGL.AuthInfo.plist"                              # Location of plist of Adobe NGL policy for login_domain
 plistbuddy="/usr/libexec/PlistBuddy"                                                       # Location of plistbuddy, that we will use
+domain="example.com"                                                                       # Domain of Adobe NGL policy for login_domain
 logandmetadir="/Library/Logs/Microsoft/IntuneScripts/$appname"                             # The location of our logs and last updated data
 log="$logandmetadir/$appname.log"                                                          # The location of the script log file
 
