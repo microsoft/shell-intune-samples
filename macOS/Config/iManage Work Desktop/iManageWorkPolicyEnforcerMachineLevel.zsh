@@ -120,7 +120,7 @@ echo ""
 # Run functions
 
 # Apply iManage Work Desktop policies
-echo "$(/bin/date) | Applying iManage Work Desktop policies on Root-level..."
+echo "$(/bin/date) | Applying iManage Work Desktop policies..."
 
 # [CREATE] Create plist if not existed
 create_plist
