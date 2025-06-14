@@ -96,7 +96,7 @@ The script uses `PlistBuddy` to:
 To **modify or extend** the script:
 
 - To **add a new key**, use the `acrobat_enforce_value` or `ngl_enforce_value` function.
-- To **delete a key**, uncomment and use `acrobat_delete_key` or `ngl_delete_key`.
+- To **delete a key**, use the `acrobat_delete_key` or `ngl_delete_key` function.
 - To **change the login domain**, edit the `domain="example.com"` variable near the top of the script.
 
 ---
@@ -223,4 +223,122 @@ Sat May 31 13:49:30 EEST 2025 | [OK] AuthInfo:login_domain is already set to exa
 
 Sat May 31 13:49:30 EEST 2025 | Script AdobeAcrobatCombinedPolicyEnforcerMachineLevel completed.
 ##############################################################
+```
+
+## Adobe Acrobat Policy Enforcer (User Level)
+> [!NOTE]  
+> This script can be deployed only separate script deployment via MDM.
+
+This custom script is designed to **automate the configuration and enforcement of Adobe Acrobat policies on user level** on macOS devices. It is especially useful in **MDM deployment scenarios** such as Microsoft Intune, where consistent and secure configuration across devices is critical.
+
+### Purpose
+
+This script ensures that key Adobe Acrobat settings are **created, updated, or removed** at the user level using `PlistBuddy`. It helps enforce security, compliance, and user experience standards by:
+
+- Disabling unnecessary or insecure features
+- Enabling enterprise-grade protections
+- Preventing users from changing critical settings. If user change those settings, they will be enforced back to defined values.
+
+### Benefits
+
+- ✅ Ensures **consistent policy enforcement** across all managed Macs
+- ✅ Reduces **manual configuration errors**
+- ✅ Supports **CIS/NIST-aligned hardening**
+- ✅ Fully **automated and silent** when deployed via Intune
+- ✅ Logs all actions for **auditability and troubleshooting**
+
+---
+
+### What the Script Does
+
+The script uses `PlistBuddy` to:
+
+- **Create** missing `.plist` files and directories
+- **Add or update** specific keys and values
+- **Delete** obsolete or undesired keys (optional)
+
+### Policies (com.adobe.Acrobat.Pro.plist)
+
+> [!NOTE]  
+> - These are example settings and their values for example purposes. Feel free to do needed modifications before deploying this script to managed devices.
+> - In this context, boolean value `false` is same as numeric value of 0, and a value of `true` mean same as numeric value of 1. This is good to know when checking notes from these example settings.
+> - It is recommeded to check [Acrobat Desktop Machintosh Admin Guide](https://www.adobe.com/devnet-docs/acrobatetk/tools/AdminGuide_Mac/predeployment_configuration_advanced.html), before defining your settings and values.
+> - Example settings are for Adobe Acrobat Continuous Release (DC).
+
+| Key Path | Type | Value | Notes
+|----------|------|-------|-------|
+| `DC:Access:bShowKeyboardSelectionCursor` | `bool` | `true` | [More information](https://www.adobe.com/devnet-docs/acrobatetk/tools/PrefRef/Macintosh/Access.html?zoom_highlight=bShowKeyboardSelectionCursor#idmackeyname_1_577). |
+| `DC:UnifiedShare:bLastAttachLinkMode` | `bool` | `true` | GUI mapping: Edit > Preferences > Email Accounts > Send file by email settings > Always send files as a link (sign in required) |
+| `DC:FormsPrefs:cRuntimeBGIdleColor:bRuntimeHighlight` | `bool` | `true` | [More information](https://www.adobe.com/devnet-docs/acrobatetk/tools/PrefRef/Macintosh/FormPrefs.html?zoom_highlight=bRuntimeHighlight#idmackeyname_1_14409). |
+| `DC:Originals:bAllowOpenFile` | `bool` | `true` | [More information](https://www.adobe.com/devnet-docs/acrobatetk/tools/PrefRef/Macintosh/Originals.html?zoom_highlight=bAllowOpenFile#idmackeyname_1_18009). |
+| `DC:JSPrefs:bEnableJS` | `bool` | `true` | [More information](https://www.adobe.com/devnet-docs/acrobatetk/tools/PrefRef/Macintosh/JSPrefs.html?zoom_highlight=bEnableJS#idmackeyname_1_15825). |
+| `DC:TrustManager:bTrustCertifiedDocuments` | `bool` | `true` | [More information](https://www.adobe.com/devnet-docs/acrobatetk/tools/PrefRef/Macintosh/TrustManager.html?zoom_highlight=bTrustCertifiedDocuments#idmackeyname_1_29303). |
+---
+
+### Customization
+
+To **modify or extend** the script:
+
+- To **add a new key**, use the `enforce_value` function.
+- To **delete a key**, use the `delete_key` function.
+
+---
+
+### Script Settings
+
+| Setting | Value |
+|--------|-------|
+| Run script as signed-in user | ✅ Yes |
+| Hide script notifications on devices | ✅ Yes |
+| Script frequency | Every 1 day |
+| Number of times to retry if script fails | 3 |
+
+---
+
+### Log File
+
+The log file will output to ***~/Library/Logs/Microsoft/IntuneScripts/AdobeAcrobatPolicyEnforcerUserLevel/AdobeAcrobatPolicyEnforcerUserLevel.log*** by default. Exit status is either 0 or 1. To gather this log with Intune remotely take a look at  [Troubleshoot macOS shell script policies using log collection](https://docs.microsoft.com/en-us/mem/intune/apps/macos-shell-scripts#troubleshoot-macos-shell-script-policies-using-log-collection)
+
+```
+##############################################################
+# Sat Jun 14 15:55:35 EEST 2025 | Starting running of script AdobeAcrobatPolicyEnforcerUserLevel
+##############################################################
+
+Sat Jun 14 15:55:35 EEST 2025 | Applying Adobe Acrobat policies...
+Sat Jun 14 15:55:35 EEST 2025 | Directory already exists: /Users/janparttimaa/Library/Preferences
+Sat Jun 14 15:55:35 EEST 2025 | [CREATE] Creating empty plist at /Users/janparttimaa/Library/Preferences/com.adobe.Acrobat.Pro.plist
+Sat Jun 14 15:55:35 EEST 2025 | [ADD] Creating missing dictionary: DC
+Sat Jun 14 15:55:35 EEST 2025 | [ADD] Creating missing dictionary: DC:Access
+Sat Jun 14 15:55:35 EEST 2025 | [ADD] DC:Access:bShowKeyboardSelectionCursor = true
+Sat Jun 14 15:55:35 EEST 2025 | [ADD] Creating missing dictionary: DC:UnifiedShare
+Sat Jun 14 15:55:35 EEST 2025 | [ADD] DC:UnifiedShare:bLastAttachLinkMode = true
+Sat Jun 14 15:55:35 EEST 2025 | [ADD] Creating missing dictionary: DC:FormsPrefs
+Sat Jun 14 15:55:35 EEST 2025 | [ADD] Creating missing dictionary: DC:FormsPrefs:cRuntimeBGIdleColor
+Sat Jun 14 15:55:35 EEST 2025 | [ADD] DC:FormsPrefs:cRuntimeBGIdleColor:bRuntimeHighlight = true
+Sat Jun 14 15:55:35 EEST 2025 | [ADD] Creating missing dictionary: DC:Originals
+Sat Jun 14 15:55:35 EEST 2025 | [ADD] DC:Originals:bAllowOpenFile = true
+Sat Jun 14 15:55:35 EEST 2025 | [ADD] Creating missing dictionary: DC:JSPrefs
+Sat Jun 14 15:55:35 EEST 2025 | [ADD] DC:JSPrefs:bEnableJS = true
+Sat Jun 14 15:55:35 EEST 2025 | [ADD] Creating missing dictionary: DC:TrustManager
+Sat Jun 14 15:55:35 EEST 2025 | [ADD] DC:TrustManager:bTrustCertifiedDocuments = true
+
+Sat Jun 14 15:55:35 EEST 2025 | Script AdobeAcrobatPolicyEnforcerUserLevel completed.
+##############################################################
+
+##############################################################
+# Sat Jun 14 15:57:49 EEST 2025 | Starting running of script AdobeAcrobatPolicyEnforcerUserLevel
+##############################################################
+
+Sat Jun 14 15:57:49 EEST 2025 | Applying Adobe Acrobat policies...
+Sat Jun 14 15:57:49 EEST 2025 | Directory already exists: /Users/janparttimaa/Library/Preferences
+Sat Jun 14 15:57:49 EEST 2025 | [OK] DC:Access:bShowKeyboardSelectionCursor is already set to true
+Sat Jun 14 15:57:49 EEST 2025 | [OK] DC:UnifiedShare:bLastAttachLinkMode is already set to true
+Sat Jun 14 15:57:49 EEST 2025 | [OK] DC:FormsPrefs:cRuntimeBGIdleColor:bRuntimeHighlight is already set to true
+Sat Jun 14 15:57:49 EEST 2025 | [OK] DC:Originals:bAllowOpenFile is already set to true
+Sat Jun 14 15:57:49 EEST 2025 | [OK] DC:JSPrefs:bEnableJS is already set to true
+Sat Jun 14 15:57:49 EEST 2025 | [UPDATE] DC:TrustManager:bTrustCertifiedDocuments: true -> false
+
+Sat Jun 14 15:57:49 EEST 2025 | Script AdobeAcrobatPolicyEnforcerUserLevel completed.
+##############################################################
+
 ```
