@@ -4,8 +4,8 @@ In generally, Mobile Device Management systems like Microsoft Intune [support th
 Unfortunately, some applications, such as Adobe Acrobat, do not support reading plist files from this location. Instead, they read from `/Library/Preferences` and/or `~/Library/Preferences`. These policy enforcer scripts are specifically developed for such applications that do not support reading deployed plist files from `/Library/Managed Preferences`. The goal is to provide an easy way to distribute configuration values to these applications, whether it's for deploying new settings, modifying existing ones, or removing deprecated entries.
 
 In this example, we provide two policy enforcer scripts:
-- **Combined Adobe Acrobat Policy Enforcer (Machine Level):** Configuration and enforcement of Adobe Acrobat FeatureLockDown and NGL (Next Generation Licensing) policies.
-- **Adobe Acrobat Policy Enforcer (User Level):** Configuration and enforcement of Adobe Acrobat policies, that cannot be locked down.
+- **[Combined Adobe Acrobat Policy Enforcer (Machine Level)](#combined-adobe-acrobat-policy-enforcer-machine-level):** Configuration and enforcement of Adobe Acrobat FeatureLockDown and NGL (Next Generation Licensing) policies.
+- **[Adobe Acrobat Policy Enforcer (User Level)](#adobe-acrobat-policy-enforcer-user-level):** Configuration and enforcement of Adobe Acrobat policies, that cannot be locked down.
 
 ## Combined Adobe Acrobat Policy Enforcer (Machine Level)
 > [!NOTE]  
