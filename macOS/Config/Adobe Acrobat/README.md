@@ -96,7 +96,7 @@ The script uses `PlistBuddy` to:
 
 To **modify or extend** the script:
 
-- To **add a new key**, use the `acrobat_enforce_value` or `ngl_enforce_value` function.
+- To **add a new key or update existing key**, use the `acrobat_enforce_value` or `ngl_enforce_value` function.
 - To **delete a key**, use the `acrobat_delete_key` or `ngl_delete_key` function.
 - To **change the login domain**, edit the `domain="example.com"` variable near the top of the script.
 
@@ -286,7 +286,7 @@ The script uses `PlistBuddy` to:
 
 To **modify or extend** the script:
 
-- To **add a new key**, use the `enforce_value` function.
+- To **add a new key or update existing key**, use the `enforce_value` function.
 - To **delete a key**, use the `delete_key` function.
 
 ---
