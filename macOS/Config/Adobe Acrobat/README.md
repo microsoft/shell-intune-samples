@@ -46,6 +46,7 @@ The script uses `PlistBuddy` to:
 > - In this context, boolean value `false` is same as numeric value of 0, and a value of `true` mean same as numeric value of 1. This is good to know when checking notes from these example settings.
 > - It is recommeded to check [Acrobat Desktop Machintosh Admin Guide](https://www.adobe.com/devnet-docs/acrobatetk/tools/AdminGuide_Mac/predeployment_configuration_advanced.html), before defining your settings and values.
 > - Example settings are for Adobe Acrobat Continuous Release (DC).
+> - From the script, we have commented some example how to delete value.
 
 | Key Path | Type | Value | Notes
 |----------|------|-------|-------|
@@ -264,15 +265,21 @@ The script uses `PlistBuddy` to:
 > - In this context, boolean value `false` is same as numeric value of 0, and a value of `true` mean same as numeric value of 1. This is good to know when checking notes from these example settings.
 > - It is recommeded to check [Acrobat Desktop Machintosh Admin Guide](https://www.adobe.com/devnet-docs/acrobatetk/tools/AdminGuide_Mac/predeployment_configuration_advanced.html), before defining your settings and values.
 > - Example settings are for Adobe Acrobat Continuous Release (DC).
+> - From the script, we have commented some settings as an example as well as commented some example how to delete value.
 
 | Key Path | Type | Value | Notes
 |----------|------|-------|-------|
 | `DC:Access:bShowKeyboardSelectionCursor` | `bool` | `true` | [More information](https://www.adobe.com/devnet-docs/acrobatetk/tools/PrefRef/Macintosh/Access.html?zoom_highlight=bShowKeyboardSelectionCursor#idmackeyname_1_577). |
 | `DC:UnifiedShare:bLastAttachLinkMode` | `bool` | `true` | GUI mapping: Edit > Preferences > Email Accounts > Send file by email settings > Always send files as a link (sign in required) |
 | `DC:FormsPrefs:cRuntimeBGIdleColor:bRuntimeHighlight` | `bool` | `true` | [More information](https://www.adobe.com/devnet-docs/acrobatetk/tools/PrefRef/Macintosh/FormPrefs.html?zoom_highlight=bRuntimeHighlight#idmackeyname_1_14409). |
+| `DC:Originals:bDisplayAboutDialog` | `bool` | `true` | [More information](https://www.adobe.com/devnet-docs/acrobatetk/tools/PrefRef/Macintosh/Originals.html?zoom_highlight=bDisplayAboutDialog#idmackeyname_1_17075). This is commented to the script as an example. |
 | `DC:Originals:bAllowOpenFile` | `bool` | `true` | [More information](https://www.adobe.com/devnet-docs/acrobatetk/tools/PrefRef/Macintosh/Originals.html?zoom_highlight=bAllowOpenFile#idmackeyname_1_18009). |
 | `DC:JSPrefs:bEnableJS` | `bool` | `true` | [More information](https://www.adobe.com/devnet-docs/acrobatetk/tools/PrefRef/Macintosh/JSPrefs.html?zoom_highlight=bEnableJS#idmackeyname_1_15825). |
+| `DC:Security:cDigSig:cCustomDownload:bAskBeforeInstalling` | `bool` | `true` | [More information](https://www.adobe.com/devnet-docs/acrobatetk/tools/PrefRef/Macintosh/Security.html?zoom_highlight=bAskBeforeInstalling#idmackeyname_1_19064). This is commented to the script as an example. |
+| `DC:Security:cDigSig:cAdobeDownload:bLoadSettingsFromURL` | `bool` | `true` | [More information](https://www.adobe.com/devnet-docs/acrobatetk/tools/PrefRef/Macintosh/Security.html?zoom_highlight=bLoadSettingsFromURL#idmackeyname_1_21409). This is commented to the script as an example. |
 | `DC:TrustManager:bTrustCertifiedDocuments` | `bool` | `true` | [More information](https://www.adobe.com/devnet-docs/acrobatetk/tools/PrefRef/Macintosh/TrustManager.html?zoom_highlight=bTrustCertifiedDocuments#idmackeyname_1_29303). |
+| `DC:TrustManager:bTrustOSTrustedSites` | `bool` | `true` | [More information](https://www.adobe.com/devnet-docs/acrobatetk/tools/PrefRef/Macintosh/TrustManager.html?zoom_highlight=bTrustOSTrustedSites#idmackeyname_1_28106). This is commented to the script as an example. |
+
 ---
 
 ### Customization
