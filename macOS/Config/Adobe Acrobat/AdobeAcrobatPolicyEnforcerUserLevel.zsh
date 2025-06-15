@@ -65,10 +65,16 @@ ensure_parents_exist() {
 
   local -a parts
   parts=("${(@s/:/)path}")
-  for ((i = 1; i < ${#parts[@]}; i++)); do
-    local current_path="${(j/:/)parts[1,i]}"
+  local quoted_parts=()
+
+  for part in "${parts[@]}"; do
+    quoted_parts+=("'$part'")
+  done
+
+  for ((i = 1; i < ${#quoted_parts[@]}; i++)); do
+    local current_path="${(j/:/)quoted_parts[1,i]}"
     if ! $plistbuddy -c "Print $current_path" "$plist" &>/dev/null; then
-      echo "$(/bin/date) | [ADD] Creating missing dictionary: $current_path"
+      echo "$(/bin/date) | [ADD] Creating missing dictionary: ${(j/:/)parts[1,i]}"
       $plistbuddy -c "Add $current_path dict" "$plist"
     fi
   done
@@ -99,9 +105,9 @@ if $plistbuddy -c "Print '$key_path'" "$plist" &>/dev/null; then
 # Delete key if it exists
 delete_key() {
   local key_path="$1"
-  if $plistbuddy -c "Print $key_path" "$plist" &>/dev/null; then
+  if $plistbuddy -c "Print '$key_path'" "$plist" &>/dev/null; then
     echo "$(/bin/date) | [DELETE] Removing key: $key_path"
-    $plistbuddy -c "Delete $key_path" "$plist"
+    $plistbuddy -c "Delete '$key_path'" "$plist"
   else
     echo "$(/bin/date) | [INFO] Key not found, nothing to delete: $key_path"
   fi
@@ -153,6 +159,7 @@ create_value "DC:TrustManager:bTrustCertifiedDocuments" bool true "$plist"
 
 # [DELETE] Access - Root (Example commented)
 # delete_key "DC:Access:bShowKeyboardSelectionCursor"
+# delete_key "DC:TrustManager:bTrustOSTrustedSites" 
 
 # End of script
 echo ""

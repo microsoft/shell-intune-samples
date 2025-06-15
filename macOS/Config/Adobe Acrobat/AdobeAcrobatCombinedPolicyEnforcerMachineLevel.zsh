@@ -88,10 +88,16 @@ acrobat_ensure_parents_exist() {
 
   local -a parts
   parts=("${(@s/:/)path}")
-  for ((i = 1; i < ${#parts[@]}; i++)); do
-    local current_path="${(j/:/)parts[1,i]}"
+  local quoted_parts=()
+
+  for part in "${parts[@]}"; do
+    quoted_parts+=("'$part'")
+  done
+
+  for ((i = 1; i < ${#quoted_parts[@]}; i++)); do
+    local current_path="${(j/:/)quoted_parts[1,i]}"
     if ! $plistbuddy -c "Print $current_path" "$acrobat_plist" &>/dev/null; then
-      echo "$(/bin/date) | [ADD] Creating missing dictionary: $current_path"
+      echo "$(/bin/date) | [ADD] Creating missing dictionary: ${(j/:/)parts[1,i]}"
       $plistbuddy -c "Add $current_path dict" "$acrobat_plist"
     fi
   done
@@ -104,10 +110,16 @@ ngl_ensure_parents_exist() {
 
   local -a parts
   parts=("${(@s/:/)path}")
-  for ((i = 1; i < ${#parts[@]}; i++)); do
-    local current_path="${(j/:/)parts[1,i]}"
+  local quoted_parts=()
+
+  for part in "${parts[@]}"; do
+    quoted_parts+=("'$part'")
+  done
+
+  for ((i = 1; i < ${#quoted_parts[@]}; i++)); do
+    local current_path="${(j/:/)quoted_parts[1,i]}"
     if ! $plistbuddy -c "Print $current_path" "$ngl_plist" &>/dev/null; then
-      echo "$(/bin/date) | [ADD] Creating missing dictionary: $current_path"
+      echo "$(/bin/date) | [ADD] Creating missing dictionary: ${(j/:/)parts[1,i]}"
       $plistbuddy -c "Add $current_path dict" "$ngl_plist"
     fi
   done
@@ -160,9 +172,9 @@ ngl_enforce_value() {
 # Acrobat: Delete key if it exists
 acrobat_delete_key() {
   local key_path="$1"
-  if $plistbuddy -c "Print $key_path" "$acrobat_plist" &>/dev/null; then
+  if $plistbuddy -c "Print '$key_path'" "$acrobat_plist" &>/dev/null; then
     echo "$(/bin/date) | [DELETE] Removing key: $key_path"
-    $plistbuddy -c "Delete $key_path" "$acrobat_plist"
+    $plistbuddy -c "Delete '$key_path'" "$acrobat_plist"
   else
     echo "$(/bin/date) | [INFO] Key not found, nothing to delete: $key_path"
   fi
@@ -171,9 +183,9 @@ acrobat_delete_key() {
 # NGL: Delete key if it exists
 ngl_delete_key() {
   local key_path="$1"
-  if $plistbuddy -c "Print $key_path" "$ngl_plist" &>/dev/null; then
+  if $plistbuddy -c "Print '$key_path'" "$ngl_plist" &>/dev/null; then
     echo "$(/bin/date) | [DELETE] Removing key: $key_path"
-    $plistbuddy -c "Delete $key_path" "$ngl_plist"
+    $plistbuddy -c "Delete '$key_path'" "$ngl_plist"
   else
     echo "$(/bin/date) | [INFO] Key not found, nothing to delete: $key_path"
   fi
