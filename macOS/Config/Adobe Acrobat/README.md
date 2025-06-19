@@ -312,8 +312,8 @@ The log file will output to ***~/Library/Logs/Microsoft/IntuneScripts/AdobeAcrob
 ##############################################################
 
 Sat Jun 14 15:55:35 EEST 2025 | Applying Adobe Acrobat policies...
-Sat Jun 14 15:55:35 EEST 2025 | Directory already exists: /Users/janparttimaa/Library/Preferences
-Sat Jun 14 15:55:35 EEST 2025 | [CREATE] Creating empty plist at /Users/janparttimaa/Library/Preferences/com.adobe.Acrobat.Pro.plist
+Sat Jun 14 15:55:35 EEST 2025 | Directory already exists: /Users/johndoe/Library/Preferences
+Sat Jun 14 15:55:35 EEST 2025 | [CREATE] Creating empty plist at /Users/johndoe/Library/Preferences/com.adobe.Acrobat.Pro.plist
 Sat Jun 14 15:55:35 EEST 2025 | [ADD] Creating missing dictionary: DC
 Sat Jun 14 15:55:35 EEST 2025 | [ADD] Creating missing dictionary: DC:Access
 Sat Jun 14 15:55:35 EEST 2025 | [ADD] DC:Access:bShowKeyboardSelectionCursor = true
@@ -337,7 +337,7 @@ Sat Jun 14 15:55:35 EEST 2025 | Script AdobeAcrobatPolicyEnforcerUserLevel compl
 ##############################################################
 
 Sat Jun 14 15:57:49 EEST 2025 | Applying Adobe Acrobat policies...
-Sat Jun 14 15:57:49 EEST 2025 | Directory already exists: /Users/janparttimaa/Library/Preferences
+Sat Jun 14 15:57:49 EEST 2025 | Directory already exists: /Users/johndoe/Library/Preferences
 Sat Jun 14 15:57:49 EEST 2025 | [OK] DC:Access:bShowKeyboardSelectionCursor is already set to true
 Sat Jun 14 15:57:49 EEST 2025 | [OK] DC:UnifiedShare:bLastAttachLinkMode is already set to true
 Sat Jun 14 15:57:49 EEST 2025 | [OK] DC:FormsPrefs:cRuntimeBGIdleColor:bRuntimeHighlight is already set to true
