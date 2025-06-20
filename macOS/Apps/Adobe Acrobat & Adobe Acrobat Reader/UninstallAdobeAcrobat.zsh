@@ -37,7 +37,7 @@ if [ -d $logandmetadir ]; then
     echo "$(date) | Log directory already exists - $logandmetadir"
 else
     # Creating Metadirectory
-    echo "$(date) | creating log directory - $logandmetadir"
+    echo "$(date) | Creating log directory - $logandmetadir"
     mkdir -p $logandmetadir
 fi
 
