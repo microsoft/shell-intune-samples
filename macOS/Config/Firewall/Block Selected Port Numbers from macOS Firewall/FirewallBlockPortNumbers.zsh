@@ -465,7 +465,7 @@ echo "# $(date) | Starting running of script $appname"
 echo "############################################################"
 echo ""
 
-# Is this a ABM DEP device?
+# Is this ABM DEP device?
 if [ "$abmcheck" = true ]; then
   echo "$(date) | Checking MDM Profile Type"
   profiles status -type enrollment | grep "Enrolled via DEP: Yes"
