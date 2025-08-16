@@ -847,7 +847,7 @@
                         <mxPoint as="offset"/>
                     </mxGeometry>
                 </mxCell>
-                <mxCell id="69" value="abmcheck?" style="rhombus;whiteSpace=wrap;html=1;fontSize=13;fontColor=#000000;align=center;" vertex="1" parent="1">
+                <mxCell id="69" value="abmcheck" style="rhombus;whiteSpace=wrap;html=1;fontSize=13;fontColor=#000000;align=center;" vertex="1" parent="1">
                     <mxGeometry x="200" y="40" width="100" height="100" as="geometry"/>
                 </mxCell>
             </root>
