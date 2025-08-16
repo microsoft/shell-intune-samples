@@ -20,6 +20,7 @@
 appname="FirewallBlockPortNumbers"                                                                          # The name of our script
 logandmetadir="/Library/Logs/Microsoft/IntuneScripts/$appname"                                              # The location of our logs and last updated data
 log="$logandmetadir/$appname.log"                                                                           # The location of the script log file
+abmcheck=true                                                                                               # Run this script if this device is ABM managed
 port135_in_tcp=true                                                                                         # Blocks inbound TCP Port Number 135 used by Microsoft RPC, which can be exploited for remote code execution.
 port135_in_udp=true                                                                                         # Blocks inbound UDP Port Number 135 used by Microsoft RPC, which can be exploited for remote code execution.
 port137_139_in_tcp=true                                                                                     # Blocks inbound TCP Port Numbers 137-139 used by NetBIOS, which can be a vector for various attacks.
@@ -463,6 +464,18 @@ echo "##############################################################"
 echo "# $(date) | Starting running of script $appname"
 echo "############################################################"
 echo ""
+
+# Is this a ABM DEP device?
+if [ "$abmcheck" = true ]; then
+  echo "$(date) | Checking MDM Profile Type"
+  profiles status -type enrollment | grep "Enrolled via DEP: Yes"
+  if [ ! $? == 0 ]; then
+    echo "$(date) | This device is not ABM managed"
+    exit 0;
+  else
+    echo "$(date) | Device is ABM Managed"
+  fi
+fi
 
 # Backup cp.conf
 backup
