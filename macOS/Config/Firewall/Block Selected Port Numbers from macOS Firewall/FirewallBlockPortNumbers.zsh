@@ -20,7 +20,7 @@
 appname="FirewallBlockPortNumbers"                                                                          # The name of our script
 logandmetadir="/Library/Logs/Microsoft/IntuneScripts/$appname"                                              # The location of our logs and last updated data
 log="$logandmetadir/$appname.log"                                                                           # The location of the script log file
-abmcheck=true                                                                                               # Run this script if this device is ABM managed
+ownership=all                                                                                              # Set device ownership where do you want to run this script (byod/corporate/all). Corporate devices must be managed by Apple Business Manager.
 port135_in_tcp=true                                                                                         # Blocks inbound TCP Port Number 135 used by Microsoft RPC, which can be exploited for remote code execution.
 port135_in_udp=true                                                                                         # Blocks inbound UDP Port Number 135 used by Microsoft RPC, which can be exploited for remote code execution.
 port137_139_in_tcp=true                                                                                     # Blocks inbound TCP Port Numbers 137-139 used by NetBIOS, which can be a vector for various attacks.
@@ -47,6 +47,44 @@ else
     echo "$(date) | creating log directory - $logandmetadir"
     mkdir -p $logandmetadir
 fi
+
+# Check device ownership
+check_device_ownership() {
+    echo "Checking device management status..."
+
+    # Extract the final word ("Yes" or "No") for DEP/ABM enrollment
+    dep_status=$(profiles status -type enrollment | grep "Enrolled via DEP" | awk '{print $NF}')
+
+    if [[ "$dep_status" == "Yes" ]]; then
+        device_type="corporate"
+    else
+        device_type="byod"
+    fi
+
+    echo "Detected device type: $device_type"
+
+    case "$ownership" in
+        byod)
+            if [[ "$device_type" != "byod" ]]; then
+                echo "This script is intended for BYOD devices only. Exiting..."
+                exit 0
+            fi
+            ;;
+        corporate)
+            if [[ "$device_type" != "corporate" ]]; then
+                echo "This script is intended for Corporate devices only, that are managed by Apple Business Manager. Exiting..."
+                exit 0
+            fi
+            ;;
+        all)
+            echo "Ownership set to all. Continuing..."
+            ;;
+        *)
+            echo "Unknown ownership value ($ownership). Exiting..."
+            exit 1
+            ;;
+    esac
+}
 
 # Backup original pf.conf to cp.conf.backup
 backup() {
@@ -465,17 +503,8 @@ echo "# $(date) | Starting running of script $appname"
 echo "############################################################"
 echo ""
 
-# Is this ABM DEP device?
-if [ "$abmcheck" = true ]; then
-  echo "$(date) | Checking MDM Profile Type"
-  profiles status -type enrollment | grep "Enrolled via DEP: Yes"
-  if [ ! $? == 0 ]; then
-    echo "$(date) | This device is not ABM managed"
-    exit 0;
-  else
-    echo "$(date) | Device is ABM Managed"
-  fi
-fi
+# Check device ownership
+check_device_ownership
 
 # Backup cp.conf
 backup
