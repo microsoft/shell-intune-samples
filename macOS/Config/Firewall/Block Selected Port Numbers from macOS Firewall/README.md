@@ -34,6 +34,15 @@ This custom script blocks the following port numbers from macOS Firewall:
 | 137-139 (TCP & UDP) | NetBIOS and Windows Internet Naming Service (WINS) | [Disable SMB 1, NetBIOS and netbiosd](https://github.com/microsoft/shell-intune-samples/tree/master/macOS/Config/Disable%20SMB%201%2C%20NetBIOS%20and%20netbiosd) | Disables NetBIOS and WINS. |
 | 1900 (UDP) | Bonjour | [Disable Bonjour Advertising Services](https://github.com/microsoft/shell-intune-samples/tree/master/macOS/Config/Disable%20Bonjour%20Advertising%20Services) | Disables Bonjour Advertising Services. |
 
+### Define device ownership
+
+Before deploying this script, you also need to define value to `ownership` variable of the devices, where do you want to deploy this script. The `ownership` variable can be found from line number 23. Available ownership values are:
+
+| Device Ownership | Value | More information
+| -------- | ------- | -------- |
+| Bring Your Own Device (BYOD) | byod | Use this value if you need to deploy this script to personal devices, that are not owned by your company.
+| Corporate | corporate | Use this value if you need to deploy the script only to corporate devices. **NOTE:** Corporate-devices must be managed by Apple Business Manager.
+| Bring Your Own Device (BYOD) **and** Corporate | all | Use this value if you want to deploy script to all devices ownership types.
 
 ## Script workflow diagram
 
