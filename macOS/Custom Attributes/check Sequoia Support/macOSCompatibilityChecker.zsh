@@ -1,6 +1,6 @@
 #!/usr/bin/env zsh
 
-# macOS Compatibility Checker for Microsoft Intune
+# macOS Sequoia Compatibility Checker for Microsoft Intune
 # This script automatically determines the maximum supported macOS version for the current Mac
 # by querying Apple's official GDMF API with the hardware's board ID.
 #
@@ -15,6 +15,73 @@ set -euo pipefail
 
 GDMF_URL="https://gdmf.apple.com/v2/pmv"
 
+# Check if jq is available and install if missing
+ensure_jq() {
+    # Check common locations first
+    if command -v jq >/dev/null 2>&1; then
+        return 0
+    fi
+    
+    # Check if we already installed it to user's local bin
+    if [[ -x "$HOME/.local/bin/jq" ]]; then
+        export PATH="$HOME/.local/bin:$PATH"
+        return 0
+    fi
+    
+    echo "jq not found, attempting to install..." >&2
+    
+    # Determine architecture and set download URL
+    local arch
+    arch=$(uname -m)
+    local jq_url
+    
+    case "$arch" in
+        arm64)
+            jq_url="https://github.com/jqlang/jq/releases/latest/download/jq-macos-arm64"
+            ;;
+        x86_64)
+            jq_url="https://github.com/jqlang/jq/releases/latest/download/jq-macos-amd64"
+            ;;
+        *)
+            echo "Unsupported architecture: $arch" >&2
+            return 1
+            ;;
+    esac
+    
+    echo "Downloading jq for $arch..." >&2
+    
+    # Download jq to temporary location
+    local temp_jq="/tmp/jq_temp_$$"
+    if ! curl -fsSL "$jq_url" -o "$temp_jq" 2>/dev/null; then
+        echo "Failed to download jq" >&2
+        return 1
+    fi
+    
+    # Make executable
+    chmod +x "$temp_jq"
+    
+    # Try to install to /usr/local/bin (system-wide)
+    if sudo mv "$temp_jq" /usr/local/bin/jq 2>/dev/null; then
+        echo "jq installed successfully to /usr/local/bin/jq" >&2
+        return 0
+    fi
+    
+    # Fallback: install to user's local bin directory
+    mkdir -p "$HOME/.local/bin"
+    if mv "$temp_jq" "$HOME/.local/bin/jq" 2>/dev/null; then
+        echo "jq installed successfully to $HOME/.local/bin/jq" >&2
+        export PATH="$HOME/.local/bin:$PATH"
+        # Verify it's now accessible
+        if command -v jq >/dev/null 2>&1; then
+            return 0
+        fi
+    fi
+    
+    echo "Failed to install jq - unable to move to installation directory" >&2
+    rm -f "$temp_jq"
+    return 1
+}
+
 # Get the Mac's board ID directly from ioreg
 get_board_id() {
     # Try Apple Silicon format first (target-sub-type)
@@ -27,19 +94,14 @@ get_board_id() {
         return 0
     fi
     
-    # Try Intel Mac format (board-id) - extract hex and convert
-    local board_id_hex
-    board_id_hex=$(/usr/sbin/ioreg -rd1 -c IOPlatformExpertDevice 2>/dev/null | \
-                   awk '/"board-id"/ {gsub(/.*<|>.*/, ""); print; exit}')
+    # Try Intel Mac format - board-id in Mac-XXXX format
+    local board_id_string
+    board_id_string=$(/usr/sbin/ioreg -rd1 -c IOPlatformExpertDevice 2>/dev/null | \
+                      awk -F'"' '/"board-id"/ {print $(NF-1); exit}')
     
-    if [[ -n "$board_id_hex" ]]; then
-        # Convert hex to ASCII string and format as Mac-XXXXXXXXXXXXXXXX
-        local board_id_ascii
-        board_id_ascii=$(echo "$board_id_hex" | xxd -r -p 2>/dev/null | tr -cd '[:alnum:]')
-        if [[ -n "$board_id_ascii" && ${#board_id_ascii} -eq 16 ]]; then
-            echo "Mac-$board_id_ascii"
-            return 0
-        fi
+    if [[ -n "$board_id_string" && "$board_id_string" =~ ^Mac- ]]; then
+        echo "$board_id_string"
+        return 0
     fi
     
     return 1
@@ -97,6 +159,12 @@ find_max_supported_version() {
 
 # Main execution
 main() {
+    # Ensure jq is available
+    if ! ensure_jq; then
+        echo "Error: jq is required but not available"
+        exit 1
+    fi
+    
     # Try to get board ID first
     local device_id
     if device_id=$(get_board_id); then
@@ -113,7 +181,7 @@ main() {
     fi
     
     # Handle virtual machines
-    if [[ "$device_id" == "VirtualMac"* ]]; then
+    if [[ "$device_id" == "VirtualMac"* ]] || [[ "$device_id" == "VMA2MACOSAP" ]] || [[ "$device_id" == "VMware"* ]]; then
         echo "Virtual Machine"
         exit 0
     fi
