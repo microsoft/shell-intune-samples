@@ -49,7 +49,14 @@ else
     settingsApp="System Preferences.app"
 fi
 
-dockapps=(  "/System/Applications/Launchpad.app"
+# Determine the LaunchPad app
+if [[ -e "/System/Applications/Apps.app" ]]; then
+    LaunchPadApp="Apps.app"
+else
+    LaunchPadApp="Launchpad.app"
+fi
+
+dockapps=(  "/System/Applications/$LaunchPadApp"
             "/Applications/Microsoft Edge.app"
             "/Applications/Microsoft Outlook.app"
             "/Applications/Microsoft Word.app"
