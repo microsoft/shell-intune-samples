@@ -18,7 +18,7 @@
          <key>PayloadDescription</key>
          <string>Configures sign-in enforcement to Docker Desktop</string>
          <key>PayloadOrganization</key>
-         <string>Docker, Inc.</string>
+         <string>Docker Inc.</string>
          <key>PayloadEnabled</key>
 			   <true/>
          <key>allowedOrgs</key>
