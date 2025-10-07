@@ -15,7 +15,7 @@ The extension ID of the OneDrive client is different for the standalone version 
 - Run script as signed-in user : **Yes**
 - Hide script notifications on devices : Yes
 - Script frequency : 
-  - **Not configured** to run once
+  - **Not configured** (which will cause the script to run once)
 - Number of times to retry if script fails : 3
 
 ## Log File
