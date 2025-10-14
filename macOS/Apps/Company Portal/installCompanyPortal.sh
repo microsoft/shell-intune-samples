@@ -53,7 +53,7 @@ function updateMAU () {
     ###############################################################
     ###############################################################
 
-    echo "$(date) | Starting downlading of [MAU]"
+    echo "$(date) | Starting downloading of [MAU]"
 
     cd "$tempdir"
     curl -o "$tempdir/mau.pkg" -f -s --connect-timeout 30 --retry 5 --retry-delay 60 -L -J -O "$mauurl"
@@ -267,7 +267,7 @@ function downloadApp () {
     ###############################################################
     ###############################################################
 
-    echo "$(date) | Starting downlading of [$appname]"
+    echo "$(date) | Starting downloading of [$appname]"
 
     # wait for other downloads to complete
     waitForProcess "curl -f"
