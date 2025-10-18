@@ -113,7 +113,7 @@ Script `uninstallIllumioVEN.zsh` will uninstall illumio VEN from Intune-managed 
 
 - Run script as signed-in user : No
 - Hide script notifications on devices : Yes
-- Script frequency : Not configured
+- Script frequency : Every 1 day
 - Number of times to retry if script fails : 3
 
 ### Log File (uninstallIllumioVEN.zsh)
