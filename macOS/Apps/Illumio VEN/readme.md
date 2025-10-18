@@ -1,5 +1,5 @@
 # Illumio VEN
-Here is collection of scripts for Illumio VEN.
+Here is a collection of scripts for Illumio VEN.
 
 ## Installation and Registration Installer
 This script is an example to show how to use [Intune Shell Scripting](https://docs.microsoft.com/en-us/mem/intune/apps/macos-shell-scripts) to install applications. In this case the script will download the Illumio VEN pkg file from your download server e.g. Azure Blob Storage Container and then install application onto the Mac. Also, in order to apply Illumio VEN Registration to devices that already have Illumio VEN installed, we are also providing separate script for that.
