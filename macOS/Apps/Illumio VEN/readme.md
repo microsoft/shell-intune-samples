@@ -1,7 +1,7 @@
 # Illumio VEN
 Here is collection of scripts for Illumio VEN.
 
-### Installation and Registration Installer
+## Installation and Registration Installer
 This script is an example to show how to use [Intune Shell Scripting](https://docs.microsoft.com/en-us/mem/intune/apps/macos-shell-scripts) to install applications. In this case the script will download the Illumio VEN pkg file from your download server e.g. Azure Blob Storage Container and then install application onto the Mac. Also, in order to apply Illumio VEN Registration to devices that already have Illumio VEN installed, we are also providing separate script for that.
 
 ### Things you'll need to do (installIllumioVEN.sh)
@@ -106,17 +106,17 @@ Fri Nov 17 20:58:13 EET 2023 | Illumio VEN Registration applied. Creating Regist
 Fri Nov 17 20:58:13 EET 2023 | Done. Closing script...
 ```
 
-# Uninstallation
+## Uninstallation
 Script 'uninstallIllumioVEN.zsh' will uninstall illumio VEN from Intune-managed Mac-device.
 
-## Script Settings (uninstallIllumioVEN.zsh)
+### Script Settings (uninstallIllumioVEN.zsh)
 
 - Run script as signed-in user : No
 - Hide script notifications on devices : Yes
 - Script frequency : Not configured
 - Number of times to retry if script fails : 3
 
-## Log File (uninstallIllumioVEN.zsh)
+### Log File (uninstallIllumioVEN.zsh)
 
 The log file will output to ***/Library/Logs/Microsoft/IntuneScripts/IllumioVENUninstaller/IllumioVENUninstaller.log*** by default. Exit status is either 0 or 1. The script logs the `illumio-ven-ctl unpair saved` call and verifies removal of `/opt/illumio_ven`. To gather this log with Intune remotely take a look at [Troubleshoot macOS shell script policies using log collection](https://docs.microsoft.com/en-us/mem/intune/apps/macos-shell-scripts#troubleshoot-macos-shell-script-policies-using-log-collection)
 
