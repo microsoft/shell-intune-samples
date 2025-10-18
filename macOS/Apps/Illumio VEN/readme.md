@@ -107,7 +107,7 @@ Fri Nov 17 20:58:13 EET 2023 | Done. Closing script...
 ```
 
 ## Uninstallation
-Script 'uninstallIllumioVEN.zsh' will uninstall illumio VEN from Intune-managed Mac-device.
+Script `uninstallIllumioVEN.zsh` will uninstall illumio VEN from Intune-managed Mac-device.
 
 ### Script Settings (uninstallIllumioVEN.zsh)
 
