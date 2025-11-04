@@ -116,7 +116,7 @@ echo ""
 if [ "$abmcheck" = true ]; then
   echo "$(date) | Checking MDM Profile Type"
   profiles status -type enrollment | grep "Enrolled via DEP: Yes"
-  if [ ! $? == 0 ]; then
+  if [[ ! $? == 0 ]]; then
     echo "$(date) | This device is not ABM managed"
     exit 0;
   else

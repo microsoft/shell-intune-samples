@@ -6,7 +6,7 @@ There are mutliple scripts in this repository. The scripts are designed to help 
 
 [Intune to Intune Migration Script](#intune-to-intune-migration-script)
 
-# Intune To Jamf Migration Script
+# Jamf To Intune Migration Script
 
 This script facilitates the migration of macOS devices from Jamf to Microsoft Intune. It handles the **removal of the Jamf framework**, **installation** of the Microsoft Intune Company Portal app (if required), and ensures a smooth transition to Intune. The script uses **swiftDialog** for user interactions and provides clear progress and status messages throughout the migration.
 
