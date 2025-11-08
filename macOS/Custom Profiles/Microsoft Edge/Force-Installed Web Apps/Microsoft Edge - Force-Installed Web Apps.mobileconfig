@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>PayloadUUID</key>
+    <string>B42ADBB5-1324-47FE-88EE-904405D73522</string>
+    <key>PayloadType</key>
+    <string>Configuration</string>
+    <key>PayloadOrganization</key>
+    <string>Microsoft Corporation</string>
+    <key>PayloadIdentifier</key>
+    <string>88E7984A-ABC1-46D7-8CC6-99C1B8E6D861</string>
+    <key>PayloadDisplayName</key>
+    <string>Microsoft Edge - Force-Installed Web Apps</string>
+    <key>PayloadDescription</key>
+    <string>Installs Web Apps to Microsoft Edge</string>
+    <key>PayloadVersion</key>
+    <integer>1</integer>
+    <key>PayloadEnabled</key>
+    <true/>
+    <key>PayloadRemovalDisallowed</key>
+    <true/>
+    <key>PayloadScope</key>
+    <string>System</string>
+    <key>PayloadContent</key>
+    <array>
+		<dict>
+			<key>PayloadUUID</key>
+			<string>93A86AEE-4EE8-4A5B-A8D7-CDB5B9063110</string>
+			<key>PayloadType</key>
+			<string>com.microsoft.Edge</string>
+			<key>PayloadOrganization</key>
+			<string>Microsoft Corporation</string>
+			<key>PayloadIdentifier</key>
+			<string>com.microsoft.Edge.93A86AEE-4EE8-4A5B-A8D7-CDB5B9063110</string>
+			<key>PayloadDisplayName</key>
+			<string>Installs Web Apps to Microsoft Edge</string>
+			<key>PayloadDescription</key>
+			<string/>
+			<key>PayloadVersion</key>
+			<integer>1</integer>
+			<key>PayloadEnabled</key>
+			<true/>
+			<key>WebAppInstallForceList</key>
+			<array>
+				<dict>
+					<key>create_desktop_shortcut</key>
+					<true/>
+					<key>default_launch_container</key>
+					<string>window</string>
+					<key>url</key>
+					<string>https://www.contoso.com/maps</string>
+  				</dict>
+			</array>
+			<key>WebAppSettings</key>
+			<array>
+  				<dict>
+    				<key>manifest_id</key>
+    				<string>https://www.contoso.com/maps</string>
+    				<key>run_on_os_login</key>
+    				<string>blocked</string>
+  				</dict>
+			</array>
+		</dict>
+	</array>
+</dict>
+</plist>
