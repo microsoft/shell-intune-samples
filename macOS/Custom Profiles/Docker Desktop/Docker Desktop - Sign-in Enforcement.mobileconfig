@@ -1,0 +1,49 @@
+ <?xml version="1.0" encoding="UTF-8"?>
+ <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+ <plist version="1.0">
+   <dict>
+     <key>PayloadContent</key>
+     <array>
+       <dict>
+         <key>PayloadType</key>
+         <string>com.docker.config</string>
+         <key>PayloadVersion</key>
+         <integer>1</integer>
+         <key>PayloadIdentifier</key>
+         <string>com.docker.config.0CFA8882-A499-497D-843C-4B3E4D91E506</string>
+         <key>PayloadUUID</key>
+         <string>819AA5FE-6212-4CB2-957C-19CE76732501</string>
+         <key>PayloadDisplayName</key>
+         <string>Docker Desktop - Sign-in Enforcement</string>
+         <key>PayloadDescription</key>
+         <string>Configures sign-in enforcement to Docker Desktop</string>
+         <key>PayloadOrganization</key>
+         <string>Docker Inc.</string>
+         <key>PayloadEnabled</key>
+			   <true/>
+         <key>allowedOrgs</key>
+         <string>first_org;second_org;third_org;fouth_org</string>
+       </dict>
+     </array>
+     <key>PayloadType</key>
+     <string>Configuration</string>
+     <key>PayloadVersion</key>
+     <integer>1</integer>
+     <key>PayloadIdentifier</key>
+     <string>com.docker.config.B7EE7F6A-FDB8-4C10-B496-A2076205B13E</string>
+     <key>PayloadUUID</key>
+     <string>37CCB805-2824-4A66-972A-92717C99BDC0</string>
+     <key>PayloadDisplayName</key>
+     <string>Docker Desktop - Sign-in Enforcement</string>
+     <key>PayloadDescription</key>
+     <string>Configures sign-in enforcement to Docker Desktop</string>
+     <key>PayloadOrganization</key>
+     <string>Docker, Inc.</string>
+     <key>PayloadEnabled</key>
+     <true/>
+     <key>PayloadRemovalDisallowed</key>
+     <true/>
+     <key>PayloadScope</key>
+     <string>System</string>
+   </dict>
+ </plist>
