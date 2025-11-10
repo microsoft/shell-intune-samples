@@ -12,6 +12,6 @@ This custom profile provides an example of how to deploy managed Web Apps for Mi
 - In Intune, deploy the custom profile to a specific security group that contains members of the desired user group or region.
 
 ## Configuration Settings for Intune
-- **Custom configuration profile name:** *Microsoft Edge – Force-Installed Web Apps*
+- **Custom configuration profile name:** *Microsoft Edge - Force-Installed Web Apps*
 - **Deployment channel:** *Device Channel*
-- **Configuration profile file name:** *Microsoft Edge – Force-Installed Web Apps.mobileconfig*
+- **Configuration profile file name:** *Microsoft Edge - Force-Installed Web Apps.mobileconfig*
