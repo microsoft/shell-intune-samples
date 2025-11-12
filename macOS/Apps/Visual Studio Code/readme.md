@@ -9,7 +9,7 @@ This scripts intended usage scenario is to install Visual Studio Code via the In
 ## Quick Run
 
 ```
-sudo /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/microsoft/shell-intune-samples/master/Apps/Visual%20Studio%20Code/installVSCode.sh)"
+sudo /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/microsoft/shell-intune-samples/master/macOS/Apps/Visual%20Studio%20Code/installVSCode.sh)"
 ```
 
 ## Script Settings
