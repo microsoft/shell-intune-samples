@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>PayloadContent</key>
+	<array>
+		<dict>
+			<key>PayloadDescription</key>
+			<string>Allows Full Disk Access for Adobe Acrobat Updater</string>
+			<key>PayloadDisplayName</key>
+			<string>Adobe Acrobat Updater - Full Disk Access</string>
+			<key>PayloadIdentifier</key>
+			<string>86B0119E-EDA6-4484-B02E-DD4418D468E0</string>
+			<key>PayloadOrganization</key>
+			<string>Adobe</string>
+			<key>PayloadType</key>
+			<string>com.apple.TCC.configuration-profile-policy</string>
+			<key>PayloadUUID</key>
+			<string>89DC68EF-1BF9-4B33-974E-D54ADDC81644</string>
+			<key>PayloadVersion</key>
+			<integer>1</integer>
+			<key>Services</key>
+			<dict>
+				<key>SystemPolicyAllFiles</key>
+				<array>
+					<dict>
+						<key>Allowed</key>
+						<true/>
+						<key>CodeRequirement</key>
+						<string>anchor apple generic and (certificate leaf[field.1.2.840.113635.100.6.1.9] /* exists */ or certificate 1[field.1.2.840.113635.100.6.2.6] /* exists */ and certificate leaf[field.1.2.840.113635.100.6.1.13] /* exists */ and certificate leaf[subject.OU] = JQ525L2MZD)</string>
+						<key>Comment</key>
+						<string></string>
+						<key>Identifier</key>
+						<string>com.adobe.ARMDC</string>
+						<key>IdentifierType</key>
+						<string>bundleID</string>
+					</dict>
+				</array>
+			</dict>
+		</dict>
+	</array>
+	<key>PayloadDescription</key>
+	<string>Allows Full Disk Access for Adobe Acrobat Updater</string>
+	<key>PayloadDisplayName</key>
+	<string>Adobe Acrobat Updater - Full Disk Access</string>
+	<key>PayloadIdentifier</key>
+	<string>86B0119E-EDA6-4484-B02E-DD4418D468E0</string>
+	<key>PayloadOrganization</key>
+	<string>Adobe</string>
+	<key>PayloadScope</key>
+	<string>System</string>
+	<key>PayloadType</key>
+	<string>Configuration</string>
+	<key>PayloadUUID</key>
+	<string>E357B9BB-AE52-40F4-BE25-3B3D33327D87</string>
+	<key>PayloadVersion</key>
+	<integer>1</integer>
+</dict>
+</plist>
