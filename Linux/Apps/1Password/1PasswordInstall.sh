@@ -99,7 +99,7 @@ else
     # Install 1Password
     log_message "Installing 1Password"
 
-	sudo apt-get install "1password" --download -y &>> "$log_file" || handle_error "Unable to install TeamViewer. \n\n $? \n"
+	sudo apt-get install "1password" --download -y &>> "$log_file" || handle_error "Unable to install 1Password. \n\n $? \n"
 	# Verify installation
     install_status=$(dpkg --status "1password" | grep -Po "^Status:\s+\K(\S+)")
     if [ $install_status == "install" ]; then
