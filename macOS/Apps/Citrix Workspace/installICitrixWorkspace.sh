@@ -30,11 +30,13 @@
 ## Feedback: neiljohn@microsoft.com
 
 # User Defined variables
-latestver=`curl -s -L https://www.citrix.com/downloads/workspace-app/mac/workspace-app-for-mac-latest.html#ctx-dl-eula-external | grep "<h1>Citrix " | awk '{print $4}'`
+SafariVersion=$(sw_vers -productVersion)
+UserAgent="Safari/$SafariVersion"
+latestver=$(curl --user-agent "$UserAgent" -s -L https://www.citrix.com/downloads/workspace-app/mac/workspace-app-for-mac-latest.html#ctx-dl-eula-external | grep "<h1>Citrix " | awk '{print $4}')
 CRCurrVersNormalized=$( echo $latestver | sed -e 's/[.]//g' )
 url1="https:"
-url2=`curl -s -L https://www.citrix.com/downloads/workspace-app/mac/workspace-app-for-mac-latest.html#ctx-dl-eula-external | grep dmg |  sed -n 's/.*rel="//;s/".*//p' | head -n2 | tail -n1`
-weburl=`echo "${url1}${url2}"`
+url2=$(curl --user-agent "$UserAgent" -s -L https://www.citrix.com/downloads/workspace-app/mac/workspace-app-for-mac-latest.html#ctx-dl-eula-external | grep dmg | sed -n 's/.*rel="//;s/".*//p' | head -n2 | tail -n1)
+weburl="${url1}${url2}"
 appname="Citrix Workspace"                                                       # The name of our App deployment script (also used for Octory monitor)
 app="Citrix Workspace.app"                                                      # The actual name of our App once installed
 logandmetadir="/Library/Logs/Microsoft/IntuneScripts/$appname"          # The location of our logs and last updated data
