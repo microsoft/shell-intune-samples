@@ -37,6 +37,7 @@ USERNAME="migration_account"                          # This should be a Jamf Pr
 PASSWORD="migration_account_password"                 # Password for the above user
 LOG="/Library/Logs/Microsoft/IntuneScripts/intuneMigration/intuneMigration.log"
 JAMF_API_VERSION="new"     # Set to "classic" for (JSSResource) or new for (api) to use the classic or new API
+REMOVE_WORKPLACE_JOIN_CERTS=true  # Remove Entra WorkplaceJoin (MS-Organization-Access) certs from login keychain before enrollment
 
 # Function to check if the device is managed by Jamf
 check_if_managed() {
@@ -276,6 +277,77 @@ check_ade_enrollment() {
   fi
 }
 
+# Function to remove WorkplaceJoin (MS-Organization-Access) certificates from the logged-in user's
+# login keychain. These certificates are created when a device is registered in Entra ID for compliance
+# (e.g., while managed by Jamf with Intune device compliance). If not removed, they can block fresh
+# Intune enrollment. See removeWorkplaceJoinCerts.sh for a standalone version of this logic.
+remove_workplacejoin_certs() {
+  if [ "$REMOVE_WORKPLACE_JOIN_CERTS" != true ]; then
+    echo "WorkplaceJoin certificate removal is disabled. Skipping."
+    return 0
+  fi
+
+  echo "Checking for WorkplaceJoin (MS-Organization-Access) certificates..."
+
+  # Resolve the logged-in user's keychain (script runs as root)
+  local logged_in_user
+  logged_in_user=$(stat -f%Su /dev/console)
+  local user_keychain="/Users/$logged_in_user/Library/Keychains/login.keychain-db"
+
+  if [ ! -f "$user_keychain" ]; then
+    echo "Login keychain not found at $user_keychain. Skipping certificate removal."
+    return 0
+  fi
+
+  # Create temp directory for cert processing
+  local tmpdir
+  tmpdir=$(mktemp -d)
+  trap "rm -rf '$tmpdir'" RETURN
+
+  # Export all certs from the user's login keychain
+  sudo -u "$logged_in_user" security find-certificate -a -Z -p "$user_keychain" 2>/dev/null > "$tmpdir/all.txt"
+
+  # Split into individual cert files, tracking SHA-1 hash for each
+  local current_hash=""
+  local cert_num=0
+  while IFS= read -r line; do
+    if [[ "$line" =~ ^SHA-1\ hash:\ (.+)$ ]]; then
+      current_hash="${BASH_REMATCH[1]}"
+    elif [[ "$line" == "-----BEGIN CERTIFICATE-----" ]]; then
+      cert_num=$((cert_num + 1))
+      echo "$current_hash" > "$tmpdir/cert${cert_num}.hash"
+      echo "$line" > "$tmpdir/cert${cert_num}.pem"
+    elif [[ "$line" == "-----END CERTIFICATE-----" ]]; then
+      echo "$line" >> "$tmpdir/cert${cert_num}.pem"
+    elif [[ -f "$tmpdir/cert${cert_num}.pem" ]]; then
+      echo "$line" >> "$tmpdir/cert${cert_num}.pem"
+    fi
+  done < "$tmpdir/all.txt"
+
+  # Find certs with MS-Organization-Access issuer and delete them
+  local found=0
+  for pem in "$tmpdir"/cert*.pem; do
+    [[ -f "$pem" ]] || continue
+    local hashfile="${pem%.pem}.hash"
+    local hash
+    hash=$(cat "$hashfile")
+
+    if openssl x509 -noout -issuer -subject < "$pem" 2>/dev/null | grep -qi "MS-Organization-Access"; then
+      echo "Found WorkplaceJoin certificate (SHA-1: $hash). Removing..."
+      sudo -u "$logged_in_user" security delete-certificate -Z "$hash" "$user_keychain" && echo "  Removed." || echo "  Failed to remove."
+      found=$((found + 1))
+    fi
+  done
+
+  if [ $found -eq 0 ]; then
+    echo "No WorkplaceJoin certificates found. Skipping."
+  else
+    echo "Removed $found WorkplaceJoin certificate(s). Restarting identity services..."
+    killall identityservicesd cloudconfigurationd cfprefsd 2>/dev/null || true
+    sleep 2
+  fi
+}
+
 launch_company_portal() {
   # Open the Company Portal app
   open -a "/Applications/Company Portal.app"
@@ -478,6 +550,9 @@ fi
 
 # Wait for management profile to be removed
 wait_for_management_profile_removal
+
+# Remove WorkplaceJoin certificates if present (needed when device was Entra-registered for compliance)
+remove_workplacejoin_certs
 
 # If ADE enrolled, show message + renew profiles; else prompt for CP sign-in
 if [ "$ADE_ENROLLED" = true ]; then

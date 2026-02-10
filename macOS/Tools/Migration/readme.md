@@ -79,6 +79,8 @@ https://github.com/user-attachments/assets/5669bd8d-7642-4321-bc46-cd38b97e28a6
   - Inside the script, you can edit your `USERNAME`, `PASSWORD`, and `JAMF_PRO_URL` to point to the correct Jamf Pro instance.  
 - **Script Functions**  
   - The script is modularized into functions (e.g., `check_if_managed`, `remove_jamf_framework`, etc.), which you can rearrange or customize for your environment.
+- **REMOVE_WORKPLACE_JOIN_CERTS**  
+  - When set to `true` (the default), the script automatically removes Entra WorkplaceJoin (`MS-Organization-Access`) certificates from the logged-in user's login keychain before enrollment. These certificates are created when a device was registered in Entra ID for compliance (e.g., while managed by Jamf with Intune device compliance) and can block fresh Intune enrollment if not removed. Set to `false` if your environment does not use Entra device registration alongside Jamf. A standalone version of this logic is available in `removeWorkplaceJoinCerts.sh` for manual diagnostics.
 
 ---
 
@@ -105,14 +107,17 @@ https://github.com/user-attachments/assets/5669bd8d-7642-4321-bc46-cd38b97e28a6
 6. **Checks ADE Enrollment**  
    - Determines if the Mac is enrolled via **ADE (DEP)**.
 
-7. **Handles ADE and Profile Renewals**  
-   - If ADE-enrolled, prompts the user to complete Setup Assistant screens, then **renews** the device’s profiles.  
-   - Shows a **“waiting for Intune”** dialog until the user completes the ADE steps.
+7. **Removes WorkplaceJoin Certificates** (if enabled)  
+   - Scans the logged-in user's login keychain for `MS-Organization-Access` certificates left over from Entra device registration and removes them to prevent enrollment conflicts.
 
-8. **Non-ADE Flow**  
+8. **Handles ADE and Profile Renewals**  
+   - If ADE-enrolled, prompts the user to complete Setup Assistant screens, then **renews** the device's profiles.  
+   - Shows a **"waiting for Intune"** dialog until the user completes the ADE steps.
+
+9. **Non-ADE Flow**  
    - If not ADE-enrolled, guides the user to **sign in to Company Portal** for Intune onboarding.
 
-9. **Progress Dialog and Cleanup**  
+10. **Progress Dialog and Cleanup**  
    - Provides real-time status updates via a progress dialog.  
    - Ends by cleaning up `Dialog` processes.
 
@@ -275,6 +280,8 @@ https://github.com/user-attachments/assets/5669bd8d-7642-4321-bc46-cd38b97e28a6
   - Allows you to set the migration message.
 - **progress_message_intune**
    - Allows you to set the progress message.
+- **REMOVE_WORKPLACE_JOIN_CERTS**  
+  - When set to `true` (the default), the script automatically removes Entra WorkplaceJoin (`MS-Organization-Access`) certificates from the logged-in user's login keychain before enrollment. These certificates can block fresh Intune enrollment if not removed. Set to `false` if your environment does not use Entra device registration alongside the source Intune tenant. A standalone version of this logic is available in `removeWorkplaceJoinCerts.sh` for manual diagnostics.
 
 ---
 
@@ -301,14 +308,17 @@ https://github.com/user-attachments/assets/5669bd8d-7642-4321-bc46-cd38b97e28a6
 6. **Checks ADE Enrollment**  
    - Determines if the Mac is enrolled via **ADE (DEP)**.
 
-7. **Handles ADE and Profile Renewals**  
-   - If ADE-enrolled, prompts the user to complete Setup Assistant screens, then **renews** the device’s profiles.  
-   - Shows a **“waiting for Intune”** dialog until the user completes the ADE steps.
+7. **Removes WorkplaceJoin Certificates** (if enabled)  
+   - Scans the logged-in user's login keychain for `MS-Organization-Access` certificates left over from Entra device registration and removes them to prevent enrollment conflicts.
 
-8. **Non-ADE Flow**  
+8. **Handles ADE and Profile Renewals**  
+   - If ADE-enrolled, prompts the user to complete Setup Assistant screens, then **renews** the device's profiles.  
+   - Shows a **"waiting for Intune"** dialog until the user completes the ADE steps.
+
+9. **Non-ADE Flow**  
    - If not ADE-enrolled, guides the user to **sign in to Company Portal** for Intune onboarding.
 
-9. **Progress Dialog and Cleanup**  
+10. **Progress Dialog and Cleanup**  
    - Provides real-time status updates via a progress dialog.  
    - Ends by cleaning up `Dialog` processes.
 
