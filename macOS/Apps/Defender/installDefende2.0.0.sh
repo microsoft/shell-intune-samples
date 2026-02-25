@@ -1,5 +1,5 @@
 #!/bin/zsh
-# installDefender v2.0.0 - Compact edition
+# installIntuneApp v5.0.1 - Compact edition
 
 weburl="https://go.microsoft.com/fwlink/?linkid=2097502"
 appname="Microsoft Defender"

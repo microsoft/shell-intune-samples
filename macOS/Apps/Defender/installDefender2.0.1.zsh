@@ -1,5 +1,5 @@
 #!/bin/zsh
-# installDefender v2.0.0 - Compact edition
+# installDefender v2.0.1 - curl only (no aria2c dependency)
 
 weburl="https://go.microsoft.com/fwlink/?linkid=2097502"
 appname="Microsoft Defender"
@@ -22,27 +22,6 @@ tempdir=$(mktemp -d)
 log="$logandmetadir/$appname.log"
 metafile="$logandmetadir/$appname.meta"
 logdate() { date '+%Y-%m-%d %H:%M:%S'; }
-ARIA2="/usr/local/aria2/bin/aria2c"
-
-function installAria2c () {
-    local aria2Url="https://github.com/aria2/aria2/releases/download/release-1.35.0/aria2-1.35.0-osx-darwin.dmg"
-    [[ -f "$ARIA2" ]] && { echo "$(logdate) | Aria2 already installed"; return; }
-    echo "$(logdate) | Aria2 missing, installing"
-    local output="$tempdir/$(basename "$aria2Url")"
-    if ! curl -f -s --connect-timeout 30 --retry 5 --retry-delay 60 -L -o "$output" "$aria2Url"; then
-        echo "$(logdate) | Aria download failed"; return 1
-    fi
-    local mountpoint="$tempdir/aria2"
-    if ! hdiutil attach -quiet -nobrowse -mountpoint "$mountpoint" "$output"; then
-        echo "$(logdate) | Aria mount failed"; rm -rf "$output"; return 1
-    fi
-    if sudo installer -pkg "$mountpoint/aria2.pkg" -target /; then
-        echo "$(logdate) | Aria2 installed"
-    else
-        echo "$(logdate) | Aria2 install failed"
-    fi
-    hdiutil detach -quiet "$mountpoint"; rm -rf "$output"
-}
 
 waitForOtherApps() {
     echo "$(logdate) | Looking for required applications before we install"
@@ -91,8 +70,13 @@ fetchLastModifiedDate() {
 function downloadApp () {
     echo "$(logdate) | Downloading [$appname] from [$weburl]"
     cd "$tempdir" || { echo "$(logdate) | Failed to access tempdir"; exit 1; }
-    if ! $ARIA2 -q -x16 -s16 -d "$tempdir" "$weburl" --download-result=hide --summary-interval=0; then
+    if ! curl -f -s --connect-timeout 30 --retry 5 --retry-delay 60 --compressed -L -o "$tempdir/download" "$weburl"; then
         echo "$(logdate) | Download failed"; rm -rf "$tempdir"; exit 1
+    fi
+    # Rename using content-disposition or fallback
+    local realname=$(curl -sIL "$weburl" | awk -F'filename=' 'tolower($0) ~ /content-disposition/ && $2 {gsub(/["\r]/, "", $2); print $2; exit}')
+    if [[ -n "$realname" ]]; then
+        mv "$tempdir/download" "$tempdir/$realname"
     fi
     tempfile=$(ls -1 "$tempdir" | head -1)
     [[ -z "$tempfile" ]] && { echo "$(logdate) | No file found"; rm -rf "$tempdir"; exit 1; }
@@ -286,7 +270,6 @@ echo "##############################################################"
 echo "# $(logdate) | Installing [$appname] log: [$log]"
 echo "##############################################################"
 echo ""
-installAria2c
 updateCheck
 waitForDesktop
 waitForOtherApps
