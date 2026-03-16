@@ -41,22 +41,7 @@ function print_status {
 }
 
 
-# Check if we escrowed successfully in the past. If so, stop early as success.
-if cat "$logdir/checkBootstrapEscrow.log" | grep -q "Bootstrap Token validated."; then
-    exit 0
-fi
 
-# Fail early if the account provided does not have secure token enabled
-if echo "$SECURE_TOKEN_STATUS" | grep -q "Secure token is DISABLED"; then
-    echo "$(date) | Secure token is disabled for $ADMIN_USERNAME. Not proceeding."
-    exit 1
-fi
-
-# Fail early if the account provided is not a valid username
-if echo "$SECURE_TOKEN_STATUS" | grep -q "Unknown user"; then
-    echo "$(date) | Unknown user $ADMIN_USERNAME. Not proceeding."
-    exit 1
-fi
 
 # Check Bootstrap Token status
 BOOTSTRAP_TOKEN_STATUS=$(profiles validate -type bootstraptoken -user $ADMIN_USERNAME -password $ADMIN_PASSWORD 2>&1)
