@@ -3,7 +3,7 @@
 
 ############################################################################################
 ##
-## Script to install the latest GNU Imagine Manipulation client
+## Script to install the latest GNU Image Manipulation Program (GIMP) client
 ##
 ############################################################################################
 
@@ -18,7 +18,7 @@
 ## Feedback: neiljohn@microsoft.com
 
 # User Defined variables
-weburl="https://download.gimp.org/mirror/pub/gimp/v2.10/osx/gimp-2.10.22-x86_64-3.dmg"      # What is the Azure Blob Storage URL?
+weburl="https://download.gimp.org/gimp/v3.0/macos/gimp-3.0.8-arm64-1.dmg"                   # What is the URL?
 appname="Gimp"                                                                              # The name of our App deployment script (also used for Octory monitor)
 app="Gimp.app"                                                                              # The actual name of our App once installed
 logandmetadir="/Library/Logs/Microsoft/IntuneScripts/installGimp"                           # The location of our logs and last updated data
@@ -470,8 +470,13 @@ function installDMG () {
         echo "$(date) | Cleaning Up"
         rm -rf "$tempfile"
 
+        # Ensure permissions are set correctly
         echo "$(date) | Fixing up permissions"
         sudo chown -R root:wheel "/Applications/$app"
+
+        echo "$(date) | Removing quarantine attribute from $app"
+        xattr -cr "/Applications/$app"
+
         echo "$(date) | Application [$appname] succesfully installed"
         fetchLastModifiedDate update
         updateOctory installed
