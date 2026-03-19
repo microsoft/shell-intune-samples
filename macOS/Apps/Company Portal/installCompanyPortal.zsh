@@ -35,7 +35,8 @@
 mauurl="https://go.microsoft.com/fwlink/?linkid=830196"                         # URL to fetch latest MAU
 weburl="https://go.microsoft.com/fwlink/?linkid=853070"                         # What is the Azure Blob Storage URL?
 appname="Company Portal"                                                        # The name of our App deployment script (also used for Octory monitor)
-app="Company Portal.app"                                                        # The actual name of our App once installed
+app="Company Portal.app"                                                        # The name of the Application we are installing  
+filedownloaded="CompanyPortal-Installer.pkg"                                    # The name of the file once downloaded                    
 logandmetadir="/Library/Logs/Microsoft/IntuneScripts/installCompanyPortal"      # The location of our logs and last updated data
 processpath="/Applications/Company Portal.app/Contents/MacOS/Company Portal"    # The process name of the App we are installing
 terminateprocess="true"                                                         # Do we want to terminate the running process? If false we'll wait until its not running
@@ -70,7 +71,7 @@ function updateMAU () {
     echo "$(date) | Starting downloading of [MAU]"
 
     cd "$tempdir"
-    curl -o "$tempdir/mau.pkg" -f -s --connect-timeout 30 --retry 5 --retry-delay 60 -L -J -O "$mauurl"
+    curl -o "$tempdir/mau.pkg" -f -s --connect-timeout 30 --retry 5 --retry-delay 60 -L -J "$mauurl"
     if [[ $? == 0 ]]; then
 
         echo "$(date) | Downloaded [$mauurl] to [$tempdir/mau.pkg]"
@@ -291,7 +292,7 @@ function downloadApp () {
     echo "$(date) | Downloading $appname [$weburl]"
 
     cd "$tempdir"
-    curl -f -s --connect-timeout 30 --retry 5 --retry-delay 60 --compressed -L -J -O "$weburl"
+    curl -o "$tempdir/$filedownloaded" -f -s --connect-timeout 30 --retry 5 --retry-delay 60 -L -J "$weburl"
     if [[ $? == 0 ]]; then
 
             # We have downloaded a file, we need to know what the file is called and what type of file it is
