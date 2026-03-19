@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>PayloadContent</key>
+	<array>
+		<dict>
+			<key>PayloadDescription</key>
+			<string>Microsoft Remote Help PPPC</string>
+			<key>PayloadDisplayName</key>
+			<string>Microsoft Remote Help PPPC</string>
+			<key>PayloadIdentifier</key>
+			<string>3EFA39FA-B029-43B2-8D78-59A8D9A401A7</string>
+			<key>PayloadOrganization</key>
+			<string>Microsoft</string>
+			<key>PayloadType</key>
+			<string>com.apple.TCC.configuration-profile-policy</string>
+			<key>PayloadUUID</key>
+			<string>3135C007-86C8-44A5-A7EA-A40FB9123719</string>
+			<key>PayloadVersion</key>
+			<integer>1</integer>
+			<key>Services</key>
+			<dict>
+				<key>Accessibility</key>
+				<array>
+					<dict>
+						<key>Authorization</key>
+						<string>Allow</string>
+						<key>CodeRequirement</key>
+						<string>identifier "com.microsoft.remotehelp" and anchor apple generic and certificate 1[field.1.2.840.113635.100.6.2.6] /* exists */ and certificate leaf[field.1.2.840.113635.100.6.1.13] /* exists */ and certificate leaf[subject.OU] = UBF8T346G9</string>
+						<key>Comment</key>
+						<string></string>
+						<key>Identifier</key>
+						<string>com.microsoft.remotehelp</string>
+						<key>IdentifierType</key>
+						<string>bundleID</string>
+					</dict>
+				</array>
+				<key>ScreenCapture</key>
+				<array>
+					<dict>
+						<key>Authorization</key>
+						<string>AllowStandardUserToSetSystemService</string>
+						<key>CodeRequirement</key>
+						<string>identifier "com.microsoft.remotehelp" and anchor apple generic and certificate 1[field.1.2.840.113635.100.6.2.6] /* exists */ and certificate leaf[field.1.2.840.113635.100.6.1.13] /* exists */ and certificate leaf[subject.OU] = UBF8T346G9</string>
+						<key>Comment</key>
+						<string></string>
+						<key>Identifier</key>
+						<string>com.microsoft.remotehelp</string>
+						<key>IdentifierType</key>
+						<string>bundleID</string>
+					</dict>
+				</array>
+			</dict>
+		</dict>
+	</array>
+	<key>PayloadDescription</key>
+	<string>Microsoft Remote Help PPPC</string>
+	<key>PayloadDisplayName</key>
+	<string>Microsoft Remote Help PPPC</string>
+	<key>PayloadIdentifier</key>
+	<string>3EFA39FA-B029-43B2-8D78-59A8D9A401A7</string>
+	<key>PayloadOrganization</key>
+	<string>Microsoft</string>
+	<key>PayloadScope</key>
+	<string>System</string>
+	<key>PayloadType</key>
+	<string>Configuration</string>
+	<key>PayloadUUID</key>
+	<string>033E8C9F-83A2-4DD9-9139-93633992E8B1</string>
+	<key>PayloadVersion</key>
+	<integer>1</integer>
+</dict>
+</plist>
