@@ -24,16 +24,16 @@
 ## Feedback: neiljohn@microsoft.com
 
 # Define variables
-weburl="https://code.visualstudio.com/sha/download?build=stable&os=darwin-universal"    # What is the Azure Blob Storage URL?
-appname="Visual Studio Code"                                                            # The name of our App deployment script
-app="Visual Studio Code.app"                                                            # The actual name of our App once installed
-logandmetadir="/Library/Logs/Microsoft/IntuneScripts/installVSCode"                     # The location of our logs and last updated data
-processpath="/Applications/Visual Studio Code.app/Contents/MacOS/Electron"              # The process name of the App we are installing
+weburl="https://code.visualstudio.com/sha/download?build=stable&os=darwin-universal-dmg"    # What is the Azure Blob Storage URL?
+appname="Visual Studio Code"                                                                # The name of our App deployment script
+app="Visual Studio Code.app"                                                                # The actual name of our App once installed
+logandmetadir="/Library/Logs/Microsoft/IntuneScripts/installVSCode"                         # The location of our logs and last updated data
+processpath="/Applications/Visual Studio Code.app/Contents/MacOS/Electron"                  # The process name of the App we are installing
 if [[ ! -f "$processpath" ]]; then
-    processpath="/Applications/Visual Studio Code.app/Contents/MacOS/Code"              # New executable name per https://github.com/microsoft/vscode/pull/291948
+    processpath="/Applications/Visual Studio Code.app/Contents/MacOS/Code"                  # New executable name per https://github.com/microsoft/vscode/pull/291948
 fi
-terminateprocess="false"                                                                # Do we want to terminate the running process? If false we'll wait until its not running
-autoUpdate="true"                                                                       # If true, application updates itself and we should not attempt to update
+terminateprocess="false"                                                                    # Do we want to terminate the running process? If false we'll wait until its not running
+autoUpdate="true"                                                                           # If true, application updates itself and we should not attempt to update
 
 # Generated variables
 tempdir=$(mktemp -d)
