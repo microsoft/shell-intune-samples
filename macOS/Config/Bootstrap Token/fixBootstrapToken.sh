@@ -41,7 +41,7 @@ function print_status {
 }
 
 # Check if the boostrap token was ever escrowed. If not, stop early as success.
-if echo "profiles status -type bootstraptoken" | grep -q "Bootstrap Token escrowed to server: NO"; then
+if profiles status -type bootstraptoken 2>&1 | grep -q "Bootstrap Token escrowed to server: NO"; then
     exit 0
 fi
 
@@ -49,6 +49,9 @@ fi
 if cat "$logdir/checkBootstrapEscrow.log" | grep -q "Bootstrap Token validated."; then
     exit 0
 fi
+
+# Check secure token status for the admin account
+SECURE_TOKEN_STATUS=$(sysadminctl -secureTokenStatus "$ADMIN_USERNAME" 2>&1)
 
 # Fail early if the account provided does not have secure token enabled
 if echo "$SECURE_TOKEN_STATUS" | grep -q "Secure token is DISABLED"; then
