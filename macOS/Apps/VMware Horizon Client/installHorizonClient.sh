@@ -219,7 +219,7 @@ function downloadApp () {
     echo "$(date) | Downloading $appname"
 
     cd "$tempdir"
-    curl -f -s --connect-timeout 30 --retry 5 --retry-delay 60 -L -J -O "$weburl"
+    curl -f -s --connect-timeout 30 --retry 5 --retry-delay 60 -L -o "HorizonClient.dmg" "$weburl"
     if [ $? == 0 ]; then
 
             # We have downloaded a file, we need to know what the file is called and what type of file it is

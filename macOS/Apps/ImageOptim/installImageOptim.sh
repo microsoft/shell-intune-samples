@@ -231,7 +231,7 @@ function downloadApp () {
     echo "$(date) | Downloading $appname [$weburl]"
 
     cd "$tempdir"
-    curl -f -s --connect-timeout 30 --retry 5 --retry-delay 60 --compressed -L -J -O "$weburl"
+    curl -f -s --connect-timeout 30 --retry 5 --retry-delay 60 --compressed -L -o "ImageOptim.tbz2" "$weburl"
     if [ $? == 0 ]; then
 
             # We have downloaded a file, we need to know what the file is called and what type of file it is
