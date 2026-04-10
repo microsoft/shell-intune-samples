@@ -42,10 +42,8 @@ The log file will output to **/Library/Logs/Microsoft/IntuneScripts/installMinec
 # Fri  9 Apr 2021 13:45:28 BST | Logging install of [Minecraft EE] to [/Library/Logs/Microsoft/IntuneScripts/installMinecraftEE/Minecraft EE.log]
 ############################################################
 
-Fri  9 Apr 2021 13:45:28 BST | Checking if we need Rosetta 2 or not
 Fri  9 Apr 2021 13:45:28 BST | Waiting for other [/usr/sbin/softwareupdate] processes to end
 Fri  9 Apr 2021 13:45:29 BST | No instances of [/usr/sbin/softwareupdate] found, safe to proceed
-Fri  9 Apr 2021 13:45:29 BST | [Intel(R) Core(TM) i9-9880H CPU @ 2.30GHz] found, Rosetta not needed
 Fri  9 Apr 2021 13:45:29 BST | Checking if we need to install or update [Minecraft EE]
 Fri  9 Apr 2021 13:45:29 BST | [Minecraft EE] not installed, need to download and install
 Fri  9 Apr 2021 13:45:29 BST | Dock is here, lets carry on

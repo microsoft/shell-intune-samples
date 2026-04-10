@@ -79,12 +79,10 @@ lrwxr-xr-x  1 root  wheel        6 24 Mar 12:13 /Applications/Gimp.app/Contents/
 processpath="/Applications/Gimp.app/Contents/MacOS/gimp"
 ```
 
-
 **terminateprocess** is used to control what the script does if it finds the application is running. If this value is set to false the script will check for the applications process and wait for it to be closed before installing. If the value is set to true the script will detect that the application is running and terminate the main process before installing. For most end user applications leave this set to false.
 ```
 terminateprocess="false"
 ```
-
 
 ## Script Settings
 
@@ -105,10 +103,8 @@ Fri  9 Apr 2021 15:12:42 BST | Creating [/Library/Logs/Microsoft/IntuneScripts/i
 # Fri  9 Apr 2021 15:12:42 BST | Logging install of [Gimp] to [/Library/Logs/Microsoft/IntuneScripts/installGimp/Gimp.log]
 ############################################################
 
-Fri  9 Apr 2021 15:12:42 BST | Checking if we need Rosetta 2 or not
 Fri  9 Apr 2021 15:12:42 BST | Waiting for other [/usr/sbin/softwareupdate] processes to end
 Fri  9 Apr 2021 15:12:42 BST | No instances of [/usr/sbin/softwareupdate] found, safe to proceed
-Fri  9 Apr 2021 15:12:42 BST | [Intel(R) Core(TM) i9-9880H CPU @ 2.30GHz] found, Rosetta not needed
 Fri  9 Apr 2021 15:12:42 BST | Checking if we need to install or update [Gimp]
 Fri  9 Apr 2021 15:12:42 BST | [Gimp] not installed, need to download and install
 Fri  9 Apr 2021 15:12:42 BST | Dock is here, lets carry on

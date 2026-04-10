@@ -42,10 +42,8 @@ The log file will output to ***/Library/Logs/Microsoft/IntuneScripts/IllumioVEN.
 Fri Nov 17 21:25:34 EET 2023 | Checking MDM Profile Type
 Enrolled via DEP: Yes
 Fri Nov 17 21:25:34 EET 2023 | Device is ABM Managed
-Fri Nov 17 21:25:34 EET 2023 | Checking if we need Rosetta 2 or not
 Fri Nov 17 21:25:34 EET 2023 | Waiting for other [/usr/sbin/softwareupdate] processes to end
 Fri Nov 17 21:25:34 EET 2023 | No instances of [/usr/sbin/softwareupdate] found, safe to proceed
-Fri Nov 17 21:25:34 EET 2023 | Rosetta is already installed and running. Nothing to do.
 Fri Nov 17 21:25:34 EET 2023 | Checking if we need to install or update [IllumioVEN]
 Fri Nov 17 21:25:34 EET 2023 | [IllumioVEN] not installed, need to download and install
 Fri Nov 17 21:25:34 EET 2023 | Dock is here, lets carry on
@@ -137,8 +135,6 @@ rm: /private/var/ilo-ven: Operation not permitted
 Forgot package 'com.illumio.illumio-ven-service' on '/'.
 
 Illumio VEN is being uninstalled...
-
-
 
 2025-10-18T11:23:36+0300 Generating Support Report at /tmp/illumio-ven-report.tgz ........
 2025-10-18T11:23:49+0300 Uninstalling Illumio ............
