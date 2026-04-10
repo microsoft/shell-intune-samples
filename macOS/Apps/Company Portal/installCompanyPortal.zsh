@@ -61,18 +61,6 @@ waitForProcess () {
     echo "$(date) | No running [$name]"
 }
 
-checkForRosetta2 () {
-    echo "$(date) | Checking for Rosetta 2"
-    if [[ $(uname -m) == "arm64" ]] && ! pgrep oahd >/dev/null 2>&1; then
-        echo "$(date) | Installing Rosetta 2"
-        /usr/sbin/softwareupdate --install-rosetta --agree-to-license
-        if [[ $? -ne 0 ]]; then
-            echo "$(date) | ERROR: Rosetta 2 installation failed"
-        fi
-    else
-        echo "$(date) | Rosetta 2 not required or already installed"
-    fi
-}
 
 fetchLastModifiedDate() {
     lastmodified=$(curl -sIL "$weburl" | awk 'tolower($0) ~ /^last-modified:/ { $1=""; sub(/^ +/, ""); gsub(/\r$/, ""); print }' | tail -n1)
@@ -149,7 +137,6 @@ echo "# $(date) | Starting install of [$appname]"
 echo "##############################################################"
 echo ""
 
-checkForRosetta2
 updateCheck
 waitForDesktop
 downloadPKG

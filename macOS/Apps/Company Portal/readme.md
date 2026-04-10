@@ -9,7 +9,6 @@ This folder contains two scripts that both install the **same standard Company P
 The full install script for general use. Suitable for DEP/ADE enrolled Macs and end-user driven installs.
 
 **What it does:**
-- Checks for and installs Rosetta 2 (Apple Silicon)
 - Checks if Company Portal is already installed and whether an update is available
 - Waits for the macOS desktop (Dock) to be ready before downloading
 - Downloads and validates the Company Portal PKG
@@ -23,7 +22,6 @@ A simplified install script designed for **Platform SSO (PSSO) during Setup Assi
 > **Important:** This installs the exact same Company Portal app as the standard script. There is nothing PSSO-specific about the app itself — this script simply removes checks that don't apply during Setup Assistant.
 
 **What it skips (and why):**
-- Rosetta 2 check — not required for Company Portal's universal binary
 - Desktop readiness wait — Setup Assistant runs before the Dock is available, waiting would hang
 - Update check — Company Portal won't already be installed during first-time setup
 - Process termination — nothing to terminate on a fresh install
