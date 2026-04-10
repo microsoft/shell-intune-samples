@@ -5,7 +5,6 @@ This script automates the deployment of Google Chrome on macOS devices through M
 ## Features
 
 - **Direct Download**: Downloads Google Chrome package directly from Google's official source
-- **Universal Binary Support**: Installs on both Intel and Apple Silicon Macs without requiring Rosetta 2
 - **Auto-Update Detection**: Skips installation if Chrome is already installed (as Chrome handles its own updates)
 - **Self-Healing**: Includes retry logic for failed installations
 - **Visual Feedback**: Supports Swift Dialog for user-visible progress updates (when Dialog is running)

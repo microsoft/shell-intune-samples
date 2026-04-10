@@ -2,7 +2,6 @@
 
 This script is an example to show how to use [Intune Shell Scripting](https://docs.microsoft.com/en-us/mem/intune/apps/macos-shell-scripts) to install applications. In this case the script will download the Zoom.pkg file from the Zoom download servers and then install it onto the Mac.
 
-
 ## Script Settings
 
 - Run script as signed-in user : No
@@ -21,10 +20,8 @@ Fri  9 Apr 2021 12:44:27 BST | Creating [/Library/Logs/Microsoft/IntuneScripts/i
 # Fri  9 Apr 2021 12:44:27 BST | Logging install of [Zoom] to [/Library/Logs/Microsoft/IntuneScripts/installZoom/Zoom.log]
 ############################################################
 
-Fri  9 Apr 2021 12:44:27 BST | Checking if we need Rosetta 2 or not
 Fri  9 Apr 2021 12:44:27 BST | Waiting for other [/usr/sbin/softwareupdate] processes to end
 Fri  9 Apr 2021 12:44:27 BST | No instances of [/usr/sbin/softwareupdate] found, safe to proceed
-Fri  9 Apr 2021 12:44:27 BST | [Intel(R) Core(TM) i9-9880H CPU @ 2.30GHz] found, Rosetta not needed
 Fri  9 Apr 2021 12:44:27 BST | Checking if we need to install or update [Zoom]
 Fri  9 Apr 2021 12:44:27 BST | [Zoom] not installed, need to download and install
 Fri  9 Apr 2021 12:44:27 BST | Dock is here, lets carry on

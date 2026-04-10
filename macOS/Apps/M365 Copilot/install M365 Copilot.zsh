@@ -1,9 +1,9 @@
 #!/bin/zsh
 
 ############################################################################################
-## Install Company Portal and Microsoft AutoUpdate (macOS PKG)
+## Install Microsoft 365 Copilot (macOS Universal PKG)
 ## Maintainer: neiljohn@microsoft.com
-## Summary: Download and install Company Portal PKG + MAU, with update check and logging.
+## Summary: Resolve fwlink -> download PKG -> validate -> install -> record Last-Modified.
 ## Exit codes: 0 success / not-needed, 1 failure.
 ############################################################################################
 
@@ -18,12 +18,11 @@
 ## Feedback: neiljohn@microsoft.com
 
 ## Config
-mauurl="https://go.microsoft.com/fwlink/?linkid=830196"
-weburl="https://go.microsoft.com/fwlink/?linkid=853070"
-appname="Company Portal"
-app="Company Portal.app"
-logandmetadir="/Library/Logs/Microsoft/IntuneScripts/installCompanyPortal"
-processpath="/Applications/Company Portal.app/Contents/MacOS/Company Portal"
+weburl="https://go.microsoft.com/fwlink/?linkid=2325438"  # fwlink to latest Copilot PKG
+appname="Microsoft 365 Copilot"
+app="Microsoft 365 Copilot.app"
+logandmetadir="/Library/Logs/Microsoft/IntuneScripts/installM365Copilot"
+processpath="/Applications/Microsoft 365 Copilot.app/Contents/MacOS/Microsoft 365 Copilot"
 terminateprocess="true"
 autoUpdate="true"
 
@@ -61,9 +60,9 @@ waitForProcess () {
     echo "$(date) | No running [$name]"
 }
 
-
 fetchLastModifiedDate() {
-    lastmodified=$(curl -sIL "$weburl" | awk 'tolower($0) ~ /^last-modified:/ { $1=""; sub(/^ +/, ""); gsub(/\r$/, ""); print }' | tail -n1)
+    local target="${resolvedurl:-$weburl}"
+    lastmodified=$(curl -sIL "$target" | awk 'tolower($0) ~ /^last-modified:/ { $1=""; sub(/^ +/, ""); gsub(/\r$/, ""); print }' | tail -n1)
     [[ $1 == update ]] && echo "$lastmodified" > "$metafile"
 }
 
@@ -90,35 +89,28 @@ updateCheck() {
 
 downloadPKG() {
     echo "$(date) | Downloading $appname"
-    waitForProcess "curl -f"
+    cd "$tempdir" || exit 1
 
-    curl -f -s --connect-timeout 30 --retry 5 --retry-delay 60 -L -o "$tempdir/CompanyPortal.pkg" "$weburl" \
+    resolvedurl=$(curl -sIL -o /dev/null -w '%{url_effective}' "$weburl")
+    echo "$(date) | Resolved URL: $resolvedurl"
+    if [[ -z $resolvedurl || ( $resolvedurl != *.pkg && $resolvedurl != *.pkg\?* ) ]]; then
+        echo "$(date) | ERROR: Resolved URL is not a PKG"; exit 1
+    fi
+
+    curl -f -S --connect-timeout 30 --retry 5 --retry-delay 60 -L -o "copilot.pkg" "$weburl" \
         || { echo "$(date) | ERROR: Download failed"; exit 1; }
 
-    file -b "$tempdir/CompanyPortal.pkg" | grep -qi xar \
+    file -b "copilot.pkg" | grep -qi xar \
         || { echo "$(date) | ERROR: Downloaded file is not a valid PKG"; exit 1; }
 
     echo "$(date) | Download complete"
-}
-
-installMAU() {
-    echo "$(date) | Downloading MAU"
-    curl -f -s --connect-timeout 30 --retry 5 --retry-delay 60 -L -o "$tempdir/mau.pkg" "$mauurl" \
-        || { echo "$(date) | WARNING: MAU download failed, continuing"; return; }
-
-    echo "$(date) | Installing MAU"
-    if installer -pkg "$tempdir/mau.pkg" -target /; then
-        echo "$(date) | MAU installed"
-    else
-        echo "$(date) | WARNING: MAU install failed, continuing"
-    fi
 }
 
 installPKG() {
     waitForProcess "$processpath" "$terminateprocess"
     echo "$(date) | Installing $appname"
 
-    if installer -pkg "$tempdir/CompanyPortal.pkg" -target /; then
+    if installer -pkg "$tempdir/copilot.pkg" -target /; then
         fetchLastModifiedDate update
         echo "$(date) | Install complete"
     else
@@ -140,5 +132,4 @@ echo ""
 updateCheck
 waitForDesktop
 downloadPKG
-installMAU
 installPKG

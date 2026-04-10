@@ -21,10 +21,8 @@ The log file will output to **/Library/Logs/Microsoft/IntuneScripts/Citrix Works
 # Mon 28 Feb 2022 15:10:34 GMT | Logging install of [Citrix Workspace] to [/Library/Logs/Microsoft/IntuneScripts/Citrix Workspace/Citrix Workspace.log]
 ############################################################
 
-Mon 28 Feb 2022 15:10:34 GMT | Checking if we need Rosetta 2 or not
 Mon 28 Feb 2022 15:10:34 GMT | Waiting for other [/usr/sbin/softwareupdate] processes to end
 Mon 28 Feb 2022 15:10:34 GMT | No instances of [/usr/sbin/softwareupdate] found, safe to proceed
-Mon 28 Feb 2022 15:10:34 GMT | Rosetta is already installed and running. Nothing to do.
 Mon 28 Feb 2022 15:10:34 GMT | Checking if we need to install or update [Citrix Workspace]
 Mon 28 Feb 2022 15:10:34 GMT | [Citrix Workspace] not installed, need to download and install
 Mon 28 Feb 2022 15:10:34 GMT | Dock is here, lets carry on

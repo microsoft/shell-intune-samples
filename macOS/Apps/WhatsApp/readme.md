@@ -20,10 +20,8 @@ Sat  4 Jun 2022 20:46:26 BST | Creating [/Library/Logs/Microsoft/IntuneScripts/W
 # Sat  4 Jun 2022 20:46:26 BST | Logging install of [WhatsApp] to [/Library/Logs/Microsoft/IntuneScripts/WhatsApp/WhatsApp.log]
 ############################################################
 
-Sat  4 Jun 2022 20:46:26 BST | Checking if we need Rosetta 2 or not
 Sat  4 Jun 2022 20:46:26 BST | Waiting for other [/usr/sbin/softwareupdate] processes to end
 Sat  4 Jun 2022 20:46:26 BST | No instances of [/usr/sbin/softwareupdate] found, safe to proceed
-Sat  4 Jun 2022 20:46:26 BST | Rosetta is already installed and running. Nothing to do.
 Sat  4 Jun 2022 20:46:26 BST | Checking if we need to install or update [WhatsApp]
 Sat  4 Jun 2022 20:46:26 BST | [WhatsApp] not installed, need to download and install
 Sat  4 Jun 2022 20:46:26 BST | Dock is here, lets carry on

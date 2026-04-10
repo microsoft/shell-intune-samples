@@ -39,10 +39,8 @@ The log file will output to ***/Library/Logs/Microsoft/IntuneScripts/installDefe
 # Fri  9 Apr 2021 13:31:24 BST | Logging install of [Microsoft Defender ATP] to [/Library/Logs/Microsoft/IntuneScripts/installDefender/Microsoft Defender ATP.log]
 ############################################################
 
-Fri  9 Apr 2021 13:31:24 BST | Checking if we need Rosetta 2 or not
 Fri  9 Apr 2021 13:31:24 BST | Waiting for other [/usr/sbin/softwareupdate] processes to end
 Fri  9 Apr 2021 13:31:24 BST | No instances of [/usr/sbin/softwareupdate] found, safe to proceed
-Fri  9 Apr 2021 13:31:24 BST | [Intel(R) Core(TM) i9-9880H CPU @ 2.30GHz] found, Rosetta not needed
 Fri  9 Apr 2021 13:31:25 BST | Checking if we need to install or update [Microsoft Defender ATP]
 Fri  9 Apr 2021 13:31:25 BST | [Microsoft Defender ATP] not installed, need to download and install
 Fri  9 Apr 2021 13:31:25 BST | Dock is here, lets carry on

@@ -52,10 +52,8 @@ The log file will output to ***/Library/Logs/Microsoft/IntuneScripts/Nudge/Nudge
 # Fri 24 Jun 2022 15:37:05 BST | Logging install of [Nudge] to [/Library/Logs/Microsoft/IntuneScripts/Nudge/Nudge.log]
 ############################################################
 
-Fri 24 Jun 2022 15:37:05 BST | Checking if we need Rosetta 2 or not
 Fri 24 Jun 2022 15:37:05 BST | Waiting for other [/usr/sbin/softwareupdate] processes to end
 Fri 24 Jun 2022 15:37:05 BST | No instances of [/usr/sbin/softwareupdate] found, safe to proceed
-Fri 24 Jun 2022 15:37:05 BST | Rosetta is already installed and running. Nothing to do.
 Fri 24 Jun 2022 15:37:05 BST | Checking if we need to install or update [Nudge]
 Fri 24 Jun 2022 15:37:05 BST | [Nudge] not installed, need to download and install
 Fri 24 Jun 2022 15:37:05 BST | Dock is here, lets carry on

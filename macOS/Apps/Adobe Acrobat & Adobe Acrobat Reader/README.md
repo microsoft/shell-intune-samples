@@ -29,10 +29,8 @@ Wed  5 Jan 2022 17:26:50 GMT | Creating [/Library/Logs/Microsoft/IntuneScripts/A
 # Wed  5 Jan 2022 17:26:50 GMT | Logging install of [Adobe Acrobat Reader DC] to [/Library/Logs/Microsoft/IntuneScripts/Adobe Acrobat Reader DC/Adobe Acrobat Reader DC.log]
 ############################################################
 
-Wed  5 Jan 2022 17:26:50 GMT | Checking if we need Rosetta 2 or not
 Wed  5 Jan 2022 17:26:50 GMT | Waiting for other [/usr/sbin/softwareupdate] processes to end
 Wed  5 Jan 2022 17:26:50 GMT | No instances of [/usr/sbin/softwareupdate] found, safe to proceed
-Wed  5 Jan 2022 17:26:50 GMT | Intel processor installed. No need to install Rosetta.
 Wed  5 Jan 2022 17:26:50 GMT | Checking if we need to install or update [Adobe Acrobat Reader DC]
 Wed  5 Jan 2022 17:26:50 GMT | [Adobe Acrobat Reader DC] not installed, need to download and install
 Wed  5 Jan 2022 17:26:50 GMT | Dock is here, lets carry on

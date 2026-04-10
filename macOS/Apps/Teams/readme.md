@@ -27,7 +27,6 @@ Teams V2
 sudo /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/microsoft/shell-intune-samples/master/macOS/Apps/Teams/installTeamsV2.zsh)"
 ```
 
-
 ### Script Settings (installTeamsClassic.zsh, installTeamsV2.zsh)
 
 - Run script as signed-in user : No
@@ -44,10 +43,8 @@ The log file will output to ***/Library/Logs/Microsoft/IntuneScripts/Microsoft T
 # Fri 10 Nov 2023 05:12:01 PST | Logging install of [Microsoft Teams] to [/Library/Logs/Microsoft/IntuneScripts/Microsoft Teams/Microsoft Teams.log]
 ############################################################
 
-Fri 10 Nov 2023 05:12:01 PST | Checking if we need Rosetta 2 or not
 Fri 10 Nov 2023 05:12:01 PST | Waiting for other [/usr/sbin/softwareupdate] processes to end
 Fri 10 Nov 2023 05:12:01 PST | No instances of [/usr/sbin/softwareupdate] found, safe to proceed
-Fri 10 Nov 2023 05:12:01 PST | Rosetta is already installed and running. Nothing to do.
 Fri 10 Nov 2023 05:12:01 PST | Aria2 already installed, nothing to do
 Fri 10 Nov 2023 05:12:01 PST | Checking if we need to install or update [Microsoft Teams][/Applications//Microsoft Teams (work or school).app]
 Fri 10 Nov 2023 05:12:01 PST | [Microsoft Teams] not installed, need to download and install
