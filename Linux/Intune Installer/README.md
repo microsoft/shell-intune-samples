@@ -5,8 +5,8 @@ Microsoft Edge) on supported Linux distributions.
 
 ## Supported Distributions
 
-- Ubuntu 22.04, 24.04
-- RHEL / AlmaLinux 8, 9
+- Ubuntu 22.04, 24.04, 26.04
+- RHEL / AlmaLinux 8, 9, 10
 
 ## Usage
 
