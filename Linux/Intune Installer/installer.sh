@@ -18,6 +18,12 @@
 #   --verbose              Show detailed output to the terminal (in addition to the log)
 #   -h, --help             Show this help message
 #
+# Recent changes (Release date: 2026-04-23):
+#   - Added repository enrollment checks for APT and YUM/DNF sources
+#   - Updated Microsoft signing key selection for Ubuntu 26.04+ and RHEL/AlmaLinux 10
+#   - Removed stale repo files created by legacy dnf config-manager enrollment
+#   - Expanded support matrix to Ubuntu 26.04 and RHEL/AlmaLinux 10
+#
 
 set -eu${DEBUG:+x}o pipefail
 
