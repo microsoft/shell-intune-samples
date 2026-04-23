@@ -30,7 +30,7 @@ To use this script, follow these steps:
 To use this script, follow these steps:
 
 1. Download the `1PasswordInstall.sh` script to your local machine.
-2. Open the Microsoft Endpoint Manager admin center and navigate to **Devices > Lunux > Configuration Scripts**.
+2. Open the Microsoft Endpoint Manager admin center and navigate to **Devices > Linux > Configuration Scripts**.
 3. Click **Add** to create a new script.
 4. In the **Create profile** pane, enter a name and description for the script and click **Next**.
 5. Under **Configuration Settings**
