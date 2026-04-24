@@ -33,8 +33,22 @@
 
 # Replace these with your Jamf Pro details
 JAMF_PRO_URL="https://yourenvironment.jamfcloud.com"  # URL of your Jamf Pro server
-USERNAME="migration_account"                          # This should be a Jamf Pro user with the Jamf Pro Server Action 'Send Computer Unmanage Command' enabled and Jamf Pro Server Objects 'Computers' Read.
+
+# Auth method: "basic" (legacy Jamf Pro user account) or "oauth" (Jamf Pro 10.49+ API
+# Roles & Clients, recommended). When using "oauth" the role must be granted at minimum:
+#   - Jamf Pro Server Action: 'Send Computer Unmanage Command'
+#   - Jamf Pro Server Object: 'Read Computers'
+# See: https://learn.jamf.com/bundle/jamf-pro-documentation-current/page/API_Roles_and_Clients.html
+JAMF_AUTH_METHOD="basic"
+
+# --- Used when JAMF_AUTH_METHOD="basic" ------------------------------------------------
+USERNAME="migration_account"                          # Jamf Pro user with the same role/permissions as listed above
 PASSWORD="migration_account_password"                 # Password for the above user
+
+# --- Used when JAMF_AUTH_METHOD="oauth" ------------------------------------------------
+JAMF_CLIENT_ID=""                                     # Client ID of the Jamf Pro API Client
+JAMF_CLIENT_SECRET=""                                 # Client secret of the Jamf Pro API Client
+
 LOG="/Library/Logs/Microsoft/IntuneScripts/intuneMigration/intuneMigration.log"
 JAMF_API_VERSION="new"     # Set to "classic" for (JSSResource) or new for (api) to use the classic or new API
 REMOVE_WORKPLACE_JOIN_CERTS=true  # Remove Entra WorkplaceJoin (MS-Organization-Access) certs from login keychain before enrollment
@@ -369,10 +383,61 @@ get_serial_number() {
   system_profiler SPHardwareDataType | awk '/Serial Number/ {print $4}'
 }
 
-# Function to obtain an authentication token
+# Function to obtain an authentication token.
+#
+# Honours JAMF_AUTH_METHOD:
+#   - "basic": legacy Jamf Pro user account against /api/v1/auth/token
+#   - "oauth": Jamf Pro 10.49+ API Client (client_credentials) against /api/oauth/token
+#
+# Returns the bearer token on stdout, or empty string on failure.
 get_auth_token() {
-  auth_token=$(curl -su "$USERNAME:$PASSWORD" -X POST "$JAMF_PRO_URL/api/v1/auth/token" | jq -r '.token')
-  echo "$auth_token"
+  local token=""
+  local response=""
+  local http_code=""
+
+  case "${JAMF_AUTH_METHOD:-basic}" in
+    oauth)
+      if [[ -z "$JAMF_CLIENT_ID" || -z "$JAMF_CLIENT_SECRET" ]]; then
+        echo "ERROR: JAMF_AUTH_METHOD=oauth but JAMF_CLIENT_ID and/or JAMF_CLIENT_SECRET are empty." >&2
+        echo ""
+        return 1
+      fi
+      response=$(curl -s -w '\n%{http_code}' \
+        -X POST "$JAMF_PRO_URL/api/oauth/token" \
+        -H "Content-Type: application/x-www-form-urlencoded" \
+        --data-urlencode "client_id=$JAMF_CLIENT_ID" \
+        --data-urlencode "grant_type=client_credentials" \
+        --data-urlencode "client_secret=$JAMF_CLIENT_SECRET")
+      http_code=$(echo "$response" | tail -n1)
+      response=$(echo "$response" | sed '$d')
+      token=$(echo "$response" | jq -r '.access_token // empty' 2>/dev/null)
+      ;;
+    basic|"")
+      if [[ -z "$USERNAME" || -z "$PASSWORD" ]]; then
+        echo "ERROR: JAMF_AUTH_METHOD=basic but USERNAME and/or PASSWORD are empty." >&2
+        echo ""
+        return 1
+      fi
+      response=$(curl -s -w '\n%{http_code}' -u "$USERNAME:$PASSWORD" \
+        -X POST "$JAMF_PRO_URL/api/v1/auth/token")
+      http_code=$(echo "$response" | tail -n1)
+      response=$(echo "$response" | sed '$d')
+      token=$(echo "$response" | jq -r '.token // empty' 2>/dev/null)
+      ;;
+    *)
+      echo "ERROR: Invalid JAMF_AUTH_METHOD '$JAMF_AUTH_METHOD' (expected 'basic' or 'oauth')." >&2
+      echo ""
+      return 1
+      ;;
+  esac
+
+  if [[ -z "$token" || "$token" == "null" ]]; then
+    echo "ERROR: Failed to obtain Jamf Pro auth token (HTTP $http_code, method=$JAMF_AUTH_METHOD). Response: $response" >&2
+    echo ""
+    return 1
+  fi
+
+  echo "$token"
 }
 
 # Function to get the computer_id from Jamf Pro based on serial number
@@ -523,7 +588,11 @@ start_progress_dialog
 serial_number=$(get_serial_number)
 echo "Serial Number: $serial_number"
 auth_token=$(get_auth_token)
-echo "Auth Token: $auth_token"
+if [[ -z "$auth_token" ]]; then
+    echo "Aborting migration: could not obtain a Jamf Pro auth token. Check JAMF_AUTH_METHOD and credentials." >&2
+    exit 1
+fi
+echo "Auth Token: obtained (length=${#auth_token})"
 computer_id=$(get_computer_id "$serial_number" "$auth_token")
 echo "Computer ID: $computer_id"
 
