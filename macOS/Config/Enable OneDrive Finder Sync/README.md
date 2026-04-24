@@ -12,15 +12,17 @@ The extension ID of the OneDrive client is different for the standalone version 
 
 ## Script Settings
 
-- Run script as signed-in user : **Yes**
+- Run script as signed-in user : **No**
 - Hide script notifications on devices : Yes
-- Script frequency : 
+- Script frequency :
   - **Not configured** (which will cause the script to run once)
 - Number of times to retry if script fails : 3
 
+> **Why "No"?** When the Intune agent runs `pluginkit` directly in its own launchd context (whether as root or even as the signed-in user) it can fail with `match: connection invalid` because it is not attached to the user's Aqua GUI session. The script now runs as root and re-enters the console user's GUI launchd session via `launchctl asuser <uid>` so that `pluginkit` can talk to the per-user pluginkit endpoints. Resolves [#137](https://github.com/microsoft/shell-intune-samples/issues/137) and [#148](https://github.com/microsoft/shell-intune-samples/issues/148).
+
 ## Log File
 
-The log file will output to **~/Library/Logs/Microsoft/IntuneScripts/EnableOneDriveFinderSync/EnableOneDriveFinderSync.log** by default. Exit status is either 0 or 1. To gather this log with Intune remotely take a look at [Troubleshoot macOS shell script policies using log collection](https://docs.microsoft.com/en-us/mem/intune/apps/macos-shell-scripts#troubleshoot-macos-shell-script-policies-using-log-collection).
+The log file will output to **~/Library/Logs/Microsoft/IntuneScripts/EnableOneDriveFinderSync/EnableOneDriveFinderSync.log** (where `~` is the console user's home) by default. Exit status is either 0 or 1. To gather this log with Intune remotely take a look at [Troubleshoot macOS shell script policies using log collection](https://docs.microsoft.com/en-us/mem/intune/apps/macos-shell-scripts#troubleshoot-macos-shell-script-policies-using-log-collection).
 ```
 ##############################################################
 # Fri Jan  8 14:21:01 AEST 2021 | Starting config of EnableOneDriveFinderSync
