@@ -27,6 +27,21 @@ logandmetadir="/Library/Application Support/Microsoft/IntuneScripts/$appname"   
 enrollmentWindowHours=1                                                         # The number of hours after enrollment that the script should run
 checkEnrollmentTime=true                                                        # Should we check the enrollment time? (Do NOT set this to false in production!!)
 
+# This script must run as root. When deployed via the Intune shell-script
+# channel that happens automatically; if you're testing locally you need to
+# invoke it with sudo. Without root we cannot write to
+# /Library/Application Support/Microsoft/IntuneScripts and the user hits
+# 'No such file or directory' / 'Permission denied' on the move steps later.
+if [[ $(id -u) -ne 0 ]]; then
+    echo "$(date) | ERROR: onboardingProcess.zsh must be run as root (uid 0)."
+    echo "$(date) |        When deployed via Intune the shell-script agent runs this as root"
+    echo "$(date) |        automatically. If you're testing on a device, run:"
+    echo "$(date) |            sudo ./onboardingProcess.zsh"
+    echo "$(date) |        Also confirm in the Intune portal that the script is configured with"
+    echo "$(date) |        'Run script as signed-in user: No'."
+    exit 1
+fi
+
 # Generated variables
 tempdir=$(mktemp -d)
 log="$logandmetadir/$appname.log"                                               # The location of the script log file
