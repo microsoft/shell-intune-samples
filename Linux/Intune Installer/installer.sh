@@ -18,6 +18,12 @@
 #   --verbose              Show detailed output to the terminal (in addition to the log)
 #   -h, --help             Show this help message
 #
+# Recent changes (Release date: 2026-04-23):
+#   - Added repository enrollment checks for APT and YUM/DNF sources
+#   - Updated Microsoft signing key selection for Ubuntu 26.04+ and RHEL/AlmaLinux 10
+#   - Removed stale repo files created by legacy dnf config-manager enrollment
+#   - Expanded support matrix to Ubuntu 26.04 and RHEL/AlmaLinux 10
+#
 
 set -eu${DEBUG:+x}o pipefail
 
@@ -80,6 +86,68 @@ cleanup_edge_repo_duplicates() {
         [ -f "$f" ] || continue
         sudo rm -f "$f"
     done
+}
+
+# Check if an APT repository is already enrolled by another source file.
+# Searches /etc/apt/sources.list, *.list, and *.sources files.
+# If a pre-existing enrollment is found, removes our file so the admin's enrollment takes precedence.
+# Args: $1 = URL substring to match, $2 = our filename in sources.list.d/
+# Returns: 0 if enrolled elsewhere (caller should skip creation), 1 if not
+apt_repo_enrolled() {
+    local url_pattern="$1"
+    local our_file="$2"
+    local our_path="/etc/apt/sources.list.d/$our_file"
+
+    # Check /etc/apt/sources.list
+    if [ -f /etc/apt/sources.list ] && \
+       grep -v '^[[:space:]]*#' /etc/apt/sources.list 2>/dev/null | grep -qF "$url_pattern"; then
+        [ -f "$our_path" ] && sudo rm -f "$our_path" || true
+        return 0
+    fi
+
+    # Check .list files (one-line format), skipping our own
+    for f in /etc/apt/sources.list.d/*.list; do
+        [ -f "$f" ] || continue
+        [ "$(basename "$f")" = "$our_file" ] && continue
+        if grep -v '^[[:space:]]*#' "$f" 2>/dev/null | grep -qF "$url_pattern"; then
+            [ -f "$our_path" ] && sudo rm -f "$our_path" || true
+            return 0
+        fi
+    done
+
+    # Check .sources files
+    for f in /etc/apt/sources.list.d/*.sources; do
+        [ -f "$f" ] || continue
+        if grep -i '^URIs:' "$f" 2>/dev/null | grep -qF "$url_pattern" && \
+           ! grep -qi "^Enabled:[[:space:]]*no" "$f" 2>/dev/null; then
+            [ -f "$our_path" ] && sudo rm -f "$our_path" || true
+            return 0
+        fi
+    done
+
+    return 1
+}
+
+# Check if a YUM/DNF repository is already enrolled by another repo file.
+# If a pre-existing enrollment is found, removes our file so the admin's enrollment takes precedence.
+# Args: $1 = URL substring to match, $2 = our filename in yum.repos.d/
+# Returns: 0 if enrolled elsewhere (caller should skip creation), 1 if not
+yum_repo_enrolled() {
+    local url_pattern="$1"
+    local our_file="$2"
+    local our_path="/etc/yum.repos.d/$our_file"
+
+    for f in /etc/yum.repos.d/*.repo; do
+        [ -f "$f" ] || continue
+        [ "$(basename "$f")" = "$our_file" ] && continue
+        if grep -i '^[[:space:]]*baseurl[[:space:]]*=' "$f" 2>/dev/null | grep -qF "$url_pattern" && \
+           ! grep -qi "^[[:space:]]*enabled[[:space:]]*=[[:space:]]*0" "$f" 2>/dev/null; then
+            [ -f "$our_path" ] && sudo rm -f "$our_path" || true
+            return 0
+        fi
+    done
+
+    return 1
 }
 
 # --- Argument Parsing ---
@@ -157,29 +225,42 @@ case "$DISTRO" in
 
     sudo apt-get -y install curl gpg
 
-    # Import Microsoft GPG key (idempotent)
-    if [[ ! -f /usr/share/keyrings/microsoft.gpg ]]; then
-        curl -fsSL https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > "$HOME/microsoft.gpg"
-        sudo install -o root -g root -m 644 "$HOME/microsoft.gpg" /usr/share/keyrings/
-        rm -f "$HOME/microsoft.gpg"
+    # Ubuntu 26.04+ repos are signed with a newer Microsoft GPG key
+    if dpkg --compare-versions "$RELEASE" ge "26.04"; then
+        MS_GPG_KEY_URL="https://packages.microsoft.com/keys/microsoft-2025.asc"
+    else
+        MS_GPG_KEY_URL="https://packages.microsoft.com/keys/microsoft.asc"
     fi
+
+    # Import Microsoft GPG key (always refresh to pick up key rotations)
+    curl -fsSL "$MS_GPG_KEY_URL" | gpg --dearmor > "$HOME/microsoft.gpg"
+    sudo install -o root -g root -m 644 "$HOME/microsoft.gpg" /usr/share/keyrings/
+    rm -f "$HOME/microsoft.gpg"
 
     # Clean up any pre-existing Edge repo files to avoid duplicates
     cleanup_edge_repo_duplicates
 
-    # Configure repo for portal and dependencies
+    # Configure repo for portal and dependencies — skip if already enrolled
     # For insiders-fast, the URL path stays as "prod" and "insiders-fast" is the apt component
     if [[ "$CHANNEL" == "insiders-fast" ]]; then
         APT_COMPONENT="insiders-fast"
     else
         APT_COMPONENT="$CODENAME"
     fi
-    echo "deb [arch=$ARCH signed-by=/usr/share/keyrings/microsoft.gpg] https://packages.microsoft.com/ubuntu/$RELEASE/prod $APT_COMPONENT main" \
-        | sudo tee /etc/apt/sources.list.d/microsoft-$CHANNEL.list > /dev/null
+    if apt_repo_enrolled "packages.microsoft.com/ubuntu/$RELEASE/prod $APT_COMPONENT" "microsoft-$CHANNEL.list"; then
+        log "Microsoft $CHANNEL repo already enrolled, skipping."
+    else
+        echo "deb [arch=$ARCH signed-by=/usr/share/keyrings/microsoft.gpg] https://packages.microsoft.com/ubuntu/$RELEASE/prod $APT_COMPONENT main" \
+            | sudo tee /etc/apt/sources.list.d/microsoft-$CHANNEL.list > /dev/null
+    fi
 
-    # Configure repo for Edge
-    echo "deb [arch=$ARCH signed-by=/usr/share/keyrings/microsoft.gpg] https://packages.microsoft.com/repos/edge stable main" \
-        | sudo tee /etc/apt/sources.list.d/microsoft-edge.list > /dev/null
+    # Configure repo for Edge — skip if already enrolled
+    if apt_repo_enrolled "packages.microsoft.com/repos/edge" "microsoft-edge.list"; then
+        log "Microsoft Edge repo already enrolled, skipping."
+    else
+        echo "deb [arch=$ARCH signed-by=/usr/share/keyrings/microsoft.gpg] https://packages.microsoft.com/repos/edge stable main" \
+            | sudo tee /etc/apt/sources.list.d/microsoft-edge.list > /dev/null
+    fi
 
     log "Updating package information..."
     sudo apt-get update
@@ -215,23 +296,32 @@ case "$DISTRO" in
 
     log "Installing prerequisites..."
 
-    # RHEL 10+ uses a newer Microsoft GPG signing key
+    # RHEL 10+ repos are signed with a newer Microsoft GPG key
     if [[ "$MAJOR" -ge 10 ]]; then
-        MS_GPG_KEY="https://packages.microsoft.com/rhel/$MAJOR/$CHANNEL/repodata/repomd.xml.key"
+        MS_GPG_KEY="https://packages.microsoft.com/keys/microsoft-2025.asc"
         # RHEL 10 requires EPEL for webkitgtk6.0 dependency
         rpm -q epel-release || sudo dnf -y install https://dl.fedoraproject.org/pub/epel/epel-release-latest-10.noarch.rpm
     else
         MS_GPG_KEY="https://packages.microsoft.com/keys/microsoft.asc"
     fi
 
-    # For portal and dependencies
-    sudo dnf config-manager --add-repo https://packages.microsoft.com/rhel/$MAJOR/prod
-
     # Import Microsoft GPG key
     sudo rpm --import "$MS_GPG_KEY"
 
-    # Configure repo for portal and dependencies
-    sudo tee /etc/yum.repos.d/microsoft-${CHANNEL}.repo > /dev/null <<EOF
+    # Clean up stale repo files from previous installer versions that used
+    # 'dnf config-manager --add-repo', which creates incomplete files without gpgcheck.
+    # Our tee-created files below supersede them.
+    for f in /etc/yum.repos.d/packages.microsoft.com_*.repo; do
+        [ -f "$f" ] || continue
+        sudo rm -f "$f" || true
+        echo "Removed stale repo file from previous installer: $f"
+    done
+
+    # Configure repo for portal and dependencies — skip if already enrolled
+    if yum_repo_enrolled "packages.microsoft.com/rhel/$MAJOR/$CHANNEL" "microsoft-${CHANNEL}.repo"; then
+        log "Microsoft $CHANNEL repo already enrolled, skipping."
+    else
+        sudo tee /etc/yum.repos.d/microsoft-${CHANNEL}.repo > /dev/null <<EOF
 [microsoft-${CHANNEL}]
 name=Microsoft $CHANNEL - RHEL $MAJOR
 baseurl=https://packages.microsoft.com/rhel/$MAJOR/$CHANNEL
@@ -239,9 +329,13 @@ enabled=1
 gpgcheck=1
 gpgkey=$MS_GPG_KEY
 EOF
+    fi
 
-    # Configure repo for Edge
-    sudo tee /etc/yum.repos.d/microsoft-edge.repo > /dev/null <<EOF
+    # Configure repo for Edge — skip if already enrolled
+    if yum_repo_enrolled "packages.microsoft.com/yumrepos/edge" "microsoft-edge.repo"; then
+        log "Microsoft Edge repo already enrolled, skipping."
+    else
+        sudo tee /etc/yum.repos.d/microsoft-edge.repo > /dev/null <<EOF
 [microsoft-edge]
 name=Microsoft Edge
 baseurl=https://packages.microsoft.com/yumrepos/edge
@@ -249,6 +343,7 @@ enabled=1
 gpgcheck=1
 gpgkey=https://packages.microsoft.com/keys/microsoft.asc
 EOF
+    fi
 
     log "Updating package information..."
 
