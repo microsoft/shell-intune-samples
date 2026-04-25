@@ -237,6 +237,16 @@ case "$DISTRO" in
     sudo install -o root -g root -m 644 "$HOME/microsoft.gpg" /usr/share/keyrings/
     rm -f "$HOME/microsoft.gpg"
 
+    # For Ubuntu 26.04+, Edge still needs the legacy key
+    if dpkg --compare-versions "$RELEASE" ge "26.04"; then
+        curl -fsSL https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > "$HOME/microsoft-legacy.gpg"
+        sudo install -o root -g root -m 644 "$HOME/microsoft-legacy.gpg" /usr/share/keyrings/
+        rm -f "$HOME/microsoft-legacy.gpg"
+        EDGE_GPG_KEY="/usr/share/keyrings/microsoft-legacy.gpg"
+    else
+        EDGE_GPG_KEY="/usr/share/keyrings/microsoft.gpg"
+    fi
+
     # Clean up any pre-existing Edge repo files to avoid duplicates
     cleanup_edge_repo_duplicates
 
@@ -258,7 +268,7 @@ case "$DISTRO" in
     if apt_repo_enrolled "packages.microsoft.com/repos/edge" "microsoft-edge.list"; then
         log "Microsoft Edge repo already enrolled, skipping."
     else
-        echo "deb [arch=$ARCH signed-by=/usr/share/keyrings/microsoft.gpg] https://packages.microsoft.com/repos/edge stable main" \
+        echo "deb [arch=$ARCH signed-by=$EDGE_GPG_KEY] https://packages.microsoft.com/repos/edge stable main" \
             | sudo tee /etc/apt/sources.list.d/microsoft-edge.list > /dev/null
     fi
 
