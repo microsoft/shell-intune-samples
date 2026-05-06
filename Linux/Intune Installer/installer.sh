@@ -18,7 +18,19 @@
 #   --verbose              Show detailed output to the terminal (in addition to the log)
 #   -h, --help             Show this help message
 #
-# Recent changes (Release date: 2026-04-23):
+# Recent changes (Release date: 2026-05-06):
+#   - Fixed Microsoft Edge install on Ubuntu 26.04+: the previous release
+#     overwrote /usr/share/keyrings/microsoft.gpg with the microsoft-2025 key,
+#     which broke GPG verification for the Edge apt repo (signed with the
+#     legacy microsoft.asc key).
+#   - The legacy microsoft.asc key is now always imported to
+#     /usr/share/keyrings/microsoft.gpg so the Edge repo verifies on every
+#     supported Ubuntu release.
+#   - On Ubuntu 26.04+, the microsoft-2025.asc key is additionally imported
+#     to /usr/share/keyrings/microsoft-2025.gpg, and the PMC repo's
+#     signed-by= points to it via the new MS_GPG_KEYRING variable.
+#
+# Previous release (2026-04-23):
 #   - Added repository enrollment checks for APT and YUM/DNF sources
 #   - Updated Microsoft signing key selection for Ubuntu 26.04+ and RHEL/AlmaLinux 10
 #   - Removed stale repo files created by legacy dnf config-manager enrollment
@@ -225,17 +237,21 @@ case "$DISTRO" in
 
     sudo apt-get -y install curl gpg
 
-    # Ubuntu 26.04+ repos are signed with a newer Microsoft GPG key
-    if dpkg --compare-versions "$RELEASE" ge "26.04"; then
-        MS_GPG_KEY_URL="https://packages.microsoft.com/keys/microsoft-2025.asc"
-    else
-        MS_GPG_KEY_URL="https://packages.microsoft.com/keys/microsoft.asc"
-    fi
-
-    # Import Microsoft GPG key (always refresh to pick up key rotations)
-    curl -fsSL "$MS_GPG_KEY_URL" | gpg --dearmor > "$HOME/microsoft.gpg"
+    # Import Microsoft GPG key (always refresh to pick up key rotations).
+    # The Edge repo uses the older microsoft.asc key on all versions.
+    curl -fsSL https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > "$HOME/microsoft.gpg"
     sudo install -o root -g root -m 644 "$HOME/microsoft.gpg" /usr/share/keyrings/
     rm -f "$HOME/microsoft.gpg"
+
+    # Ubuntu 26.04+ PMC repos are signed with a newer Microsoft GPG key
+    if dpkg --compare-versions "$RELEASE" ge "26.04"; then
+        MS_GPG_KEYRING="/usr/share/keyrings/microsoft-2025.gpg"
+        curl -fsSL https://packages.microsoft.com/keys/microsoft-2025.asc | gpg --dearmor > "$HOME/microsoft-2025.gpg"
+        sudo install -o root -g root -m 644 "$HOME/microsoft-2025.gpg" /usr/share/keyrings/
+        rm -f "$HOME/microsoft-2025.gpg"
+    else
+        MS_GPG_KEYRING="/usr/share/keyrings/microsoft.gpg"
+    fi
 
     # Clean up any pre-existing Edge repo files to avoid duplicates
     cleanup_edge_repo_duplicates
@@ -250,7 +266,7 @@ case "$DISTRO" in
     if apt_repo_enrolled "packages.microsoft.com/ubuntu/$RELEASE/prod $APT_COMPONENT" "microsoft-$CHANNEL.list"; then
         log "Microsoft $CHANNEL repo already enrolled, skipping."
     else
-        echo "deb [arch=$ARCH signed-by=/usr/share/keyrings/microsoft.gpg] https://packages.microsoft.com/ubuntu/$RELEASE/prod $APT_COMPONENT main" \
+        echo "deb [arch=$ARCH signed-by=$MS_GPG_KEYRING] https://packages.microsoft.com/ubuntu/$RELEASE/prod $APT_COMPONENT main" \
             | sudo tee /etc/apt/sources.list.d/microsoft-$CHANNEL.list > /dev/null
     fi
 
