@@ -52,11 +52,15 @@ The process needs to know the UPN of the end user. The easiest way to achieve th
 
 ## Step 3. Deploy Client Side Script
 
-To download and set the profile photo, we need to deploy a [script](https://github.com/microsoft/shell-intune-samples/tree/master/macOS/Config/M365%20Profile%20Photo%20Sync) on the client side.
+To download and set the profile photo, we need to deploy [downloadEntraPhoto.sh](downloadEntraPhoto.sh) on the client side via [Intune shell scripts](https://learn.microsoft.com/en-us/mem/intune/apps/macos-shell-scripts).
 
-1. Open the script and edit lines 22,23 and 24 with the values that you saved earlier.
+1. Open the script and edit the `clientID`, `secretValue` and `tenantID` variables near the top with the values that you saved earlier.
 
 <img width="458" alt="2023-09-08_15-56-30" src="https://github.com/microsoft/shell-intune-samples/assets/27012389/684fd274-5d45-4e05-af93-32bdce12a664">
 
 3. Once you have the edited script, run it as root on a test machine
 4. Once you have tested the script works as expected, deploy it [via Intune](https://learn.microsoft.com/en-us/mem/intune/apps/macos-shell-scripts) to run as root. Set schedule to run weekly.
+
+### What if a user has no profile photo set?
+
+The script validates the Graph response (HTTP status and `image/*` MIME type) before writing the file. If a user has no photo, or Graph returns an error, the script logs the failure and exits non-zero — it will not silently write an error JSON body to `PhotoID.jpg` (which was the cause of the "downloaded photo is only a few hundred bytes and won't open" issue tracked in [#224](https://github.com/microsoft/shell-intune-samples/issues/224)).
