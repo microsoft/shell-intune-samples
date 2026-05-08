@@ -75,11 +75,19 @@ https://github.com/user-attachments/assets/5669bd8d-7642-4321-bc46-cd38b97e28a6
 
 ## Configuration Options
 
-- **Jamf Pro Credentials**  
-  - Inside the script, you can edit your `USERNAME`, `PASSWORD`, and `JAMF_PRO_URL` to point to the correct Jamf Pro instance.  
-- **Script Functions**  
+- **Jamf Pro Authentication** (set `JAMF_AUTH_METHOD` at the top of the script)
+  - `basic` (default, legacy) — uses `USERNAME` / `PASSWORD` for a Jamf Pro **user account** against `/api/v1/auth/token`. Still works on every supported Jamf Pro version.
+  - `oauth` (recommended on Jamf Pro **10.49+**) — uses `JAMF_CLIENT_ID` / `JAMF_CLIENT_SECRET` for an [API Roles & Clients](https://learn.jamf.com/bundle/jamf-pro-documentation-current/page/API_Roles_and_Clients.html) credential against `/api/oauth/token`. This is the only path that works for tenants which have disabled basic-auth user tokens.
+
+  The Jamf Pro role (whether assigned to a user account or an API Client) needs at minimum:
+  - **Jamf Pro Server Action**: `Send Computer Unmanage Command`
+  - **Jamf Pro Server Object**: `Read Computers`
+
+- **Jamf Pro URL**
+  - Set `JAMF_PRO_URL` to your Jamf Pro server (e.g. `https://yourenvironment.jamfcloud.com`).
+- **Script Functions**
   - The script is modularized into functions (e.g., `check_if_managed`, `remove_jamf_framework`, etc.), which you can rearrange or customize for your environment.
-- **REMOVE_WORKPLACE_JOIN_CERTS**  
+- **REMOVE_WORKPLACE_JOIN_CERTS**
   - When set to `true` (the default), the script automatically removes Entra WorkplaceJoin (`MS-Organization-Access`) certificates from the logged-in user's login keychain before enrollment. These certificates are created when a device was registered in Entra ID for compliance (e.g., while managed by Jamf with Intune device compliance) and can block fresh Intune enrollment if not removed. Set to `false` if your environment does not use Entra device registration alongside Jamf. A standalone version of this logic is available in `removeWorkplaceJoinCerts.sh` for manual diagnostics.
 
 ---
