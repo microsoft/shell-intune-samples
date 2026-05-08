@@ -17,11 +17,13 @@ PKG_URL="https://github.com/swiftDialog/swiftDialog/releases/download/v2.5.2/dia
 mkdir -p "$logDir"
 exec > >(tee -a "$logDir/postinstall.log") 2>&1
 
-# Check if we've run before
-#if [[ -f "$logDir/onboardingComplete" ]]; then
-#  echo "$(date) | POST | We've already completed onboarding, let's exit quietly"
-#  exit 1
-#fi
+# Skip if onboarding has already completed on this device.
+# Belt-and-braces with the matching check in intunePre.sh: a customer can
+# pre-create this file to opt a device out of onboarding entirely.
+if [[ -f "$logDir/onboardingComplete" ]]; then
+    echo "$(date) | POST | Onboarding already completed (marker: $logDir/onboardingComplete); exiting quietly."
+    exit 0
+fi
 
 # Check if SwiftDialog is installed
 if [[ ! -f "$DIALOG_BIN" ]]; then
