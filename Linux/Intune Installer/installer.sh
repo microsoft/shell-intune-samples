@@ -274,7 +274,7 @@ case "$DISTRO" in
     if apt_repo_enrolled "packages.microsoft.com/repos/edge" "microsoft-edge.list"; then
         log "Microsoft Edge repo already enrolled, skipping."
     else
-        echo "deb [arch=$ARCH signed-by=/usr/share/keyrings/microsoft.gpg] https://packages.microsoft.com/repos/edge stable main" \
+        echo "deb [arch=$ARCH signed-by=$EDGE_GPG_KEY] https://packages.microsoft.com/repos/edge stable main" \
             | sudo tee /etc/apt/sources.list.d/microsoft-edge.list > /dev/null
     fi
 
