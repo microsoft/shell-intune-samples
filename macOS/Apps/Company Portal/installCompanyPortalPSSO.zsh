@@ -1,10 +1,11 @@
 #!/bin/zsh
+set -e
 
 ############################################################################################
 ## Install Company Portal for Platform SSO (PSSO) during Setup Assistant
 ## Maintainer: neiljohn@microsoft.com
 ##
-## Summary: Lightweight Company Portal + MAU installer designed to run during macOS Setup
+## Summary: Lightweight Company Portal installer designed to run during macOS Setup
 ##          Assistant for Platform SSO enrollment. Unlike the standard install script, this
 ##          variant skips Rosetta 2 checks, desktop readiness waits, and update checks
 ##          since it runs before the user reaches the desktop and Company Portal will not
@@ -28,67 +29,15 @@
 ## Feedback: neiljohn@microsoft.com
 
 ## Config
-mauurl="https://go.microsoft.com/fwlink/?linkid=830196"
 weburl="https://go.microsoft.com/fwlink/?linkid=853070"
-appname="Company Portal"
-logandmetadir="/Library/Logs/Microsoft/IntuneScripts/installCompanyPortalPSSO"
+logdir="/Library/Logs/Microsoft/IntuneScripts/installCompanyPortalPSSO"
+pkg=$(mktemp -t CompanyPortal).pkg
 
-# Generated variables
-tempdir=$(mktemp -d)
-log="$logandmetadir/$appname.log"
+mkdir -p "$logdir"
+exec > >(tee -a "$logdir/CompanyPortal.log") 2>&1
+trap 'rm -f "$pkg"' EXIT
 
-## Helpers
-cleanup() { [[ -d "$tempdir" ]] && rm -rf "$tempdir"; }
-trap cleanup EXIT
+echo "$(date) | Starting PSSO Setup Assistant install of Company Portal"
 
-startLog() { mkdir -p "$logandmetadir"; exec > >(tee -a "$log") 2>&1; }
-
-downloadPKG() {
-    echo "$(date) | Downloading $appname"
-
-    curl -f -s --connect-timeout 30 --retry 5 --retry-delay 60 -L -o "$tempdir/CompanyPortal.pkg" "$weburl" \
-        || { echo "$(date) | ERROR: Download failed"; exit 1; }
-
-    file -b "$tempdir/CompanyPortal.pkg" | grep -qi xar \
-        || { echo "$(date) | ERROR: Downloaded file is not a valid PKG"; exit 1; }
-
-    echo "$(date) | Download complete"
-}
-
-installMAU() {
-    echo "$(date) | Downloading MAU"
-    curl -f -s --connect-timeout 30 --retry 5 --retry-delay 60 -L -o "$tempdir/mau.pkg" "$mauurl" \
-        || { echo "$(date) | WARNING: MAU download failed, continuing"; return; }
-
-    echo "$(date) | Installing MAU"
-    if installer -pkg "$tempdir/mau.pkg" -target /; then
-        echo "$(date) | MAU installed"
-    else
-        echo "$(date) | WARNING: MAU install failed, continuing"
-    fi
-}
-
-installPKG() {
-    echo "$(date) | Installing $appname"
-
-    if installer -pkg "$tempdir/CompanyPortal.pkg" -target /; then
-        echo "$(date) | Install complete"
-    else
-        echo "$(date) | ERROR: Install failed"; exit 1
-    fi
-}
-
-###################################################################################
-## Begin Script Body
-###################################################################################
-
-startLog
-echo ""
-echo "##############################################################"
-echo "# $(date) | Starting PSSO Setup Assistant install of [$appname]"
-echo "##############################################################"
-echo ""
-
-downloadPKG
-installMAU
-installPKG
+curl -fsSL --connect-timeout 30 --retry 5 --retry-delay 60 -o "$pkg" "$weburl"
+installer -pkg "$pkg" -target /
