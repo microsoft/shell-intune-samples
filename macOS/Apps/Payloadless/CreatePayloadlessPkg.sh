@@ -5,11 +5,12 @@
 ##
 ## Script to create a payloadless PKGs
 ##
-## VER 1.0.0
+## VER 1.1.0
 ##
 ## Change Log
 ##
 ## 2025-04-22 Initial script upload
+## 2025-04-23 Added check for existing /tmp/empty directory
 ##
 ############################################################################################
 
@@ -28,9 +29,23 @@ read AppName
 echo "Enter the version of the application (e.g., 1.0):"
 read Version
 
+if [ -d /tmp/empty ]; then
+    rm -rf /tmp/empty
+fi
+
 mkdir -p /tmp/empty
 
 pkgbuild --identifier "com.yourcompany.$AppName" \
-         --version $Version \
+         --version "$Version" \
          --root /tmp/empty \
-         $AppName.pkg
+         "$AppName.pkg"
+
+pkgbuild_exit=$?
+
+rm -rf /tmp/empty
+
+if [ "$pkgbuild_exit" -eq 0 ]; then
+    open -R "$AppName.pkg"
+fi
+
+exit "$pkgbuild_exit"
