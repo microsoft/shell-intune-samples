@@ -142,8 +142,8 @@ AUTOFILL_MAX_WAIT=300
 AUTOFILL_LOG_INTERVAL=30
 autofill_found=false
 while [[ "$autofill_found" == false ]]; do
-    # Check if extension is registered
-    if launchctl asuser "$currentUID" sudo -u "$currentUser" pluginkit -m 2>/dev/null | grep -q "$autofill_id"; then
+    # Check if extension is registered (filter by identifier directly)
+    if launchctl asuser "$currentUID" sudo -u "$currentUser" pluginkit -m -i "$autofill_id" 2>/dev/null | grep -q "$autofill_id"; then
         autofill_found=true
         break
     fi
@@ -170,12 +170,17 @@ while (( enable_attempts < enable_max )); do
     launchctl asuser "$currentUID" sudo -u "$currentUser" pluginkit -e use -i "$autofill_id" 2>/dev/null
     sleep 2
 
-    # Verify it is enabled
-    if launchctl asuser "$currentUID" sudo -u "$currentUser" pluginkit -m 2>/dev/null | grep -q "$autofill_id"; then
+    # Verify it is actually ENABLED by reading the state flag (col 1):
+    #   +  enabled   -  disabled   (blank)  no explicit state
+    # head -1 drops the trailing "(1 plug-in)" summary line.
+    pk_state=$(launchctl asuser "$currentUID" sudo -u "$currentUser" \
+        pluginkit -m -v -i "$autofill_id" 2>/dev/null | head -1 | cut -c1)
+
+    if [[ "$pk_state" == "+" ]]; then
         enable_success=true
         break
     fi
-    log "Enable attempt $enable_attempts/$enable_max failed, retrying..."
+    log "Enable attempt $enable_attempts/$enable_max — state '${pk_state:-unset}', retrying..."
     sleep 3
 done
 
@@ -183,6 +188,6 @@ if [[ "$enable_success" == true ]]; then
     log "AutoFill from Company Portal: ENABLED"
     exit 0
 else
-    log "AutoFill from Company Portal: FAILED TO ENABLE after $enable_max attempts"
+    log "AutoFill from Company Portal: FAILED TO ENABLE after $enable_max attempts (last state: ${pk_state:-unset})"
     exit 1
 fi
