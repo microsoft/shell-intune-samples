@@ -7,7 +7,7 @@ A script that verifies Platform SSO (PSSO) registration and enables the AutoFill
 1. **Waits for the user session** — Polls for the Dock process (up to 10 minutes) to ensure a user is logged in.
 2. **Checks Platform SSO registration** — Runs `app-sso platform -s` as the console user and verifies `registrationCompleted` is `true`.
 3. **Waits for the AutoFill extension** — Polls `pluginkit` for up to 5 minutes until Company Portal's `com.microsoft.CompanyPortalMac.Mac-Autofill-Extension` extension is registered.
-4. **Enables AutoFill from Company Portal** — Runs `pluginkit -e use -i` to enable the extension, which also activates the toggle in **System Settings > AutoFill & Passwords**.
+4. **Enables AutoFill from Company Portal** — Runs `pluginkit -e use -i` to enable the extension, which also activates the toggle in **System Settings > General > AutoFill & Passwords**.
 
 Logs are written to `/Library/Logs/Microsoft/IntuneScripts/checkPSSO/Check-PSSO.log`.
 
