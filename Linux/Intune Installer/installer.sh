@@ -270,11 +270,15 @@ case "$DISTRO" in
             | sudo tee /etc/apt/sources.list.d/microsoft-$CHANNEL.list > /dev/null
     fi
 
-    # Configure repo for Edge — skip if already enrolled
+    # Configure repo for Edge — skip if already enrolled.
+    # The Edge repo is signed with the legacy microsoft.asc key on every release,
+    # so always pin it to /usr/share/keyrings/microsoft.gpg (NOT MS_GPG_KEYRING,
+    # which points to the microsoft-2025 key on Ubuntu 26.04+ and would fail to
+    # verify the Edge repo signature).
     if apt_repo_enrolled "packages.microsoft.com/repos/edge" "microsoft-edge.list"; then
         log "Microsoft Edge repo already enrolled, skipping."
     else
-        echo "deb [arch=$ARCH signed-by=$MS_GPG_KEYRING] https://packages.microsoft.com/repos/edge stable main" \
+        echo "deb [arch=$ARCH signed-by=/usr/share/keyrings/microsoft.gpg] https://packages.microsoft.com/repos/edge stable main" \
             | sudo tee /etc/apt/sources.list.d/microsoft-edge.list > /dev/null
     fi
 
