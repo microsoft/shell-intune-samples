@@ -4,3 +4,9 @@
 Misc/.DS_Store
 Misc/.DS_Store
 Misc/.DS_Store
+
+# Local OSS compliance audit reports — not for check-in
+.oss-compliance/
+
+# Apple Business Manager beta-token working directory (private keys, certs, *.p7m tokens) — never commit
+abm_auth/
