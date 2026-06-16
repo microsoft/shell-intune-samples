@@ -1,5 +1,7 @@
 # macOS Security Baselines Generator for Microsoft Intune
 
+Initially written by Chien Yee Lim
+
 Convert macOS security baselines to Microsoft Intune Settings Catalog policies and mobileconfig files.
 
 ## Features
