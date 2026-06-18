@@ -147,7 +147,6 @@ macos_security_intune_mapper/
 ├── gui_main.py             # GUI application entry point
 ├── settingsCatalog.json    # Microsoft Intune Settings Catalog
 ├── README.md               # This file
-├── QUICKSTART.md           # Quick start guide
 ├── core/                   # Core functionality
 │   ├── baseline_loader.py  # Loads baselines from YAML
 │   ├── rules_loader.py     # Loads individual rules
