@@ -5,10 +5,10 @@ import wx
 import sys
 from pathlib import Path
 
-# Add parent directory to path for imports
-sys.path.insert(0, str(Path(__file__).parent.parent))
+# Add current directory to path for imports
+sys.path.insert(0, str(Path(__file__).parent))
 
-from macos_security_intune_mapper.gui.main_window import MainWindow
+from gui.main_window import MainWindow
 
 # Setup logging
 logging.basicConfig(

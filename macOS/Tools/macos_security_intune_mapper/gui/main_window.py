@@ -64,6 +64,9 @@ class MainWindow(wx.Frame):
         
         # Center the window
         self.Centre()
+        
+        # Try to load default settings catalog
+        self._load_default_catalog()
     
     def _load_macos_security_path(self) -> Optional[Path]:
         """Load the saved macos_security path from config."""
@@ -102,6 +105,57 @@ class MainWindow(wx.Frame):
         if self.macos_security_path:
             return RulesLoader(str(self.macos_security_path))
         return RulesLoader()
+    
+    def _load_default_catalog(self):
+        """Try to load settingsCatalog.json from default locations."""
+        # Try multiple default locations
+        default_locations = [
+            Path.cwd() / "settingsCatalog.json",  # Current working directory
+            Path(__file__).parent.parent / "settingsCatalog.json",  # macos_security_intune_mapper directory
+            Path(__file__).parent.parent.parent / "settingsCatalog.json",  # Project root
+        ]
+        
+        for catalog_path in default_locations:
+            if catalog_path.exists():
+                try:
+                    logger.info(f"Loading default Settings Catalog from {catalog_path}")
+                    self._load_catalog_from_path(catalog_path, show_success_dialog=False)
+                    return
+                except Exception as e:
+                    logger.warning(f"Failed to load catalog from {catalog_path}: {e}")
+        
+        # If no catalog found, log it but don't show error
+        logger.info("No default settingsCatalog.json found. User will need to load manually.")
+    
+    def _load_catalog_from_path(self, path: Path, show_success_dialog: bool = True):
+        """Load Settings Catalog from a specific path.
+        
+        Args:
+            path: Path to the settingsCatalog.json file
+            show_success_dialog: Whether to show success message dialog
+        """
+        self.SetStatusText(f"Loading Settings Catalog from {path.name}...")
+        self.settings_catalog = SettingsCatalog.from_file(path)
+        
+        # Count settings
+        total_settings = len(self.settings_catalog._settings_index)
+        ddm_count = len(self.settings_catalog._ddm_settings)
+        mobileconfig_count = len(self.settings_catalog._mobileconfig_settings)
+        
+        # Update catalog status indicator
+        self._update_catalog_status(total_settings, ddm_count, mobileconfig_count)
+        
+        self.SetStatusText(f"Loaded {total_settings} settings ({ddm_count} DDM, {mobileconfig_count} mobileconfig)")
+        
+        if show_success_dialog:
+            wx.MessageBox(
+                f"Successfully loaded Settings Catalog:\n\n"
+                f"Total: {total_settings} settings\n"
+                f"DDM: {ddm_count}\n"
+                f"Mobileconfig: {mobileconfig_count}",
+                "Success",
+                wx.OK | wx.ICON_INFORMATION
+            )
     
     def _create_menu_bar(self):
         """Create the application menu bar."""
@@ -160,9 +214,9 @@ class MainWindow(wx.Frame):
         catalog_json_btn.Bind(wx.EVT_BUTTON, self.on_load_catalog)
         row1_sizer.Add(catalog_json_btn, 0, wx.RIGHT, 5)
         
-        catalog_azure_btn = wx.Button(parent, label="Load from Azure")
-        catalog_azure_btn.Bind(wx.EVT_BUTTON, self.on_load_catalog_from_azure)
-        row1_sizer.Add(catalog_azure_btn, 0)
+        # catalog_azure_btn = wx.Button(parent, label="Load from Azure")
+        # catalog_azure_btn.Bind(wx.EVT_BUTTON, self.on_load_catalog_from_azure)
+        # row1_sizer.Add(catalog_azure_btn, 0)
         
         main_sizer.Add(row1_sizer, 0, wx.EXPAND | wx.BOTTOM, 10)
         
@@ -196,11 +250,6 @@ class MainWindow(wx.Frame):
         self.load_baseline_btn = wx.Button(parent, label="Load Baseline")
         self.load_baseline_btn.Bind(wx.EVT_BUTTON, self.on_load_baseline)
         row3_sizer.Add(self.load_baseline_btn, 0, wx.RIGHT, 10)
-        
-        # Export button
-        self.export_btn = wx.Button(parent, label="Export...")
-        self.export_btn.Bind(wx.EVT_BUTTON, self.on_export)
-        row3_sizer.Add(self.export_btn, 0)
         
         main_sizer.Add(row3_sizer, 0, wx.EXPAND)
         
@@ -265,7 +314,15 @@ class MainWindow(wx.Frame):
         btn_deselect_all_sc.Bind(wx.EVT_BUTTON, lambda e: self.on_deselect_all(e, 'settings'))
         settings_btn_sizer.Add(btn_deselect_all_sc, 0, wx.ALL, 5)
         
-        settings_catalog_sizer.Add(settings_btn_sizer, 0, wx.ALL, 5)
+        # Add spacer to push export button to the right
+        settings_btn_sizer.AddStretchSpacer(1)
+        
+        # Export button
+        self.export_btn_sc = wx.Button(settings_catalog_panel, label="Export...")
+        self.export_btn_sc.Bind(wx.EVT_BUTTON, self.on_export)
+        settings_btn_sizer.Add(self.export_btn_sc, 0, wx.ALL, 5)
+        
+        settings_catalog_sizer.Add(settings_btn_sizer, 0, wx.EXPAND | wx.ALL, 5)
         settings_catalog_panel.SetSizer(settings_catalog_sizer)
         
         # Tab 2: Custom Configuration (.mobileconfig)
@@ -313,7 +370,15 @@ class MainWindow(wx.Frame):
         btn_deselect_all_mc.Bind(wx.EVT_BUTTON, lambda e: self.on_deselect_all(e, 'mobileconfig'))
         mobileconfig_btn_sizer.Add(btn_deselect_all_mc, 0, wx.ALL, 5)
         
-        mobileconfig_sizer.Add(mobileconfig_btn_sizer, 0, wx.ALL, 5)
+        # Add spacer to push export button to the right
+        mobileconfig_btn_sizer.AddStretchSpacer(1)
+        
+        # Export button
+        self.export_btn_mc = wx.Button(mobileconfig_panel, label="Export...")
+        self.export_btn_mc.Bind(wx.EVT_BUTTON, self.on_export)
+        mobileconfig_btn_sizer.Add(self.export_btn_mc, 0, wx.ALL, 5)
+        
+        mobileconfig_sizer.Add(mobileconfig_btn_sizer, 0, wx.EXPAND | wx.ALL, 5)
         mobileconfig_panel.SetSizer(mobileconfig_sizer)
         
         # Tab 3: Unmapped Custom Baselines (no mobileconfig support)
@@ -623,7 +688,8 @@ class MainWindow(wx.Frame):
             # Disable controls
             self.baseline_choice.Enable(False)
             self.load_baseline_btn.Enable(False)
-            self.export_btn.Enable(False)
+            self.export_btn_sc.Enable(False)
+            self.export_btn_mc.Enable(False)
         else:
             # Hide loading overlay
             self.loading_overlay.Hide()
@@ -631,7 +697,8 @@ class MainWindow(wx.Frame):
             # Enable controls
             self.baseline_choice.Enable(True)
             self.load_baseline_btn.Enable(True)
-            self.export_btn.Enable(True)
+            self.export_btn_sc.Enable(True)
+            self.export_btn_mc.Enable(True)
         
         # Refresh layout
         self.Layout()
@@ -1295,27 +1362,7 @@ class MainWindow(wx.Frame):
             path = Path(dlg.GetPath())
             
             try:
-                self.SetStatusText(f"Loading Settings Catalog from {path.name}...")
-                self.settings_catalog = SettingsCatalog.from_file(path)
-                
-                # Count settings
-                total_settings = len(self.settings_catalog._settings_index)
-                ddm_count = len(self.settings_catalog._ddm_settings)
-                mobileconfig_count = len(self.settings_catalog._mobileconfig_settings)
-                
-                # Update catalog status indicator
-                self._update_catalog_status(total_settings, ddm_count, mobileconfig_count)
-                
-                self.SetStatusText(f"Loaded {total_settings} settings ({ddm_count} DDM, {mobileconfig_count} mobileconfig)")
-                
-                wx.MessageBox(
-                    f"Successfully loaded Settings Catalog:\n\n"
-                    f"Total: {total_settings} settings\n"
-                    f"DDM: {ddm_count}\n"
-                    f"Mobileconfig: {mobileconfig_count}",
-                    "Success",
-                    wx.OK | wx.ICON_INFORMATION
-                )
+                self._load_catalog_from_path(path, show_success_dialog=True)
             except Exception as e:
                 logger.error(f"Failed to load Settings Catalog: {e}", exc_info=True)
                 wx.MessageBox(f"Failed to load Settings Catalog: {e}", "Error", wx.OK | wx.ICON_ERROR)

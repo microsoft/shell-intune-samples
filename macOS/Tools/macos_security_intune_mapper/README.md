@@ -142,32 +142,30 @@ optional arguments:
 ## Project Structure
 
 ```
-macos_security_baselines_generator/
-├── macos_security_intune_mapper/
-│   ├── cli_generate.py         # Command-line tool (interactive & advanced modes)
-│   ├── gui_main.py             # GUI application entry point
-│   ├── settingsCatalog.json    # Microsoft Intune Settings Catalog
-│   ├── core/                   # Core functionality
-│   │   ├── baseline_loader.py  # Loads baselines from YAML
-│   │   ├── rules_loader.py     # Loads individual rules
-│   │   ├── settings_catalog.py # Settings Catalog interface
-│   │   ├── policy_mapper.py    # Maps rules to policies
+macos_security_intune_mapper/
+├── cli_generate.py         # Command-line tool (interactive & advanced modes)
+├── gui_main.py             # GUI application entry point
+├── settingsCatalog.json    # Microsoft Intune Settings Catalog
+├── README.md               # This file
+├── QUICKSTART.md           # Quick start guide
+├── core/                   # Core functionality
+│   ├── baseline_loader.py  # Loads baselines from YAML
+│   ├── rules_loader.py     # Loads individual rules
+│   ├── settings_catalog.py # Settings Catalog interface
+│   ├── policy_mapper.py    # Maps rules to policies
 │   │   └── exporter.py         # Exports to JSON/mobileconfig
-│   ├── gui/                    # GUI components
-│   │   ├── main_window.py      # Main application window
-│   │   └── export_dialog.py    # Export configuration dialog
-│   └── models/                 # Data models
-│       ├── baseline.py         # Baseline model
-│       ├── rule.py             # Rule model
-│       └── policy.py           # Policy model
-├── example_usage.py            # Programmatic usage example
-├── README.md                   # This file
-└── QUICKSTART.md               # Quick start guide
+├── gui/                    # GUI components
+│   ├── main_window.py      # Main application window
+│   └── export_dialog.py    # Export configuration dialog
+├── models/                 # Data models
+│   ├── baseline.py         # Baseline model
+│   ├── rule.py             # Rule model
+│   └── policy.py           # Policy model
 ```
 
 External dependency (required):
 ```
-macos_security/                 # macOS security baselines repository
+macos_security/                 # downloaded from github.com/usnistgov/macos_security
 ├── baselines/                  # YAML baseline definitions
 └── rules/                      # Individual rule definitions
 ```
@@ -256,6 +254,17 @@ Ensure `settingsCatalog.json` is in the `macos_security_intune_mapper/` director
 ### Import Error
 
 The Settings Catalog JSON from Intune may reject policies with missing required dependencies. The tool now automatically adds required child settings with default values to prevent this issue.
+
+### Missing Settings
+
+Intune Settings Catalog updates regularly. To refresh `settingsCatalog.json` with the latest settings:
+
+1. Run this query in Graph Explorer:
+   ```
+   https://graph.microsoft.com/beta/deviceManagement/configurationSettings?$filter=visibility has 'settingsCatalog' and (applicability/platform has 'macOS') and (applicability/technologies has 'mdm' or applicability/technologies has 'appleRemoteManagement')
+   ```
+2. Save the response to `settingsCatalog.json`
+3. Re-run the tool with updated settings
 
 ## License
 

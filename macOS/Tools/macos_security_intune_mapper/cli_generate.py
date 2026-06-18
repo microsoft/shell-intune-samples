@@ -7,14 +7,14 @@ import sys
 from pathlib import Path
 from typing import Any
 
-# Add parent directory to path for imports
-sys.path.insert(0, str(Path(__file__).parent.parent))
+# Add current directory to path for imports
+sys.path.insert(0, str(Path(__file__).parent))
 
-from macos_security_intune_mapper.core.baseline_loader import BaselineLoader
-from macos_security_intune_mapper.core.settings_catalog import SettingsCatalog
-from macos_security_intune_mapper.core.policy_mapper import PolicyMapper
-from macos_security_intune_mapper.core.rules_loader import RulesLoader
-from macos_security_intune_mapper.core.exporter import IntuneExporter
+from core.baseline_loader import BaselineLoader
+from core.settings_catalog import SettingsCatalog
+from core.policy_mapper import PolicyMapper
+from core.rules_loader import RulesLoader
+from core.exporter import IntuneExporter
 
 # Setup logging
 logging.basicConfig(
