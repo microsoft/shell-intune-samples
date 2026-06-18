@@ -11,7 +11,6 @@
 ##
 ## 2025-12-22   - Performance improvements and code optimization
 ##              - Optimized logdate function for efficient timestamp generation
-##              - Enhanced installAria2c with improved error handling and cleanup
 ##              - Improved downloadApp DMG detection using efficient find commands
 ##              - Optimized installDMGPKG to handle multiple PKG files in one loop
 ##              - Enhanced error handling across all install functions (ZIP, BZ2, TGZ)
@@ -19,8 +18,6 @@
 ##              - Fixed typo: downlading -> downloading
 ##              - Fixed PKG installer target (/ instead of $appdir) 
 ##              - Fixed TGZ metadata detection (was incorrectly set to BZ2)
-##              - Added global ARIA2 variable initialization
-##              - Removed -o flag from aria2c download (auto-detects filename)
 ##              - Added validation for downloaded files
 ##              - Replaced multiple if statements with case statement for package type dispatch
 ##              - Improved error handling for mount operations across all install functions
@@ -62,57 +59,7 @@ tempdir=$(mktemp -d)
 log="$logandmetadir/$appname.log"                                               # The location of the script log file
 metafile="$logandmetadir/$appname.meta"                                         # The location of our meta file (for updates)
 logdate() { date '+%Y-%m-%d %H:%M:%S'; }                                         # Function to generate timestamps efficiently
-ARIA2="/usr/local/aria2/bin/aria2c"                                             # Path to aria2c binary
 
-
-function installAria2c () {
-
-    #####################################
-    ## Aria2c installation
-    #####################
-    aria2Url="https://github.com/aria2/aria2/releases/download/release-1.35.0/aria2-1.35.0-osx-darwin.dmg"
-    
-    if [[ -f "$ARIA2" ]]; then
-        echo "$(logdate) | Aria2 already installed, nothing to do"
-        return
-    fi
-    
-    echo "$(logdate) | Aria2 missing, lets download and install"
-    filename=$(basename "$aria2Url")
-    output="$tempdir/$filename"
-    
-    if ! curl -f -s --connect-timeout 30 --retry 5 --retry-delay 60 -L -o "$output" "$aria2Url"; then
-        echo "$(logdate) | Aria download failed"
-        echo "$(logdate) | Output: [$output]"
-        echo "$(logdate) | URL [$aria2Url]"
-        return 1
-    fi
-    echo "$(logdate) | Downloaded aria2"
-
-    # Mount aria2 DMG
-    mountpoint="$tempdir/aria2"
-    echo "$(logdate) | Mounting Aria DMG..."
-    if ! hdiutil attach -quiet -nobrowse -mountpoint "$mountpoint" "$output"; then
-        echo "$(logdate) | Aria mount failed"
-        rm -rf "$output"
-        return 1
-    fi
-    echo "$(logdate) | Mounted DMG"
-    
-    # Install aria2 PKG from inside the DMG
-    if sudo installer -pkg "$mountpoint/aria2.pkg" -target /; then
-        echo "$(logdate) | Aria2 installed"
-        hdiutil detach -quiet "$mountpoint"
-        rm -rf "$output"
-    else
-        echo "$(logdate) | Install failed"
-        echo "$(logdate) | PKG: [$mountpoint/aria2.pkg]"
-        hdiutil detach -quiet "$mountpoint"
-        rm -rf "$output"
-        return 1
-    fi
-
-}
 
 # function to delay script if the specified process is running
 waitForProcess () {
@@ -235,7 +182,7 @@ function downloadApp () {
 
     cd "$tempdir" || { echo "$(logdate) | Failed to access tempdir"; exit 1; }
     #curl -f -s --connect-timeout 30 --retry 5 --retry-delay 60 --compressed -L -J -O "$weburl"
-    if ! $ARIA2 -q -x16 -s16 -d "$tempdir" "$weburl" --download-result=hide --summary-interval=0; then
+    if ! curl -f -s --connect-timeout 30 --retry 5 --retry-delay 60 --compressed -L -J -O "$weburl"; then
         echo "$(logdate) | Failure to download [$weburl]"
         rm -rf "$tempdir"
         exit 1
@@ -877,8 +824,6 @@ echo "# $(logdate) | Logging install of [$appname] to [$log]"
 echo "############################################################"
 echo ""
 
-# Install Aria2c if we don't already have it
-installAria2c
 
 # Test if we need to install or update
 updateCheck

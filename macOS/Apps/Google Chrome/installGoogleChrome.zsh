@@ -9,7 +9,6 @@
 ## Change Log
 ##
 ## 2025-04-03 - Changed download URL to direct Google source
-##            - Simplified script to use curl instead of aria2c
 ##            - Removed unused functions and improved documentation
 ##            - Restructured script for better readability
 ##            - Removed Rosetta 2 check as Chrome is now a universal binary

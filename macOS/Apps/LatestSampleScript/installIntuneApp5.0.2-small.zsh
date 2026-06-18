@@ -11,28 +11,7 @@ tempdir=$(mktemp -d)
 log="$logandmetadir/$appname.log"
 metafile="$logandmetadir/$appname.meta"
 logdate() { date '+%Y-%m-%d %H:%M:%S'; }
-ARIA2="/usr/local/aria2/bin/aria2c"
 
-
-function installAria2c () {
-    aria2Url="https://github.com/aria2/aria2/releases/download/release-1.35.0/aria2-1.35.0-osx-darwin.dmg"
-    [[ -f "$ARIA2" ]] && return
-    echo "$(logdate) | Installing aria2"
-    output="$tempdir/$(basename "$aria2Url")"
-    if ! curl -fsL --connect-timeout 30 --retry 3 -o "$output" "$aria2Url"; then
-        echo "$(logdate) | Aria download failed"; return 1
-    fi
-    mountpoint="$tempdir/aria2"
-    if ! hdiutil attach -quiet -nobrowse -mountpoint "$mountpoint" "$output"; then
-        rm -rf "$output"; return 1
-    fi
-    if sudo installer -pkg "$mountpoint/aria2.pkg" -target /; then
-        echo "$(logdate) | Aria2 installed"
-    else
-        echo "$(logdate) | Aria2 install failed"; hdiutil detach -quiet "$mountpoint"; rm -rf "$output"; return 1
-    fi
-    hdiutil detach -quiet "$mountpoint"; rm -rf "$output"
-}
 
 waitForProcess () {
     processName=$1; fixedDelay=$2; terminate=$3
@@ -52,7 +31,7 @@ fetchLastModifiedDate() {
 function downloadApp () {
     echo "$(logdate) | Downloading $appname"
     cd "$tempdir" || exit 1
-    if ! $ARIA2 -q -x16 -s16 -d "$tempdir" "$weburl" --download-result=hide --summary-interval=0; then
+    if ! curl -f -s --connect-timeout 30 --retry 5 --retry-delay 60 --compressed -L -J -O "$weburl"; then
         echo "$(logdate) | Download failed"; rm -rf "$tempdir"; exit 1
     fi
     tempfile=$(ls -1 "$tempdir" | head -1)
@@ -432,8 +411,6 @@ echo "# $(logdate) | Logging install of [$appname] to [$log]"
 echo "############################################################"
 echo ""
 
-# Install Aria2c if we don't already have it
-installAria2c
 
 # Test if we need to install or update
 updateCheck

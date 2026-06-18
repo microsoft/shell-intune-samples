@@ -43,58 +43,6 @@ tempdir=$(mktemp -d)
 log="$logandmetadir/$appname.log"                                               # The location of the script log file
 metafile="$logandmetadir/$appname.meta"                                         # The location of our meta file (for updates)
 
-function installAria2c () {
-
-    #####################################
-    ## Aria2c installation
-    #####################
-    ARIA2="/usr/local/aria2/bin/aria2c"
-    aria2Url="https://github.com/aria2/aria2/releases/download/release-1.35.0/aria2-1.35.0-osx-darwin.dmg"
-    if [[ -f $ARIA2 ]]; then
-        echo "$(date) | Aria2 already installed, nothing to do"
-    else
-        echo "$(date) | Aria2 missing, lets download and install"
-        filename=$(basename "$aria2Url")
-        output="$tempdir/$filename"
-        curl -f -s --connect-timeout 30 --retry 5 --retry-delay 60 -L -o "$output" "$aria2Url"
-        if [ $? -ne 0 ]; then
-            echo "$(date) | Aria download failed"
-            echo "$(date) | Output: [$output]"
-            echo "$(date) | URL [$aria2Url]"
-            exit 1
-        else
-            echo "$(date) | Downloaded aria2"
-        fi
-
-        # Mount aria2 DMG
-        mountpoint="$tempdir/aria2"
-        echo "$(date) | Mounting Aria DMG..."
-        hdiutil attach -quiet -nobrowse -mountpoint "$mountpoint" "$output"
-        if [ $? -ne 0 ]; then
-            echo "$(date) | Aria mount failed"
-            echo "$(date) | Mount: [$mountpoint]"
-            echo "$(date) | Temp File [$output]"
-            exit 1
-        else
-            echo "$(date) | Mounted DMG"
-        fi
-        
-        # Install aria2 PKG from inside the DMG
-        sudo installer -pkg "$mountpoint/aria2.pkg" -target /
-        if [ $? -ne 0 ]; then
-            echo "$(date) | Install failed"
-            echo "$(date) | PKG: [$mountpoint/aria2.pkg]"
-            exit 1
-        else
-            echo "$(date) | Aria2 installed"
-            hdiutil detach -quiet "$mountpoint"
-        fi
-    rm -rf "$output"
-    fi
-
-
-}
-
 # Function to pause installation until we've finished installing other apps
 waitForOtherApps() {
 
@@ -342,7 +290,7 @@ function downloadApp () {
 
     cd "$tempdir"
     #curl -f -s --connect-timeout 30 --retry 5 --retry-delay 60 --compressed -L -J -O "$weburl"
-    $ARIA2 -q -x16 -s16 -d "$tempdir" "$weburl" --download-result=hide --summary-interval=0
+    curl -f -s --connect-timeout 30 --retry 5 --retry-delay 60 --compressed -L -J -O "$weburl"
     if [[ $? == 0 ]]; then
 
             # We have downloaded a file, we need to know what the file is called and what type of file it is
@@ -1086,8 +1034,6 @@ echo "# $(date) | Logging install of [$appname] to [$log]"
 echo "############################################################"
 echo ""
 
-# Install Aria2c if we don't already have it
-installAria2c
 
 # Install Rosetta if we need it
 checkForRosetta2
