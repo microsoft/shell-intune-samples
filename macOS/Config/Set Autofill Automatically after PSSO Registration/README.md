@@ -1,5 +1,7 @@
 # Check-PSSO
 
+Special thanks to Gauthier Bedard of Shared Services Canada for making me aware of pluginkit.
+
 A script that verifies Platform SSO (PSSO) registration and enables the AutoFill from Company Portal extension on macOS devices.
 
 ## What the Script Does
