@@ -1,18 +1,18 @@
 # Apple MDM Beta Token Automation
 
-`betaTokens.sh` retrieves the Apple Business Manager (ABM) **beta seeding tokens** for your organization, and this README explains how to use those tokens to move managed devices onto, or keep them off, Apple's beta OS programs.
+`betaTokens.sh` retrieves the **beta seeding tokens** for your organization from Apple Business (formerly Apple Business Manager), and this README explains how to use those tokens to move managed devices onto, or keep them off, Apple's beta OS programs.
 
 There are two stages:
 
-1. **Get the token**: run `betaTokens.sh` to authenticate to Apple Business Manager and list every beta enrollment token available to your organization (covered immediately below).
+1. **Get the token**: run `betaTokens.sh` to authenticate to Apple Business and list every beta enrollment token available to your organization (covered immediately below).
 2. **Use the token**: create Intune profiles to **block** beta for everyone and **allow** or **enforce** it for your early testers (see [Control beta in your organization](#control-beta-in-your-organization)).
 
 ## Why?
-Apple's beta OS programs require a special token from Apple Business Manager before a managed device can enrol. Getting that token by hand (generating a key pair, uploading a certificate to ABM, downloading the encrypted `*.p7m`, decrypting it, then signing the OAuth request) is manual and error-prone. This script automates the whole flow and prints the tokens in a readable table.
+Apple's beta OS programs require a special token from Apple Business before a managed device can enrol. Getting that token by hand (generating a key pair, uploading a certificate to Apple Business, downloading the encrypted `*.p7m`, decrypting it, then signing the OAuth request) is manual and error-prone. This script automates the whole flow and prints the tokens in a readable table.
 
 ## What the script does
 1. Generates a private key and self-signed certificate (only if one isn't already present).
-2. Waits for you to upload the certificate to ABM, then watches `~/Downloads` for the issued `*.p7m` token.
+2. Waits for you to upload the certificate to Apple Business, then watches `~/Downloads` for the issued `*.p7m` token.
 3. Decrypts the token and extracts the OAuth credentials.
 4. Authenticates to Apple's MDM service and fetches the available beta enrollment tokens.
 5. Prints every available beta token in a table, sorted by title.
@@ -20,20 +20,26 @@ Apple's beta OS programs require a special token from Apple Business Manager bef
 ## Requirements
 - macOS
 - `openssl`, `jq`, `curl`, `perl` (all ship with macOS)
+- **bash** — run the script with bash, not zsh. The script uses `shopt`, a bash built-in that doesn't exist in zsh.
 
 ## Running the script
 1. **Clone this repository** and open a terminal in this folder (`macOS/Tools/getBetaTokens`).
-2. **Run the script:**
+2. **Run the script with bash:**
    ```sh
-   ./betaTokens.sh
+   bash ./betaTokens.sh
    ```
 3. On first run, when no token exists yet, the script will:
    - Generate a private key and self-signed certificate in `abm_auth/`.
-   - Print the PEM and prompt you to upload it to **Apple Business Manager → Settings → MDM Servers**.
+   - Print the PEM and prompt you to upload it to Apple Business:
+     1. Log into [Apple Business](https://business.apple.com) and go to **Devices → Management Services**.
+     2. Click **Add a service**, then choose **Connect External Device Management**.
+     3. Upload the PEM the script printed, then download the issued `*.p7m` token.
    - Watch `~/Downloads` for the issued `*.p7m` token and copy it into `abm_auth/`.
 4. The script then decrypts the token, authenticates, and prints the available beta enrollment tokens, sorted by title.
 
 Keep the **Token** value for the program you want. You'll paste it into an Intune profile as shown in [Control beta in your organization](#control-beta-in-your-organization).
+
+> **Note:** Apple renamed Apple Business Manager to **Apple Business** and moved MDM server management. If you're following older guides that reference **ABM → Settings → MDM Servers**, the equivalent is now **Apple Business → Devices → Management Services → Add a service → Connect External Device Management**.
 
 ## Output Example
 ```
@@ -126,8 +132,9 @@ Prefer to configure it by hand instead? The **Configure in the UI** steps under 
 - Treat the beta tokens themselves as sensitive: they enroll devices into your organization's beta programs.
 
 ## Troubleshooting
+- `shopt: command not found` — you ran the script in zsh. Re-run it with `bash ./betaTokens.sh`.
 - Ensure all dependencies are installed: `openssl`, `jq`, `curl`, `perl`.
-- If decryption fails, verify that the PEM uploaded to ABM matches the one in `abm_auth/` (`mdm_public_cert.pem`).
+- If decryption fails, verify that the PEM uploaded to Apple Business matches the one in `abm_auth/` (`mdm_public_cert.pem`).
 - For URL-encoding issues, ensure `perl` is available (it ships with macOS).
 - If the `Beta` settings seem to have no effect, confirm the device is **supervised**, on **macOS 15.4+ / iOS 18+**, and that the configuration is scoped to the **system**.
 
