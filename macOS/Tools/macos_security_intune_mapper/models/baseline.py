@@ -1,3 +1,5 @@
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT License.
 """Baseline data model."""
 
 from dataclasses import dataclass, field

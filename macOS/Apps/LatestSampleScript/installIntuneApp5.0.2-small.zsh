@@ -1,4 +1,6 @@
 #!/bin/zsh
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT License.
 weburl="https://web.whatsapp.com/desktop/mac_native/release/?configuration=Release&architecture=arm64"
 appname="WhatsApp"
 app="WhatsApp.app"

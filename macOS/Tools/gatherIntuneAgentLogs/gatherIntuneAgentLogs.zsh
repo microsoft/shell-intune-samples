@@ -1,4 +1,6 @@
 #!/bin/zsh
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT License.
 # Collect diagnostics for IntuneMdmDaemon (root) and IntuneMdmAgent (user)
 
 set -e

@@ -1,3 +1,5 @@
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT License.
 """Export dialog for generating Intune JSON and mobileconfig files."""
 
 import logging

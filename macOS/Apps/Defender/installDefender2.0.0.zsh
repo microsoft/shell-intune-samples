@@ -1,4 +1,6 @@
 #!/bin/zsh
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT License.
 # installIntuneApp v5.0.1 - Compact edition
 
 weburl="https://go.microsoft.com/fwlink/?linkid=2097502"

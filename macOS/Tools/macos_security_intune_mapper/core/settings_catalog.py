@@ -1,3 +1,5 @@
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT License.
 """Settings Catalog interface for macOS settings from Microsoft Intune."""
 
 import logging

@@ -1,3 +1,5 @@
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT License.
 """Policy mapper for mapping rules to Intune policies."""
 
 import logging

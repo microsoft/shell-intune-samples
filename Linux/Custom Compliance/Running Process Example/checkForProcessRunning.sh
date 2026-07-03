@@ -1,4 +1,6 @@
 #!/bin/dash
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT License.
 log="$HOME/compliance.log"
 echo "$(date) | Starting compliance script" >> $log
 

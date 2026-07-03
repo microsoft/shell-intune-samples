@@ -1,3 +1,5 @@
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT License.
 #requires -module Microsoft.Graph.Authentication
 #requires -module Microsoft.Graph.Beta.DeviceManagement
  

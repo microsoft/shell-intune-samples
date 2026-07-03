@@ -1,4 +1,6 @@
 #!/bin/bash
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT License.
 ############################################################################################
 ##
 ## Post-install Script for Swift Dialog

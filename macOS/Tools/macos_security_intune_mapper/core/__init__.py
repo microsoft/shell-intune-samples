@@ -1,3 +1,5 @@
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT License.
 """Core functionality for macOS Intune Mapper."""
 
 from .baseline_loader import BaselineLoader

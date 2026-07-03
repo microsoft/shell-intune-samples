@@ -1,4 +1,6 @@
 #!/bin/zsh
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT License.
 
 # Get the current console user
 user=$(stat -f '%Su' /dev/console 2>/dev/null)

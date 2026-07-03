@@ -1,4 +1,6 @@
 #!/usr/bin/env zsh
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT License.
 
 # macOS Sequoia Compatibility Checker for Microsoft Intune
 # This script automatically determines the maximum supported macOS version for the current Mac
