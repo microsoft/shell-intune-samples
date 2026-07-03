@@ -99,12 +99,18 @@ if [ "$tz" = "$currentTZ" ]; then
     updateSplashScreen success "TimeZone is already set to $tz"
 else
     echo "$(date) | TimeZone is currently set to $currentTZ. Setting to $tz"
-    sudo systemsetup -settimezone $tz
-    $currentTZ=$(sudo systemsetup -gettimezone | awk '{print $3}' | xargs)
+    sudo systemsetup -settimezone "$tz"
+    currentTZ=$(sudo systemsetup -gettimezone | awk '{print $3}' | xargs)
     if [ "$tz" != "$currentTZ" ]; then
 
-      echo "$(date) | Failed to change $currentTZ to $tz"
-      updateSplashScreen fail "Failed to change $currentTZ to $tz"
+      echo "$(date) | Failed to change timezone to $tz. Current timezone is still $currentTZ"
+      updateSplashScreen fail "Failed to change timezone to $tz"
+      exit 1
+
+    else
+
+      echo "$(date) | TimeZone successfully changed to $tz"
+      updateSplashScreen success "TimeZone successfully changed to $tz"
 
     fi
 fi
