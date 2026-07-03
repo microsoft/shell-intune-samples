@@ -28,10 +28,8 @@ The log file will output to ***/Library/Logs/Microsoft/IntuneScripts/installVSCo
 # Thu 15 Dec 2022 12:42:24 GMT | Logging install of [Visual Studio Code] to [/Library/Logs/Microsoft/IntuneScripts/installVSCode/Visual Studio Code.log]
 ############################################################
 
-Thu 15 Dec 2022 12:42:24 GMT | Checking if we need Rosetta 2 or not
 Thu 15 Dec 2022 12:42:24 GMT | Waiting for other [/usr/sbin/softwareupdate] processes to end
 Thu 15 Dec 2022 12:42:24 GMT | No instances of [/usr/sbin/softwareupdate] found, safe to proceed
-Thu 15 Dec 2022 12:42:24 GMT | Rosetta is already installed and running. Nothing to do.
 Thu 15 Dec 2022 12:42:24 GMT | Checking if we need to install or update [Visual Studio Code]
 Thu 15 Dec 2022 12:42:24 GMT | [Visual Studio Code] not installed, need to download and install
 Thu 15 Dec 2022 12:42:24 GMT | Dock is here, lets carry on

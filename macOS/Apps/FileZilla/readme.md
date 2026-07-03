@@ -18,10 +18,8 @@ The log file will output to ***/Library/Logs/Microsoft/IntuneScripts/FileZilla/F
 # Mon 28 Feb 2022 12:09:26 GMT | Logging install of [FileZilla] to [/Library/Logs/Microsoft/IntuneScripts/FileZilla/FileZilla.log]
 ############################################################
 
-Mon 28 Feb 2022 12:09:26 GMT | Checking if we need Rosetta 2 or not
 Mon 28 Feb 2022 12:09:26 GMT | Waiting for other [/usr/sbin/softwareupdate] processes to end
 Mon 28 Feb 2022 12:09:26 GMT | No instances of [/usr/sbin/softwareupdate] found, safe to proceed
-Mon 28 Feb 2022 12:09:26 GMT | Rosetta is already installed and running. Nothing to do.
 Mon 28 Feb 2022 12:09:26 GMT | Checking if we need to install or update [FileZilla]
 Mon 28 Feb 2022 12:09:26 GMT | [FileZilla] not installed, need to download and install
 Mon 28 Feb 2022 12:09:27 GMT | Dock is here, lets carry on

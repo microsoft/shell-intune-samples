@@ -1,4 +1,6 @@
 #!/bin/bash
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT License.
 
 ############################################################################################
 ##
@@ -9,7 +11,6 @@
 ## Change Log
 ##
 ## 2025-04-03 - Changed download URL to direct Google source
-##            - Simplified script to use curl instead of aria2c
 ##            - Removed unused functions and improved documentation
 ##            - Restructured script for better readability
 ##            - Removed Rosetta 2 check as Chrome is now a universal binary
@@ -17,7 +18,6 @@
 ##
 ############################################################################################
 
-## Copyright (c) 2020 Microsoft Corp. All rights reserved.
 ## Scripts are not supported under any Microsoft standard support program or service. The scripts are provided AS IS without warranty of any kind.
 ## Microsoft disclaims all implied warranties including, without limitation, any implied warranties of merchantability or of fitness for a
 ## particular purpose. The entire risk arising out of the use or performance of the scripts and documentation remains with you. In no event shall

@@ -1,15 +1,43 @@
-# Intune Company Portal Installation Script
+# Intune Company Portal Installation Scripts
 
-This script is an example to show how to use [Intune Shell Scripting](https://docs.microsoft.com/en-us/mem/intune/apps/macos-shell-scripts) to install applications. In this case the script will download the Company Portal pkg file from the Microsoft download servers and then install it onto the Mac.
+This folder contains two scripts that both install the **same standard Company Portal app** from the Microsoft CDN. There are no special PSSO components or modified builds — the difference is purely in which pre-install checks each script performs.
 
-## Scenario
+## Scripts
 
-This script has a few scenarios
+### installCompanyPortal.zsh
 
-- DEP/ADE enrolled Macs that need to complete their device registration for conditional access. In this scenario the script should be deployed [via Intune]((https://docs.microsoft.com/en-us/mem/intune/apps/macos-shell-scripts)).
+The full install script for general use. Suitable for DEP/ADE enrolled Macs and end-user driven installs.
 
-- Provide end users with a quick and easy way to get started with their Mac enrollment. In this scenario the end users should be provided with the following to copy and paste into Terminal on their Mac.
+**What it does:**
+- Checks if Company Portal is already installed and whether an update is available
+- Waits for the macOS desktop (Dock) to be ready before downloading
+- Downloads and validates the Company Portal PKG
+- Downloads and installs Microsoft AutoUpdate (MAU)
+- Terminates any running Company Portal process before installing
 
+### installCompanyPortalPSSO.zsh
+
+A simplified install script designed for **Platform SSO (PSSO) during Setup Assistant** in Intune (available from late April 2026). Since this script runs before the user reaches the desktop, it skips checks that are unnecessary or would cause it to hang during Setup Assistant.
+
+> **Important:** This installs the exact same Company Portal app as the standard script. There is nothing PSSO-specific about the app itself — this script simply removes checks that don't apply during Setup Assistant.
+
+**What it skips (and why):**
+- Desktop readiness wait — Setup Assistant runs before the Dock is available, waiting would hang
+- Update check — Company Portal won't already be installed during first-time setup
+- Process termination — nothing to terminate on a fresh install
+
+**What it keeps:**
+- PKG download with file validation
+- Microsoft AutoUpdate (MAU) install
+- Logging
+
+## Scenarios
+
+| Scenario | Script to use |
+|----------|---------------|
+| DEP/ADE enrolled Macs needing device registration for Conditional Access | `installCompanyPortal.zsh` |
+| End-user self-enrolment | `installCompanyPortal.zsh` |
+| Platform SSO registration during Setup Assistant | `installCompanyPortalPSSO.zsh` |
 
 ## Quick Run
 
@@ -24,42 +52,11 @@ sudo /bin/zsh -c "$(curl -L https://aka.ms/installcp)" ; open "/Applications/Com
 - Script frequency : Not configured
 - Number of times to retry if script fails : 3
 
-## Log File
+## Log Files
 
-The log file will output to ***/Library/Logs/Microsoft/IntuneScripts/installCompanyPortal/Company Portal.log*** by default. Exit status is either 0 or 1. To gather this log with Intune remotely take a look at  [Troubleshoot macOS shell script policies using log collection](https://docs.microsoft.com/en-us/mem/intune/apps/macos-shell-scripts#troubleshoot-macos-shell-script-policies-using-log-collection)
+| Script | Log location |
+|--------|-------------|
+| `installCompanyPortal.zsh` | `/Library/Logs/Microsoft/IntuneScripts/installCompanyPortal/Company Portal.log` |
+| `installCompanyPortalPSSO.zsh` | `/Library/Logs/Microsoft/IntuneScripts/installCompanyPortalPSSO/Company Portal.log` |
 
-```
-Tue  6 Apr 2021 16:58:54 BST | Creating [/Library/Logs/Microsoft/IntuneScripts/installCompanyPortal] to store logs
-
-##############################################################
-# Tue  6 Apr 2021 16:58:54 BST | Logging install of [Company Portal] to [/Library/Logs/Microsoft/IntuneScripts/installCompanyPortal/Company Portal.log]
-############################################################
-
-Tue  6 Apr 2021 16:58:54 BST | Checking if we need Rosetta 2 or not
-Tue  6 Apr 2021 16:58:54 BST | [Intel(R) Core(TM) i9-9880H CPU @ 2.30GHz] found, Rosetta not needed
-Tue  6 Apr 2021 16:58:54 BST | Checking if we need to install or update [Company Portal]
-Tue  6 Apr 2021 16:58:54 BST | [Company Portal] not installed, need to download and install
-Tue  6 Apr 2021 16:58:54 BST | Starting downlading of [Company Portal]
-Tue  6 Apr 2021 16:58:54 BST | Waiting for other Curl processes to end
-Tue  6 Apr 2021 16:58:54 BST | No instances of Curl found, safe to proceed
-Tue  6 Apr 2021 16:58:54 BST | Octory found, attempting to send status updates
-Tue  6 Apr 2021 16:58:54 BST | Updating Octory monitor for [Company Portal] to [installing]
-Tue  6 Apr 2021 16:58:54 BST | Downloading Company Portal
-Tue  6 Apr 2021 16:58:58 BST | Downloaded [Company Portal.app]
-Tue  6 Apr 2021 16:58:58 BST | Checking if the application is running
-Tue  6 Apr 2021 16:58:58 BST | [Company Portal] isn't running, lets carry on
-Tue  6 Apr 2021 16:58:58 BST | Installing Company Portal
-Tue  6 Apr 2021 16:58:58 BST | Installer not running, safe to start installing
-Tue  6 Apr 2021 16:58:58 BST | Octory found, attempting to send status updates
-Tue  6 Apr 2021 16:58:58 BST | Updating Octory monitor for [Company Portal] to [installing]
-installer: Package name is Intune Company Portal
-installer: Upgrading at base path /
-installer: The upgrade was successful.
-Tue  6 Apr 2021 16:59:08 BST | Company Portal Installed
-Tue  6 Apr 2021 16:59:08 BST | Cleaning Up
-Tue  6 Apr 2021 16:59:08 BST | Writing last modifieddate  to /Library/Logs/Microsoft/IntuneScripts/installCompanyPortal/Company Portal.meta
-Tue  6 Apr 2021 16:59:08 BST | Application [Company Portal] succesfully installed
-Tue  6 Apr 2021 16:59:08 BST | Writing last modifieddate [Thu, 25 Mar 2021 16:38:38 GMT] to [/Library/Logs/Microsoft/IntuneScripts/installCompanyPortal/Company Portal.meta]
-Tue  6 Apr 2021 16:59:08 BST | Octory found, attempting to send status updates
-Tue  6 Apr 2021 16:59:08 BST | Updating Octory monitor for [Company Portal] to [installed]
-```
+Exit status is either 0 (success) or 1 (failure). To gather logs remotely see [Troubleshoot macOS shell script policies using log collection](https://docs.microsoft.com/en-us/mem/intune/apps/macos-shell-scripts#troubleshoot-macos-shell-script-policies-using-log-collection).

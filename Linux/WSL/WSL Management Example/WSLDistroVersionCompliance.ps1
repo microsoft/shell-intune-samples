@@ -1,3 +1,5 @@
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT License.
 ##
 ## Compliance script used to calculate compliance against WSL distros based on Distro and Distro Version
 ##

@@ -14,10 +14,8 @@ This script is an example to show how to use [Intune Shell Scripting](https://do
 # Thu 25 Aug 2022 06:17:23 PDT | Logging install of [GlobalProtect] to [/Library/Logs/Microsoft/IntuneScripts/GlobalProtect/GlobalProtect.log]
 ############################################################
 
-Thu 25 Aug 2022 06:17:23 PDT | Checking if we need Rosetta 2 or not
 Thu 25 Aug 2022 06:17:23 PDT | Waiting for other [/usr/sbin/softwareupdate] processes to end
 Thu 25 Aug 2022 06:17:23 PDT | No instances of [/usr/sbin/softwareupdate] found, safe to proceed
-Thu 25 Aug 2022 06:17:23 PDT | Rosetta is already installed and running. Nothing to do.
 Thu 25 Aug 2022 06:17:23 PDT | Checking if we need to install or update [GlobalProtect]
 Thu 25 Aug 2022 06:17:23 PDT | [GlobalProtect] not installed, need to download and install
 Thu 25 Aug 2022 06:17:23 PDT | Dock is here, lets carry on
@@ -41,5 +39,4 @@ Thu 25 Aug 2022 06:17:30 PDT | Cleaning Up
 Thu 25 Aug 2022 06:17:30 PDT | Application [GlobalProtect] succesfully installed
 Thu 25 Aug 2022 06:17:30 PDT | Writing last modifieddate [Thu, 25 Aug 2022 12:37:20 GMT] to [/Library/Logs/Microsoft/IntuneScripts/GlobalProtect/GlobalProtect.meta]
 ```
-
 

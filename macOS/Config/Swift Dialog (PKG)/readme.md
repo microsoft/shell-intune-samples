@@ -79,6 +79,32 @@ There are three areas to consider when customising the package
 2. **Icons**: It's important that any icons you reference are available, they can either be included in the package or you can define web URLs.
 3. **Scripts**: Any scripts that you put in the scripts folder will be executed in alphanumeric order. Some samples are provided here, but remove what you don't need they are provide to show whats possible.
 
+## Run-once / opt-out marker
+
+The pre- and post-install scripts only run onboarding the **first** time. After a successful run, `intunePost.sh` writes a marker file:
+
+```
+/Library/Application Support/Microsoft/IntuneScripts/Swift Dialog/onboardingComplete
+```
+
+On any subsequent install attempt:
+
+- `intunePre.sh` sees the marker and **exits 1**, which (per [Microsoft Learn](https://learn.microsoft.com/en-us/intune/intune-service/apps/macos-unmanaged-pkg)) aborts the whole PKG install — so swiftDialog is not re-deployed and onboarding is not re-shown.
+- `intunePost.sh` performs the same check as a belt-and-braces guard and exits 0.
+
+To **opt a device out of onboarding entirely** (e.g. for a device that has already been onboarded by another mechanism), pre-create the marker before assigning the app:
+
+```bash
+sudo mkdir -p "/Library/Application Support/Microsoft/IntuneScripts/Swift Dialog"
+sudo touch "/Library/Application Support/Microsoft/IntuneScripts/Swift Dialog/onboardingComplete"
+```
+
+To **force a re-onboarding** on a device, simply delete the marker:
+
+```bash
+sudo rm "/Library/Application Support/Microsoft/IntuneScripts/Swift Dialog/onboardingComplete"
+```
+
 # Deploying via Intune
 
 Once you have your customised PKG ready, you should test it first and then we can upload to Intune for deployment.

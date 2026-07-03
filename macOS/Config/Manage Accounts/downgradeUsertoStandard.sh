@@ -1,4 +1,6 @@
 #!/bin/zsh
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT License.
 #set -x
 
 ############################################################################################
@@ -7,7 +9,6 @@
 ##
 ###########################################
 
-## Copyright (c) 2020 Microsoft Corp. All rights reserved.
 ## Scripts are not supported under any Microsoft standard support program or service. The scripts are provided AS IS without warranty of any kind.
 ## Microsoft disclaims all implied warranties including, without limitation, any implied warranties of merchantability or of fitness for a
 ## particular purpose. The entire risk arising out of the use or performance of the scripts and documentation remains with you. In no event shall
@@ -28,8 +29,9 @@
 
 scriptname="Downgrade Admin Users to Standard"
 log="/var/log/downgradeadminusers.log"
-abmcheck=true   # Only downgrade users if this device is ABM managed
-downgrade=true  # If set to false, script will not do anything
+abmcheck=true                # Only downgrade users if this device is ABM managed
+downgrade=true               # If set to false, script will not do anything
+adminaccountname="admin"     # Account name to leave as Admin (will not be downgraded)
 logandmetadir="/Library/Logs/Microsoft/IntuneScripts/downgradeAdminUsers"
 log="$logandmetadir/downgradeAdminUsers.log"
 
@@ -64,27 +66,29 @@ echo "# $(date) | Starting $scriptname"
 echo "############################################################"
 echo ""
 
+# Honour the downgrade=false kill switch up front so the ABM check below
+# can never re-enable downgrading against the user's wishes.
+if [[ "$downgrade" != true ]]; then
+  echo "downgrade is set to [$downgrade]; nothing to do, exiting."
+  exit 0
+fi
+
 # Is this a ABM DEP device?
 if [[ "$abmcheck" = true ]]; then
-  downgrade=false
   echo "Checking MDM Profile Type"
-  profiles status -type enrollment | grep "Enrolled via DEP: Yes"
-  if [[ ! $? == 0 ]]; then
+  if ! profiles status -type enrollment | grep -q "Enrolled via DEP: Yes"; then
     echo "This device is not ABM managed"
-    exit 0;
+    exit 0
   else
     echo "Device is ABM Managed"
-    downgrade=true
   fi
 fi
 
-if [[ $downgrade = true ]]; then
-  while read useraccount; do
-    if [[ "$useraccount" == "admin" ]]; then
-        echo "Leaving admin account as Admin"
-    else
-        echo "Making $useraccount a normal user"
-        #/usr/sbin/dseditgroup -o edit -d $useraccount -t user admin
-    fi
-  done < <(dscl . list /Users UniqueID | awk '$2 >= 501 {print $1}')
-fi
+while read useraccount; do
+  if [[ "$useraccount" == "$adminaccountname" ]]; then
+      echo "Leaving [$adminaccountname] account as Admin"
+  else
+      echo "Making $useraccount a normal user"
+      #/usr/sbin/dseditgroup -o edit -d $useraccount -t user admin
+  fi
+done < <(dscl . list /Users UniqueID | awk '$2 >= 501 {print $1}')

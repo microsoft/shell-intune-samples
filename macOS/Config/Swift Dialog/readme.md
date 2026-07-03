@@ -98,3 +98,11 @@ Once you have an internet facing URL for the zip file, edit the **onboardingProc
 Note: if you're editing on Windows make sure to save the onboardingProcess.zsh as **Unix (LF)** format otherwise the script will not run and will receive a permission denied which may be found in the log file on the Mac under: /Library/Application Support/Microsoft/IntuneScripts/Swift Dialog/
 
 Once done, you can upload and assign the onboardingProcess.zsh script via Intune to macOS devices.
+
+When configuring the script in Intune, make sure that **Run script as signed-in user** is set to **No**. The script writes to `/Library/Application Support/Microsoft/IntuneScripts/` and downloads / unzips the onboarding payload there, so it must run as root. The script now refuses to run as a non-root user and will exit with an explanatory error in the log if it is launched any other way (for example by double-clicking it in Finder, or by running it manually without `sudo`).
+
+If you want to test the script on a device before deploying it through Intune, run it from Terminal with:
+
+```bash
+sudo /path/to/onboardingProcess.zsh
+```

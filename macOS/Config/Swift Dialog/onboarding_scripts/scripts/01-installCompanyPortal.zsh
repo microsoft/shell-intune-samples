@@ -1,4 +1,6 @@
 #!/bin/zsh
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT License.
 #set -x
 
 ############################################################################################
@@ -21,7 +23,6 @@
 ##
 ############################################################################################
 
-## Copyright (c) 2020 Microsoft Corp. All rights reserved.
 ## Scripts are not supported under any Microsoft standard support program or service. The scripts are provided AS IS without warranty of any kind.
 ## Microsoft disclaims all implied warranties including, without limitation, any implied warranties of merchantability or of fitness for a
 ## particular purpose. The entire risk arising out of the use or performance of the scripts and documentation remains with you. In no event shall
@@ -46,54 +47,6 @@ SSOProfile="com.apple.extensiblesso"
 tempdir=$(mktemp -d)
 log="$logandmetadir/$appname.log"                                               # The location of the script log file
 metafile="$logandmetadir/$appname.meta"                                         # The location of our meta file (for updates)
-
-function installAria2c () {
-
-    #####################################
-    ## Aria2c installation
-    #####################
-    ARIA2="/usr/local/aria2/bin/aria2c"
-    aria2Url="https://github.com/aria2/aria2/releases/download/release-1.35.0/aria2-1.35.0-osx-darwin.dmg"
-    if [[ -f $ARIA2 ]]; then
-        echo "$(date) | Aria2 already installed, nothing to do"
-    else
-        echo "$(date) | Aria2 missing, lets download and install"
-        filename=$(basename "$aria2Url")
-        output="$tempdir/$filename"
-        curl -f -s --connect-timeout 30 --retry 5 --retry-delay 60 -L -o "$output" "$aria2Url"
-        if [ $? -ne 0 ]; then
-            echo "$(date) | Aria download failed"
-            echo "$(date) | Output: [$output]"
-            echo "$(date) | URL [$aria2Url]"
-        else
-            echo "$(date) | Downloaded aria2"
-        fi
-
-        # Mount aria2 DMG
-        mountpoint="$tempdir/aria2"
-        echo "$(date) | Mounting Aria DMG..."
-        hdiutil attach -quiet -nobrowse -mountpoint "$mountpoint" "$output"
-        if [ $? -ne 0 ]; then
-            echo "$(date) | Aria mount failed"
-            echo "$(date) | Mount: [$mountpoint]"
-            echo "$(date) | Temp File [$output]"
-        else
-            echo "$(date) | Mounted DMG"
-        fi
-        
-        # Install aria2 PKG from inside the DMG
-        sudo installer -pkg "$mountpoint/aria2.pkg" -target /
-        if [ $? -ne 0 ]; then
-            echo "$(date) | Install failed"
-            echo "$(date) | PKG: [$mountpoint/aria2.pkg]"
-        else
-            echo "$(date) | Aria2 installed"
-            hdiutil detach -quiet "$mountpoint"
-        fi
-        rm -rf "$output"
-    fi
-
-}
 
 
 function updateMAU () {
@@ -121,7 +74,7 @@ function updateMAU () {
 
     cd "$tempdir"
     #curl -o "$tempdir/mau.pkg" -f -s --connect-timeout 30 --retry 5 --retry-delay 60 -L -J -O "$mauurl"
-    $ARIA2 -q -x16 -s16 -d "$tempdir" -o "mau.pkg" "$mauurl" --download-result=hide --summary-interval=0
+    curl -f -s --connect-timeout 30 --retry 5 --retry-delay 60 --compressed -L -o "$tempdir/mau.pkg" "$mauurl"
     if [[ $? == 0 ]]; then
 
         echo "$(date) | Downloaded [$mauurl] to [$tempdir/mau.pkg]"
@@ -339,7 +292,7 @@ function downloadApp () {
 
     cd "$tempdir"
     #curl -f -s --connect-timeout 30 --retry 5 --retry-delay 60 --compressed -L -J -O "$weburl"
-    $ARIA2 -q -x16 -s16 -d "$tempdir" "$weburl" --download-result=hide --summary-interval=0
+    curl -f -s --connect-timeout 30 --retry 5 --retry-delay 60 --compressed -L -J -O "$weburl"
     if [[ $? == 0 ]]; then
 
             # We have downloaded a file, we need to know what the file is called and what type of file it is
@@ -1075,8 +1028,6 @@ echo ""
 echo "$(date) | Enabling debug logs for PSSO"
 sudo log config --mode "level:debug,persist:debug" --subsystem com.apple.AppSSO
 
-# Install Aria2c if we don't already have it
-installAria2c
 
 # Install Rosetta if we need it
 checkForRosetta2

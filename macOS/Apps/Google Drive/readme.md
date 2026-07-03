@@ -1,12 +1,34 @@
-# Script to Enable Screen Sharing
+# Google Drive Installation Script for macOS
 
-This script is an example to show how to use [Intune Shell Scripting](https://docs.microsoft.com/en-us/mem/intune/apps/macos-shell-scripts) to enable screen sharing. In this case the script will enable screen sharing for Administrators only.
+This script automates the deployment of [Google Drive for desktop](https://www.google.com/drive/download/) on macOS devices through Microsoft Intune. It downloads the latest Google Drive `.dmg` from Google's official distribution source and installs it.
 
-## Quick Run
+## Features
 
-```
-sudo /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/microsoft/shell-intune-samples/master/Misc/enableScreenSharing/enableScreenSharing.sh)"
-```
+- **Direct Download**: Downloads the Google Drive disk image directly from Google's official source
+- **DMG/PKG Handling**: Mounts the DMG and installs whether the payload is a `.app` bundle or a `.pkg` installer
+- **Auto-Update Detection**: Skips installation if Google Drive is already installed (Google Drive handles its own updates)
+- **Process Management**: Can terminate a running Google Drive instance during installation
+- **Comprehensive Logging**: Detailed logs for troubleshooting
+
+## Requirements
+
+- macOS 10.13 or later
+- Administrative privileges
+- Internet connectivity to download the Google Drive package
+
+## Configuration Variables
+
+The script uses several key variables that can be customized if needed:
+
+| Variable | Default Value | Description |
+|----------|---------------|-------------|
+| `weburl` | https://dl.google.com/drive-file-stream/GoogleDrive.dmg | Direct download URL for the Google Drive disk image |
+| `appname` | Google Drive | Display name used in logs |
+| `app` | Google Drive.app | Folder of the application as installed |
+| `logandmetadir` | /Library/Logs/Microsoft/IntuneScripts/GoogleDrive | Directory where logs and the meta file are stored |
+| `processpath` | /Applications/Google Drive.app/Contents/MacOS/Google Drive | Full path to the Google Drive process |
+| `terminateprocess` | true | Whether to terminate Google Drive if running during installation |
+| `autoUpdate` | true | Whether to skip installation if Google Drive is already installed |
 
 ## Script Settings
 
@@ -17,13 +39,6 @@ sudo /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/microsoft/shel
 
 ## Log File
 
-The log file will output to ***/Library/Logs/Microsoft/IntuneScripts/EnableScreenSharing/EnableScreenSharing.log*** by default. Exit status is either 0 or 1. To gather this log with Intune remotely take a look at  [Troubleshoot macOS shell script policies using log collection](https://docs.microsoft.com/en-us/mem/intune/apps/macos-shell-scripts#troubleshoot-macos-shell-script-policies-using-log-collection)
+The log file outputs to ***/Library/Logs/Microsoft/IntuneScripts/GoogleDrive/Google Drive.log*** by default. Exit status is either 0 or 1.
 
-```
-##############################################################
-# Fri 26 Nov 2021 12:57:06 GMT | Logging configuration of [EnableScreenSharing] to [/Library/Logs/Microsoft/IntuneScripts/EnableScreenSharing/EnableScreenSharing.log]
-############################################################
-
-Fri 26 Nov 2021 12:57:06 GMT | Writing to /var/db/launchd.db/com.apple.launchd/overrides.plist
-Fri 26 Nov 2021 12:57:06 GMT | Launching com.apple.screensharing Launch Daemon
-```
+To gather this log with Intune remotely, see [Troubleshoot macOS shell script policies using log collection](https://docs.microsoft.com/en-us/mem/intune/apps/macos-shell-scripts#troubleshoot-macos-shell-script-policies-using-log-collection).

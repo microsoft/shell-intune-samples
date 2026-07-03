@@ -30,10 +30,8 @@ Fri Feb 11 13:33:37 CET 2022 | Creating [/Library/Logs/Microsoft/IntuneScripts/i
 # Fri Feb 11 13:33:37 CET 2022 | Logging install of [VMware Horizon Client] to [/Library/Logs/Microsoft/IntuneScripts/installHorizonClient/VMware Horizon Client.log]
 ############################################################
 
-Fri Feb 11 13:33:37 CET 2022 | Checking if we need Rosetta 2 or not
 Fri Feb 11 13:33:37 CET 2022 | Waiting for other [/usr/sbin/softwareupdate] processes to end
 Fri Feb 11 13:33:37 CET 2022 | No instances of [/usr/sbin/softwareupdate] found, safe to proceed
-Fri Feb 11 13:33:37 CET 2022 | Intel processor installed. No need to install Rosetta.
 Fri Feb 11 13:33:37 CET 2022 | Checking if we need to install or update [VMware Horizon Client]
 Fri Feb 11 13:33:37 CET 2022 | [VMware Horizon Client] not installed, need to download and install
 Fri Feb 11 13:33:37 CET 2022 | Dock is here, lets carry on

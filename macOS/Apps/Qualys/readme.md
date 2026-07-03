@@ -30,7 +30,6 @@ The log file will output to ***/Library/Logs/Microsoft/IntuneScripts/QualysCloud
 # Mon Nov 13 14:33:24 EET 2023 | Logging install of [QualysCloudAgent] to [/Library/Logs/Microsoft/IntuneScripts/QualysCloudAgent/QualysCloudAgent.log]
 ############################################################
 
-Mon Nov 13 14:33:24 EET 2023 | Checking if we need Rosetta 2 or not
 Mon Nov 13 14:33:24 EET 2023 | Waiting for other [/usr/sbin/softwareupdate] processes to end
 Mon Nov 13 14:33:24 EET 2023 | No instances of [/usr/sbin/softwareupdate] found, safe to proceed
 Mon Nov 13 14:33:25 EET 2023 | Checking if we need to install or update [QualysCloudAgent]

@@ -29,10 +29,8 @@ The log file will output to ***/Library/Logs/Microsoft/IntuneScripts/Spotify/Spo
 ############################################################
 
 Mon 17 Jul 2023 15:01:52 BST | Aria2 already installed, nothing to do
-Mon 17 Jul 2023 15:01:52 BST | Checking if we need Rosetta 2 or not
 Mon 17 Jul 2023 15:01:52 BST | Waiting for other [/usr/sbin/softwareupdate] processes to end
 Mon 17 Jul 2023 15:01:52 BST | No instances of [/usr/sbin/softwareupdate] found, safe to proceed
-Mon 17 Jul 2023 15:01:52 BST | Rosetta is already installed and running. Nothing to do.
 Mon 17 Jul 2023 15:01:52 BST | Checking if we need to install or update [Spotify]
 Mon 17 Jul 2023 15:01:52 BST | [Spotify] not installed, need to download and install
 Mon 17 Jul 2023 15:01:52 BST | Dock is here, lets carry on

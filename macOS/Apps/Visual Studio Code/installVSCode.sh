@@ -1,4 +1,6 @@
 #!/bin/bash
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT License.
 #set -x
 
 ############################################################################################
@@ -13,7 +15,6 @@
 ##
 ###########################################
 
-## Copyright (c) 2020 Microsoft Corp. All rights reserved.
 ## Scripts are not supported under any Microsoft standard support program or service. The scripts are provided AS IS without warranty of any kind.
 ## Microsoft disclaims all implied warranties including, without limitation, any implied warranties of merchantability or of fitness for a
 ## particular purpose. The entire risk arising out of the use or performance of the scripts and documentation remains with you. In no event shall
@@ -24,16 +25,16 @@
 ## Feedback: neiljohn@microsoft.com
 
 # Define variables
-weburl="https://code.visualstudio.com/sha/download?build=stable&os=darwin-universal"    # What is the Azure Blob Storage URL?
-appname="Visual Studio Code"                                                            # The name of our App deployment script
-app="Visual Studio Code.app"                                                            # The actual name of our App once installed
-logandmetadir="/Library/Logs/Microsoft/IntuneScripts/installVSCode"                     # The location of our logs and last updated data
-processpath="/Applications/Visual Studio Code.app/Contents/MacOS/Electron"              # The process name of the App we are installing
+weburl="https://code.visualstudio.com/sha/download?build=stable&os=darwin-universal-dmg"    # What is the Azure Blob Storage URL?
+appname="Visual Studio Code"                                                                # The name of our App deployment script
+app="Visual Studio Code.app"                                                                # The actual name of our App once installed
+logandmetadir="/Library/Logs/Microsoft/IntuneScripts/installVSCode"                         # The location of our logs and last updated data
+processpath="/Applications/Visual Studio Code.app/Contents/MacOS/Electron"                  # The process name of the App we are installing
 if [[ ! -f "$processpath" ]]; then
-    processpath="/Applications/Visual Studio Code.app/Contents/MacOS/Code"              # New executable name per https://github.com/microsoft/vscode/pull/291948
+    processpath="/Applications/Visual Studio Code.app/Contents/MacOS/Code"                  # New executable name per https://github.com/microsoft/vscode/pull/291948
 fi
-terminateprocess="false"                                                                # Do we want to terminate the running process? If false we'll wait until its not running
-autoUpdate="true"                                                                       # If true, application updates itself and we should not attempt to update
+terminateprocess="false"                                                                    # Do we want to terminate the running process? If false we'll wait until its not running
+autoUpdate="true"                                                                           # If true, application updates itself and we should not attempt to update
 
 # Generated variables
 tempdir=$(mktemp -d)
@@ -89,70 +90,6 @@ waitForProcess () {
 
 }
 
-# function to check if we need Rosetta 2
-checkForRosetta2 () {
-
-    #################################################################################################################
-    #################################################################################################################
-    ##
-    ##  Simple function to install Rosetta 2 if needed.
-    ##
-    ##  Functions
-    ##
-    ##      waitForProcess (used to pause script if another instance of softwareupdate is running)
-    ##
-    ##  Variables
-    ##
-    ##      None
-    ##
-    ###############################################################
-    ###############################################################
-
-    
-
-    echo "$(date) | Checking if we need Rosetta 2 or not"
-
-    # if Software update is already running, we need to wait...
-    waitForProcess "/usr/sbin/softwareupdate"
-
-
-    ## Note, Rosetta detection code from https://derflounder.wordpress.com/2020/11/17/installing-rosetta-2-on-apple-silicon-macs/
-    OLDIFS=$IFS
-    IFS='.' read osvers_major osvers_minor osvers_dot_version <<< "$(/usr/bin/sw_vers -productVersion)"
-    IFS=$OLDIFS
-
-    if [[ ${osvers_major} -ge 11 ]]; then
-
-        # Check to see if the Mac needs Rosetta installed by testing the processor
-
-        processor=$(/usr/sbin/sysctl -n machdep.cpu.brand_string | grep -o "Intel")
-        
-        if [[ -n "$processor" ]]; then
-            echo "$(date) | $processor processor installed. No need to install Rosetta."
-        else
-
-            # Check for Rosetta "oahd" process. If not found,
-            # perform a non-interactive install of Rosetta.
-            
-            if /usr/bin/pgrep oahd >/dev/null 2>&1; then
-                echo "$(date) | Rosetta is already installed and running. Nothing to do."
-            else
-                /usr/sbin/softwareupdate --install-rosetta --agree-to-license
-            
-                if [[ $? -eq 0 ]]; then
-                    echo "$(date) | Rosetta has been successfully installed."
-                else
-                    echo "$(date) | Rosetta installation failed!"
-                    exitcode=1
-                fi
-            fi
-        fi
-        else
-            echo "$(date) | Mac is running macOS $osvers_major.$osvers_minor.$osvers_dot_version."
-            echo "$(date) | No need to install Rosetta on this version of macOS."
-    fi
-
-}
 
 # Function to update the last modified date for this app
 fetchLastModifiedDate() {
@@ -229,7 +166,7 @@ function downloadApp () {
     echo "$(date) | Downloading $appname"
 
     cd "$tempdir"
-    curl -f -s --connect-timeout 30 --retry 5 --retry-delay 60 -L -J -O "$weburl"
+    curl -f -s --connect-timeout 30 --retry 5 --retry-delay 60 -L -o "VSCode.dmg" "$weburl"
     if [ $? == 0 ]; then
 
             # We have downloaded a file, we need to know what the file is called and what type of file it is
@@ -685,8 +622,6 @@ echo "# $(date) | Logging install of [$appname] to [$log]"
 echo "############################################################"
 echo ""
 
-# Install Rosetta if we need it
-checkForRosetta2
 
 # Test if we need to install or update
 updateCheck

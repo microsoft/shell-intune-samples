@@ -18,10 +18,8 @@ The log file will output to ***/Library/Logs/Microsoft/IntuneScripts/ImageOptim/
 # Wed 23 Feb 2022 17:20:52 GMT | Logging install of [ImageOptim] to [/Library/Logs/Microsoft/IntuneScripts/ImageOptim/ImageOptim.log]
 ############################################################
 
-Wed 23 Feb 2022 17:20:52 GMT | Checking if we need Rosetta 2 or not
 Wed 23 Feb 2022 17:20:52 GMT | Waiting for other [/usr/sbin/softwareupdate] processes to end
 Wed 23 Feb 2022 17:20:53 GMT | No instances of [/usr/sbin/softwareupdate] found, safe to proceed
-Wed 23 Feb 2022 17:20:53 GMT | Rosetta is already installed and running. Nothing to do.
 Wed 23 Feb 2022 17:20:53 GMT | Checking if we need to install or update [ImageOptim]
 Wed 23 Feb 2022 17:20:53 GMT | [ImageOptim] not installed, need to download and install
 Wed 23 Feb 2022 17:20:53 GMT | Dock is here, lets carry on

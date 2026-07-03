@@ -1,4 +1,6 @@
 #!/bin/bash
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT License.
 # shellcheck shell=bash
 #
 # Script Name: countOfficeOfficeInstallsInLast30Days.sh

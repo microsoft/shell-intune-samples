@@ -1,4 +1,6 @@
 #!/bin/zsh
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT License.
 #set -x
 
 ############################################################################################
@@ -9,7 +11,6 @@
 ##
 ## Change Log
 ##
-## 2023-06-23   - Changed from Curl to Aria2 for main package download
 ## 2023-02-03   - Changed ZIP and DMG process to include dot_clean after file copy
 ##              - Added Apple Silicon architecture detection logic
 ## 2022-06-24   - First re-write in ZSH
@@ -24,7 +25,6 @@
 ##
 ############################################################################################
 
-## Copyright (c) 2023 Microsoft Corp. All rights reserved.
 ## Scripts are not supported under any Microsoft standard support program or service. The scripts are provided AS IS without warranty of any kind.
 ## Microsoft disclaims all implied warranties including, without limitation, any implied warranties of merchantability or of fitness for a
 ## particular purpose. The entire risk arising out of the use or performance of the scripts and documentation remains with you. In no event shall
@@ -60,59 +60,6 @@ tempdir=$(mktemp -d)
 log="$logandmetadir/$appname.log"                                               # The location of the script log file
 metafile="$logandmetadir/$appname.meta"                                         # The location of our meta file (for updates)
 
-
-function installAria2c () {
-
-    #####################################
-    ## Aria2c installation
-    #####################
-    ARIA2="/usr/local/aria2/bin/aria2c"
-    aria2Url="https://github.com/aria2/aria2/releases/download/release-1.35.0/aria2-1.35.0-osx-darwin.dmg"
-    if [[ -f $ARIA2 ]]; then
-        echo "$(date) | Aria2 already installed, nothing to do"
-    else
-        echo "$(date) | Aria2 missing, lets download and install"
-        filename=$(basename "$aria2Url")
-        output="$tempdir/$filename"
-        #curl -L -o "$output" "$aria2Url"
-        curl -f -s --connect-timeout 30 --retry 5 --retry-delay 60 -L -o "$output" "$aria2Url"
-        if [ $? -ne 0 ]; then
-            echo "$(date) | Aria download failed"
-            echo "$(date) | Output: [$output]"
-            echo "$(date) | URL [$aria2Url]"
-            exit 1
-        else
-            echo "$(date) | Downloaded aria2"
-        fi
-
-        # Mount aria2 DMG
-        mountpoint="$tempdir/aria2"
-        echo "$(date) | Mounting Aria DMG..."
-        hdiutil attach -quiet -nobrowse -mountpoint "$mountpoint" "$output"
-        if [ $? -ne 0 ]; then
-            echo "$(date) | Aria mount failed"
-            echo "$(date) | Mount: [$mountpoint]"
-            echo "$(date) | Temp File [$output]"
-            exit 1
-        else
-            echo "$(date) | Mounted DMG"
-        fi
-        
-        # Install aria2 PKG from inside the DMG
-        sudo installer -pkg "$mountpoint/aria2.pkg" -target /
-        if [ $? -ne 0 ]; then
-            echo "$(date) | Install failed"
-            echo "$(date) | PKG: [$mountpoint/aria2.pkg]"
-            exit 1
-        else
-            echo "$(date) | Aria2 installed"
-            hdiutil detach -quiet "$mountpoint"
-        fi
-    rm -rf "$output"
-    fi
-
-
-}
 
 # function to delay script if the specified process is running
 waitForProcess () {
@@ -164,70 +111,6 @@ waitForProcess () {
 
 }
 
-# function to check if we need Rosetta 2
-checkForRosetta2 () {
-
-    #################################################################################################################
-    #################################################################################################################
-    ##
-    ##  Simple function to install Rosetta 2 if needed.
-    ##
-    ##  Functions
-    ##
-    ##      waitForProcess (used to pause script if another instance of softwareupdate is running)
-    ##
-    ##  Variables
-    ##
-    ##      None
-    ##
-    ###############################################################
-    ###############################################################
-
-    
-
-    echo "$(date) | Checking if we need Rosetta 2 or not"
-
-    # if Software update is already running, we need to wait...
-    waitForProcess "/usr/sbin/softwareupdate"
-
-
-    ## Note, Rosetta detection code from https://derflounder.wordpress.com/2020/11/17/installing-rosetta-2-on-apple-silicon-macs/
-    OLDIFS=$IFS
-    IFS='.' read osvers_major osvers_minor osvers_dot_version <<< "$(/usr/bin/sw_vers -productVersion)"
-    IFS=$OLDIFS
-
-    if [[ ${osvers_major} -ge 11 ]]; then
-
-        # Check to see if the Mac needs Rosetta installed by testing the processor
-
-        processor=$(/usr/sbin/sysctl -n machdep.cpu.brand_string | grep -o "Intel")
-        
-        if [[ -n "$processor" ]]; then
-            echo "$(date) | $processor processor installed. No need to install Rosetta."
-        else
-
-            # Check for Rosetta "oahd" process. If not found,
-            # perform a non-interactive install of Rosetta.
-            
-            if /usr/bin/pgrep oahd >/dev/null 2>&1; then
-                echo "$(date) | Rosetta is already installed and running. Nothing to do."
-            else
-                /usr/sbin/softwareupdate --install-rosetta --agree-to-license
-            
-                if [[ $? -eq 0 ]]; then
-                    echo "$(date) | Rosetta has been successfully installed."
-                else
-                    echo "$(date) | Rosetta installation failed!"
-                    exitcode=1
-                fi
-            fi
-        fi
-        else
-            echo "$(date) | Mac is running macOS $osvers_major.$osvers_minor.$osvers_dot_version."
-            echo "$(date) | No need to install Rosetta on this version of macOS."
-    fi
-
-}
 
 # Function to update the last modified date for this app
 fetchLastModifiedDate() {
@@ -297,15 +180,13 @@ function downloadApp () {
     echo "$(date) | Starting downlading of [$appname]"
 
     # wait for other downloads to complete
-    waitForProcess "$ARIA2"
-
     #download the file
     updateOctory installing
     echo "$(date) | Downloading $appname [$weburl]"
 
     cd "$tempdir"
     #curl -f -s --connect-timeout 30 --retry 5 --retry-delay 60 --compressed -L -J -O "$weburl"
-    $ARIA2 -q -x16 -s16 -d "$tempdir" -o "$tempfile" "$weburl" --download-result=hide --summary-interval=0
+    curl -f -s --connect-timeout 30 --retry 5 --retry-delay 60 --compressed -L -o "$tempdir/$tempfile" "$weburl"
     if [[ $? == 0 ]]; then
 
             # We have downloaded a file, we need to know what the file is called and what type of file it is
@@ -1024,11 +905,7 @@ echo "# $(date) | Logging install of [$appname] to [$log]"
 echo "############################################################"
 echo ""
 
-# Install Aria2c if we don't already have it
-installAria2c
 
-# Install Rosetta if we need it
-checkForRosetta2
 
 # Test if we need to install or update
 updateCheck

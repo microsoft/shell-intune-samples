@@ -30,10 +30,8 @@ Fri 30 Jul 2021 13:37:33 BST | Creating [/Library/Logs/Microsoft/IntuneScripts/C
 # Fri 30 Jul 2021 13:37:33 BST | Logging install of [Cisco AMP] to [/Library/Logs/Microsoft/IntuneScripts/CiscoAMP/Cisco AMP.log]
 ############################################################
 
-Fri 30 Jul 2021 13:37:33 BST | Checking if we need Rosetta 2 or not
 Fri 30 Jul 2021 13:37:33 BST | Waiting for other [/usr/sbin/softwareupdate] processes to end
 Fri 30 Jul 2021 13:37:33 BST | No instances of [/usr/sbin/softwareupdate] found, safe to proceed
-Fri 30 Jul 2021 13:37:33 BST | [Intel(R) Core(TM) i9-9880H CPU @ 2.30GHz] found, Rosetta not needed
 Fri 30 Jul 2021 13:37:33 BST | Dock is here, lets carry on
 Fri 30 Jul 2021 13:37:33 BST | Starting downlading of [Cisco AMP]
 Fri 30 Jul 2021 13:37:33 BST | Waiting for other [curl -f] processes to end

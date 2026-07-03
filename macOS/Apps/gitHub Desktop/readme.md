@@ -6,7 +6,6 @@ This script is an example showing how to use [Intune Shell Scripting](https://do
 
 This scripts intended usage scenario is to deploy the gitHub Desktop app to Mac devices that need to use it.
 
-
 ## Script Settings
 
 - Run script as signed-in user : No
@@ -23,10 +22,8 @@ The log file will output to **/Library/Logs/Microsoft/IntuneScripts/installGitHu
 # Fri  9 Apr 2021 13:00:15 BST | Logging install of [GitHub Desktop] to [/Library/Logs/Microsoft/IntuneScripts/installGitHubDesktop/GitHub Desktop.log]
 ############################################################
 
-Fri  9 Apr 2021 13:00:15 BST | Checking if we need Rosetta 2 or not
 Fri  9 Apr 2021 13:00:15 BST | Waiting for other [/usr/sbin/softwareupdate] processes to end
 Fri  9 Apr 2021 13:00:15 BST | No instances of [/usr/sbin/softwareupdate] found, safe to proceed
-Fri  9 Apr 2021 13:00:15 BST | [Intel(R) Core(TM) i9-9880H CPU @ 2.30GHz] found, Rosetta not needed
 Fri  9 Apr 2021 13:00:15 BST | Checking if we need to install or update [GitHub Desktop]
 Fri  9 Apr 2021 13:00:15 BST | [GitHub Desktop] not installed, need to download and install
 Fri  9 Apr 2021 13:00:15 BST | Dock is here, lets carry on

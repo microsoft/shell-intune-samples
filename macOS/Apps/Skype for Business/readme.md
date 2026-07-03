@@ -28,10 +28,8 @@ The log file will output to ***/Library/Logs/Microsoft/IntuneScripts/installSkyp
 # Fri  9 Apr 2021 13:11:01 BST | Logging install of [Skype for Business] to [/Library/Logs/Microsoft/IntuneScripts/installSkypeForBusiness/Skype for Business.log]
 ############################################################
 
-Fri  9 Apr 2021 13:11:01 BST | Checking if we need Rosetta 2 or not
 Fri  9 Apr 2021 13:11:01 BST | Waiting for other [/usr/sbin/softwareupdate] processes to end
 Fri  9 Apr 2021 13:11:01 BST | No instances of [/usr/sbin/softwareupdate] found, safe to proceed
-Fri  9 Apr 2021 13:11:01 BST | [Intel(R) Core(TM) i9-9880H CPU @ 2.30GHz] found, Rosetta not needed
 Fri  9 Apr 2021 13:11:01 BST | Checking if we need to install or update [Skype for Business]
 Fri  9 Apr 2021 13:11:01 BST | [Skype for Business] not installed, need to download and install
 Fri  9 Apr 2021 13:11:01 BST | Dock is here, lets carry on

@@ -1,4 +1,6 @@
 #!/bin/bash
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT License.
 #set -x
 
 ############################################################################################
@@ -13,7 +15,6 @@
 ##
 ############################################################################################
 
-## Copyright (c) 2020 Microsoft Corp. All rights reserved.
 ## Scripts are not supported under any Microsoft standard support program or service. The scripts are provided AS IS without warranty of any kind.
 ## Microsoft disclaims all implied warranties including, without limitation, any implied warranties of merchantability or of fitness for a
 ## particular purpose. The entire risk arising out of the use or performance of the scripts and documentation remains with you. In no event shall
@@ -86,58 +87,6 @@ waitForProcess () {
 
 }
 
-# function to check if we need Rosetta 2
-checkForRosetta2 () {
-
-    #################################################################################################################
-    #################################################################################################################
-    ##
-    ##  Simple function to install Rosetta 2 if needed.
-    ##
-    ##  Functions
-    ##
-    ##      waitForProcess (used to pause script if another instance of softwareupdate is running)
-    ##
-    ##  Variables
-    ##
-    ##      None
-    ##
-    ###############################################################
-    ###############################################################
-
-    echo "$(date) | Checking if we need Rosetta 2 or not"
-
-    # if Software update is already running, we need to wait...
-    waitForProcess "/usr/sbin/softwareupdate"
-
-    processor=$(/usr/sbin/sysctl -n machdep.cpu.brand_string)
-    if [[ "$processor" == *"Intel"* ]]; then
-
-        echo "$(date) | [$processor] found, Rosetta not needed"
-        
-    else
-
-        echo "$(date) | [$processor] found, is Rosetta already installed?"
-
-        # Check Rosetta LaunchDaemon. If no LaunchDaemon is found,
-        # perform a non-interactive install of Rosetta.
-        
-        if [[ ! -f "/Library/Apple/System/Library/LaunchDaemons/com.apple.oahd.plist" ]]; then
-            /usr/sbin/softwareupdate --install-rosetta --agree-to-license
-        
-            if [[ $? -eq 0 ]]; then
-                echo "$(date) | Rosetta has been successfully installed."
-                return
-            else
-                echo "$(date) | Rosetta installation failed!"
-            fi
-    
-        else
-            echo "$(date) | Rosetta is already installed. Nothing to do."
-        fi
-    fi
-
-}
 
 # Function to update the last modified date for this app
 fetchLastModifiedDate() {
@@ -214,7 +163,7 @@ function downloadApp () {
     echo "$(date) | Downloading $appname"
 
     cd "$tempdir"
-    curl -f -s --connect-timeout 30 --retry 5 --retry-delay 60 -L -J -O "$weburl"
+    curl -f -s --connect-timeout 30 --retry 5 --retry-delay 60 -L -o "TeamViewerHost.dmg" "$weburl"
     if [ $? == 0 ]; then
 
             # We have downloaded a file, we need to know what the file is called and what type of file it is
@@ -769,8 +718,6 @@ echo "# $(date) | Logging install of [$appname] to [$log]"
 echo "############################################################"
 echo ""
 
-# Install Rosetta if we need it
-checkForRosetta2
 
 # Test if we need to install or update
 updateCheck

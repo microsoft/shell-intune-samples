@@ -1,19 +1,21 @@
 #!/bin/bash
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT License.
 #chmod +x
 
 ############################################################################################
 ##
 ## Script to create a payloadless PKGs
 ##
-## VER 1.0.0
+## VER 1.1.0
 ##
 ## Change Log
 ##
 ## 2025-04-22 Initial script upload
+## 2025-04-23 Added check for existing /tmp/empty directory
 ##
 ############################################################################################
 
-## Copyright (c) 2025 Microsoft Corp. All rights reserved.
 ## Scripts are not supported under any Microsoft standard support program or service. The scripts are provided AS IS without warranty of any kind.
 ## Microsoft disclaims all implied warranties including, without limitation, any implied warranties of merchantability or of fitness for a
 ## particular purpose. The entire risk arising out of the use or performance of the scripts and documentation remains with you. In no event shall
@@ -28,9 +30,23 @@ read AppName
 echo "Enter the version of the application (e.g., 1.0):"
 read Version
 
+if [ -d /tmp/empty ]; then
+    rm -rf /tmp/empty
+fi
+
 mkdir -p /tmp/empty
 
 pkgbuild --identifier "com.yourcompany.$AppName" \
-         --version $Version \
+         --version "$Version" \
          --root /tmp/empty \
-         $AppName.pkg
+         "$AppName.pkg"
+
+pkgbuild_exit=$?
+
+rm -rf /tmp/empty
+
+if [ "$pkgbuild_exit" -eq 0 ]; then
+    open -R "$AppName.pkg"
+fi
+
+exit "$pkgbuild_exit"
