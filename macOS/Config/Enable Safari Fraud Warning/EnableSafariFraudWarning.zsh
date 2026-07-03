@@ -1,4 +1,6 @@
 #!/bin/zsh
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT License.
 
 #set -x
 
@@ -11,7 +13,6 @@
 ##
 ############################################################################################
 
-## Copyright (c) 2026 Microsoft Corp. Licensed under the MIT license.
 
 ScriptName="EnableSafariFraudWarning"
 LogDir="$HOME/Library/Logs/Microsoft/IntuneScripts/$ScriptName"

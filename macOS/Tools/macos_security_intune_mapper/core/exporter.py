@@ -1,3 +1,5 @@
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT License.
 """Exporter for Intune policies and mobileconfig files."""
 
 import logging

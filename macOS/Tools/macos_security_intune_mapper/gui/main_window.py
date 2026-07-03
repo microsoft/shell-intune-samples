@@ -1,3 +1,5 @@
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT License.
 """Main window for macOS Intune Mapper GUI."""
 
 import logging

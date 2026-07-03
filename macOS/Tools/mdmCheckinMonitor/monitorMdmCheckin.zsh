@@ -1,4 +1,6 @@
 #!/bin/bash
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT License.
 # This is a proof of concept script to detect macOS MDM check-in from the log stream
 # neiljohn@microsoft.com
 

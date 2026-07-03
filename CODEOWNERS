@@ -1,0 +1,15 @@
+# CODEOWNERS — required reviewers for paths in this repository.
+#
+# Microsoft Open Source requires a durable owner standard of at least TWO direct
+# owners.
+#
+# Docs:
+#   https://github.com/opensource-microsoft/docs/blob/main/docs/github/opensource/repos/owners.md
+#   https://docs.github.com/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-code-owners
+
+# Whole-repository owners (at least two direct owners).
+*            @theneiljohnson  @CKunze-MSFT
+
+# Example of path-scoped ownership (optional):
+# /macOS/      @theneiljohnson  @CKunze-MSFT
+# /Linux/      @theneiljohnson  @CKunze-MSFT

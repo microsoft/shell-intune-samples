@@ -1,3 +1,5 @@
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT License.
 """Policy data model for Intune Settings Catalog."""
 
 from dataclasses import dataclass, field

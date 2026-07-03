@@ -1,4 +1,6 @@
 #!/bin/zsh
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT License.
 
 # Check if Mac is registered with Platform SSO (PSSO) and AutoFill from Company Portal is enabled
 

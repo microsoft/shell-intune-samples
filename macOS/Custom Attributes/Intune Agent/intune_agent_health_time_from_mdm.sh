@@ -1,4 +1,6 @@
 #!/bin/zsh
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT License.
 # shellcheck shell=zsh
 #
 # Script Name: intune_agent_health_time_from_mdm.sh
