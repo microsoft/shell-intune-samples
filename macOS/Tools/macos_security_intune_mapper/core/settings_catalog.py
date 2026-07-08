@@ -61,7 +61,7 @@ class SettingsCatalog:
         Returns:
             SettingsCatalog instance
         """
-        from ..utils.intune_api import IntuneAPI
+        from utils.intune_api import IntuneAPI
         
         logger.info("Fetching Settings Catalog from Intune")
         

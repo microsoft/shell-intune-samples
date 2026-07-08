@@ -8,14 +8,14 @@ from pathlib import Path
 from dataclasses import dataclass
 from typing import Optional, Dict, Any, List
 
-from ..core.baseline_loader import BaselineLoader
-from ..core.rules_loader import RulesLoader
-from ..core.settings_catalog import SettingsCatalog
-from ..core.policy_mapper import PolicyMapper
-from ..models.baseline import Baseline
-from ..models.rule import Rule
-from ..models.policy import Policy, PolicySetting
-from .export_dialog import ExportDialog
+from core.baseline_loader import BaselineLoader
+from core.rules_loader import RulesLoader
+from core.settings_catalog import SettingsCatalog
+from core.policy_mapper import PolicyMapper
+from models.baseline import Baseline
+from models.rule import Rule
+from models.policy import Policy, PolicySetting
+from gui.export_dialog import ExportDialog
 
 logger = logging.getLogger(__name__)
 
@@ -1241,7 +1241,7 @@ class MainWindow(wx.Frame):
             New Policy instance with overrides applied
         """
         from copy import deepcopy
-        from ..models.policy import PolicySetting
+        from models.policy import PolicySetting
         
         # Create a deep copy of the policy
         policy_copy = deepcopy(policy)

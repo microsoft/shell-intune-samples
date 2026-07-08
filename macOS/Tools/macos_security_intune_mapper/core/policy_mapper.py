@@ -5,9 +5,9 @@
 import logging
 from typing import Optional, Dict, Any
 
-from .settings_catalog import SettingsCatalog
-from ..models.rule import Rule
-from ..models.policy import Policy, PolicySetting, PolicyType
+from core.settings_catalog import SettingsCatalog
+from models.rule import Rule
+from models.policy import Policy, PolicySetting, PolicyType
 
 logger = logging.getLogger(__name__)
 
