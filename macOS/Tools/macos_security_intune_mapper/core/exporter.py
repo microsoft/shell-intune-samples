@@ -8,8 +8,8 @@ import plistlib
 from typing import List, Dict, Any, Set, Tuple
 from pathlib import Path
 
-from ..models.policy import Policy, PolicySetting, MobileConfigPolicy
-from ..models.rule import Rule
+from models.policy import Policy, PolicySetting, MobileConfigPolicy
+from models.rule import Rule
 
 logger = logging.getLogger(__name__)
 

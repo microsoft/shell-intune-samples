@@ -9,10 +9,43 @@ Convert macOS security baselines to Microsoft Intune Settings Catalog policies a
 - **GUI Application**: User-friendly interface for generating policies
 - **CLI Tool**: Command-line interface for automation and scripting
 - **Settings Catalog Mapping**: Automatically maps baseline rules to Intune Settings Catalog format
+- **DDM Support**: Supports Declarative Device Management (DDM) settings for modern macOS management
 - **Mobileconfig Generation**: Creates mobileconfig files for unmapped rules
 - **Multiple Export Formats**: Combined or split by section/type
 - **Dependency Analysis**: Identifies and handles rule dependencies
 - **ODV Resolution**: Automatically resolves Organizational Default Values (ODV) based on the selected baseline
+- **Backward Compatible**: Supports both legacy and modern macOS Security Compliance Project structures
+
+## Baseline Structure Compatibility
+
+This tool has been updated to support the latest macOS Security Compliance Project baseline structure (2.0+) while maintaining backward compatibility with legacy baselines.
+
+**Legacy Structure** (pre-2.0):
+- Location: `macos_security/baselines/*.yaml`
+- Files: `cis_lvl1.yaml`, `800-53r5_high.yaml`, etc.
+- Sections: `auditing`, `macos`, `passwordpolicy`, `systemsettings`
+- Rule format: Simple dictionary structure
+
+**New Structure** (2.0+):
+- Location: `macos_security/baselines/macos/*.yaml`
+- Files: `cis_lvl1_macos_26.0.yaml`, `800-53r5_high_macos_26.0.yaml`, etc.
+- Sections: `Auditing`, `Operating System`, `Password Policy`, `System Settings`
+- Platform subdirectories: `macos/`, `ios/`, `visionos/`
+- Rule format: Enhanced with platform-specific configurations and DDM support
+- Enforcement details: Nested under `platforms.macOS.<version>.enforcement_info`
+
+**Automatic Detection**: The tool automatically detects which structure is in use by checking for the `baselines/macos/` subdirectory. It normalizes section names and file naming patterns internally, so you'll see clean baseline names (e.g., `cis_lvl1`) in the interface regardless of the source structure.
+
+## Recent Updates
+
+**v2.0 Compatibility (2026-07)**:
+- ✅ Support for macOS Security Compliance Project 2.0+ structure
+- ✅ Automatic detection and handling of platform-specific baseline directories (`macos/`, `ios/`, `visionos/`)
+- ✅ Enhanced rule parsing for new YAML format with platform-specific configurations
+- ✅ DDM (Declarative Device Management) support for modern macOS management
+- ✅ Improved mobileconfig generation with new PayloadType/PayloadContent structure
+- ✅ Backward compatibility maintained for legacy baselines
+- ✅ Section name normalization (automatic mapping of old/new section names)
 
 ## Installation
 
@@ -164,10 +197,23 @@ macos_security_intune_mapper/
 
 External dependency (required):
 ```
-macos_security/                 # downloaded from github.com/usnistgov/macos_security
-├── baselines/                  # YAML baseline definitions
-└── rules/                      # Individual rule definitions
+macos_security/                     # Downloaded from github.com/usnistgov/macos_security
+├── baselines/                      # YAML baseline definitions
+│   ├── macos/                      # macOS baselines (v2.0+)
+│   │   ├── cis_lvl1_macos_26.0.yaml
+│   │   ├── cis_lvl2_macos_26.0.yaml
+│   │   └── ...
+│   ├── ios/                        # iOS baselines (v2.0+)
+│   └── visionos/                   # visionOS baselines (v2.0+)
+└── rules/                          # Individual rule definitions
+    ├── audit/
+    ├── auth/
+    ├── os/
+    ├── pwpolicy/
+    └── system_settings/
 ```
+
+**Note**: For legacy structure (pre-2.0), baseline files are directly in `baselines/` without platform subdirectories.
 
 ## Output Formats
 
@@ -244,7 +290,11 @@ Both GUI and CLI generate logs in `macos_security_intune_mapper.log` with detail
 
 ### "Baseline not found"
 
-Make sure the `macos_security` folder with baselines is in the correct location. Use `--list` to see available baselines.
+Make sure the `macos_security` folder with baselines is in the correct location. The tool supports both structures:
+- **New structure**: `macos_security/baselines/macos/*.yaml` (automatically detected)
+- **Legacy structure**: `macos_security/baselines/*.yaml`
+
+Check that baseline files exist in the expected location. For the new structure, ensure files are in the `macos/` subdirectory.
 
 ### "Settings Catalog file not found"
 
@@ -264,6 +314,20 @@ Intune Settings Catalog updates regularly. To refresh `settingsCatalog.json` wit
    ```
 2. Save the response to `settingsCatalog.json`
 3. Re-run the tool with updated settings
+
+### Fewer Policies Mapped Than Expected
+
+If you're seeing fewer policies mapped after switching to the new macos_security structure (2.0+):
+1. Ensure you're using the latest version of this tool (updated for 2.0+ compatibility)
+2. The new rule format includes DDM settings which may map differently than legacy mobileconfig settings
+3. Check the logs (`macos_security_intune_mapper.log`) for detailed mapping information
+4. Some rules may now prefer DDM over mobileconfig, affecting the distribution of mapped vs. unmapped rules
+
+### macOS Security Version Compatibility
+
+- **Legacy baselines** (pre-2.0): Fully supported
+- **New baselines** (2.0+): Fully supported with automatic detection
+- **Mixed usage**: The tool can work with either structure but not both simultaneously (point to one macos_security folder)
 
 ## License
 

@@ -7,10 +7,10 @@ import wx
 from pathlib import Path
 from typing import List, Optional
 
-from ..core.exporter import IntuneExporter
-from ..models.policy import Policy
-from ..models.rule import Rule
-from ..models.baseline import Baseline
+from core.exporter import IntuneExporter
+from models.policy import Policy
+from models.rule import Rule
+from models.baseline import Baseline
 
 logger = logging.getLogger(__name__)
 

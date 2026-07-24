@@ -7,7 +7,7 @@ import yaml
 from pathlib import Path
 from typing import Dict, List, Optional
 
-from ..models.rule import Rule
+from models.rule import Rule
 
 logger = logging.getLogger(__name__)
 
