@@ -1,0 +1,314 @@
+[
+  {
+    "ruleId": "audit_flags_fm_configure",
+    "section": "Auditing",
+    "sourcePath": "src/mscp/data/rules/audit/audit_flags_fm_configure.yaml",
+    "reason": "No check block"
+  },
+  {
+    "ruleId": "audit_flags_fm_failed_configure",
+    "section": "Auditing",
+    "sourcePath": "src/mscp/data/rules/audit/audit_flags_fm_failed_configure.yaml",
+    "reason": "No check block"
+  },
+  {
+    "ruleId": "os_firmware_password_require",
+    "section": "Operating System",
+    "sourcePath": "src/mscp/data/rules/os/os_firmware_password_require.yaml",
+    "reason": "No check block"
+  },
+  {
+    "ruleId": "os_home_folders_default",
+    "section": "Operating System",
+    "sourcePath": "src/mscp/data/rules/os/os_home_folders_default.yaml",
+    "reason": "No result metadata"
+  },
+  {
+    "ruleId": "os_ssh_fips_compliant",
+    "section": "Operating System",
+    "sourcePath": "src/mscp/data/rules/os/os_ssh_fips_compliant.yaml",
+    "reason": "No check block"
+  },
+  {
+    "ruleId": "os_ssh_server_alive_count_max_configure",
+    "section": "Operating System",
+    "sourcePath": "src/mscp/data/rules/os/os_ssh_server_alive_count_max_configure.yaml",
+    "reason": "No check block"
+  },
+  {
+    "ruleId": "os_ssh_server_alive_interval_configure",
+    "section": "Operating System",
+    "sourcePath": "src/mscp/data/rules/os/os_ssh_server_alive_interval_configure.yaml",
+    "reason": "No check block"
+  },
+  {
+    "ruleId": "os_tftpd_disable",
+    "section": "Operating System",
+    "sourcePath": "src/mscp/data/rules/os/os_tftpd_disable.yaml",
+    "reason": "No check block"
+  },
+  {
+    "ruleId": "os_uucp_disable",
+    "section": "Operating System",
+    "sourcePath": "src/mscp/data/rules/os/os_uucp_disable.yaml",
+    "reason": "No check block"
+  },
+  {
+    "ruleId": "system_settings_location_services_disable",
+    "section": "System Settings",
+    "sourcePath": "src/mscp/data/rules/system_settings/system_settings_location_services_disable.yaml",
+    "reason": "No check block"
+  },
+  {
+    "ruleId": "system_settings_screen_sharing_disable",
+    "section": "System Settings",
+    "sourcePath": "src/mscp/data/rules/system_settings/system_settings_screen_sharing_disable.yaml",
+    "reason": "No check block"
+  },
+  {
+    "ruleId": "os_allow_info_passed",
+    "section": "Inherent",
+    "sourcePath": "src/mscp/data/rules/os/os_allow_info_passed.yaml",
+    "reason": "No check block"
+  },
+  {
+    "ruleId": "os_application_sandboxing",
+    "section": "Inherent",
+    "sourcePath": "src/mscp/data/rules/os/os_application_sandboxing.yaml",
+    "reason": "No check block"
+  },
+  {
+    "ruleId": "os_change_security_attributes",
+    "section": "Inherent",
+    "sourcePath": "src/mscp/data/rules/os/os_change_security_attributes.yaml",
+    "reason": "No check block"
+  },
+  {
+    "ruleId": "os_grant_privs",
+    "section": "Inherent",
+    "sourcePath": "src/mscp/data/rules/os/os_grant_privs.yaml",
+    "reason": "No check block"
+  },
+  {
+    "ruleId": "os_implement_cryptography",
+    "section": "Inherent",
+    "sourcePath": "src/mscp/data/rules/os/os_implement_cryptography.yaml",
+    "reason": "No check block"
+  },
+  {
+    "ruleId": "os_logical_access",
+    "section": "Inherent",
+    "sourcePath": "src/mscp/data/rules/os/os_logical_access.yaml",
+    "reason": "No check block"
+  },
+  {
+    "ruleId": "os_logoff_capability_and_message",
+    "section": "Inherent",
+    "sourcePath": "src/mscp/data/rules/os/os_logoff_capability_and_message.yaml",
+    "reason": "No check block"
+  },
+  {
+    "ruleId": "os_malicious_code_prevention",
+    "section": "Inherent",
+    "sourcePath": "src/mscp/data/rules/os/os_malicious_code_prevention.yaml",
+    "reason": "No check block"
+  },
+  {
+    "ruleId": "os_obscure_password",
+    "section": "Inherent",
+    "sourcePath": "src/mscp/data/rules/os/os_obscure_password.yaml",
+    "reason": "No check block"
+  },
+  {
+    "ruleId": "os_predictable_behavior",
+    "section": "Inherent",
+    "sourcePath": "src/mscp/data/rules/os/os_predictable_behavior.yaml",
+    "reason": "No check block"
+  },
+  {
+    "ruleId": "os_prevent_priv_execution",
+    "section": "Inherent",
+    "sourcePath": "src/mscp/data/rules/os/os_prevent_priv_execution.yaml",
+    "reason": "No check block"
+  },
+  {
+    "ruleId": "os_prevent_priv_functions",
+    "section": "Inherent",
+    "sourcePath": "src/mscp/data/rules/os/os_prevent_priv_functions.yaml",
+    "reason": "No check block"
+  },
+  {
+    "ruleId": "os_prevent_unauthorized_disclosure",
+    "section": "Inherent",
+    "sourcePath": "src/mscp/data/rules/os/os_prevent_unauthorized_disclosure.yaml",
+    "reason": "No check block"
+  },
+  {
+    "ruleId": "os_prohibit_remote_activation_collab_devices",
+    "section": "Inherent",
+    "sourcePath": "src/mscp/data/rules/os/os_prohibit_remote_activation_collab_devices.yaml",
+    "reason": "No check block"
+  },
+  {
+    "ruleId": "os_provide_disconnect_remote_access",
+    "section": "Inherent",
+    "sourcePath": "src/mscp/data/rules/os/os_provide_disconnect_remote_access.yaml",
+    "reason": "No check block"
+  },
+  {
+    "ruleId": "os_reauth_privilege",
+    "section": "Inherent",
+    "sourcePath": "src/mscp/data/rules/os/os_reauth_privilege.yaml",
+    "reason": "No check block"
+  },
+  {
+    "ruleId": "os_reauth_users_change_authenticators",
+    "section": "Inherent",
+    "sourcePath": "src/mscp/data/rules/os/os_reauth_users_change_authenticators.yaml",
+    "reason": "No check block"
+  },
+  {
+    "ruleId": "os_remove_software_components_after_updates",
+    "section": "Inherent",
+    "sourcePath": "src/mscp/data/rules/os/os_remove_software_components_after_updates.yaml",
+    "reason": "No check block"
+  },
+  {
+    "ruleId": "os_required_crypto_module",
+    "section": "Inherent",
+    "sourcePath": "src/mscp/data/rules/os/os_required_crypto_module.yaml",
+    "reason": "No check block"
+  },
+  {
+    "ruleId": "os_separate_functionality",
+    "section": "Inherent",
+    "sourcePath": "src/mscp/data/rules/os/os_separate_functionality.yaml",
+    "reason": "No check block"
+  },
+  {
+    "ruleId": "os_store_encrypted_passwords",
+    "section": "Inherent",
+    "sourcePath": "src/mscp/data/rules/os/os_store_encrypted_passwords.yaml",
+    "reason": "No check block"
+  },
+  {
+    "ruleId": "os_unique_identification",
+    "section": "Inherent",
+    "sourcePath": "src/mscp/data/rules/os/os_unique_identification.yaml",
+    "reason": "No check block"
+  },
+  {
+    "ruleId": "os_verify_remote_disconnection",
+    "section": "Inherent",
+    "sourcePath": "src/mscp/data/rules/os/os_verify_remote_disconnection.yaml",
+    "reason": "No check block"
+  },
+  {
+    "ruleId": "pwpolicy_force_password_change",
+    "section": "Inherent",
+    "sourcePath": "src/mscp/data/rules/pwpolicy/pwpolicy_force_password_change.yaml",
+    "reason": "No check block"
+  },
+  {
+    "ruleId": "audit_off_load_records",
+    "section": "Permanent",
+    "sourcePath": "src/mscp/data/rules/audit/audit_off_load_records.yaml",
+    "reason": "No macOS enforcement_info"
+  },
+  {
+    "ruleId": "os_auth_peripherals",
+    "section": "Permanent",
+    "sourcePath": "src/mscp/data/rules/os/os_auth_peripherals.yaml",
+    "reason": "No macOS enforcement_info"
+  },
+  {
+    "ruleId": "os_continuous_monitoring",
+    "section": "Permanent",
+    "sourcePath": "src/mscp/data/rules/os/os_continuous_monitoring.yaml",
+    "reason": "No macOS enforcement_info"
+  },
+  {
+    "ruleId": "os_protect_dos_attacks",
+    "section": "Permanent",
+    "sourcePath": "src/mscp/data/rules/os/os_protect_dos_attacks.yaml",
+    "reason": "No macOS enforcement_info"
+  },
+  {
+    "ruleId": "os_reauth_devices_change_authenticators",
+    "section": "Permanent",
+    "sourcePath": "src/mscp/data/rules/os/os_reauth_devices_change_authenticators.yaml",
+    "reason": "No macOS enforcement_info"
+  },
+  {
+    "ruleId": "os_secure_name_resolution",
+    "section": "Permanent",
+    "sourcePath": "src/mscp/data/rules/os/os_secure_name_resolution.yaml",
+    "reason": "No macOS enforcement_info"
+  },
+  {
+    "ruleId": "system_settings_wifi_disable_when_connected_to_ethernet",
+    "section": "Permanent",
+    "sourcePath": "src/mscp/data/rules/system_settings/system_settings_wifi_disable_when_connected_to_ethernet.yaml",
+    "reason": "No macOS enforcement_info"
+  },
+  {
+    "ruleId": "os_access_control_mobile_devices",
+    "section": "Not Applicable",
+    "sourcePath": "src/mscp/data/rules/os/os_access_control_mobile_devices.yaml",
+    "reason": "No macOS enforcement_info"
+  },
+  {
+    "ruleId": "os_identify_non-org_users",
+    "section": "Not Applicable",
+    "sourcePath": "src/mscp/data/rules/os/os_identify_non-org_users.yaml",
+    "reason": "No check block"
+  },
+  {
+    "ruleId": "os_information_validation",
+    "section": "Not Applicable",
+    "sourcePath": "src/mscp/data/rules/os/os_information_validation.yaml",
+    "reason": "No check block"
+  },
+  {
+    "ruleId": "os_managed_access_control_points",
+    "section": "Not Applicable",
+    "sourcePath": "src/mscp/data/rules/os/os_managed_access_control_points.yaml",
+    "reason": "No check block"
+  },
+  {
+    "ruleId": "os_nonlocal_maintenance",
+    "section": "Not Applicable",
+    "sourcePath": "src/mscp/data/rules/os/os_nonlocal_maintenance.yaml",
+    "reason": "No check block"
+  },
+  {
+    "ruleId": "supplemental_controls",
+    "section": "Supplemental",
+    "sourcePath": "src/mscp/data/rules/supplemental/supplemental_controls.yaml",
+    "reason": "No macOS enforcement_info"
+  },
+  {
+    "ruleId": "supplemental_filevault",
+    "section": "Supplemental",
+    "sourcePath": "src/mscp/data/rules/supplemental/supplemental_filevault.yaml",
+    "reason": "No macOS enforcement_info"
+  },
+  {
+    "ruleId": "supplemental_firewall_pf",
+    "section": "Supplemental",
+    "sourcePath": "src/mscp/data/rules/supplemental/supplemental_firewall_pf.yaml",
+    "reason": "No macOS enforcement_info"
+  },
+  {
+    "ruleId": "supplemental_password_policy",
+    "section": "Supplemental",
+    "sourcePath": "src/mscp/data/rules/supplemental/supplemental_password_policy.yaml",
+    "reason": "No macOS enforcement_info"
+  },
+  {
+    "ruleId": "supplemental_smartcard",
+    "section": "Supplemental",
+    "sourcePath": "src/mscp/data/rules/supplemental/supplemental_smartcard.yaml",
+    "reason": "No macOS enforcement_info"
+  }
+]

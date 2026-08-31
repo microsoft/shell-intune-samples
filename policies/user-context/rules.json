@@ -1,0 +1,32 @@
+{
+  "Rules": [
+    {
+      "SettingName": "BluetoothSharingDisabled",
+      "Operator": "IsEquals",
+      "DataType": "Boolean",
+      "Operand": true,
+      "MoreInfoUrl": "https://github.com/usnistgov/macos_security",
+      "RemediationStrings": [
+        {
+          "Language": "en_US",
+          "Title": "Bluetooth sharing must be disabled. Value discovered was {ActualValue}.",
+          "Description": "Turn off Bluetooth file sharing for the signed-in user or enforce the preference through device management."
+        }
+      ]
+    },
+    {
+      "SettingName": "AirDropDisabled",
+      "Operator": "IsEquals",
+      "DataType": "Boolean",
+      "Operand": true,
+      "MoreInfoUrl": "https://github.com/usnistgov/macos_security",
+      "RemediationStrings": [
+        {
+          "Language": "en_US",
+          "Title": "AirDrop must be disabled. Value discovered was {ActualValue}.",
+          "Description": "Turn off AirDrop or enforce the restriction with a device restriction profile."
+        }
+      ]
+    }
+  ]
+}

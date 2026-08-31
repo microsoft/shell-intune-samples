@@ -1,0 +1,1264 @@
+{
+  "Rules": [
+    {
+      "SettingName": "os_library_validation_enabled",
+      "Operator": "IsEquals",
+      "DataType": "String",
+      "Operand": "false",
+      "MoreInfoUrl": "https://github.com/usnistgov/macos_security/blob/main/src/mscp/data/rules/os/os_library_validation_enabled.yaml",
+      "RemediationStrings": [
+        {
+          "Language": "en_US",
+          "Title": "Enable Library Validation. Value discovered was {ActualValue}.",
+          "Description": "See the linked mSCP rule for implementation and remediation guidance."
+        }
+      ]
+    },
+    {
+      "SettingName": "os_loginwindow_adminhostinfo_disabled",
+      "Operator": "IsEquals",
+      "DataType": "Int64",
+      "Operand": -1,
+      "MoreInfoUrl": "https://github.com/usnistgov/macos_security/blob/main/src/mscp/data/rules/os/os_loginwindow_adminhostinfo_disabled.yaml",
+      "RemediationStrings": [
+        {
+          "Language": "en_US",
+          "Title": "Prevent AdminHostInfo from Being Available at Login Window. Value discovered was {ActualValue}.",
+          "Description": "See the linked mSCP rule for implementation and remediation guidance."
+        }
+      ]
+    },
+    {
+      "SettingName": "os_mail_app_disable",
+      "Operator": "IsEquals",
+      "DataType": "String",
+      "Operand": "true",
+      "MoreInfoUrl": "https://github.com/usnistgov/macos_security/blob/main/src/mscp/data/rules/os/os_mail_app_disable.yaml",
+      "RemediationStrings": [
+        {
+          "Language": "en_US",
+          "Title": "Disable Mail App. Value discovered was {ActualValue}.",
+          "Description": "See the linked mSCP rule for implementation and remediation guidance."
+        }
+      ]
+    },
+    {
+      "SettingName": "os_mail_smart_reply_disable",
+      "Operator": "IsEquals",
+      "DataType": "String",
+      "Operand": "false",
+      "MoreInfoUrl": "https://github.com/usnistgov/macos_security/blob/main/src/mscp/data/rules/os/os_mail_smart_reply_disable.yaml",
+      "RemediationStrings": [
+        {
+          "Language": "en_US",
+          "Title": "Disable Apple Intelligence Mail Smart Replies. Value discovered was {ActualValue}.",
+          "Description": "See the linked mSCP rule for implementation and remediation guidance."
+        }
+      ]
+    },
+    {
+      "SettingName": "os_mail_summary_disable",
+      "Operator": "IsEquals",
+      "DataType": "String",
+      "Operand": "false",
+      "MoreInfoUrl": "https://github.com/usnistgov/macos_security/blob/main/src/mscp/data/rules/os/os_mail_summary_disable.yaml",
+      "RemediationStrings": [
+        {
+          "Language": "en_US",
+          "Title": "Disable Apple Intelligence Mail Summary. Value discovered was {ActualValue}.",
+          "Description": "See the linked mSCP rule for implementation and remediation guidance."
+        }
+      ]
+    },
+    {
+      "SettingName": "os_mdm_require",
+      "Operator": "IsEquals",
+      "DataType": "Int64",
+      "Operand": 1,
+      "MoreInfoUrl": "https://github.com/usnistgov/macos_security/blob/main/src/mscp/data/rules/os/os_mdm_require.yaml",
+      "RemediationStrings": [
+        {
+          "Language": "en_US",
+          "Title": "Enforce Enrollment in Mobile Device Management. Value discovered was {ActualValue}.",
+          "Description": "See the linked mSCP rule for implementation and remediation guidance."
+        }
+      ]
+    },
+    {
+      "SettingName": "os_messages_app_disable",
+      "Operator": "IsEquals",
+      "DataType": "String",
+      "Operand": "true",
+      "MoreInfoUrl": "https://github.com/usnistgov/macos_security/blob/main/src/mscp/data/rules/os/os_messages_app_disable.yaml",
+      "RemediationStrings": [
+        {
+          "Language": "en_US",
+          "Title": "Disable Messages App. Value discovered was {ActualValue}.",
+          "Description": "See the linked mSCP rule for implementation and remediation guidance."
+        }
+      ]
+    },
+    {
+      "SettingName": "os_mobile_file_integrity_enable",
+      "Operator": "IsEquals",
+      "DataType": "Int64",
+      "Operand": 0,
+      "MoreInfoUrl": "https://github.com/usnistgov/macos_security/blob/main/src/mscp/data/rules/os/os_mobile_file_integrity_enable.yaml",
+      "RemediationStrings": [
+        {
+          "Language": "en_US",
+          "Title": "Enable Apple Mobile File Integrity. Value discovered was {ActualValue}.",
+          "Description": "See the linked mSCP rule for implementation and remediation guidance."
+        }
+      ]
+    },
+    {
+      "SettingName": "os_network_storage_restriction",
+      "Operator": "IsEquals",
+      "DataType": "String",
+      "Operand": "Allowed",
+      "MoreInfoUrl": "https://github.com/usnistgov/macos_security/blob/main/src/mscp/data/rules/os/os_network_storage_restriction.yaml",
+      "RemediationStrings": [
+        {
+          "Language": "en_US",
+          "Title": "Network Storage Must Be Restricted. Value discovered was {ActualValue}.",
+          "Description": "See the linked mSCP rule for implementation and remediation guidance."
+        }
+      ]
+    },
+    {
+      "SettingName": "os_newsyslog_files_owner_group_configure",
+      "Operator": "IsEquals",
+      "DataType": "Int64",
+      "Operand": 0,
+      "MoreInfoUrl": "https://github.com/usnistgov/macos_security/blob/main/src/mscp/data/rules/os/os_newsyslog_files_owner_group_configure.yaml",
+      "RemediationStrings": [
+        {
+          "Language": "en_US",
+          "Title": "Configure System Log Files Owned by Root and Group to Wheel. Value discovered was {ActualValue}.",
+          "Description": "See the linked mSCP rule for implementation and remediation guidance."
+        }
+      ]
+    },
+    {
+      "SettingName": "os_newsyslog_files_permissions_configure",
+      "Operator": "IsEquals",
+      "DataType": "Int64",
+      "Operand": 0,
+      "MoreInfoUrl": "https://github.com/usnistgov/macos_security/blob/main/src/mscp/data/rules/os/os_newsyslog_files_permissions_configure.yaml",
+      "RemediationStrings": [
+        {
+          "Language": "en_US",
+          "Title": "Configure System Log Files to Mode 640 or Less Permissive. Value discovered was {ActualValue}.",
+          "Description": "See the linked mSCP rule for implementation and remediation guidance."
+        }
+      ]
+    },
+    {
+      "SettingName": "os_nfsd_disable",
+      "Operator": "IsEquals",
+      "DataType": "String",
+      "Operand": "pass",
+      "MoreInfoUrl": "https://github.com/usnistgov/macos_security/blob/main/src/mscp/data/rules/os/os_nfsd_disable.yaml",
+      "RemediationStrings": [
+        {
+          "Language": "en_US",
+          "Title": "Disable Network File System Service. Value discovered was {ActualValue}.",
+          "Description": "See the linked mSCP rule for implementation and remediation guidance."
+        }
+      ]
+    },
+    {
+      "SettingName": "os_notes_transcription_disable",
+      "Operator": "IsEquals",
+      "DataType": "String",
+      "Operand": "false",
+      "MoreInfoUrl": "https://github.com/usnistgov/macos_security/blob/main/src/mscp/data/rules/os/os_notes_transcription_disable.yaml",
+      "RemediationStrings": [
+        {
+          "Language": "en_US",
+          "Title": "Disable Apple Intelligence Notes Transcription. Value discovered was {ActualValue}.",
+          "Description": "See the linked mSCP rule for implementation and remediation guidance."
+        }
+      ]
+    },
+    {
+      "SettingName": "os_notes_transcription_summary_disable",
+      "Operator": "IsEquals",
+      "DataType": "String",
+      "Operand": "false",
+      "MoreInfoUrl": "https://github.com/usnistgov/macos_security/blob/main/src/mscp/data/rules/os/os_notes_transcription_summary_disable.yaml",
+      "RemediationStrings": [
+        {
+          "Language": "en_US",
+          "Title": "Disable Apple Intelligence Notes Transcription Summary. Value discovered was {ActualValue}.",
+          "Description": "See the linked mSCP rule for implementation and remediation guidance."
+        }
+      ]
+    },
+    {
+      "SettingName": "os_on_device_dictation_enforce",
+      "Operator": "IsEquals",
+      "DataType": "String",
+      "Operand": "true",
+      "MoreInfoUrl": "https://github.com/usnistgov/macos_security/blob/main/src/mscp/data/rules/os/os_on_device_dictation_enforce.yaml",
+      "RemediationStrings": [
+        {
+          "Language": "en_US",
+          "Title": "Enforce On Device Dictation. Value discovered was {ActualValue}.",
+          "Description": "See the linked mSCP rule for implementation and remediation guidance."
+        }
+      ]
+    },
+    {
+      "SettingName": "os_parental_controls_enable",
+      "Operator": "IsEquals",
+      "DataType": "String",
+      "Operand": "true",
+      "MoreInfoUrl": "https://github.com/usnistgov/macos_security/blob/main/src/mscp/data/rules/os/os_parental_controls_enable.yaml",
+      "RemediationStrings": [
+        {
+          "Language": "en_US",
+          "Title": "Enable Parental Controls. Value discovered was {ActualValue}.",
+          "Description": "See the linked mSCP rule for implementation and remediation guidance."
+        }
+      ]
+    },
+    {
+      "SettingName": "os_password_autofill_disable",
+      "Operator": "IsEquals",
+      "DataType": "String",
+      "Operand": "false",
+      "MoreInfoUrl": "https://github.com/usnistgov/macos_security/blob/main/src/mscp/data/rules/os/os_password_autofill_disable.yaml",
+      "RemediationStrings": [
+        {
+          "Language": "en_US",
+          "Title": "Disable Password Autofill. Value discovered was {ActualValue}.",
+          "Description": "See the linked mSCP rule for implementation and remediation guidance."
+        }
+      ]
+    },
+    {
+      "SettingName": "os_password_hint_remove",
+      "Operator": "IsEquals",
+      "DataType": "String",
+      "Operand": "PASS",
+      "MoreInfoUrl": "https://github.com/usnistgov/macos_security/blob/main/src/mscp/data/rules/os/os_password_hint_remove.yaml",
+      "RemediationStrings": [
+        {
+          "Language": "en_US",
+          "Title": "Remove Password Hint From User Accounts. Value discovered was {ActualValue}.",
+          "Description": "See the linked mSCP rule for implementation and remediation guidance."
+        }
+      ]
+    },
+    {
+      "SettingName": "os_password_proximity_disable",
+      "Operator": "IsEquals",
+      "DataType": "String",
+      "Operand": "false",
+      "MoreInfoUrl": "https://github.com/usnistgov/macos_security/blob/main/src/mscp/data/rules/os/os_password_proximity_disable.yaml",
+      "RemediationStrings": [
+        {
+          "Language": "en_US",
+          "Title": "Disable Proximity Based Password Sharing Requests. Value discovered was {ActualValue}.",
+          "Description": "See the linked mSCP rule for implementation and remediation guidance."
+        }
+      ]
+    },
+    {
+      "SettingName": "os_password_sharing_disable",
+      "Operator": "IsEquals",
+      "DataType": "String",
+      "Operand": "false",
+      "MoreInfoUrl": "https://github.com/usnistgov/macos_security/blob/main/src/mscp/data/rules/os/os_password_sharing_disable.yaml",
+      "RemediationStrings": [
+        {
+          "Language": "en_US",
+          "Title": "Disable Password Sharing. Value discovered was {ActualValue}.",
+          "Description": "See the linked mSCP rule for implementation and remediation guidance."
+        }
+      ]
+    },
+    {
+      "SettingName": "os_photos_enhanced_search_disable",
+      "Operator": "IsEquals",
+      "DataType": "String",
+      "Operand": "false",
+      "MoreInfoUrl": "https://github.com/usnistgov/macos_security/blob/main/src/mscp/data/rules/os/os_photos_enhanced_search_disable.yaml",
+      "RemediationStrings": [
+        {
+          "Language": "en_US",
+          "Title": "Disable Photos Enhanced Visual Search. Value discovered was {ActualValue}.",
+          "Description": "See the linked mSCP rule for implementation and remediation guidance."
+        }
+      ]
+    },
+    {
+      "SettingName": "os_policy_banner_loginwindow_enforce",
+      "Operator": "IsEquals",
+      "DataType": "Int64",
+      "Operand": 1,
+      "MoreInfoUrl": "https://github.com/usnistgov/macos_security/blob/main/src/mscp/data/rules/os/os_policy_banner_loginwindow_enforce.yaml",
+      "RemediationStrings": [
+        {
+          "Language": "en_US",
+          "Title": "Display Policy Banner at Login Window. Value discovered was {ActualValue}.",
+          "Description": "See the linked mSCP rule for implementation and remediation guidance."
+        }
+      ]
+    },
+    {
+      "SettingName": "os_policy_banner_ssh_configure",
+      "Operator": "IsEquals",
+      "DataType": "Int64",
+      "Operand": 1,
+      "MoreInfoUrl": "https://github.com/usnistgov/macos_security/blob/main/src/mscp/data/rules/os/os_policy_banner_ssh_configure.yaml",
+      "RemediationStrings": [
+        {
+          "Language": "en_US",
+          "Title": "Display Policy Banner at Remote Login. Value discovered was {ActualValue}.",
+          "Description": "See the linked mSCP rule for implementation and remediation guidance."
+        }
+      ]
+    },
+    {
+      "SettingName": "os_policy_banner_ssh_enforce",
+      "Operator": "IsEquals",
+      "DataType": "Int64",
+      "Operand": 1,
+      "MoreInfoUrl": "https://github.com/usnistgov/macos_security/blob/main/src/mscp/data/rules/os/os_policy_banner_ssh_enforce.yaml",
+      "RemediationStrings": [
+        {
+          "Language": "en_US",
+          "Title": "Enforce SSH to Display Policy Banner. Value discovered was {ActualValue}.",
+          "Description": "See the linked mSCP rule for implementation and remediation guidance."
+        }
+      ]
+    },
+    {
+      "SettingName": "os_power_nap_disable",
+      "Operator": "IsEquals",
+      "DataType": "Int64",
+      "Operand": 0,
+      "MoreInfoUrl": "https://github.com/usnistgov/macos_security/blob/main/src/mscp/data/rules/os/os_power_nap_disable.yaml",
+      "RemediationStrings": [
+        {
+          "Language": "en_US",
+          "Title": "Disable Power Nap. Value discovered was {ActualValue}.",
+          "Description": "See the linked mSCP rule for implementation and remediation guidance."
+        }
+      ]
+    },
+    {
+      "SettingName": "os_power_nap_enable",
+      "Operator": "IsEquals",
+      "DataType": "Int64",
+      "Operand": 1,
+      "MoreInfoUrl": "https://github.com/usnistgov/macos_security/blob/main/src/mscp/data/rules/os/os_power_nap_enable.yaml",
+      "RemediationStrings": [
+        {
+          "Language": "en_US",
+          "Title": "Enable Power Nap. Value discovered was {ActualValue}.",
+          "Description": "See the linked mSCP rule for implementation and remediation guidance."
+        }
+      ]
+    },
+    {
+      "SettingName": "os_privacy_setup_prompt_disable",
+      "Operator": "IsEquals",
+      "DataType": "String",
+      "Operand": "true",
+      "MoreInfoUrl": "https://github.com/usnistgov/macos_security/blob/main/src/mscp/data/rules/os/os_privacy_setup_prompt_disable.yaml",
+      "RemediationStrings": [
+        {
+          "Language": "en_US",
+          "Title": "Disable Privacy Setup Services During Setup Assistant. Value discovered was {ActualValue}.",
+          "Description": "See the linked mSCP rule for implementation and remediation guidance."
+        }
+      ]
+    },
+    {
+      "SettingName": "os_recovery_lock_enable",
+      "Operator": "IsEquals",
+      "DataType": "Int64",
+      "Operand": 1,
+      "MoreInfoUrl": "https://github.com/usnistgov/macos_security/blob/main/src/mscp/data/rules/os/os_recovery_lock_enable.yaml",
+      "RemediationStrings": [
+        {
+          "Language": "en_US",
+          "Title": "Enable Recovery Lock. Value discovered was {ActualValue}.",
+          "Description": "See the linked mSCP rule for implementation and remediation guidance."
+        }
+      ]
+    },
+    {
+      "SettingName": "os_removable_media_disable",
+      "Operator": "IsEquals",
+      "DataType": "String",
+      "Operand": "deny",
+      "MoreInfoUrl": "https://github.com/usnistgov/macos_security/blob/main/src/mscp/data/rules/os/os_removable_media_disable.yaml",
+      "RemediationStrings": [
+        {
+          "Language": "en_US",
+          "Title": "Disable Removable Storage Devices. Value discovered was {ActualValue}.",
+          "Description": "See the linked mSCP rule for implementation and remediation guidance."
+        }
+      ]
+    },
+    {
+      "SettingName": "os_root_disable",
+      "Operator": "IsEquals",
+      "DataType": "Int64",
+      "Operand": 0,
+      "MoreInfoUrl": "https://github.com/usnistgov/macos_security/blob/main/src/mscp/data/rules/os/os_root_disable.yaml",
+      "RemediationStrings": [
+        {
+          "Language": "en_US",
+          "Title": "Disable Root Login. Value discovered was {ActualValue}.",
+          "Description": "See the linked mSCP rule for implementation and remediation guidance."
+        }
+      ]
+    },
+    {
+      "SettingName": "os_safari_advertising_privacy_protection_enable",
+      "Operator": "IsEquals",
+      "DataType": "Int64",
+      "Operand": 1,
+      "MoreInfoUrl": "https://github.com/usnistgov/macos_security/blob/main/src/mscp/data/rules/os/os_safari_advertising_privacy_protection_enable.yaml",
+      "RemediationStrings": [
+        {
+          "Language": "en_US",
+          "Title": "Ensure Advertising Privacy Protection in Safari Is Enabled. Value discovered was {ActualValue}.",
+          "Description": "See the linked mSCP rule for implementation and remediation guidance."
+        }
+      ]
+    },
+    {
+      "SettingName": "os_safari_allow_javascript_disable",
+      "Operator": "IsEquals",
+      "DataType": "String",
+      "Operand": "false",
+      "MoreInfoUrl": "https://github.com/usnistgov/macos_security/blob/main/src/mscp/data/rules/os/os_safari_allow_javascript_disable.yaml",
+      "RemediationStrings": [
+        {
+          "Language": "en_US",
+          "Title": "Disable JavaScript in Safari. Value discovered was {ActualValue}.",
+          "Description": "See the linked mSCP rule for implementation and remediation guidance."
+        }
+      ]
+    },
+    {
+      "SettingName": "os_safari_clear_history_disable",
+      "Operator": "IsEquals",
+      "DataType": "String",
+      "Operand": "false",
+      "MoreInfoUrl": "https://github.com/usnistgov/macos_security/blob/main/src/mscp/data/rules/os/os_safari_clear_history_disable.yaml",
+      "RemediationStrings": [
+        {
+          "Language": "en_US",
+          "Title": "Ensure Clearing of Browsing History in Safari Is Disabled. Value discovered was {ActualValue}.",
+          "Description": "See the linked mSCP rule for implementation and remediation guidance."
+        }
+      ]
+    },
+    {
+      "SettingName": "os_safari_open_safe_downloads_disable",
+      "Operator": "IsEquals",
+      "DataType": "Int64",
+      "Operand": 1,
+      "MoreInfoUrl": "https://github.com/usnistgov/macos_security/blob/main/src/mscp/data/rules/os/os_safari_open_safe_downloads_disable.yaml",
+      "RemediationStrings": [
+        {
+          "Language": "en_US",
+          "Title": "Disable Automatic Opening of Safe Files in Safari. Value discovered was {ActualValue}.",
+          "Description": "See the linked mSCP rule for implementation and remediation guidance."
+        }
+      ]
+    },
+    {
+      "SettingName": "os_safari_prevent_cross-site_tracking_enable",
+      "Operator": "IsEquals",
+      "DataType": "Int64",
+      "Operand": 1,
+      "MoreInfoUrl": "https://github.com/usnistgov/macos_security/blob/main/src/mscp/data/rules/os/os_safari_prevent_cross-site_tracking_enable.yaml",
+      "RemediationStrings": [
+        {
+          "Language": "en_US",
+          "Title": "Ensure Prevent Cross-site Tracking in Safari Is Enabled. Value discovered was {ActualValue}.",
+          "Description": "See the linked mSCP rule for implementation and remediation guidance."
+        }
+      ]
+    },
+    {
+      "SettingName": "os_safari_private_browsing_disable",
+      "Operator": "IsEquals",
+      "DataType": "String",
+      "Operand": "false",
+      "MoreInfoUrl": "https://github.com/usnistgov/macos_security/blob/main/src/mscp/data/rules/os/os_safari_private_browsing_disable.yaml",
+      "RemediationStrings": [
+        {
+          "Language": "en_US",
+          "Title": "Ensure Private Browsing in Safari Is Disabled. Value discovered was {ActualValue}.",
+          "Description": "See the linked mSCP rule for implementation and remediation guidance."
+        }
+      ]
+    },
+    {
+      "SettingName": "os_safari_reader_summary_disable",
+      "Operator": "IsEquals",
+      "DataType": "String",
+      "Operand": "false",
+      "MoreInfoUrl": "https://github.com/usnistgov/macos_security/blob/main/src/mscp/data/rules/os/os_safari_reader_summary_disable.yaml",
+      "RemediationStrings": [
+        {
+          "Language": "en_US",
+          "Title": "Disable Apple Intelligence Safari Reader Summary. Value discovered was {ActualValue}.",
+          "Description": "See the linked mSCP rule for implementation and remediation guidance."
+        }
+      ]
+    },
+    {
+      "SettingName": "os_safari_show_full_website_address_enable",
+      "Operator": "IsEquals",
+      "DataType": "Int64",
+      "Operand": 1,
+      "MoreInfoUrl": "https://github.com/usnistgov/macos_security/blob/main/src/mscp/data/rules/os/os_safari_show_full_website_address_enable.yaml",
+      "RemediationStrings": [
+        {
+          "Language": "en_US",
+          "Title": "Ensure Show Full Website Address in Safari Is Enabled. Value discovered was {ActualValue}.",
+          "Description": "See the linked mSCP rule for implementation and remediation guidance."
+        }
+      ]
+    },
+    {
+      "SettingName": "os_safari_show_status_bar_enabled",
+      "Operator": "IsEquals",
+      "DataType": "Int64",
+      "Operand": 1,
+      "MoreInfoUrl": "https://github.com/usnistgov/macos_security/blob/main/src/mscp/data/rules/os/os_safari_show_status_bar_enabled.yaml",
+      "RemediationStrings": [
+        {
+          "Language": "en_US",
+          "Title": "Ensure Show Safari shows the Status Bar is Enabled. Value discovered was {ActualValue}.",
+          "Description": "See the linked mSCP rule for implementation and remediation guidance."
+        }
+      ]
+    },
+    {
+      "SettingName": "os_safari_warn_fraudulent_website_enable",
+      "Operator": "IsEquals",
+      "DataType": "Int64",
+      "Operand": 1,
+      "MoreInfoUrl": "https://github.com/usnistgov/macos_security/blob/main/src/mscp/data/rules/os/os_safari_warn_fraudulent_website_enable.yaml",
+      "RemediationStrings": [
+        {
+          "Language": "en_US",
+          "Title": "Ensure Warn When Visiting A Fraudulent Website in Safari Is Enabled. Value discovered was {ActualValue}.",
+          "Description": "See the linked mSCP rule for implementation and remediation guidance."
+        }
+      ]
+    },
+    {
+      "SettingName": "os_screensaver_loginwindow_enforce",
+      "Operator": "IsEquals",
+      "DataType": "String",
+      "Operand": "Tahoe",
+      "MoreInfoUrl": "https://github.com/usnistgov/macos_security/blob/main/src/mscp/data/rules/os/os_screensaver_loginwindow_enforce.yaml",
+      "RemediationStrings": [
+        {
+          "Language": "en_US",
+          "Title": "Enforce Screen Saver at Login Window. Value discovered was {ActualValue}.",
+          "Description": "See the linked mSCP rule for implementation and remediation guidance."
+        }
+      ]
+    },
+    {
+      "SettingName": "os_secure_boot_verify",
+      "Operator": "IsEquals",
+      "DataType": "Int64",
+      "Operand": 1,
+      "MoreInfoUrl": "https://github.com/usnistgov/macos_security/blob/main/src/mscp/data/rules/os/os_secure_boot_verify.yaml",
+      "RemediationStrings": [
+        {
+          "Language": "en_US",
+          "Title": "Ensure Secure Boot Level Set to Full. Value discovered was {ActualValue}.",
+          "Description": "See the linked mSCP rule for implementation and remediation guidance."
+        }
+      ]
+    },
+    {
+      "SettingName": "os_setup_assistant_filevault_enforce",
+      "Operator": "IsEquals",
+      "DataType": "Int64",
+      "Operand": 1,
+      "MoreInfoUrl": "https://github.com/usnistgov/macos_security/blob/main/src/mscp/data/rules/os/os_setup_assistant_filevault_enforce.yaml",
+      "RemediationStrings": [
+        {
+          "Language": "en_US",
+          "Title": "Enforce FileVault in Setup Assistant. Value discovered was {ActualValue}.",
+          "Description": "See the linked mSCP rule for implementation and remediation guidance."
+        }
+      ]
+    },
+    {
+      "SettingName": "os_sip_enable",
+      "Operator": "IsEquals",
+      "DataType": "Int64",
+      "Operand": 1,
+      "MoreInfoUrl": "https://github.com/usnistgov/macos_security/blob/main/src/mscp/data/rules/os/os_sip_enable.yaml",
+      "RemediationStrings": [
+        {
+          "Language": "en_US",
+          "Title": "Ensure System Integrity Protection is Enabled. Value discovered was {ActualValue}.",
+          "Description": "See the linked mSCP rule for implementation and remediation guidance."
+        }
+      ]
+    },
+    {
+      "SettingName": "os_siri_prompt_disable",
+      "Operator": "IsEquals",
+      "DataType": "String",
+      "Operand": "true",
+      "MoreInfoUrl": "https://github.com/usnistgov/macos_security/blob/main/src/mscp/data/rules/os/os_siri_prompt_disable.yaml",
+      "RemediationStrings": [
+        {
+          "Language": "en_US",
+          "Title": "Disable Siri Setup during Setup Assistant. Value discovered was {ActualValue}.",
+          "Description": "See the linked mSCP rule for implementation and remediation guidance."
+        }
+      ]
+    },
+    {
+      "SettingName": "os_skip_apple_intelligence_enable",
+      "Operator": "IsEquals",
+      "DataType": "String",
+      "Operand": "true",
+      "MoreInfoUrl": "https://github.com/usnistgov/macos_security/blob/main/src/mscp/data/rules/os/os_skip_apple_intelligence_enable.yaml",
+      "RemediationStrings": [
+        {
+          "Language": "en_US",
+          "Title": "Disable Apple Intelligence During Setup Assistant. Value discovered was {ActualValue}.",
+          "Description": "See the linked mSCP rule for implementation and remediation guidance."
+        }
+      ]
+    },
+    {
+      "SettingName": "os_skip_screen_time_prompt_enable",
+      "Operator": "IsEquals",
+      "DataType": "String",
+      "Operand": "true",
+      "MoreInfoUrl": "https://github.com/usnistgov/macos_security/blob/main/src/mscp/data/rules/os/os_skip_screen_time_prompt_enable.yaml",
+      "RemediationStrings": [
+        {
+          "Language": "en_US",
+          "Title": "Disable Screen Time Prompt During Setup Assistant. Value discovered was {ActualValue}.",
+          "Description": "See the linked mSCP rule for implementation and remediation guidance."
+        }
+      ]
+    },
+    {
+      "SettingName": "os_skip_unlock_with_watch_enable",
+      "Operator": "IsEquals",
+      "DataType": "String",
+      "Operand": "true",
+      "MoreInfoUrl": "https://github.com/usnistgov/macos_security/blob/main/src/mscp/data/rules/os/os_skip_unlock_with_watch_enable.yaml",
+      "RemediationStrings": [
+        {
+          "Language": "en_US",
+          "Title": "Disable Unlock with Apple Watch During Setup Assistant. Value discovered was {ActualValue}.",
+          "Description": "See the linked mSCP rule for implementation and remediation guidance."
+        }
+      ]
+    },
+    {
+      "SettingName": "os_sleep_and_display_sleep_apple_silicon_enable",
+      "Operator": "IsEquals",
+      "DataType": "Int64",
+      "Operand": 0,
+      "MoreInfoUrl": "https://github.com/usnistgov/macos_security/blob/main/src/mscp/data/rules/os/os_sleep_and_display_sleep_apple_silicon_enable.yaml",
+      "RemediationStrings": [
+        {
+          "Language": "en_US",
+          "Title": "Ensure Sleep and Display Sleep Is Enabled on Apple Silicon Devices. Value discovered was {ActualValue}.",
+          "Description": "See the linked mSCP rule for implementation and remediation guidance."
+        }
+      ]
+    },
+    {
+      "SettingName": "os_software_update_app_update_enforce",
+      "Operator": "IsEquals",
+      "DataType": "String",
+      "Operand": "true",
+      "MoreInfoUrl": "https://github.com/usnistgov/macos_security/blob/main/src/mscp/data/rules/os/os_software_update_app_update_enforce.yaml",
+      "RemediationStrings": [
+        {
+          "Language": "en_US",
+          "Title": "Enforce Software Update App Update Updates Automatically. Value discovered was {ActualValue}.",
+          "Description": "See the linked mSCP rule for implementation and remediation guidance."
+        }
+      ]
+    },
+    {
+      "SettingName": "os_software_update_deferral",
+      "Operator": "IsEquals",
+      "DataType": "String",
+      "Operand": "true",
+      "MoreInfoUrl": "https://github.com/usnistgov/macos_security/blob/main/src/mscp/data/rules/os/os_software_update_deferral.yaml",
+      "RemediationStrings": [
+        {
+          "Language": "en_US",
+          "Title": "Ensure Software Update Deferment Is Less Than or Equal to true Days. Value discovered was {ActualValue}.",
+          "Description": "See the linked mSCP rule for implementation and remediation guidance."
+        }
+      ]
+    },
+    {
+      "SettingName": "os_sshd_channel_timeout_configure",
+      "Operator": "IsEquals",
+      "DataType": "String",
+      "Operand": "900",
+      "MoreInfoUrl": "https://github.com/usnistgov/macos_security/blob/main/src/mscp/data/rules/os/os_sshd_channel_timeout_configure.yaml",
+      "RemediationStrings": [
+        {
+          "Language": "en_US",
+          "Title": "Configure SSHD Channel Timeout to 900. Value discovered was {ActualValue}.",
+          "Description": "See the linked mSCP rule for implementation and remediation guidance."
+        }
+      ]
+    },
+    {
+      "SettingName": "os_sshd_client_alive_count_max_configure",
+      "Operator": "IsEquals",
+      "DataType": "Int64",
+      "Operand": 0,
+      "MoreInfoUrl": "https://github.com/usnistgov/macos_security/blob/main/src/mscp/data/rules/os/os_sshd_client_alive_count_max_configure.yaml",
+      "RemediationStrings": [
+        {
+          "Language": "en_US",
+          "Title": "Configure SSHD ClientAliveCountMax to 0. Value discovered was {ActualValue}.",
+          "Description": "See the linked mSCP rule for implementation and remediation guidance."
+        }
+      ]
+    },
+    {
+      "SettingName": "os_sshd_client_alive_interval_configure",
+      "Operator": "IsEquals",
+      "DataType": "Int64",
+      "Operand": 900,
+      "MoreInfoUrl": "https://github.com/usnistgov/macos_security/blob/main/src/mscp/data/rules/os/os_sshd_client_alive_interval_configure.yaml",
+      "RemediationStrings": [
+        {
+          "Language": "en_US",
+          "Title": "Configure SSHD ClientAliveInterval to 900. Value discovered was {ActualValue}.",
+          "Description": "See the linked mSCP rule for implementation and remediation guidance."
+        }
+      ]
+    },
+    {
+      "SettingName": "os_sshd_fips_compliant",
+      "Operator": "IsEquals",
+      "DataType": "Int64",
+      "Operand": 7,
+      "MoreInfoUrl": "https://github.com/usnistgov/macos_security/blob/main/src/mscp/data/rules/os/os_sshd_fips_compliant.yaml",
+      "RemediationStrings": [
+        {
+          "Language": "en_US",
+          "Title": "Limit SSHD to FIPS Compliant Connections. Value discovered was {ActualValue}.",
+          "Description": "See the linked mSCP rule for implementation and remediation guidance."
+        }
+      ]
+    },
+    {
+      "SettingName": "os_sshd_login_grace_time_configure",
+      "Operator": "IsEquals",
+      "DataType": "Int64",
+      "Operand": 30,
+      "MoreInfoUrl": "https://github.com/usnistgov/macos_security/blob/main/src/mscp/data/rules/os/os_sshd_login_grace_time_configure.yaml",
+      "RemediationStrings": [
+        {
+          "Language": "en_US",
+          "Title": "Set Login Grace Time to 30. Value discovered was {ActualValue}.",
+          "Description": "See the linked mSCP rule for implementation and remediation guidance."
+        }
+      ]
+    },
+    {
+      "SettingName": "os_sshd_per_source_penalties_configure",
+      "Operator": "IsEquals",
+      "DataType": "String",
+      "Operand": "yes",
+      "MoreInfoUrl": "https://github.com/usnistgov/macos_security/blob/main/src/mscp/data/rules/os/os_sshd_per_source_penalties_configure.yaml",
+      "RemediationStrings": [
+        {
+          "Language": "en_US",
+          "Title": "Configure SSHD PerSourcePenalties. Value discovered was {ActualValue}.",
+          "Description": "See the linked mSCP rule for implementation and remediation guidance."
+        }
+      ]
+    },
+    {
+      "SettingName": "os_sshd_permit_root_login_configure",
+      "Operator": "IsEquals",
+      "DataType": "String",
+      "Operand": "no",
+      "MoreInfoUrl": "https://github.com/usnistgov/macos_security/blob/main/src/mscp/data/rules/os/os_sshd_permit_root_login_configure.yaml",
+      "RemediationStrings": [
+        {
+          "Language": "en_US",
+          "Title": "Disable Root Login for SSH. Value discovered was {ActualValue}.",
+          "Description": "See the linked mSCP rule for implementation and remediation guidance."
+        }
+      ]
+    },
+    {
+      "SettingName": "os_sshd_unused_connection_timeout_configure",
+      "Operator": "IsEquals",
+      "DataType": "Int64",
+      "Operand": 900,
+      "MoreInfoUrl": "https://github.com/usnistgov/macos_security/blob/main/src/mscp/data/rules/os/os_sshd_unused_connection_timeout_configure.yaml",
+      "RemediationStrings": [
+        {
+          "Language": "en_US",
+          "Title": "Configure SSHD Unused Connection Timeout to 900. Value discovered was {ActualValue}.",
+          "Description": "See the linked mSCP rule for implementation and remediation guidance."
+        }
+      ]
+    },
+    {
+      "SettingName": "os_sudo_log_enforce",
+      "Operator": "IsEquals",
+      "DataType": "Int64",
+      "Operand": 1,
+      "MoreInfoUrl": "https://github.com/usnistgov/macos_security/blob/main/src/mscp/data/rules/os/os_sudo_log_enforce.yaml",
+      "RemediationStrings": [
+        {
+          "Language": "en_US",
+          "Title": "Configure Sudo To Log Events. Value discovered was {ActualValue}.",
+          "Description": "See the linked mSCP rule for implementation and remediation guidance."
+        }
+      ]
+    },
+    {
+      "SettingName": "os_sudoers_timestamp_type_configure",
+      "Operator": "IsEquals",
+      "DataType": "String",
+      "Operand": "tty",
+      "MoreInfoUrl": "https://github.com/usnistgov/macos_security/blob/main/src/mscp/data/rules/os/os_sudoers_timestamp_type_configure.yaml",
+      "RemediationStrings": [
+        {
+          "Language": "en_US",
+          "Title": "Configure Sudoers Timestamp Type. Value discovered was {ActualValue}.",
+          "Description": "See the linked mSCP rule for implementation and remediation guidance."
+        }
+      ]
+    },
+    {
+      "SettingName": "os_system_read_only",
+      "Operator": "IsEquals",
+      "DataType": "String",
+      "Operand": "No",
+      "MoreInfoUrl": "https://github.com/usnistgov/macos_security/blob/main/src/mscp/data/rules/os/os_system_read_only.yaml",
+      "RemediationStrings": [
+        {
+          "Language": "en_US",
+          "Title": "Ensure System Volume is Read Only. Value discovered was {ActualValue}.",
+          "Description": "See the linked mSCP rule for implementation and remediation guidance."
+        }
+      ]
+    },
+    {
+      "SettingName": "os_system_wide_applications_configure",
+      "Operator": "IsEquals",
+      "DataType": "Int64",
+      "Operand": 0,
+      "MoreInfoUrl": "https://github.com/usnistgov/macos_security/blob/main/src/mscp/data/rules/os/os_system_wide_applications_configure.yaml",
+      "RemediationStrings": [
+        {
+          "Language": "en_US",
+          "Title": "Ensure Appropriate Permissions Are Enabled for System Wide Applications. Value discovered was {ActualValue}.",
+          "Description": "See the linked mSCP rule for implementation and remediation guidance."
+        }
+      ]
+    },
+    {
+      "SettingName": "os_terminal_secure_keyboard_enable",
+      "Operator": "IsEquals",
+      "DataType": "String",
+      "Operand": "true",
+      "MoreInfoUrl": "https://github.com/usnistgov/macos_security/blob/main/src/mscp/data/rules/os/os_terminal_secure_keyboard_enable.yaml",
+      "RemediationStrings": [
+        {
+          "Language": "en_US",
+          "Title": "Ensure Secure Keyboard Entry Terminal.app is Enabled. Value discovered was {ActualValue}.",
+          "Description": "See the linked mSCP rule for implementation and remediation guidance."
+        }
+      ]
+    },
+    {
+      "SettingName": "os_time_offset_limit_configure",
+      "Operator": "IsEquals",
+      "DataType": "String",
+      "Operand": "Yes",
+      "MoreInfoUrl": "https://github.com/usnistgov/macos_security/blob/main/src/mscp/data/rules/os/os_time_offset_limit_configure.yaml",
+      "RemediationStrings": [
+        {
+          "Language": "en_US",
+          "Title": "Ensure Time Offset Within Limits. Value discovered was {ActualValue}.",
+          "Description": "See the linked mSCP rule for implementation and remediation guidance."
+        }
+      ]
+    },
+    {
+      "SettingName": "os_time_server_enabled",
+      "Operator": "IsEquals",
+      "DataType": "Int64",
+      "Operand": 1,
+      "MoreInfoUrl": "https://github.com/usnistgov/macos_security/blob/main/src/mscp/data/rules/os/os_time_server_enabled.yaml",
+      "RemediationStrings": [
+        {
+          "Language": "en_US",
+          "Title": "Enable Time Synchronization Daemon. Value discovered was {ActualValue}.",
+          "Description": "See the linked mSCP rule for implementation and remediation guidance."
+        }
+      ]
+    },
+    {
+      "SettingName": "os_touchid_prompt_disable",
+      "Operator": "IsEquals",
+      "DataType": "String",
+      "Operand": "true",
+      "MoreInfoUrl": "https://github.com/usnistgov/macos_security/blob/main/src/mscp/data/rules/os/os_touchid_prompt_disable.yaml",
+      "RemediationStrings": [
+        {
+          "Language": "en_US",
+          "Title": "Disable TouchID Prompt during Setup Assistant. Value discovered was {ActualValue}.",
+          "Description": "See the linked mSCP rule for implementation and remediation guidance."
+        }
+      ]
+    },
+    {
+      "SettingName": "os_unlock_active_user_session_disable",
+      "Operator": "IsEquals",
+      "DataType": "String",
+      "Operand": "PASS",
+      "MoreInfoUrl": "https://github.com/usnistgov/macos_security/blob/main/src/mscp/data/rules/os/os_unlock_active_user_session_disable.yaml",
+      "RemediationStrings": [
+        {
+          "Language": "en_US",
+          "Title": "Disable Login to Other User's Active and Locked Sessions. Value discovered was {ActualValue}.",
+          "Description": "See the linked mSCP rule for implementation and remediation guidance."
+        }
+      ]
+    },
+    {
+      "SettingName": "os_user_app_installation_prohibit",
+      "Operator": "IsEquals",
+      "DataType": "String",
+      "Operand": "true",
+      "MoreInfoUrl": "https://github.com/usnistgov/macos_security/blob/main/src/mscp/data/rules/os/os_user_app_installation_prohibit.yaml",
+      "RemediationStrings": [
+        {
+          "Language": "en_US",
+          "Title": "Prohibit User Installation of Software into /Users/. Value discovered was {ActualValue}.",
+          "Description": "See the linked mSCP rule for implementation and remediation guidance."
+        }
+      ]
+    },
+    {
+      "SettingName": "os_world_writable_library_folder_configure",
+      "Operator": "IsEquals",
+      "DataType": "Int64",
+      "Operand": 0,
+      "MoreInfoUrl": "https://github.com/usnistgov/macos_security/blob/main/src/mscp/data/rules/os/os_world_writable_library_folder_configure.yaml",
+      "RemediationStrings": [
+        {
+          "Language": "en_US",
+          "Title": "Ensure No World Writable Files Exist in the Library Folder. Value discovered was {ActualValue}.",
+          "Description": "See the linked mSCP rule for implementation and remediation guidance."
+        }
+      ]
+    },
+    {
+      "SettingName": "os_world_writable_system_folder_configure",
+      "Operator": "IsEquals",
+      "DataType": "Int64",
+      "Operand": 0,
+      "MoreInfoUrl": "https://github.com/usnistgov/macos_security/blob/main/src/mscp/data/rules/os/os_world_writable_system_folder_configure.yaml",
+      "RemediationStrings": [
+        {
+          "Language": "en_US",
+          "Title": "Ensure No World Writable Files Exist in the System Folder. Value discovered was {ActualValue}.",
+          "Description": "See the linked mSCP rule for implementation and remediation guidance."
+        }
+      ]
+    },
+    {
+      "SettingName": "os_writing_tools_disable",
+      "Operator": "IsEquals",
+      "DataType": "String",
+      "Operand": "false",
+      "MoreInfoUrl": "https://github.com/usnistgov/macos_security/blob/main/src/mscp/data/rules/os/os_writing_tools_disable.yaml",
+      "RemediationStrings": [
+        {
+          "Language": "en_US",
+          "Title": "Disable Apple Intelligence Writing Tools. Value discovered was {ActualValue}.",
+          "Description": "See the linked mSCP rule for implementation and remediation guidance."
+        }
+      ]
+    },
+    {
+      "SettingName": "pwpolicy_account_inactivity_enforce",
+      "Operator": "IsEquals",
+      "DataType": "Int64",
+      "Operand": 35,
+      "MoreInfoUrl": "https://github.com/usnistgov/macos_security/blob/main/src/mscp/data/rules/pwpolicy/pwpolicy_account_inactivity_enforce.yaml",
+      "RemediationStrings": [
+        {
+          "Language": "en_US",
+          "Title": "Disable Accounts after 35 Days of Inactivity. Value discovered was {ActualValue}.",
+          "Description": "See the linked mSCP rule for implementation and remediation guidance."
+        }
+      ]
+    },
+    {
+      "SettingName": "pwpolicy_account_lockout_enforce",
+      "Operator": "IsEquals",
+      "DataType": "String",
+      "Operand": "pass",
+      "MoreInfoUrl": "https://github.com/usnistgov/macos_security/blob/main/src/mscp/data/rules/pwpolicy/pwpolicy_account_lockout_enforce.yaml",
+      "RemediationStrings": [
+        {
+          "Language": "en_US",
+          "Title": "Limit Consecutive Failed Login Attempts to pass. Value discovered was {ActualValue}.",
+          "Description": "See the linked mSCP rule for implementation and remediation guidance."
+        }
+      ]
+    },
+    {
+      "SettingName": "pwpolicy_account_lockout_timeout_enforce",
+      "Operator": "IsEquals",
+      "DataType": "String",
+      "Operand": "pass",
+      "MoreInfoUrl": "https://github.com/usnistgov/macos_security/blob/main/src/mscp/data/rules/pwpolicy/pwpolicy_account_lockout_timeout_enforce.yaml",
+      "RemediationStrings": [
+        {
+          "Language": "en_US",
+          "Title": "Set Account Lockout Time to pass Minutes. Value discovered was {ActualValue}.",
+          "Description": "See the linked mSCP rule for implementation and remediation guidance."
+        }
+      ]
+    },
+    {
+      "SettingName": "pwpolicy_alpha_numeric_enforce",
+      "Operator": "IsEquals",
+      "DataType": "Int64",
+      "Operand": 1,
+      "MoreInfoUrl": "https://github.com/usnistgov/macos_security/blob/main/src/mscp/data/rules/pwpolicy/pwpolicy_alpha_numeric_enforce.yaml",
+      "RemediationStrings": [
+        {
+          "Language": "en_US",
+          "Title": "Require Passwords Contain a Minimum of One Numeric Character. Value discovered was {ActualValue}.",
+          "Description": "See the linked mSCP rule for implementation and remediation guidance."
+        }
+      ]
+    },
+    {
+      "SettingName": "pwpolicy_custom_regex_enforce",
+      "Operator": "IsEquals",
+      "DataType": "String",
+      "Operand": "true",
+      "MoreInfoUrl": "https://github.com/usnistgov/macos_security/blob/main/src/mscp/data/rules/pwpolicy/pwpolicy_custom_regex_enforce.yaml",
+      "RemediationStrings": [
+        {
+          "Language": "en_US",
+          "Title": "Require Passwords to Match the Defined Custom Regular Expression. Value discovered was {ActualValue}.",
+          "Description": "See the linked mSCP rule for implementation and remediation guidance."
+        }
+      ]
+    },
+    {
+      "SettingName": "pwpolicy_history_enforce",
+      "Operator": "IsEquals",
+      "DataType": "String",
+      "Operand": "pass",
+      "MoreInfoUrl": "https://github.com/usnistgov/macos_security/blob/main/src/mscp/data/rules/pwpolicy/pwpolicy_history_enforce.yaml",
+      "RemediationStrings": [
+        {
+          "Language": "en_US",
+          "Title": "Prohibit Password Reuse for a Minimum of pass Generations. Value discovered was {ActualValue}.",
+          "Description": "See the linked mSCP rule for implementation and remediation guidance."
+        }
+      ]
+    },
+    {
+      "SettingName": "pwpolicy_lower_case_character_enforce",
+      "Operator": "IsEquals",
+      "DataType": "String",
+      "Operand": "pass",
+      "MoreInfoUrl": "https://github.com/usnistgov/macos_security/blob/main/src/mscp/data/rules/pwpolicy/pwpolicy_lower_case_character_enforce.yaml",
+      "RemediationStrings": [
+        {
+          "Language": "en_US",
+          "Title": "Require Passwords Contain a Minimum of One Lowercase Character. Value discovered was {ActualValue}.",
+          "Description": "See the linked mSCP rule for implementation and remediation guidance."
+        }
+      ]
+    },
+    {
+      "SettingName": "pwpolicy_max_lifetime_enforce",
+      "Operator": "IsEquals",
+      "DataType": "String",
+      "Operand": "pass",
+      "MoreInfoUrl": "https://github.com/usnistgov/macos_security/blob/main/src/mscp/data/rules/pwpolicy/pwpolicy_max_lifetime_enforce.yaml",
+      "RemediationStrings": [
+        {
+          "Language": "en_US",
+          "Title": "Restrict Maximum Password Lifetime to pass Days. Value discovered was {ActualValue}.",
+          "Description": "See the linked mSCP rule for implementation and remediation guidance."
+        }
+      ]
+    },
+    {
+      "SettingName": "pwpolicy_minimum_length_enforce",
+      "Operator": "IsEquals",
+      "DataType": "String",
+      "Operand": "pass",
+      "MoreInfoUrl": "https://github.com/usnistgov/macos_security/blob/main/src/mscp/data/rules/pwpolicy/pwpolicy_minimum_length_enforce.yaml",
+      "RemediationStrings": [
+        {
+          "Language": "en_US",
+          "Title": "Require a Minimum Password Length of pass Characters. Value discovered was {ActualValue}.",
+          "Description": "See the linked mSCP rule for implementation and remediation guidance."
+        }
+      ]
+    },
+    {
+      "SettingName": "pwpolicy_minimum_lifetime_enforce",
+      "Operator": "IsEquals",
+      "DataType": "String",
+      "Operand": "pass",
+      "MoreInfoUrl": "https://github.com/usnistgov/macos_security/blob/main/src/mscp/data/rules/pwpolicy/pwpolicy_minimum_lifetime_enforce.yaml",
+      "RemediationStrings": [
+        {
+          "Language": "en_US",
+          "Title": "Set Minimum Password Lifetime to pass Hours. Value discovered was {ActualValue}.",
+          "Description": "See the linked mSCP rule for implementation and remediation guidance."
+        }
+      ]
+    },
+    {
+      "SettingName": "pwpolicy_simple_sequence_disable",
+      "Operator": "IsEquals",
+      "DataType": "Int64",
+      "Operand": 1,
+      "MoreInfoUrl": "https://github.com/usnistgov/macos_security/blob/main/src/mscp/data/rules/pwpolicy/pwpolicy_simple_sequence_disable.yaml",
+      "RemediationStrings": [
+        {
+          "Language": "en_US",
+          "Title": "Prohibit Repeating, Ascending, and Descending Character Sequences. Value discovered was {ActualValue}.",
+          "Description": "See the linked mSCP rule for implementation and remediation guidance."
+        }
+      ]
+    },
+    {
+      "SettingName": "pwpolicy_special_character_enforce",
+      "Operator": "IsEquals",
+      "DataType": "String",
+      "Operand": "pass",
+      "MoreInfoUrl": "https://github.com/usnistgov/macos_security/blob/main/src/mscp/data/rules/pwpolicy/pwpolicy_special_character_enforce.yaml",
+      "RemediationStrings": [
+        {
+          "Language": "en_US",
+          "Title": "Require Passwords Contain a Minimum of One Special Character. Value discovered was {ActualValue}.",
+          "Description": "See the linked mSCP rule for implementation and remediation guidance."
+        }
+      ]
+    },
+    {
+      "SettingName": "pwpolicy_temporary_or_emergency_accounts_disable",
+      "Operator": "IsEquals",
+      "DataType": "String",
+      "Operand": "the user's applied password policy",
+      "MoreInfoUrl": "https://github.com/usnistgov/macos_security/blob/main/src/mscp/data/rules/pwpolicy/pwpolicy_temporary_or_emergency_accounts_disable.yaml",
+      "RemediationStrings": [
+        {
+          "Language": "en_US",
+          "Title": "Automatically Remove or Disable Temporary or Emergency User Accounts within 72 Hours. Value discovered was {ActualValue}.",
+          "Description": "See the linked mSCP rule for implementation and remediation guidance."
+        }
+      ]
+    },
+    {
+      "SettingName": "pwpolicy_upper_case_character_enforce",
+      "Operator": "IsEquals",
+      "DataType": "String",
+      "Operand": "pass",
+      "MoreInfoUrl": "https://github.com/usnistgov/macos_security/blob/main/src/mscp/data/rules/pwpolicy/pwpolicy_upper_case_character_enforce.yaml",
+      "RemediationStrings": [
+        {
+          "Language": "en_US",
+          "Title": "Require Passwords Contain a Minimum of One Uppercase Character. Value discovered was {ActualValue}.",
+          "Description": "See the linked mSCP rule for implementation and remediation guidance."
+        }
+      ]
+    },
+    {
+      "SettingName": "system_settings_airplay_receiver_disable",
+      "Operator": "IsEquals",
+      "DataType": "String",
+      "Operand": "false",
+      "MoreInfoUrl": "https://github.com/usnistgov/macos_security/blob/main/src/mscp/data/rules/system_settings/system_settings_airplay_receiver_disable.yaml",
+      "RemediationStrings": [
+        {
+          "Language": "en_US",
+          "Title": "Disable Airplay Receiver. Value discovered was {ActualValue}.",
+          "Description": "See the linked mSCP rule for implementation and remediation guidance."
+        }
+      ]
+    },
+    {
+      "SettingName": "system_settings_apple_watch_unlock_disable",
+      "Operator": "IsEquals",
+      "DataType": "String",
+      "Operand": "false",
+      "MoreInfoUrl": "https://github.com/usnistgov/macos_security/blob/main/src/mscp/data/rules/system_settings/system_settings_apple_watch_unlock_disable.yaml",
+      "RemediationStrings": [
+        {
+          "Language": "en_US",
+          "Title": "Prevent Apple Watch from Terminating a Session Lock. Value discovered was {ActualValue}.",
+          "Description": "See the linked mSCP rule for implementation and remediation guidance."
+        }
+      ]
+    },
+    {
+      "SettingName": "system_settings_automatic_login_disable",
+      "Operator": "IsEquals",
+      "DataType": "String",
+      "Operand": "true",
+      "MoreInfoUrl": "https://github.com/usnistgov/macos_security/blob/main/src/mscp/data/rules/system_settings/system_settings_automatic_login_disable.yaml",
+      "RemediationStrings": [
+        {
+          "Language": "en_US",
+          "Title": "Disable Unattended or Automatic Logon to the System. Value discovered was {ActualValue}.",
+          "Description": "See the linked mSCP rule for implementation and remediation guidance."
+        }
+      ]
+    },
+    {
+      "SettingName": "system_settings_automatic_logout_enforce",
+      "Operator": "IsEquals",
+      "DataType": "Int64",
+      "Operand": 86400,
+      "MoreInfoUrl": "https://github.com/usnistgov/macos_security/blob/main/src/mscp/data/rules/system_settings/system_settings_automatic_logout_enforce.yaml",
+      "RemediationStrings": [
+        {
+          "Language": "en_US",
+          "Title": "Enforce Auto Logout After 86400 Seconds of Inactivity. Value discovered was {ActualValue}.",
+          "Description": "See the linked mSCP rule for implementation and remediation guidance."
+        }
+      ]
+    }
+  ]
+}
