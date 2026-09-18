@@ -8,8 +8,8 @@
 #   https://docs.github.com/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-code-owners
 
 # Whole-repository owners (at least two direct owners).
-*            @theneiljohnson  @CKunze-MSFT
+*            @beflamm  @iye-ms
 
 # Example of path-scoped ownership (optional):
-# /macOS/      @theneiljohnson  @CKunze-MSFT
-# /Linux/      @theneiljohnson  @CKunze-MSFT
+# /macOS/      @beflamm  @iye-ms
+# /Linux/      @beflamm  @iye-ms
