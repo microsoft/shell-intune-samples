@@ -1,7 +1,7 @@
 ---
 applyTo: "**"
 authority: canon
-owner: "@theneiljohnson, @CKunze-MSFT (Intune CXE)"
+owner: "@beflamm, @iye-ms (Intune CXE)"
 last-reviewed: 2026-07-03
 audience: agents
 ---
