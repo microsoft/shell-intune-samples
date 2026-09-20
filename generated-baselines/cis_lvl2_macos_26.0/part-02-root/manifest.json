@@ -1,0 +1,26 @@
+{
+  "baseline": "cis_lvl2_macos_26.0",
+  "part": "part-02-root",
+  "context": "root",
+  "ruleCount": 18,
+  "settingNames": [
+    "system_settings_password_hints_disable",
+    "system_settings_personalized_advertising_disable",
+    "system_settings_printer_sharing_disable",
+    "system_settings_rae_disable",
+    "system_settings_remote_management_disable",
+    "system_settings_screensaver_ask_for_password_delay_enforce",
+    "system_settings_screensaver_password_enforce",
+    "system_settings_screensaver_timeout_enforce",
+    "system_settings_siri_disable",
+    "system_settings_smbd_disable",
+    "system_settings_software_update_download_enforce",
+    "system_settings_ssh_disable",
+    "system_settings_system_wide_preferences_configure",
+    "system_settings_time_machine_auto_backup_enable",
+    "system_settings_time_machine_encrypted_configure",
+    "system_settings_time_server_configure",
+    "system_settings_time_server_enforce",
+    "system_settings_wake_network_access_disable"
+  ]
+}

@@ -1,0 +1,9 @@
+{
+  "baseline": "cmmc_lvl1_macos_26.0",
+  "part": "part-02-user",
+  "context": "user",
+  "ruleCount": 1,
+  "settingNames": [
+    "system_settings_bluetooth_sharing_disable"
+  ]
+}

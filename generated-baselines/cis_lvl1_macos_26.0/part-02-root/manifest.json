@@ -1,0 +1,9 @@
+{
+  "baseline": "cis_lvl1_macos_26.0",
+  "part": "part-02-root",
+  "context": "root",
+  "ruleCount": 1,
+  "settingNames": [
+    "system_settings_wake_network_access_disable"
+  ]
+}
