@@ -1,0 +1,172 @@
+{
+  "Rules": [
+    {
+      "SettingName": "AutomaticLoginDisabled",
+      "Operator": "IsEquals",
+      "DataType": "Boolean",
+      "Operand": true,
+      "MoreInfoUrl": "https://github.com/usnistgov/macos_security",
+      "RemediationStrings": [
+        {
+          "Language": "en_US",
+          "Title": "Automatic logon must be disabled. Value discovered was {ActualValue}.",
+          "Description": "Disable automatic login in macOS Login Options or enforce it with a configuration profile."
+        }
+      ]
+    },
+    {
+      "SettingName": "AutomaticLogoutEnabled",
+      "Operator": "IsEquals",
+      "DataType": "Boolean",
+      "Operand": true,
+      "MoreInfoUrl": "https://github.com/usnistgov/macos_security",
+      "RemediationStrings": [
+        {
+          "Language": "en_US",
+          "Title": "Automatic logout must be enabled. Value discovered was {ActualValue}.",
+          "Description": "Configure automatic logout so inactive sessions are terminated instead of remaining open indefinitely."
+        }
+      ]
+    },
+    {
+      "SettingName": "AutomaticLogoutSeconds",
+      "Operator": "LessEquals",
+      "DataType": "Int64",
+      "Operand": 86400,
+      "MoreInfoUrl": "https://github.com/usnistgov/macos_security",
+      "RemediationStrings": [
+        {
+          "Language": "en_US",
+          "Title": "Automatic logout must be 86400 seconds or less. Value discovered was {ActualValue}.",
+          "Description": "Reduce the automatic logout delay or enforce it with a profile."
+        }
+      ]
+    },
+    {
+      "SettingName": "SshPasswordAuthenticationDisabled",
+      "Operator": "IsEquals",
+      "DataType": "Boolean",
+      "Operand": true,
+      "MoreInfoUrl": "https://github.com/usnistgov/macos_security",
+      "RemediationStrings": [
+        {
+          "Language": "en_US",
+          "Title": "SSH password authentication must be disabled. Value discovered was {ActualValue}.",
+          "Description": "Disable PasswordAuthentication and KbdInteractiveAuthentication in sshd configuration."
+        }
+      ]
+    },
+    {
+      "SettingName": "FailedLoginAttemptsMaximum",
+      "Operator": "LessEquals",
+      "DataType": "Int64",
+      "Operand": 6,
+      "MoreInfoUrl": "https://github.com/usnistgov/macos_security",
+      "RemediationStrings": [
+        {
+          "Language": "en_US",
+          "Title": "Failed logon attempts must be limited to 6 or fewer. Value discovered was {ActualValue}.",
+          "Description": "Configure account lockout policy so brute-force attempts are limited."
+        }
+      ]
+    },
+    {
+      "SettingName": "FailedLoginLockoutMinutes",
+      "Operator": "GreaterEquals",
+      "DataType": "Int64",
+      "Operand": 15,
+      "MoreInfoUrl": "https://github.com/usnistgov/macos_security",
+      "RemediationStrings": [
+        {
+          "Language": "en_US",
+          "Title": "Failed logon lockout time must be at least 15 minutes. Value discovered was {ActualValue}.",
+          "Description": "Increase the lockout duration after consecutive failed sign-in attempts."
+        }
+      ]
+    },
+    {
+      "SettingName": "PasswordHistoryDepth",
+      "Operator": "GreaterEquals",
+      "DataType": "Int64",
+      "Operand": 5,
+      "MoreInfoUrl": "https://github.com/usnistgov/macos_security",
+      "RemediationStrings": [
+        {
+          "Language": "en_US",
+          "Title": "Password history must retain at least 5 previous passwords. Value discovered was {ActualValue}.",
+          "Description": "Configure password history so recent passwords cannot be reused."
+        }
+      ]
+    },
+    {
+      "SettingName": "FirewallEnabled",
+      "Operator": "IsEquals",
+      "DataType": "Boolean",
+      "Operand": true,
+      "MoreInfoUrl": "https://github.com/usnistgov/macos_security",
+      "RemediationStrings": [
+        {
+          "Language": "en_US",
+          "Title": "The macOS Application Firewall must be enabled. Value discovered was {ActualValue}.",
+          "Description": "Enable the Application Firewall in macOS or enforce it with a profile."
+        }
+      ]
+    },
+    {
+      "SettingName": "FirewallStealthModeEnabled",
+      "Operator": "IsEquals",
+      "DataType": "Boolean",
+      "Operand": true,
+      "MoreInfoUrl": "https://github.com/usnistgov/macos_security",
+      "RemediationStrings": [
+        {
+          "Language": "en_US",
+          "Title": "Firewall stealth mode must be enabled. Value discovered was {ActualValue}.",
+          "Description": "Enable stealth mode so the Mac does not respond to probing requests."
+        }
+      ]
+    },
+    {
+      "SettingName": "ScreenSharingDisabled",
+      "Operator": "IsEquals",
+      "DataType": "Boolean",
+      "Operand": true,
+      "MoreInfoUrl": "https://github.com/usnistgov/macos_security",
+      "RemediationStrings": [
+        {
+          "Language": "en_US",
+          "Title": "Screen Sharing and Apple Remote Desktop must be disabled. Value discovered was {ActualValue}.",
+          "Description": "Disable the screen sharing service unless there is an approved remote support exception."
+        }
+      ]
+    },
+    {
+      "SettingName": "PrinterSharingDisabled",
+      "Operator": "IsEquals",
+      "DataType": "Boolean",
+      "Operand": true,
+      "MoreInfoUrl": "https://github.com/usnistgov/macos_security",
+      "RemediationStrings": [
+        {
+          "Language": "en_US",
+          "Title": "Printer sharing must be disabled. Value discovered was {ActualValue}.",
+          "Description": "Turn off printer sharing and clear shared-printer flags on local printers."
+        }
+      ]
+    },
+    {
+      "SettingName": "GatekeeperEnabled",
+      "Operator": "IsEquals",
+      "DataType": "Boolean",
+      "Operand": true,
+      "MoreInfoUrl": "https://github.com/usnistgov/macos_security",
+      "RemediationStrings": [
+        {
+          "Language": "en_US",
+          "Title": "Gatekeeper must be enabled. Value discovered was {ActualValue}.",
+          "Description": "Enable Gatekeeper so only trusted signed applications are allowed to run by default."
+        }
+      ]
+    }
+  ]
+}

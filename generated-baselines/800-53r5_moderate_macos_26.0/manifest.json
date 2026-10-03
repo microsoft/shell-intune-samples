@@ -1,0 +1,28 @@
+{
+  "baseline": "800-53r5_moderate_macos_26.0",
+  "title": "macOS 26.0: Security Configuration - 800-53r5_moderate",
+  "description": "This guide describes the actions to take when securing a macOS 26.0 system against the 800-53r5_moderate security benchmark.\n\nInformation System Security Officers and benchmark creators can use this catalog of settings in order to assist them in security benchmark creation. This list is a catalog, not a checklist or benchmark, and satisfaction of every item is not likely to be possible or sensible in many operational scenarios.",
+  "supportedRuleCount": 167,
+  "unsupportedRuleCount": 47,
+  "partCount": 3,
+  "parts": [
+    {
+      "name": "part-01-root",
+      "context": "root",
+      "ruleCount": 90,
+      "path": "generated-baselines/800-53r5_moderate_macos_26.0/part-01-root"
+    },
+    {
+      "name": "part-02-root",
+      "context": "root",
+      "ruleCount": 76,
+      "path": "generated-baselines/800-53r5_moderate_macos_26.0/part-02-root"
+    },
+    {
+      "name": "part-03-user",
+      "context": "user",
+      "ruleCount": 1,
+      "path": "generated-baselines/800-53r5_moderate_macos_26.0/part-03-user"
+    }
+  ]
+}

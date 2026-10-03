@@ -1,0 +1,466 @@
+{
+  "Rules": [
+    {
+      "SettingName": "system_settings_bluetooth_disable",
+      "Operator": "IsEquals",
+      "DataType": "String",
+      "Operand": "true",
+      "MoreInfoUrl": "https://github.com/usnistgov/macos_security/blob/main/src/mscp/data/rules/system_settings/system_settings_bluetooth_disable.yaml",
+      "RemediationStrings": [
+        {
+          "Language": "en_US",
+          "Title": "Disable Bluetooth When no Approved Device is Connected. Value discovered was {ActualValue}.",
+          "Description": "See the linked mSCP rule for implementation and remediation guidance."
+        }
+      ]
+    },
+    {
+      "SettingName": "system_settings_bluetooth_settings_disable",
+      "Operator": "IsEquals",
+      "DataType": "Int64",
+      "Operand": 1,
+      "MoreInfoUrl": "https://github.com/usnistgov/macos_security/blob/main/src/mscp/data/rules/system_settings/system_settings_bluetooth_settings_disable.yaml",
+      "RemediationStrings": [
+        {
+          "Language": "en_US",
+          "Title": "Disable the Bluetooth System Settings Pane. Value discovered was {ActualValue}.",
+          "Description": "See the linked mSCP rule for implementation and remediation guidance."
+        }
+      ]
+    },
+    {
+      "SettingName": "system_settings_content_caching_disable",
+      "Operator": "IsEquals",
+      "DataType": "String",
+      "Operand": "false",
+      "MoreInfoUrl": "https://github.com/usnistgov/macos_security/blob/main/src/mscp/data/rules/system_settings/system_settings_content_caching_disable.yaml",
+      "RemediationStrings": [
+        {
+          "Language": "en_US",
+          "Title": "Disable Content Caching Service. Value discovered was {ActualValue}.",
+          "Description": "See the linked mSCP rule for implementation and remediation guidance."
+        }
+      ]
+    },
+    {
+      "SettingName": "system_settings_critical_update_install_enforce",
+      "Operator": "IsEquals",
+      "DataType": "String",
+      "Operand": "true",
+      "MoreInfoUrl": "https://github.com/usnistgov/macos_security/blob/main/src/mscp/data/rules/system_settings/system_settings_critical_update_install_enforce.yaml",
+      "RemediationStrings": [
+        {
+          "Language": "en_US",
+          "Title": "Enforce Critical Security Updates to be Installed. Value discovered was {ActualValue}.",
+          "Description": "See the linked mSCP rule for implementation and remediation guidance."
+        }
+      ]
+    },
+    {
+      "SettingName": "system_settings_diagnostics_reports_disable",
+      "Operator": "IsEquals",
+      "DataType": "String",
+      "Operand": "true",
+      "MoreInfoUrl": "https://github.com/usnistgov/macos_security/blob/main/src/mscp/data/rules/system_settings/system_settings_diagnostics_reports_disable.yaml",
+      "RemediationStrings": [
+        {
+          "Language": "en_US",
+          "Title": "Disable Sending Diagnostic and Usage Data to Apple. Value discovered was {ActualValue}.",
+          "Description": "See the linked mSCP rule for implementation and remediation guidance."
+        }
+      ]
+    },
+    {
+      "SettingName": "system_settings_external_intelligence_disable",
+      "Operator": "IsEquals",
+      "DataType": "String",
+      "Operand": "false",
+      "MoreInfoUrl": "https://github.com/usnistgov/macos_security/blob/main/src/mscp/data/rules/system_settings/system_settings_external_intelligence_disable.yaml",
+      "RemediationStrings": [
+        {
+          "Language": "en_US",
+          "Title": "Disable External Intelligence Integrations. Value discovered was {ActualValue}.",
+          "Description": "See the linked mSCP rule for implementation and remediation guidance."
+        }
+      ]
+    },
+    {
+      "SettingName": "system_settings_external_intelligence_sign_in_disable",
+      "Operator": "IsEquals",
+      "DataType": "String",
+      "Operand": "false",
+      "MoreInfoUrl": "https://github.com/usnistgov/macos_security/blob/main/src/mscp/data/rules/system_settings/system_settings_external_intelligence_sign_in_disable.yaml",
+      "RemediationStrings": [
+        {
+          "Language": "en_US",
+          "Title": "Disable External Intelligence Integration Sign In. Value discovered was {ActualValue}.",
+          "Description": "See the linked mSCP rule for implementation and remediation guidance."
+        }
+      ]
+    },
+    {
+      "SettingName": "system_settings_filevault_enforce",
+      "Operator": "IsEquals",
+      "DataType": "Int64",
+      "Operand": 1,
+      "MoreInfoUrl": "https://github.com/usnistgov/macos_security/blob/main/src/mscp/data/rules/system_settings/system_settings_filevault_enforce.yaml",
+      "RemediationStrings": [
+        {
+          "Language": "en_US",
+          "Title": "Enforce FileVault. Value discovered was {ActualValue}.",
+          "Description": "See the linked mSCP rule for implementation and remediation guidance."
+        }
+      ]
+    },
+    {
+      "SettingName": "system_settings_find_my_disable",
+      "Operator": "IsEquals",
+      "DataType": "String",
+      "Operand": "true",
+      "MoreInfoUrl": "https://github.com/usnistgov/macos_security/blob/main/src/mscp/data/rules/system_settings/system_settings_find_my_disable.yaml",
+      "RemediationStrings": [
+        {
+          "Language": "en_US",
+          "Title": "Disable Find My Service. Value discovered was {ActualValue}.",
+          "Description": "See the linked mSCP rule for implementation and remediation guidance."
+        }
+      ]
+    },
+    {
+      "SettingName": "system_settings_firewall_enable",
+      "Operator": "IsEquals",
+      "DataType": "String",
+      "Operand": "true",
+      "MoreInfoUrl": "https://github.com/usnistgov/macos_security/blob/main/src/mscp/data/rules/system_settings/system_settings_firewall_enable.yaml",
+      "RemediationStrings": [
+        {
+          "Language": "en_US",
+          "Title": "Enable macOS Application Firewall. Value discovered was {ActualValue}.",
+          "Description": "See the linked mSCP rule for implementation and remediation guidance."
+        }
+      ]
+    },
+    {
+      "SettingName": "system_settings_firewall_stealth_mode_enable",
+      "Operator": "IsEquals",
+      "DataType": "String",
+      "Operand": "true",
+      "MoreInfoUrl": "https://github.com/usnistgov/macos_security/blob/main/src/mscp/data/rules/system_settings/system_settings_firewall_stealth_mode_enable.yaml",
+      "RemediationStrings": [
+        {
+          "Language": "en_US",
+          "Title": "Enable Firewall Stealth Mode. Value discovered was {ActualValue}.",
+          "Description": "See the linked mSCP rule for implementation and remediation guidance."
+        }
+      ]
+    },
+    {
+      "SettingName": "system_settings_guest_account_disable",
+      "Operator": "IsEquals",
+      "DataType": "String",
+      "Operand": "true",
+      "MoreInfoUrl": "https://github.com/usnistgov/macos_security/blob/main/src/mscp/data/rules/system_settings/system_settings_guest_account_disable.yaml",
+      "RemediationStrings": [
+        {
+          "Language": "en_US",
+          "Title": "Disable the Guest Account. Value discovered was {ActualValue}.",
+          "Description": "See the linked mSCP rule for implementation and remediation guidance."
+        }
+      ]
+    },
+    {
+      "SettingName": "system_settings_improve_assistive_voice_disable",
+      "Operator": "IsEquals",
+      "DataType": "String",
+      "Operand": "false",
+      "MoreInfoUrl": "https://github.com/usnistgov/macos_security/blob/main/src/mscp/data/rules/system_settings/system_settings_improve_assistive_voice_disable.yaml",
+      "RemediationStrings": [
+        {
+          "Language": "en_US",
+          "Title": "Disable Sending Audio Recordings and Transcripts to Apple. Value discovered was {ActualValue}.",
+          "Description": "See the linked mSCP rule for implementation and remediation guidance."
+        }
+      ]
+    },
+    {
+      "SettingName": "system_settings_improve_search_disable",
+      "Operator": "IsEquals",
+      "DataType": "Int64",
+      "Operand": 2,
+      "MoreInfoUrl": "https://github.com/usnistgov/macos_security/blob/main/src/mscp/data/rules/system_settings/system_settings_improve_search_disable.yaml",
+      "RemediationStrings": [
+        {
+          "Language": "en_US",
+          "Title": "Disable Improve Search Information to Apple. Value discovered was {ActualValue}.",
+          "Description": "See the linked mSCP rule for implementation and remediation guidance."
+        }
+      ]
+    },
+    {
+      "SettingName": "system_settings_improve_siri_dictation_disable",
+      "Operator": "IsEquals",
+      "DataType": "Int64",
+      "Operand": 2,
+      "MoreInfoUrl": "https://github.com/usnistgov/macos_security/blob/main/src/mscp/data/rules/system_settings/system_settings_improve_siri_dictation_disable.yaml",
+      "RemediationStrings": [
+        {
+          "Language": "en_US",
+          "Title": "Disable Improve Siri and Dictation Information to Apple. Value discovered was {ActualValue}.",
+          "Description": "See the linked mSCP rule for implementation and remediation guidance."
+        }
+      ]
+    },
+    {
+      "SettingName": "system_settings_internet_accounts_disable",
+      "Operator": "IsEquals",
+      "DataType": "Int64",
+      "Operand": 1,
+      "MoreInfoUrl": "https://github.com/usnistgov/macos_security/blob/main/src/mscp/data/rules/system_settings/system_settings_internet_accounts_disable.yaml",
+      "RemediationStrings": [
+        {
+          "Language": "en_US",
+          "Title": "Disable the Internet Accounts System Preference Pane. Value discovered was {ActualValue}.",
+          "Description": "See the linked mSCP rule for implementation and remediation guidance."
+        }
+      ]
+    },
+    {
+      "SettingName": "system_settings_internet_sharing_disable",
+      "Operator": "IsEquals",
+      "DataType": "String",
+      "Operand": "true",
+      "MoreInfoUrl": "https://github.com/usnistgov/macos_security/blob/main/src/mscp/data/rules/system_settings/system_settings_internet_sharing_disable.yaml",
+      "RemediationStrings": [
+        {
+          "Language": "en_US",
+          "Title": "Disable Internet Sharing. Value discovered was {ActualValue}.",
+          "Description": "See the linked mSCP rule for implementation and remediation guidance."
+        }
+      ]
+    },
+    {
+      "SettingName": "system_settings_media_sharing_disabled",
+      "Operator": "IsEquals",
+      "DataType": "String",
+      "Operand": "true",
+      "MoreInfoUrl": "https://github.com/usnistgov/macos_security/blob/main/src/mscp/data/rules/system_settings/system_settings_media_sharing_disabled.yaml",
+      "RemediationStrings": [
+        {
+          "Language": "en_US",
+          "Title": "Disable Media Sharing. Value discovered was {ActualValue}.",
+          "Description": "See the linked mSCP rule for implementation and remediation guidance."
+        }
+      ]
+    },
+    {
+      "SettingName": "system_settings_personalized_advertising_disable",
+      "Operator": "IsEquals",
+      "DataType": "String",
+      "Operand": "false",
+      "MoreInfoUrl": "https://github.com/usnistgov/macos_security/blob/main/src/mscp/data/rules/system_settings/system_settings_personalized_advertising_disable.yaml",
+      "RemediationStrings": [
+        {
+          "Language": "en_US",
+          "Title": "Disable Personalized Advertising. Value discovered was {ActualValue}.",
+          "Description": "See the linked mSCP rule for implementation and remediation guidance."
+        }
+      ]
+    },
+    {
+      "SettingName": "system_settings_printer_sharing_disable",
+      "Operator": "IsEquals",
+      "DataType": "Int64",
+      "Operand": 1,
+      "MoreInfoUrl": "https://github.com/usnistgov/macos_security/blob/main/src/mscp/data/rules/system_settings/system_settings_printer_sharing_disable.yaml",
+      "RemediationStrings": [
+        {
+          "Language": "en_US",
+          "Title": "Disable Printer Sharing. Value discovered was {ActualValue}.",
+          "Description": "See the linked mSCP rule for implementation and remediation guidance."
+        }
+      ]
+    },
+    {
+      "SettingName": "system_settings_rae_disable",
+      "Operator": "IsEquals",
+      "DataType": "Int64",
+      "Operand": 1,
+      "MoreInfoUrl": "https://github.com/usnistgov/macos_security/blob/main/src/mscp/data/rules/system_settings/system_settings_rae_disable.yaml",
+      "RemediationStrings": [
+        {
+          "Language": "en_US",
+          "Title": "Disable Remote Apple Events. Value discovered was {ActualValue}.",
+          "Description": "See the linked mSCP rule for implementation and remediation guidance."
+        }
+      ]
+    },
+    {
+      "SettingName": "system_settings_remote_management_disable",
+      "Operator": "IsEquals",
+      "DataType": "Int64",
+      "Operand": 1,
+      "MoreInfoUrl": "https://github.com/usnistgov/macos_security/blob/main/src/mscp/data/rules/system_settings/system_settings_remote_management_disable.yaml",
+      "RemediationStrings": [
+        {
+          "Language": "en_US",
+          "Title": "Disable Remote Management. Value discovered was {ActualValue}.",
+          "Description": "See the linked mSCP rule for implementation and remediation guidance."
+        }
+      ]
+    },
+    {
+      "SettingName": "system_settings_security_update_install",
+      "Operator": "IsEquals",
+      "DataType": "Int64",
+      "Operand": 1,
+      "MoreInfoUrl": "https://github.com/usnistgov/macos_security/blob/main/src/mscp/data/rules/system_settings/system_settings_security_update_install.yaml",
+      "RemediationStrings": [
+        {
+          "Language": "en_US",
+          "Title": "Enforce Automatic Installs of Available Security Updates using DDM.. Value discovered was {ActualValue}.",
+          "Description": "See the linked mSCP rule for implementation and remediation guidance."
+        }
+      ]
+    },
+    {
+      "SettingName": "system_settings_siri_disable",
+      "Operator": "IsEquals",
+      "DataType": "String",
+      "Operand": "false",
+      "MoreInfoUrl": "https://github.com/usnistgov/macos_security/blob/main/src/mscp/data/rules/system_settings/system_settings_siri_disable.yaml",
+      "RemediationStrings": [
+        {
+          "Language": "en_US",
+          "Title": "Disable Siri. Value discovered was {ActualValue}.",
+          "Description": "See the linked mSCP rule for implementation and remediation guidance."
+        }
+      ]
+    },
+    {
+      "SettingName": "system_settings_siri_settings_disable",
+      "Operator": "IsEquals",
+      "DataType": "Int64",
+      "Operand": 1,
+      "MoreInfoUrl": "https://github.com/usnistgov/macos_security/blob/main/src/mscp/data/rules/system_settings/system_settings_siri_settings_disable.yaml",
+      "RemediationStrings": [
+        {
+          "Language": "en_US",
+          "Title": "Disable the System Settings Pane for Siri. Value discovered was {ActualValue}.",
+          "Description": "See the linked mSCP rule for implementation and remediation guidance."
+        }
+      ]
+    },
+    {
+      "SettingName": "system_settings_smbd_disable",
+      "Operator": "IsEquals",
+      "DataType": "Int64",
+      "Operand": 1,
+      "MoreInfoUrl": "https://github.com/usnistgov/macos_security/blob/main/src/mscp/data/rules/system_settings/system_settings_smbd_disable.yaml",
+      "RemediationStrings": [
+        {
+          "Language": "en_US",
+          "Title": "Disable Server Message Block Sharing. Value discovered was {ActualValue}.",
+          "Description": "See the linked mSCP rule for implementation and remediation guidance."
+        }
+      ]
+    },
+    {
+      "SettingName": "system_settings_ssh_disable",
+      "Operator": "IsEquals",
+      "DataType": "String",
+      "Operand": "PASS",
+      "MoreInfoUrl": "https://github.com/usnistgov/macos_security/blob/main/src/mscp/data/rules/system_settings/system_settings_ssh_disable.yaml",
+      "RemediationStrings": [
+        {
+          "Language": "en_US",
+          "Title": "Disable SSH Server for Remote Access Sessions. Value discovered was {ActualValue}.",
+          "Description": "See the linked mSCP rule for implementation and remediation guidance."
+        }
+      ]
+    },
+    {
+      "SettingName": "system_settings_ssh_enable",
+      "Operator": "IsEquals",
+      "DataType": "Int64",
+      "Operand": 1,
+      "MoreInfoUrl": "https://github.com/usnistgov/macos_security/blob/main/src/mscp/data/rules/system_settings/system_settings_ssh_enable.yaml",
+      "RemediationStrings": [
+        {
+          "Language": "en_US",
+          "Title": "Enable SSH Server for Remote Access Sessions. Value discovered was {ActualValue}.",
+          "Description": "See the linked mSCP rule for implementation and remediation guidance."
+        }
+      ]
+    },
+    {
+      "SettingName": "system_settings_system_wide_preferences_configure",
+      "Operator": "IsEquals",
+      "DataType": "Int64",
+      "Operand": 1,
+      "MoreInfoUrl": "https://github.com/usnistgov/macos_security/blob/main/src/mscp/data/rules/system_settings/system_settings_system_wide_preferences_configure.yaml",
+      "RemediationStrings": [
+        {
+          "Language": "en_US",
+          "Title": "Require Administrator Password to Modify System-Wide Preferences. Value discovered was {ActualValue}.",
+          "Description": "See the linked mSCP rule for implementation and remediation guidance."
+        }
+      ]
+    },
+    {
+      "SettingName": "system_settings_touch_id_settings_disable",
+      "Operator": "IsEquals",
+      "DataType": "Int64",
+      "Operand": 1,
+      "MoreInfoUrl": "https://github.com/usnistgov/macos_security/blob/main/src/mscp/data/rules/system_settings/system_settings_touch_id_settings_disable.yaml",
+      "RemediationStrings": [
+        {
+          "Language": "en_US",
+          "Title": "Disable the Touch ID System Settings Pane. Value discovered was {ActualValue}.",
+          "Description": "See the linked mSCP rule for implementation and remediation guidance."
+        }
+      ]
+    },
+    {
+      "SettingName": "system_settings_wallet_applepay_settings_disable",
+      "Operator": "IsEquals",
+      "DataType": "Int64",
+      "Operand": 1,
+      "MoreInfoUrl": "https://github.com/usnistgov/macos_security/blob/main/src/mscp/data/rules/system_settings/system_settings_wallet_applepay_settings_disable.yaml",
+      "RemediationStrings": [
+        {
+          "Language": "en_US",
+          "Title": "Disable the System Settings Pane for Wallet and Apple Pay. Value discovered was {ActualValue}.",
+          "Description": "See the linked mSCP rule for implementation and remediation guidance."
+        }
+      ]
+    },
+    {
+      "SettingName": "system_settings_wifi_disable",
+      "Operator": "IsEquals",
+      "DataType": "Int64",
+      "Operand": 1,
+      "MoreInfoUrl": "https://github.com/usnistgov/macos_security/blob/main/src/mscp/data/rules/system_settings/system_settings_wifi_disable.yaml",
+      "RemediationStrings": [
+        {
+          "Language": "en_US",
+          "Title": "Disable Wi-Fi Interface. Value discovered was {ActualValue}.",
+          "Description": "See the linked mSCP rule for implementation and remediation guidance."
+        }
+      ]
+    },
+    {
+      "SettingName": "os_secure_enclave",
+      "Operator": "IsEquals",
+      "DataType": "Int64",
+      "Operand": 0,
+      "MoreInfoUrl": "https://github.com/usnistgov/macos_security/blob/main/src/mscp/data/rules/os/os_secure_enclave.yaml",
+      "RemediationStrings": [
+        {
+          "Language": "en_US",
+          "Title": "Protected Storage for Cryptographic Keys. Value discovered was {ActualValue}.",
+          "Description": "See the linked mSCP rule for implementation and remediation guidance."
+        }
+      ]
+    }
+  ]
+}

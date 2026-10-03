@@ -1,0 +1,32 @@
+{
+  "Rules": [
+    {
+      "SettingName": "IntuneAgentInstalled",
+      "Operator": "IsEquals",
+      "DataType": "String",
+      "Operand": "true",
+      "MoreInfoUrl": "https://learn.microsoft.com/en-us/intune/device-security/compliance/custom-settings",
+      "RemediationStrings": [
+        {
+          "Language": "en_US",
+          "Title": "The Microsoft Intune Agent must be installed. Value discovered was {ActualValue}.",
+          "Description": "Install the Microsoft Intune Agent on the Mac."
+        }
+      ]
+    },
+    {
+      "SettingName": "IntuneAgentVersion",
+      "Operator": "NotEquals",
+      "DataType": "String",
+      "Operand": "not installed",
+      "MoreInfoUrl": "https://learn.microsoft.com/en-us/intune/device-security/compliance/custom-settings",
+      "RemediationStrings": [
+        {
+          "Language": "en_US",
+          "Title": "The Microsoft Intune Agent must be installed. Value discovered was {ActualValue}.",
+          "Description": "Install the Microsoft Intune Agent on the Mac."
+        }
+      ]
+    }
+  ]
+}

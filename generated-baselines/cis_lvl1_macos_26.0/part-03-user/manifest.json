@@ -1,0 +1,10 @@
+{
+  "baseline": "cis_lvl1_macos_26.0",
+  "part": "part-03-user",
+  "context": "user",
+  "ruleCount": 2,
+  "settingNames": [
+    "system_settings_bluetooth_sharing_disable",
+    "system_settings_hot_corners_secure"
+  ]
+}

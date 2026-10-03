@@ -1,0 +1,68 @@
+[
+  {
+    "ruleId": "audit_flags_fm_configure",
+    "section": "Auditing",
+    "sourcePath": "src/mscp/data/rules/audit/audit_flags_fm_configure.yaml",
+    "reason": "No check block"
+  },
+  {
+    "ruleId": "os_ssh_fips_compliant",
+    "section": "Operating System",
+    "sourcePath": "src/mscp/data/rules/os/os_ssh_fips_compliant.yaml",
+    "reason": "No check block"
+  },
+  {
+    "ruleId": "os_ssh_server_alive_count_max_configure",
+    "section": "Operating System",
+    "sourcePath": "src/mscp/data/rules/os/os_ssh_server_alive_count_max_configure.yaml",
+    "reason": "No check block"
+  },
+  {
+    "ruleId": "os_ssh_server_alive_interval_configure",
+    "section": "Operating System",
+    "sourcePath": "src/mscp/data/rules/os/os_ssh_server_alive_interval_configure.yaml",
+    "reason": "No check block"
+  },
+  {
+    "ruleId": "os_sudo_timeout_configure",
+    "section": "Operating System",
+    "sourcePath": "src/mscp/data/rules/os/os_sudo_timeout_configure.yaml",
+    "reason": "No check block"
+  },
+  {
+    "ruleId": "os_tftpd_disable",
+    "section": "Operating System",
+    "sourcePath": "src/mscp/data/rules/os/os_tftpd_disable.yaml",
+    "reason": "No check block"
+  },
+  {
+    "ruleId": "os_uucp_disable",
+    "section": "Operating System",
+    "sourcePath": "src/mscp/data/rules/os/os_uucp_disable.yaml",
+    "reason": "No check block"
+  },
+  {
+    "ruleId": "system_settings_location_services_disable",
+    "section": "System Settings",
+    "sourcePath": "src/mscp/data/rules/system_settings/system_settings_location_services_disable.yaml",
+    "reason": "No check block"
+  },
+  {
+    "ruleId": "system_settings_screen_sharing_disable",
+    "section": "System Settings",
+    "sourcePath": "src/mscp/data/rules/system_settings/system_settings_screen_sharing_disable.yaml",
+    "reason": "No check block"
+  },
+  {
+    "ruleId": "system_settings_softwareupdate_current",
+    "section": "System Settings",
+    "sourcePath": "src/mscp/data/rules/system_settings/system_settings_softwareupdate_current.yaml",
+    "reason": "No check block"
+  },
+  {
+    "ruleId": "os_supported_operating_system",
+    "section": "Inherent",
+    "sourcePath": "src/mscp/data/rules/os/os_supported_operating_system.yaml",
+    "reason": "No check block"
+  }
+]

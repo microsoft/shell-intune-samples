@@ -1,0 +1,44 @@
+[
+  {
+    "ruleId": "os_sudo_timeout_configure",
+    "section": "Operating System",
+    "sourcePath": "src/mscp/data/rules/os/os_sudo_timeout_configure.yaml",
+    "reason": "No check block"
+  },
+  {
+    "ruleId": "os_tftpd_disable",
+    "section": "Operating System",
+    "sourcePath": "src/mscp/data/rules/os/os_tftpd_disable.yaml",
+    "reason": "No check block"
+  },
+  {
+    "ruleId": "system_settings_loginwindow_loginwindowtext_enable",
+    "section": "System Settings",
+    "sourcePath": "src/mscp/data/rules/system_settings/system_settings_loginwindow_loginwindowtext_enable.yaml",
+    "reason": "Unsupported result type: base64"
+  },
+  {
+    "ruleId": "system_settings_screen_sharing_disable",
+    "section": "System Settings",
+    "sourcePath": "src/mscp/data/rules/system_settings/system_settings_screen_sharing_disable.yaml",
+    "reason": "No check block"
+  },
+  {
+    "ruleId": "system_settings_softwareupdate_current",
+    "section": "System Settings",
+    "sourcePath": "src/mscp/data/rules/system_settings/system_settings_softwareupdate_current.yaml",
+    "reason": "No check block"
+  },
+  {
+    "ruleId": "audit_off_load_records",
+    "section": "Permanent",
+    "sourcePath": "src/mscp/data/rules/audit/audit_off_load_records.yaml",
+    "reason": "No macOS enforcement_info"
+  },
+  {
+    "ruleId": "os_provide_automated_account_management",
+    "section": "Permanent",
+    "sourcePath": "src/mscp/data/rules/os/os_provide_automated_account_management.yaml",
+    "reason": "No macOS enforcement_info"
+  }
+]

@@ -1,0 +1,122 @@
+[
+  {
+    "ruleId": "audit_flags_fm_failed_configure",
+    "section": "Auditing",
+    "sourcePath": "src/mscp/data/rules/audit/audit_flags_fm_failed_configure.yaml",
+    "reason": "No check block"
+  },
+  {
+    "ruleId": "os_sudo_timeout_configure",
+    "section": "Operating System",
+    "sourcePath": "src/mscp/data/rules/os/os_sudo_timeout_configure.yaml",
+    "reason": "No check block"
+  },
+  {
+    "ruleId": "os_tftpd_disable",
+    "section": "Operating System",
+    "sourcePath": "src/mscp/data/rules/os/os_tftpd_disable.yaml",
+    "reason": "No check block"
+  },
+  {
+    "ruleId": "os_uucp_disable",
+    "section": "Operating System",
+    "sourcePath": "src/mscp/data/rules/os/os_uucp_disable.yaml",
+    "reason": "No check block"
+  },
+  {
+    "ruleId": "system_settings_location_services_enable",
+    "section": "System Settings",
+    "sourcePath": "src/mscp/data/rules/system_settings/system_settings_location_services_enable.yaml",
+    "reason": "No check block"
+  },
+  {
+    "ruleId": "system_settings_loginwindow_loginwindowtext_enable",
+    "section": "System Settings",
+    "sourcePath": "src/mscp/data/rules/system_settings/system_settings_loginwindow_loginwindowtext_enable.yaml",
+    "reason": "Unsupported result type: base64"
+  },
+  {
+    "ruleId": "system_settings_screen_sharing_disable",
+    "section": "System Settings",
+    "sourcePath": "src/mscp/data/rules/system_settings/system_settings_screen_sharing_disable.yaml",
+    "reason": "No check block"
+  },
+  {
+    "ruleId": "system_settings_softwareupdate_current",
+    "section": "System Settings",
+    "sourcePath": "src/mscp/data/rules/system_settings/system_settings_softwareupdate_current.yaml",
+    "reason": "No check block"
+  },
+  {
+    "ruleId": "os_logical_access",
+    "section": "Inherent",
+    "sourcePath": "src/mscp/data/rules/os/os_logical_access.yaml",
+    "reason": "No check block"
+  },
+  {
+    "ruleId": "os_malicious_code_prevention",
+    "section": "Inherent",
+    "sourcePath": "src/mscp/data/rules/os/os_malicious_code_prevention.yaml",
+    "reason": "No check block"
+  },
+  {
+    "ruleId": "os_mfa_network_access",
+    "section": "Inherent",
+    "sourcePath": "src/mscp/data/rules/os/os_mfa_network_access.yaml",
+    "reason": "No check block"
+  },
+  {
+    "ruleId": "os_obscure_password",
+    "section": "Inherent",
+    "sourcePath": "src/mscp/data/rules/os/os_obscure_password.yaml",
+    "reason": "No check block"
+  },
+  {
+    "ruleId": "os_store_encrypted_passwords",
+    "section": "Inherent",
+    "sourcePath": "src/mscp/data/rules/os/os_store_encrypted_passwords.yaml",
+    "reason": "No check block"
+  },
+  {
+    "ruleId": "os_unique_identification",
+    "section": "Inherent",
+    "sourcePath": "src/mscp/data/rules/os/os_unique_identification.yaml",
+    "reason": "No check block"
+  },
+  {
+    "ruleId": "pwpolicy_force_password_change",
+    "section": "Inherent",
+    "sourcePath": "src/mscp/data/rules/pwpolicy/pwpolicy_force_password_change.yaml",
+    "reason": "No check block"
+  },
+  {
+    "ruleId": "audit_off_load_records",
+    "section": "Permanent",
+    "sourcePath": "src/mscp/data/rules/audit/audit_off_load_records.yaml",
+    "reason": "No macOS enforcement_info"
+  },
+  {
+    "ruleId": "os_auth_peripherals",
+    "section": "Permanent",
+    "sourcePath": "src/mscp/data/rules/os/os_auth_peripherals.yaml",
+    "reason": "No macOS enforcement_info"
+  },
+  {
+    "ruleId": "os_secure_name_resolution",
+    "section": "Permanent",
+    "sourcePath": "src/mscp/data/rules/os/os_secure_name_resolution.yaml",
+    "reason": "No macOS enforcement_info"
+  },
+  {
+    "ruleId": "os_access_control_mobile_devices",
+    "section": "Not Applicable",
+    "sourcePath": "src/mscp/data/rules/os/os_access_control_mobile_devices.yaml",
+    "reason": "No macOS enforcement_info"
+  },
+  {
+    "ruleId": "supplemental_cis_manual",
+    "section": "Supplemental",
+    "sourcePath": "src/mscp/data/rules/supplemental/supplemental_cis_manual.yaml",
+    "reason": "No macOS enforcement_info"
+  }
+]

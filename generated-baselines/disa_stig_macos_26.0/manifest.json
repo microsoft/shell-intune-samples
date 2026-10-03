@@ -1,0 +1,28 @@
+{
+  "baseline": "disa_stig_macos_26.0",
+  "title": "macOS 26.0: Security Configuration - disa_stig",
+  "description": "This guide describes the actions to take when securing a macOS 26.0 system against the disa_stig security benchmark.",
+  "supportedRuleCount": 149,
+  "unsupportedRuleCount": 11,
+  "partCount": 3,
+  "parts": [
+    {
+      "name": "part-01-root",
+      "context": "root",
+      "ruleCount": 90,
+      "path": "generated-baselines/disa_stig_macos_26.0/part-01-root"
+    },
+    {
+      "name": "part-02-root",
+      "context": "root",
+      "ruleCount": 58,
+      "path": "generated-baselines/disa_stig_macos_26.0/part-02-root"
+    },
+    {
+      "name": "part-03-user",
+      "context": "user",
+      "ruleCount": 1,
+      "path": "generated-baselines/disa_stig_macos_26.0/part-03-user"
+    }
+  ]
+}

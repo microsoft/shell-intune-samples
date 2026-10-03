@@ -1,0 +1,16 @@
+{
+  "baseline": "nlmapgov_base_macos_26.0",
+  "title": "macOS 26.0: Security Configuration - nlmapgov_base",
+  "description": "This guide describes the actions to take when securing a macOS 26.0 system against the nlmapgov_base security benchmark.",
+  "supportedRuleCount": 36,
+  "unsupportedRuleCount": 3,
+  "partCount": 1,
+  "parts": [
+    {
+      "name": "part-01-root",
+      "context": "root",
+      "ruleCount": 36,
+      "path": "generated-baselines/nlmapgov_base_macos_26.0/part-01-root"
+    }
+  ]
+}

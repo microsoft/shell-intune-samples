@@ -1,0 +1,44 @@
+[
+  {
+    "ruleId": "audit_flags_fm_failed_configure",
+    "section": "Auditing",
+    "sourcePath": "src/mscp/data/rules/audit/audit_flags_fm_failed_configure.yaml",
+    "reason": "No check block"
+  },
+  {
+    "ruleId": "os_sudo_timeout_configure",
+    "section": "Operating System",
+    "sourcePath": "src/mscp/data/rules/os/os_sudo_timeout_configure.yaml",
+    "reason": "No check block"
+  },
+  {
+    "ruleId": "system_settings_location_services_enable",
+    "section": "System Settings",
+    "sourcePath": "src/mscp/data/rules/system_settings/system_settings_location_services_enable.yaml",
+    "reason": "No check block"
+  },
+  {
+    "ruleId": "system_settings_loginwindow_loginwindowtext_enable",
+    "section": "System Settings",
+    "sourcePath": "src/mscp/data/rules/system_settings/system_settings_loginwindow_loginwindowtext_enable.yaml",
+    "reason": "Unsupported result type: base64"
+  },
+  {
+    "ruleId": "system_settings_screen_sharing_disable",
+    "section": "System Settings",
+    "sourcePath": "src/mscp/data/rules/system_settings/system_settings_screen_sharing_disable.yaml",
+    "reason": "No check block"
+  },
+  {
+    "ruleId": "system_settings_softwareupdate_current",
+    "section": "System Settings",
+    "sourcePath": "src/mscp/data/rules/system_settings/system_settings_softwareupdate_current.yaml",
+    "reason": "No check block"
+  },
+  {
+    "ruleId": "supplemental_cis_manual",
+    "section": "Supplemental",
+    "sourcePath": "src/mscp/data/rules/supplemental/supplemental_cis_manual.yaml",
+    "reason": "No macOS enforcement_info"
+  }
+]
