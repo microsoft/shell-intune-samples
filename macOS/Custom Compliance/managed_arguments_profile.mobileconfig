@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>PayloadContent</key>
+	<array>
+		<dict>
+			<key>PayloadIdentifier</key>
+			<string>intune_compliance.86053766-ac38-41ba-a7cf-7e2f53878415</string>
+			<key>PayloadType</key>
+			<string>org.intune_compliance_lvl1_macos_26.0.audit</string>
+			<key>PayloadUUID</key>
+			<string>86053766-ac38-41ba-a7cf-7e2f53878415</string>
+			<key>PayloadVersion</key>
+			<integer>1</integer>
+			<key>compliance_args</key>
+			<array>
+				<string>--check</string>
+				<string>--quiet=2</string>
+				<string>--json</string>
+			</array>
+		</dict>
+	</array>
+	<key>PayloadDescription</key>
+	<string>Configuration Profile for Running Managed Arguments</string>
+	<key>PayloadDisplayName</key>
+	<string>mSCP Managed Arguments</string>
+	<key>PayloadIdentifier</key>
+	<string>mscp.compliance.managedarguments</string>
+	<key>PayloadOrganization</key>
+	<string>macOS Security Compliance Project</string>
+	<key>PayloadScope</key>
+	<string>System</string>
+	<key>PayloadType</key>
+	<string>Configuration</string>
+	<key>PayloadUUID</key>
+	<string>135d56bd-4b61-49e0-a79b-ed13652fc8c5</string>
+	<key>PayloadVersion</key>
+	<integer>1</integer>
+</dict>
+</plist>
