@@ -308,7 +308,7 @@ case "$DISTRO" in
     fi
     ;;
 
-"rhel"|"almalinux")
+"rhel"|"almalinux"|"rocky")
     MAJOR="${RELEASE%%.*}"
 
     # Validate supported release
