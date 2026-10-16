@@ -81,7 +81,7 @@ trap cleanup EXIT INT TERM
 
 # Function to log messages with consistent timestamp format
 log_message() {
-    echo "$(date '+%Y-%m-%d %H:%M:%S') | $1"
+    echo "$(date '+%Y-%m-%d %H:%M:%S') | $1" >&2
 }
 
 # Function to log errors to stderr
@@ -213,7 +213,7 @@ get_access_token() {
     
     # Extract HTTP code and body
     local http_code=$(echo "${response}" | tail -n1)
-    local body=$(echo "${response}" | head -n-1)
+    local body=$(echo "${response}" | sed '$d')
     
     # Extract token from response
     local token
