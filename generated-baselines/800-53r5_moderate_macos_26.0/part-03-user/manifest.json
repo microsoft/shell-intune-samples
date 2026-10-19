@@ -1,0 +1,9 @@
+{
+  "baseline": "800-53r5_moderate_macos_26.0",
+  "part": "part-03-user",
+  "context": "user",
+  "ruleCount": 1,
+  "settingNames": [
+    "system_settings_bluetooth_sharing_disable"
+  ]
+}

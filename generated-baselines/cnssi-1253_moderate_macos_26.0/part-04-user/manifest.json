@@ -1,0 +1,10 @@
+{
+  "baseline": "cnssi-1253_moderate_macos_26.0",
+  "part": "part-04-user",
+  "context": "user",
+  "ruleCount": 2,
+  "settingNames": [
+    "system_settings_bluetooth_sharing_disable",
+    "system_settings_hot_corners_secure"
+  ]
+}

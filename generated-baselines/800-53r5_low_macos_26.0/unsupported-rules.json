@@ -1,0 +1,182 @@
+[
+  {
+    "ruleId": "audit_flags_fm_failed_configure",
+    "section": "Auditing",
+    "sourcePath": "src/mscp/data/rules/audit/audit_flags_fm_failed_configure.yaml",
+    "reason": "No check block"
+  },
+  {
+    "ruleId": "os_ssh_fips_compliant",
+    "section": "Operating System",
+    "sourcePath": "src/mscp/data/rules/os/os_ssh_fips_compliant.yaml",
+    "reason": "No check block"
+  },
+  {
+    "ruleId": "os_sudo_timeout_configure",
+    "section": "Operating System",
+    "sourcePath": "src/mscp/data/rules/os/os_sudo_timeout_configure.yaml",
+    "reason": "No check block"
+  },
+  {
+    "ruleId": "os_tftpd_disable",
+    "section": "Operating System",
+    "sourcePath": "src/mscp/data/rules/os/os_tftpd_disable.yaml",
+    "reason": "No check block"
+  },
+  {
+    "ruleId": "os_uucp_disable",
+    "section": "Operating System",
+    "sourcePath": "src/mscp/data/rules/os/os_uucp_disable.yaml",
+    "reason": "No check block"
+  },
+  {
+    "ruleId": "system_settings_location_services_disable",
+    "section": "System Settings",
+    "sourcePath": "src/mscp/data/rules/system_settings/system_settings_location_services_disable.yaml",
+    "reason": "No check block"
+  },
+  {
+    "ruleId": "system_settings_screen_sharing_disable",
+    "section": "System Settings",
+    "sourcePath": "src/mscp/data/rules/system_settings/system_settings_screen_sharing_disable.yaml",
+    "reason": "No check block"
+  },
+  {
+    "ruleId": "system_settings_softwareupdate_current",
+    "section": "System Settings",
+    "sourcePath": "src/mscp/data/rules/system_settings/system_settings_softwareupdate_current.yaml",
+    "reason": "No check block"
+  },
+  {
+    "ruleId": "os_application_sandboxing",
+    "section": "Inherent",
+    "sourcePath": "src/mscp/data/rules/os/os_application_sandboxing.yaml",
+    "reason": "No check block"
+  },
+  {
+    "ruleId": "os_implement_cryptography",
+    "section": "Inherent",
+    "sourcePath": "src/mscp/data/rules/os/os_implement_cryptography.yaml",
+    "reason": "No check block"
+  },
+  {
+    "ruleId": "os_logical_access",
+    "section": "Inherent",
+    "sourcePath": "src/mscp/data/rules/os/os_logical_access.yaml",
+    "reason": "No check block"
+  },
+  {
+    "ruleId": "os_malicious_code_prevention",
+    "section": "Inherent",
+    "sourcePath": "src/mscp/data/rules/os/os_malicious_code_prevention.yaml",
+    "reason": "No check block"
+  },
+  {
+    "ruleId": "os_obscure_password",
+    "section": "Inherent",
+    "sourcePath": "src/mscp/data/rules/os/os_obscure_password.yaml",
+    "reason": "No check block"
+  },
+  {
+    "ruleId": "os_prohibit_remote_activation_collab_devices",
+    "section": "Inherent",
+    "sourcePath": "src/mscp/data/rules/os/os_prohibit_remote_activation_collab_devices.yaml",
+    "reason": "No check block"
+  },
+  {
+    "ruleId": "os_reauth_users_change_authenticators",
+    "section": "Inherent",
+    "sourcePath": "src/mscp/data/rules/os/os_reauth_users_change_authenticators.yaml",
+    "reason": "No check block"
+  },
+  {
+    "ruleId": "os_required_crypto_module",
+    "section": "Inherent",
+    "sourcePath": "src/mscp/data/rules/os/os_required_crypto_module.yaml",
+    "reason": "No check block"
+  },
+  {
+    "ruleId": "os_store_encrypted_passwords",
+    "section": "Inherent",
+    "sourcePath": "src/mscp/data/rules/os/os_store_encrypted_passwords.yaml",
+    "reason": "No check block"
+  },
+  {
+    "ruleId": "os_unique_identification",
+    "section": "Inherent",
+    "sourcePath": "src/mscp/data/rules/os/os_unique_identification.yaml",
+    "reason": "No check block"
+  },
+  {
+    "ruleId": "pwpolicy_force_password_change",
+    "section": "Inherent",
+    "sourcePath": "src/mscp/data/rules/pwpolicy/pwpolicy_force_password_change.yaml",
+    "reason": "No check block"
+  },
+  {
+    "ruleId": "os_protect_dos_attacks",
+    "section": "Permanent",
+    "sourcePath": "src/mscp/data/rules/os/os_protect_dos_attacks.yaml",
+    "reason": "No macOS enforcement_info"
+  },
+  {
+    "ruleId": "os_reauth_devices_change_authenticators",
+    "section": "Permanent",
+    "sourcePath": "src/mscp/data/rules/os/os_reauth_devices_change_authenticators.yaml",
+    "reason": "No macOS enforcement_info"
+  },
+  {
+    "ruleId": "os_secure_name_resolution",
+    "section": "Permanent",
+    "sourcePath": "src/mscp/data/rules/os/os_secure_name_resolution.yaml",
+    "reason": "No macOS enforcement_info"
+  },
+  {
+    "ruleId": "os_access_control_mobile_devices",
+    "section": "Not Applicable",
+    "sourcePath": "src/mscp/data/rules/os/os_access_control_mobile_devices.yaml",
+    "reason": "No macOS enforcement_info"
+  },
+  {
+    "ruleId": "os_identify_non-org_users",
+    "section": "Not Applicable",
+    "sourcePath": "src/mscp/data/rules/os/os_identify_non-org_users.yaml",
+    "reason": "No check block"
+  },
+  {
+    "ruleId": "os_nonlocal_maintenance",
+    "section": "Not Applicable",
+    "sourcePath": "src/mscp/data/rules/os/os_nonlocal_maintenance.yaml",
+    "reason": "No check block"
+  },
+  {
+    "ruleId": "supplemental_controls",
+    "section": "Supplemental",
+    "sourcePath": "src/mscp/data/rules/supplemental/supplemental_controls.yaml",
+    "reason": "No macOS enforcement_info"
+  },
+  {
+    "ruleId": "supplemental_filevault",
+    "section": "Supplemental",
+    "sourcePath": "src/mscp/data/rules/supplemental/supplemental_filevault.yaml",
+    "reason": "No macOS enforcement_info"
+  },
+  {
+    "ruleId": "supplemental_firewall_pf",
+    "section": "Supplemental",
+    "sourcePath": "src/mscp/data/rules/supplemental/supplemental_firewall_pf.yaml",
+    "reason": "No macOS enforcement_info"
+  },
+  {
+    "ruleId": "supplemental_password_policy",
+    "section": "Supplemental",
+    "sourcePath": "src/mscp/data/rules/supplemental/supplemental_password_policy.yaml",
+    "reason": "No macOS enforcement_info"
+  },
+  {
+    "ruleId": "supplemental_smartcard",
+    "section": "Supplemental",
+    "sourcePath": "src/mscp/data/rules/supplemental/supplemental_smartcard.yaml",
+    "reason": "No macOS enforcement_info"
+  }
+]

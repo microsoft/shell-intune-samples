@@ -1,0 +1,104 @@
+[
+  {
+    "baseline": "800-171_macos_26.0",
+    "supportedRuleCount": 145,
+    "unsupportedRuleCount": 33,
+    "partCount": 3
+  },
+  {
+    "baseline": "800-53r5_high_macos_26.0",
+    "supportedRuleCount": 170,
+    "unsupportedRuleCount": 53,
+    "partCount": 3
+  },
+  {
+    "baseline": "800-53r5_low_macos_26.0",
+    "supportedRuleCount": 138,
+    "unsupportedRuleCount": 30,
+    "partCount": 3
+  },
+  {
+    "baseline": "800-53r5_moderate_macos_26.0",
+    "supportedRuleCount": 167,
+    "unsupportedRuleCount": 47,
+    "partCount": 3
+  },
+  {
+    "baseline": "all_rules_macos_26.0",
+    "supportedRuleCount": 241,
+    "unsupportedRuleCount": 92,
+    "partCount": 4
+  },
+  {
+    "baseline": "cis_lvl1_macos_26.0",
+    "supportedRuleCount": 93,
+    "unsupportedRuleCount": 5,
+    "partCount": 3
+  },
+  {
+    "baseline": "cis_lvl2_macos_26.0",
+    "supportedRuleCount": 110,
+    "unsupportedRuleCount": 7,
+    "partCount": 3
+  },
+  {
+    "baseline": "cisv8_macos_26.0",
+    "supportedRuleCount": 159,
+    "unsupportedRuleCount": 20,
+    "partCount": 3
+  },
+  {
+    "baseline": "cmmc_lvl1_macos_26.0",
+    "supportedRuleCount": 75,
+    "unsupportedRuleCount": 13,
+    "partCount": 2
+  },
+  {
+    "baseline": "cmmc_lvl2_macos_26.0",
+    "supportedRuleCount": 181,
+    "unsupportedRuleCount": 34,
+    "partCount": 3
+  },
+  {
+    "baseline": "cnssi-1253_high_macos_26.0",
+    "supportedRuleCount": 200,
+    "unsupportedRuleCount": 67,
+    "partCount": 4
+  },
+  {
+    "baseline": "cnssi-1253_low_macos_26.0",
+    "supportedRuleCount": 196,
+    "unsupportedRuleCount": 52,
+    "partCount": 4
+  },
+  {
+    "baseline": "cnssi-1253_moderate_macos_26.0",
+    "supportedRuleCount": 199,
+    "unsupportedRuleCount": 57,
+    "partCount": 4
+  },
+  {
+    "baseline": "disa_stig_macos_26.0",
+    "supportedRuleCount": 149,
+    "unsupportedRuleCount": 11,
+    "partCount": 3
+  },
+  {
+    "baseline": "hicp_lp_macos_26.0",
+    "supportedRuleCount": 124,
+    "unsupportedRuleCount": 22,
+    "partCount": 3
+  },
+  {
+    "baseline": "nlmapgov_base_macos_26.0",
+    "supportedRuleCount": 36,
+    "unsupportedRuleCount": 3,
+    "partCount": 1
+  },
+  {
+    "baseline": "nlmapgov_plus_macos_26.0",
+    "supportedRuleCount": 82,
+    "unsupportedRuleCount": 7,
+    "partCount": 1
+  }
+]

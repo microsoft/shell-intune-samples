@@ -1,0 +1,18 @@
+{
+  "Rules": [
+    {
+      "SettingName": "system_settings_bluetooth_sharing_disable",
+      "Operator": "IsEquals",
+      "DataType": "Int64",
+      "Operand": 0,
+      "MoreInfoUrl": "https://github.com/usnistgov/macos_security/blob/main/src/mscp/data/rules/system_settings/system_settings_bluetooth_sharing_disable.yaml",
+      "RemediationStrings": [
+        {
+          "Language": "en_US",
+          "Title": "Disable Bluetooth Sharing. Value discovered was {ActualValue}.",
+          "Description": "See the linked mSCP rule for implementation and remediation guidance."
+        }
+      ]
+    }
+  ]
+}

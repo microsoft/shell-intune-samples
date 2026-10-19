@@ -1,0 +1,256 @@
+{
+  "Rules": [
+    {
+      "SettingName": "system_settings_password_hints_disable",
+      "Operator": "IsEquals",
+      "DataType": "Int64",
+      "Operand": 0,
+      "MoreInfoUrl": "https://github.com/usnistgov/macos_security/blob/main/src/mscp/data/rules/system_settings/system_settings_password_hints_disable.yaml",
+      "RemediationStrings": [
+        {
+          "Language": "en_US",
+          "Title": "Disable Password Hints. Value discovered was {ActualValue}.",
+          "Description": "See the linked mSCP rule for implementation and remediation guidance."
+        }
+      ]
+    },
+    {
+      "SettingName": "system_settings_personalized_advertising_disable",
+      "Operator": "IsEquals",
+      "DataType": "String",
+      "Operand": "false",
+      "MoreInfoUrl": "https://github.com/usnistgov/macos_security/blob/main/src/mscp/data/rules/system_settings/system_settings_personalized_advertising_disable.yaml",
+      "RemediationStrings": [
+        {
+          "Language": "en_US",
+          "Title": "Disable Personalized Advertising. Value discovered was {ActualValue}.",
+          "Description": "See the linked mSCP rule for implementation and remediation guidance."
+        }
+      ]
+    },
+    {
+      "SettingName": "system_settings_printer_sharing_disable",
+      "Operator": "IsEquals",
+      "DataType": "Int64",
+      "Operand": 1,
+      "MoreInfoUrl": "https://github.com/usnistgov/macos_security/blob/main/src/mscp/data/rules/system_settings/system_settings_printer_sharing_disable.yaml",
+      "RemediationStrings": [
+        {
+          "Language": "en_US",
+          "Title": "Disable Printer Sharing. Value discovered was {ActualValue}.",
+          "Description": "See the linked mSCP rule for implementation and remediation guidance."
+        }
+      ]
+    },
+    {
+      "SettingName": "system_settings_rae_disable",
+      "Operator": "IsEquals",
+      "DataType": "Int64",
+      "Operand": 1,
+      "MoreInfoUrl": "https://github.com/usnistgov/macos_security/blob/main/src/mscp/data/rules/system_settings/system_settings_rae_disable.yaml",
+      "RemediationStrings": [
+        {
+          "Language": "en_US",
+          "Title": "Disable Remote Apple Events. Value discovered was {ActualValue}.",
+          "Description": "See the linked mSCP rule for implementation and remediation guidance."
+        }
+      ]
+    },
+    {
+      "SettingName": "system_settings_remote_management_disable",
+      "Operator": "IsEquals",
+      "DataType": "Int64",
+      "Operand": 1,
+      "MoreInfoUrl": "https://github.com/usnistgov/macos_security/blob/main/src/mscp/data/rules/system_settings/system_settings_remote_management_disable.yaml",
+      "RemediationStrings": [
+        {
+          "Language": "en_US",
+          "Title": "Disable Remote Management. Value discovered was {ActualValue}.",
+          "Description": "See the linked mSCP rule for implementation and remediation guidance."
+        }
+      ]
+    },
+    {
+      "SettingName": "system_settings_screensaver_ask_for_password_delay_enforce",
+      "Operator": "IsEquals",
+      "DataType": "String",
+      "Operand": "true",
+      "MoreInfoUrl": "https://github.com/usnistgov/macos_security/blob/main/src/mscp/data/rules/system_settings/system_settings_screensaver_ask_for_password_delay_enforce.yaml",
+      "RemediationStrings": [
+        {
+          "Language": "en_US",
+          "Title": "Enforce Session Lock After Screen Saver is Started. Value discovered was {ActualValue}.",
+          "Description": "See the linked mSCP rule for implementation and remediation guidance."
+        }
+      ]
+    },
+    {
+      "SettingName": "system_settings_screensaver_password_enforce",
+      "Operator": "IsEquals",
+      "DataType": "String",
+      "Operand": "true",
+      "MoreInfoUrl": "https://github.com/usnistgov/macos_security/blob/main/src/mscp/data/rules/system_settings/system_settings_screensaver_password_enforce.yaml",
+      "RemediationStrings": [
+        {
+          "Language": "en_US",
+          "Title": "Enforce Screen Saver Password. Value discovered was {ActualValue}.",
+          "Description": "See the linked mSCP rule for implementation and remediation guidance."
+        }
+      ]
+    },
+    {
+      "SettingName": "system_settings_screensaver_timeout_enforce",
+      "Operator": "IsEquals",
+      "DataType": "String",
+      "Operand": "true",
+      "MoreInfoUrl": "https://github.com/usnistgov/macos_security/blob/main/src/mscp/data/rules/system_settings/system_settings_screensaver_timeout_enforce.yaml",
+      "RemediationStrings": [
+        {
+          "Language": "en_US",
+          "Title": "Enforce Screen Saver Timeout. Value discovered was {ActualValue}.",
+          "Description": "See the linked mSCP rule for implementation and remediation guidance."
+        }
+      ]
+    },
+    {
+      "SettingName": "system_settings_siri_disable",
+      "Operator": "IsEquals",
+      "DataType": "String",
+      "Operand": "false",
+      "MoreInfoUrl": "https://github.com/usnistgov/macos_security/blob/main/src/mscp/data/rules/system_settings/system_settings_siri_disable.yaml",
+      "RemediationStrings": [
+        {
+          "Language": "en_US",
+          "Title": "Disable Siri. Value discovered was {ActualValue}.",
+          "Description": "See the linked mSCP rule for implementation and remediation guidance."
+        }
+      ]
+    },
+    {
+      "SettingName": "system_settings_smbd_disable",
+      "Operator": "IsEquals",
+      "DataType": "Int64",
+      "Operand": 1,
+      "MoreInfoUrl": "https://github.com/usnistgov/macos_security/blob/main/src/mscp/data/rules/system_settings/system_settings_smbd_disable.yaml",
+      "RemediationStrings": [
+        {
+          "Language": "en_US",
+          "Title": "Disable Server Message Block Sharing. Value discovered was {ActualValue}.",
+          "Description": "See the linked mSCP rule for implementation and remediation guidance."
+        }
+      ]
+    },
+    {
+      "SettingName": "system_settings_software_update_download_enforce",
+      "Operator": "IsEquals",
+      "DataType": "String",
+      "Operand": "true",
+      "MoreInfoUrl": "https://github.com/usnistgov/macos_security/blob/main/src/mscp/data/rules/system_settings/system_settings_software_update_download_enforce.yaml",
+      "RemediationStrings": [
+        {
+          "Language": "en_US",
+          "Title": "Enforce Software Update Downloads Updates Automatically. Value discovered was {ActualValue}.",
+          "Description": "See the linked mSCP rule for implementation and remediation guidance."
+        }
+      ]
+    },
+    {
+      "SettingName": "system_settings_ssh_disable",
+      "Operator": "IsEquals",
+      "DataType": "String",
+      "Operand": "PASS",
+      "MoreInfoUrl": "https://github.com/usnistgov/macos_security/blob/main/src/mscp/data/rules/system_settings/system_settings_ssh_disable.yaml",
+      "RemediationStrings": [
+        {
+          "Language": "en_US",
+          "Title": "Disable SSH Server for Remote Access Sessions. Value discovered was {ActualValue}.",
+          "Description": "See the linked mSCP rule for implementation and remediation guidance."
+        }
+      ]
+    },
+    {
+      "SettingName": "system_settings_system_wide_preferences_configure",
+      "Operator": "IsEquals",
+      "DataType": "Int64",
+      "Operand": 1,
+      "MoreInfoUrl": "https://github.com/usnistgov/macos_security/blob/main/src/mscp/data/rules/system_settings/system_settings_system_wide_preferences_configure.yaml",
+      "RemediationStrings": [
+        {
+          "Language": "en_US",
+          "Title": "Require Administrator Password to Modify System-Wide Preferences. Value discovered was {ActualValue}.",
+          "Description": "See the linked mSCP rule for implementation and remediation guidance."
+        }
+      ]
+    },
+    {
+      "SettingName": "system_settings_time_machine_auto_backup_enable",
+      "Operator": "IsEquals",
+      "DataType": "String",
+      "Operand": "true",
+      "MoreInfoUrl": "https://github.com/usnistgov/macos_security/blob/main/src/mscp/data/rules/system_settings/system_settings_time_machine_auto_backup_enable.yaml",
+      "RemediationStrings": [
+        {
+          "Language": "en_US",
+          "Title": "Configure Time Machine for Automatic Backups. Value discovered was {ActualValue}.",
+          "Description": "See the linked mSCP rule for implementation and remediation guidance."
+        }
+      ]
+    },
+    {
+      "SettingName": "system_settings_time_machine_encrypted_configure",
+      "Operator": "IsEquals",
+      "DataType": "Int64",
+      "Operand": 0,
+      "MoreInfoUrl": "https://github.com/usnistgov/macos_security/blob/main/src/mscp/data/rules/system_settings/system_settings_time_machine_encrypted_configure.yaml",
+      "RemediationStrings": [
+        {
+          "Language": "en_US",
+          "Title": "Ensure Time Machine Volumes are Encrypted. Value discovered was {ActualValue}.",
+          "Description": "See the linked mSCP rule for implementation and remediation guidance."
+        }
+      ]
+    },
+    {
+      "SettingName": "system_settings_time_server_configure",
+      "Operator": "IsEquals",
+      "DataType": "String",
+      "Operand": "time.apple.com",
+      "MoreInfoUrl": "https://github.com/usnistgov/macos_security/blob/main/src/mscp/data/rules/system_settings/system_settings_time_server_configure.yaml",
+      "RemediationStrings": [
+        {
+          "Language": "en_US",
+          "Title": "Configure macOS to Use an Authorized Time Server. Value discovered was {ActualValue}.",
+          "Description": "See the linked mSCP rule for implementation and remediation guidance."
+        }
+      ]
+    },
+    {
+      "SettingName": "system_settings_time_server_enforce",
+      "Operator": "IsEquals",
+      "DataType": "String",
+      "Operand": "true",
+      "MoreInfoUrl": "https://github.com/usnistgov/macos_security/blob/main/src/mscp/data/rules/system_settings/system_settings_time_server_enforce.yaml",
+      "RemediationStrings": [
+        {
+          "Language": "en_US",
+          "Title": "Enforce macOS Time Synchronization. Value discovered was {ActualValue}.",
+          "Description": "See the linked mSCP rule for implementation and remediation guidance."
+        }
+      ]
+    },
+    {
+      "SettingName": "system_settings_wake_network_access_disable",
+      "Operator": "IsEquals",
+      "DataType": "Int64",
+      "Operand": 0,
+      "MoreInfoUrl": "https://github.com/usnistgov/macos_security/blob/main/src/mscp/data/rules/system_settings/system_settings_wake_network_access_disable.yaml",
+      "RemediationStrings": [
+        {
+          "Language": "en_US",
+          "Title": "Ensure Wake for Network Access Is Disabled. Value discovered was {ActualValue}.",
+          "Description": "See the linked mSCP rule for implementation and remediation guidance."
+        }
+      ]
+    }
+  ]
+}

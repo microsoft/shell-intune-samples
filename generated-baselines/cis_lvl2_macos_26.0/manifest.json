@@ -1,0 +1,28 @@
+{
+  "baseline": "cis_lvl2_macos_26.0",
+  "title": "macOS 26.0: Security Configuration - cis_lvl2",
+  "description": "This guide describes the actions to take when securing a macOS 26.0 system against the cis_lvl2 security benchmark.",
+  "supportedRuleCount": 110,
+  "unsupportedRuleCount": 7,
+  "partCount": 3,
+  "parts": [
+    {
+      "name": "part-01-root",
+      "context": "root",
+      "ruleCount": 90,
+      "path": "generated-baselines/cis_lvl2_macos_26.0/part-01-root"
+    },
+    {
+      "name": "part-02-root",
+      "context": "root",
+      "ruleCount": 18,
+      "path": "generated-baselines/cis_lvl2_macos_26.0/part-02-root"
+    },
+    {
+      "name": "part-03-user",
+      "context": "user",
+      "ruleCount": 2,
+      "path": "generated-baselines/cis_lvl2_macos_26.0/part-03-user"
+    }
+  ]
+}

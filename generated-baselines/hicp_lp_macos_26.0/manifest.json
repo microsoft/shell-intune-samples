@@ -1,0 +1,28 @@
+{
+  "baseline": "hicp_lp_macos_26.0",
+  "title": "macOS 26.0: Security Configuration - hicp_lp",
+  "description": "This guide describes the actions to take when securing a macOS 26.0 system against the hicp_lp security benchmark.\n\nInformation System Security Officers and benchmark creators can use this catalog of settings in order to assist them in security benchmark creation. This list is a catalog, not a checklist or benchmark, and satisfaction of every item is not likely to be possible or sensible in many operational scenarios.",
+  "supportedRuleCount": 124,
+  "unsupportedRuleCount": 22,
+  "partCount": 3,
+  "parts": [
+    {
+      "name": "part-01-root",
+      "context": "root",
+      "ruleCount": 90,
+      "path": "generated-baselines/hicp_lp_macos_26.0/part-01-root"
+    },
+    {
+      "name": "part-02-root",
+      "context": "root",
+      "ruleCount": 33,
+      "path": "generated-baselines/hicp_lp_macos_26.0/part-02-root"
+    },
+    {
+      "name": "part-03-user",
+      "context": "user",
+      "ruleCount": 1,
+      "path": "generated-baselines/hicp_lp_macos_26.0/part-03-user"
+    }
+  ]
+}

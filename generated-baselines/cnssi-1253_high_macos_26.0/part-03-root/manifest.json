@@ -1,0 +1,26 @@
+{
+  "baseline": "cnssi-1253_high_macos_26.0",
+  "part": "part-03-root",
+  "context": "root",
+  "ruleCount": 18,
+  "settingNames": [
+    "system_settings_screensaver_ask_for_password_delay_enforce",
+    "system_settings_screensaver_password_enforce",
+    "system_settings_screensaver_timeout_enforce",
+    "system_settings_security_update_install",
+    "system_settings_siri_disable",
+    "system_settings_siri_settings_disable",
+    "system_settings_smbd_disable",
+    "system_settings_ssh_disable",
+    "system_settings_ssh_enable",
+    "system_settings_system_wide_preferences_configure",
+    "system_settings_time_server_configure",
+    "system_settings_time_server_enforce",
+    "system_settings_token_removal_enforce",
+    "system_settings_touch_id_settings_disable",
+    "system_settings_usb_restricted_mode",
+    "system_settings_wallet_applepay_settings_disable",
+    "system_settings_wifi_disable",
+    "os_secure_enclave"
+  ]
+}
