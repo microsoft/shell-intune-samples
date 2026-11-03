@@ -99,7 +99,7 @@ SecureSharedFolder() {
     return
   fi
   local mode owner
-  mode=$(/usr/bin/stat -f "%Lp" "$sharedDir")
+  mode=$(/usr/bin/stat -f "%Mp%Lp" "$sharedDir")
   owner=$(/usr/bin/stat -f "%Su:%Sg" "$sharedDir")
   if [[ "$mode" == "1777" && "$owner" == "root:wheel" ]]; then
     echo "$(date) | OK    | $sharedDir already mode 1777 root:wheel"
@@ -108,7 +108,7 @@ SecureSharedFolder() {
   echo "$(date) | FIX   | $sharedDir is mode $mode owner $owner, resetting to 1777 root:wheel"
   /usr/sbin/chown root:wheel "$sharedDir" || failures=$((failures + 1))
   /bin/chmod 1777 "$sharedDir"             || failures=$((failures + 1))
-  mode=$(/usr/bin/stat -f "%Lp" "$sharedDir")
+  mode=$(/usr/bin/stat -f "%Mp%Lp" "$sharedDir")
   owner=$(/usr/bin/stat -f "%Su:%Sg" "$sharedDir")
   if [[ "$mode" == "1777" && "$owner" == "root:wheel" ]]; then
     echo "$(date) | OK    | $sharedDir is now mode 1777 root:wheel"
